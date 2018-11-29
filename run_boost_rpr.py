@@ -1,7 +1,7 @@
-from particle_sim import p_sim
 import population_modules
 import matplotlib.pyplot as plt
 import numpy as np
+import random
 import sys
 from scipy import stats
 import itertools
@@ -18,10 +18,54 @@ class Model:
         self._prior = prior
         self._n_params = len(prior)
         self._param_kdes = []
+        self._has_kde = False
 
-    def sample_from_prior(self, n_sims):
-        model_sim_params = []
-        for sim in range(0, n_sims):
+        # Model data. Number of times this model was sampled in each population and number of times it was accepted
+        self.population_sample_count = []
+        self.population_accepted_count = []
+
+    ##
+    # Generates a KDE from a list of parameters, where each row is a complete set of parameters
+    # required for a simulation.
+    #
+    # List is transformed into an ndarray, where each column is a single parameter. Each column is used to generate
+    # a KDE
+    ##
+    def generate_kde(self, params_list):
+        self._param_kdes = []
+        params_list = np.asarray(params_list)
+        for idx, param in enumerate(range(0, self._n_params)):
+            param_vals = params_list[:, idx]
+            try:
+                kernel = stats.gaussian_kde(param_vals)
+                self._param_kdes.append(kernel)
+
+            except np.linalg.linalg.LinAlgError:
+                self._param_kdes.append(param_vals[0])
+
+        self._has_kde = True
+
+    ##
+    # Samples simulation parameters for n_sims using the model KDEs
+    ##
+    def sample_particle(self):
+        if self._has_kde:  # Sample from kde
+            model_sim_params = []
+            for idx, kern in enumerate(self._param_kdes):
+                if isinstance(kern, stats.kde.gaussian_kde):
+                    new_params = kern.resample(1)
+                    model_sim_params.append(new_params[0][0])
+
+                elif isinstance(kern, np.float64):
+                    model_sim_params.append(kern)
+
+                else:
+                    raise ("Type not recognised")
+
+
+            return model_sim_params
+
+        else:  # Sample from uniform prior
             sim_params = []
 
             for param in self._prior:
@@ -30,47 +74,96 @@ class Model:
                 param_val = np.random.uniform(lwr_bound, upr_bound)
                 sim_params.append(param_val)
 
-            model_sim_params.append(sim_params)
-
-        return model_sim_params
-
-    def sample_from_kde(self, n_sims):
-        model_sim_params = np.empty(shape=[n_sims, self._n_params])
-
-        for idx, kern in enumerate(self._param_kdes):
-            new_params = kern.resample(n_sims)
-            model_sim_params[:, idx] = new_params
-
-    def generate_kde(self, params_list):
-        self._param_kdes = []
-        params_list = np.asarray(params_list)
-        for idx, param in enumerate(range(0, self._n_params)):
-            param_vals = params_list[:, idx]
-            kernel = stats.gaussian_kde(param_vals)
-            self._param_kdes.append(kernel)
+            return sim_params
 
 
+    def get_model_ref(self):
+        return self._model_ref
+
+
+##
+# Model space is initialised with a list of Model objects.
+#
+# This class controls sampling of models, and generation of a population of particles to be simulated
+##
 class ModelSpace:
-    ##
-    # Model space is initialised with a list of Model objects.
-    #
-    # This class controls sampling of models, and generation of a population of particles to be simulated
-    #
-    ##
     def __init__(self, model_list):
         self._model_list = model_list
-        
-        self._model_refs_list = model_refs_list
+        self._model_refs_list = [m.get_model_ref() for m in self._model_list]  # Extract model reference from each model
 
-    def generate_input_params_from_prior(self):
-        for m in _model_list:
-            sample_fr
+    ##
+    # Samples model space based on???
+    # Returns a list of models to be simulated
+    ##
+    def sample_model_space(self, n_sims):
+        sampled_models = np.random.choice(self._model_list, n_sims)
+
+        return sampled_models
+
+    ##
+    # Generates new kdes for simulated models from the input parameters used for accepted particles
+    ##
+    def generate_model_kdes(self, judgement_array, simulated_particles, input_params):
+        unique_models = self._model_list
+
+        for m in unique_models:
+            accepted_params = []
+            for idx, part in enumerate(simulated_particles):
+                if part is m and judgement_array[idx]:
+                    accepted_params.append(input_params[idx])
+
+            if len(accepted_params) > 1:
+                m.generate_kde(accepted_params)
+
+
+            else:
+                print("accepted params <=  1")
+
+
+    ##
+    # Appends a new entry for the counts of times sampled and times accepted in a population
+    # Each time this is called
+    ##
+    def update_model_data(self, simulated_particles, judgement_array):
+        unique_models = self._model_list
+
+        for m in unique_models:
+            sampled_count = 0
+            accepted_count = 0
+
+            for idx, particle in enumerate(simulated_particles):
+                if particle is m:
+                    sampled_count +=1
+
+                if judgement_array[idx]:
+                    accepted_count +=1
+
+            m.population_sample_count.append(sampled_count)
+            m.population_accepted_count.append(accepted_count)
 
 
 
 
+##
+# Generates particles corresponding to each model in the model list
+##
+def generate_particles(models_list):
+    pop_model_refs = [m.get_model_ref() for m in models_list]
+    pop_params_list = []
+
+    for m in models_list:
+        params = m.sample_particle()
+        pop_params_list.append(params)
+
+    return pop_params_list, pop_model_refs
 
 
+##
+# Compares the distances of each spiecies of each particle to the epsilons in the distance
+# array.
+#
+# Returns a list of bools True - accept particle, False - reject particle
+##
 def check_distances(particle_distances, epsilon_array):
     particle_judgements = []
 
@@ -86,25 +179,62 @@ def check_distances(particle_distances, epsilon_array):
     return particle_judgements
 
 
-def gen_model_refs(n_sims):
-    model_refs = []
-    for i in range(0, n_sims):
-        model_refs.append(0)
+def abc_rejection(t_0, t_end, dt, model_list, particles_per_population, n_sims, n_species_fit, n_distances):
+    epsilon_array = [ [100, 100], [50, 50], [30, 30], [20, 20], [10, 10], [5, 5], [1, 1] ]
 
-    return model_refs
+    model_space = ModelSpace(model_list)
+
+    n_simultaneuous_sims = n_sims
+
+    population = 0
+
+    for epsilon in epsilon_array:
+        print(population)
+        accepted_particles = 0
+        all_judgements = []
+        all_inputs = []
+        all_particles_simmed = []
+
+        while accepted_particles < particles_per_population:
+            particle_models = model_space.sample_model_space(n_simultaneuous_sims)  # Model objects in this simulation
+            input_params, model_refs = generate_particles(particle_models)          # Extract input parameters and model references
+
+            p = population_modules.Population(n_simultaneuous_sims, t_0, t_end,
+                                              dt, input_params, model_refs)
+
+            p.generate_particles()
+            p.simulate_particles()
+            p.calculate_particle_distances()
+            p.accumulate_distances()
+            pop_distances = p.get_flattened_distances_list()
+
+            pop_distances = np.reshape(pop_distances, (n_sims, n_species_fit, n_distances))
+            part_judgements = check_distances(pop_distances, epsilon_array=epsilon)
+
+            accepted_particles += sum(part_judgements)
+
+            all_inputs = all_inputs + input_params
+            all_judgements = all_judgements + part_judgements
+            all_particles_simmed = all_particles_simmed + particle_models.tolist()
+
+            print("Accepted particles: ", accepted_particles)
+
+        model_space.generate_model_kdes(all_judgements, all_particles_simmed, all_inputs)
+        model_space.update_model_data(all_particles_simmed, all_judgements)
+
+        population += 1
 
 
-def abc_rejection():
-    n_sims = 6
+def main():
     t_0 = 0
-    t_end = 1000
+    t_end = 100
     dt = 0.01
 
     model_rpr_prior_dict = {
-        'alpha0': (0, 10),
-        'alpha': (0, 3000),
-        'n': (0, 10),
-        'beta': (0, 10),
+        'alpha0': (0, 1),
+        'alpha': (1000, 1000),
+        'n': (1, 2),
+        'beta': (1, 5),
     }
 
     model_lv_prior_dict = {
@@ -114,78 +244,16 @@ def abc_rejection():
         'D': (0, 10)
     }
 
-    prior_list = [model_lv_prior_dict, model_rpr_prior_dict]
-    model_refs_list = [0, 1]
-    
-    lv_model = Model(model_lv_prior_dict)
-    rpr_model = model_space.Model(model_rpr_prior_dict)
+    # Initialise models
+    rpr_model = Model(0, model_rpr_prior_dict)
+    lv_model = Model(1, model_lv_prior_dict, )
+    model_list = [rpr_model, lv_model]
 
+    # Initialise model space
 
-    input_params = rpr_model.sample_from_prior(n_sims)
-
-
-
-    model_refs_list = gen_model_refs(n_sims)
-    model_space = ModelSpace()
-
-
-    # input_params = np.asarray(input_params)
-    population_num = 0
-
-    eps = 1000
-
-    while eps != 0:
-        print(population_num)
-        p = population_modules.Population(n_sims, t_0, t_end,
-                                          dt, input_params, model_refs_list)
-
-        p.generate_particles()
-        p.simulate_particles()
-        p.calculate_particle_distances()
-        p.accumulate_distances()
-        p.get_population_distances()
-
-        particle_distances = p.get_flattened_distances_list()
-        # Shape spec, n_sims, n_species, n_distances
-        particle_distances = np.reshape(particle_distances, (n_sims, 3, 2))
-        epsilon_array = [eps, eps]
-        judge_array = check_distances(particle_distances, epsilon_array)
-
-        # Collect parameters of accepted particles
-        i = itertools.compress(input_params, judge_array)
-        accepted_parameters = [x for x in i]
-
-        if len(accepted_parameters) == 0:
-            print("no accepted particles")
-            continue
-
-        # Generate new distributions
-        rpr_model.generate_kde(accepted_parameters)
-
-        # Sample new parameters
-        rpr_model.sample_from_kde(n_sims)
-
-        eps = eps-200
-        population_num +=1
-
-
+    abc_rejection(t_0, t_end, dt, model_list, particles_per_population=10,
+                  n_sims=50, n_species_fit=2, n_distances=2)
 
 
 if __name__ == "__main__":
-    # n_sims = int(sys.argv[1])
-    abc_rejection()
-
-
-    exit()
-    sim_array = np.array(p.get_particle_state_list(0))
-    sim_array = np.reshape(sim_array, (100001, 6))
-    print(np.shape(sim_array[:, 0]))
-
-    # t_array = np.arange(t_0, t_end+dt, dt)
-    # print(np.shape(t_array))
-
-    # res = p_sim(n_sim_per_run, t_0, t_end, dt, all_params)
-    # print("done")
-    # print(np.shape(res))
-    # print(np.shape(res[0]))
-    # print(np.shape(res[0][0]))
+    main()

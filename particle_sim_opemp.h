@@ -17,14 +17,10 @@ using namespace std;
 using namespace boost::numeric::odeint;
 using namespace boost::python;
 
-const int t_0 = 0;
-const int t_end = 1000;
-const float dt = 0.01;
-const int t_length = (t_end / dt) + dt;
 
 // The class
 typedef std::vector<double> state_type;
-typedef std::array<double, t_length> time_type;
+typedef std::vector<double> time_type;
 typedef runge_kutta_dopri5<
           state_type , double ,
           state_type , double ,
@@ -52,9 +48,9 @@ class Particle
 		vector <state_type> state_vec;
 		time_type times_array;
 
-		void simulate_particle(double t0, double t_end, double dt);
+		void simulate_particle(double, std::vector<double>);
 		void set_distance_vector(std::vector<std::vector<long>>);
-		std::vector<std::vector<long>>  get_sim_distances() {return sim_distances;};
+		std::vector<std::vector<long>> get_sim_distances() {return sim_distances;};
 
 		// changes the operator () to instead call
 		// the object as if it were a function
@@ -63,10 +59,6 @@ class Particle
 
 		std::vector<state_type>& get_state_vec();
 		boost::python::list get_state_pylist();
-		boost::python::list get_times_pylist();
-
-
-		
 };
 
 

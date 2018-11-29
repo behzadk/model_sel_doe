@@ -31,6 +31,12 @@ Population::Population(const int n_sims, const int t_0,
 	_t_0 = t_0;
 	_t_end = t_end;
 	_dt = dt;
+
+	// Fill time points array
+    for(double i=_t_0; i <_t_end; i+=_dt){
+        _time_array.push_back(i);
+    }
+
 	_all_params = unpack_parameters(params_list);
 	_model_refs = unpack_model_references(model_ref_list);
 }
@@ -55,7 +61,7 @@ void Population::generate_particles(){
 void Population::simulate_particles() {
 	#pragma omp parallel for schedule(runtime)
 	for (int i=0; i < _n_sims; ++i) {
-        _particle_vector[i].simulate_particle(t_0, t_end, dt);
+        _particle_vector[i].simulate_particle( _dt, _time_array);
 	}
 }
 
@@ -64,12 +70,13 @@ void Population::simulate_particles() {
  * Calculates the distances of all particles in the population.
 */
 void Population::calculate_particle_distances(){
-	std::vector<int> fit_species = {3, 4, 5};
+	std::vector<int> fit_species = {0, 1};
 	DistanceFunctions dist = DistanceFunctions();
 
 	#pragma omp parallel for schedule(runtime)
     for (int i=0; i < _n_sims; ++i) {
-    _particle_vector[i].set_distance_vector(dist.stable_dist( _particle_vector[i].get_state_vec(), fit_species ));
+    	_particle_vector[i].get_state_vec();
+    	_particle_vector[i].set_distance_vector(dist.stable_dist( _particle_vector[i].get_state_vec(), fit_species ));
     }
 }
 
@@ -145,6 +152,15 @@ boost::python::list Population::get_particle_state_list(int particle_ref) {
 	return(_particle_vector[particle_ref].get_state_pylist());
 }
 
+boost::python::list Population::get_timepoints_list() {
+	boost::python::list tp_list;
+	for (int i=0; i < _time_array.size(); ++i){
+		double tp = _time_array[i];
+		tp_list.append(tp);
+	}
+	return tp_list;
+}
+
 
 BOOST_PYTHON_MODULE(population_modules)
 {
@@ -160,5 +176,6 @@ BOOST_PYTHON_MODULE(population_modules)
     	.def("get_population_distances", &Population::get_population_distances)
     	.def("get_flattened_distances_list", &Population::get_flattened_distances_list)
     	.def("get_particle_state_list", &Population::get_particle_state_list)
+    	.def("get_timepoints_list", &Population::get_timepoints_list)
         ;
 }

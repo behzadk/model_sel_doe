@@ -19,12 +19,14 @@ class Population {
 		
 		boost::python::list get_flattened_distances_list();
 		boost::python::list get_particle_state_list(int);
+		boost::python::list get_timepoints_list();
 
 	private:
 		int _n_sims;
 		int  _t_0;
 		int _t_end;
 		float _dt;
+		std::vector<double> _time_array;
 		std::vector<int> _model_refs;
 		PopDistances _all_distances;
 		std::vector<std::vector<double>> _all_params;
