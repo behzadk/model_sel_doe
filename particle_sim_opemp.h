@@ -37,7 +37,7 @@ class Particle
 
 	public:
 		// Constructor
-		Particle(std::vector<double>, Models, int);
+		Particle(state_type, std::vector<double>, Models, int);
 
 		model_t particle_model;
 		int particle_model_int;
@@ -45,6 +45,7 @@ class Particle
 		int model_ref;
 
 		std::vector <double> part_params;
+		state_type state_init;
 		vector <state_type> state_vec;
 		time_type times_array;
 

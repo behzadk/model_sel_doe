@@ -24,7 +24,7 @@ using namespace boost::python;
  * to be simulated. This class is used as an interface with python.
 */
 Population::Population(const int n_sims, const int t_0, 
-    const int t_end, const float dt, 
+    const int t_end, const float dt, boost::python::list state_init_list,
     boost::python::list params_list, boost::python::list model_ref_list) {
 
 	_n_sims = n_sims;
@@ -38,6 +38,7 @@ Population::Population(const int n_sims, const int t_0,
     }
 
 	_all_params = unpack_parameters(params_list);
+	_all_state_init = unpack_parameters(state_init_list);
 	_model_refs = unpack_model_references(model_ref_list);
 }
 
@@ -51,7 +52,7 @@ void Population::generate_particles(){
 
 	std::vector<Particle> particle_vector;
     for (int i=0; i < _n_sims; ++i) {
-        _particle_vector.push_back(Particle(_all_params[i], m, _model_refs[i]));
+        _particle_vector.push_back(Particle(_all_state_init[i], _all_params[i], m, _model_refs[i]));
     }
 }
 
@@ -168,7 +169,7 @@ BOOST_PYTHON_MODULE(population_modules)
 		.def(boost::python::vector_indexing_suite<PopDistances>());
 
     class_<Population>("Population", init<const int, const int, 
-    const int, const float, boost::python::list, boost::python::list>())
+    const int, const float, boost::python::list, boost::python::list, boost::python::list>())
     	.def("generate_particles", &Population::generate_particles)
     	.def("simulate_particles", &Population::simulate_particles)
     	.def("calculate_particle_distances", &Population::calculate_particle_distances)

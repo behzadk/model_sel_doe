@@ -41,7 +41,7 @@ double DistanceFunctions::calculate_final_gradient(std::vector<double>& species_
 	double i = abs(species_vals.end()[-2]);
 	double j = abs(species_vals.end()[-1]);
 
-	return (j - i);
+	return (abs(j - i));
 }
 
 

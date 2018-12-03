@@ -15,6 +15,7 @@ using namespace boost::python;
 #include <boost/python/numpy.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include <boost/range/irange.hpp>
+#include <boost/numeric/odeint/integrate/max_step_checker.hpp>
 #include <typeinfo>
 #include "distances.h"
 
@@ -48,12 +49,12 @@ struct simulation_observer
 
 
 
-Particle::Particle(std::vector <double> params, Models model_obj, int model_ref)
+Particle::Particle(state_type init_state, std::vector <double> params, Models model_obj, int model_idx)
 {
-	// Place holder
 	Models m = model_obj;
 	part_params = params;
-    model_ref = model_ref;
+    model_ref = model_idx;
+    state_init = init_state;
 }
 
 void Particle::hello_world(){
@@ -63,14 +64,14 @@ void Particle::hello_world(){
 
 void Particle::operator() ( const state_type &y , state_type &dxdt , double t)
 {
-    int model_ref = model_ref;
+    // int model_ref = model_ref;
     std::vector<model_t> m_vec = m.models_vec;
-    m.run_model(y, dxdt, t, part_params);
+    m.run_model(y, dxdt, t, part_params, model_ref);
 }
 
 
 void Particle::simulate_particle(double dt, std::vector<double> time_points) {
-    state_type x = {0, 0, 0, 1.0, 2.0, 5.0};
+
     // std::vector<double> time_array;
 
     // for(double i=t0; i <=t_end; i = i+dt){
@@ -85,10 +86,13 @@ void Particle::simulate_particle(double dt, std::vector<double> time_points) {
     // 	dt, num_steps, simulation_observer(state_vec, times_array) );
 
     // auto range = boost::irange((int) t0, (int) t_end, dt);
+    
+    boost::numeric::odeint::max_step_checker mx_check =  boost::numeric::odeint::max_step_checker(1E6);
+    
 
-    integrate_times( make_controlled( 1E-8 , 1E-8, dt, stepper_type() ) , 
-    boost::ref( *this ) , x , time_points.begin(), time_points.end(),
-    dt, simulation_observer(state_vec) );
+    integrate_times( make_controlled( 1E-3 , 1E-3, dt, stepper_type() ) , 
+    boost::ref( *this ) , state_init , time_points.begin(), time_points.end(),
+    dt, simulation_observer(state_vec), mx_check );
 
 }
 

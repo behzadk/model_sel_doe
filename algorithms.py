@@ -1,55 +1,115 @@
 from model_space import ModelSpace
 import algorithm_utils as alg_utils
 import population_modules
-import matplotlib.pyplot as plt
 import numpy as np
-import random
-import sys
-from scipy import stats
-import itertools
+import os
+import csv
+
+class ABC_rejection:
+    def __init__(self, t_0, t_end, dt, model_list, population_size, n_sims_batch, n_species_fit, n_distances):
+        self.t_0 = t_0
+        self.t_end = t_end
+        self.dt = dt
+        self.model_list = model_list
+
+        self.population_size = population_size
+        self.n_sims_batch = n_sims_batch
+        self.n_species_fit = n_species_fit
+        self.n_distances = n_distances
+
+        self.epsilon_array = [ [1e6, 1e6], [1e5, 1e5], [1e4, 1e4], [1e3, 1e3], [1e2, 1e2], [1e1, 1e1] ]
+
+        # Init model space
+        self.model_space = ModelSpace(model_list)
+
+    def test_generate_init_states(self):
+        spock_init = {
+            'X': (1e11, 1e11),
+            'C': (1e11, 1e12),
+            'S': (4, 4),
+            'B': (0, 0),
+            'A': (0, 0)
+        }
+
+        rpr_init = {
+            'X': (1e11, 1e11),
+            'C': (0, 0),
+            'S': (0, 0),
+            'B': (0, 2),
+            'G': (0, 5),
+            'L': (0, 10),
+        }
+
+        init_state = []
+
+        for s in range(self.n_sims_batch):
+            sim_init = []
+            for param in spock_init:
+                lwr_bound = spock_init[param][0]
+                upr_bound = spock_init[param][1]
+                param_val = np.random.uniform(lwr_bound, upr_bound)
+                sim_init.append(param_val)
+
+            init_state.append(sim_init)
 
 
-def abc_rejection(t_0, t_end, dt, model_list, particles_per_population, n_sims, n_species_fit, n_distances):
-    epsilon_array = [ [100, 100], [50, 50], [30, 30], [20, 20], [10, 10], [5, 5], [1, 1] ]
+        return init_state
 
-    model_space = ModelSpace(model_list)
+    def run_abc_rejection(self):
+        population = 0
 
-    n_simultaneuous_sims = n_sims
+        for epsilon in self.epsilon_array:
+            print(population)
+            accepted_particles = 0
+            all_judgements = []
+            all_inputs = []
+            all_particles_simmed = []
 
-    population = 0
+            while accepted_particles < self.population_size:
 
-    for epsilon in epsilon_array:
-        print(population)
-        accepted_particles = 0
-        all_judgements = []
-        all_inputs = []
-        all_particles_simmed = []
+                # 1. Sample from model space
+                particle_models = self.model_space.sample_model_space(self.n_sims_batch)  # Model objects in this simulation
 
-        while accepted_particles < particles_per_population:
-            particle_models = model_space.sample_model_space(n_simultaneuous_sims)  # Model objects in this simulation
-            input_params, model_refs = alg_utils.generate_particles(particle_models)          # Extract input parameters and model references
+                # 2. Sample particles for each model
+                input_params, model_refs = alg_utils.generate_particles(particle_models)          # Extract input parameters and model references
+                input_state_init = self.test_generate_init_states()
 
-            p = population_modules.Population(n_simultaneuous_sims, t_0, t_end,
-                                              dt, input_params, model_refs)
+                # 3. Simulate population
+                p = population_modules.Population(self.n_sims_batch, self.t_0, self.t_end,
+                                                  self.dt, input_state_init, input_params, model_refs)
+                p.generate_particles()
+                p.simulate_particles()
 
-            p.generate_particles()
-            p.simulate_particles()
-            p.calculate_particle_distances()
-            p.accumulate_distances()
-            pop_distances = p.get_flattened_distances_list()
+                # 3. Calculate distances for population
+                p.calculate_particle_distances()
+                p.accumulate_distances()
+                pop_distances = p.get_flattened_distances_list()
 
-            pop_distances = np.reshape(pop_distances, (n_sims, n_species_fit, n_distances))
-            part_judgements = alg_utils.check_distances(pop_distances, epsilon_array=epsilon)
+                # 4. Accept or reject particles
+                pop_distances = np.reshape(pop_distances, (self.n_sims_batch, self.n_species_fit, self.n_distances))
+                part_judgements = alg_utils.check_distances(pop_distances, epsilon_array=epsilon)
 
-            accepted_particles += sum(part_judgements)
+                accepted_particles += sum(part_judgements)
 
-            all_inputs = all_inputs + input_params
-            all_judgements = all_judgements + part_judgements
-            all_particles_simmed = all_particles_simmed + particle_models.tolist()
+                all_inputs = all_inputs + input_params
+                all_judgements = all_judgements + part_judgements
+                all_particles_simmed = all_particles_simmed + particle_models.tolist()
 
-            print("Accepted particles: ", accepted_particles)
+                print("Accepted particles: ", accepted_particles)
+                # print(pop_distances)
 
-        model_space.generate_model_kdes(all_judgements, all_particles_simmed, all_inputs)
-        model_space.update_model_data(all_particles_simmed, all_judgements)
+            # 5. Generate new distributions for models
+            self.model_space.generate_model_kdes(all_judgements, all_particles_simmed, all_inputs)
+            self.model_space.update_model_data(all_particles_simmed, all_judgements)
+            self.model_space.model_space_report()
 
-        population += 1
+            # 6. Write the parameters of accepted particles
+            folder_name = "./Population_" + str(population)
+            try:
+                os.mkdir(folder_name)
+            except FileExistsError:
+                pass
+
+            self.model_space.write_accepted_particle_params(folder_name, all_particles_simmed, all_judgements, all_inputs)
+            population += 1
+

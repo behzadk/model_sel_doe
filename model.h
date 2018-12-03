@@ -20,9 +20,11 @@ class Models{
 				std::cout << params[0] << std::endl;
 		    }
 
-		void run_model(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&);
+
+		void run_model(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&, int&);
 		void model_lv(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&);
 		void rpr_model(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&);
+		void spock_model(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&);
 		void hello_world();
 
 		std::vector<model_t> models_vec;

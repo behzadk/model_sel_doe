@@ -1,5 +1,6 @@
 import numpy as np
 from scipy import stats
+import csv
 
 class Model:
     ##
@@ -40,7 +41,9 @@ class Model:
         self._has_kde = True
 
     ##
-    # Samples simulation parameters for n_sims using the model KDEs
+    # Samples simulation parameters.
+    # If KDE has been generated, parameters are sampled from KDE
+    # Else, parameters are sampled from the prior
     ##
     def sample_particle(self):
         if self._has_kde:  # Sample from kde
@@ -134,3 +137,21 @@ class ModelSpace:
 
             m.population_sample_count.append(sampled_count)
             m.population_accepted_count.append(accepted_count)
+
+
+
+    def write_accepted_particle_params(self, out_dir, simulated_particles, judgement_array, input_params):
+        for m in self._model_list:
+            out_path = out_dir + "/model_" + str(m.get_model_ref()) + "_accepted_params"
+            with open(out_path, 'w') as out_csv:
+                wr = csv.writer(out_csv)
+                for idx, particle in enumerate(simulated_particles):
+                    if m is particle and judgement_array[idx]:
+                        wr.writerow(input_params[idx])
+
+
+
+    def model_space_report(self):
+        for m in self._model_list:
+            print(m.population_sample_count)
+            print(m.population_accepted_count)

@@ -8,7 +8,8 @@ typedef std::vector<std::vector<std::vector<long>>> PopDistances;
 class Population {
 	public:
 		Population(const int, const int, const int, 
-			const float, boost::python::list, boost::python::list);
+			const float, boost::python::list, boost::python::list, boost::python::list);
+
 		std::vector< std::vector<double> > unpack_parameters(boost::python::list);
 		std::vector<int> unpack_model_references(boost::python::list);
 		void generate_particles();
@@ -31,6 +32,7 @@ class Population {
 		PopDistances _all_distances;
 		std::vector<std::vector<double>> _all_params;
 		std::vector<Particle> _particle_vector;
+		std::vector<std::vector<double>>_all_state_init;
 
 };
 
