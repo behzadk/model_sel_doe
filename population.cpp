@@ -62,7 +62,12 @@ void Population::generate_particles(){
 void Population::simulate_particles() {
 	#pragma omp parallel for schedule(runtime)
 	for (int i=0; i < _n_sims; ++i) {
+		try{ 
         _particle_vector[i].simulate_particle( _dt, _time_array);
+    	} catch (boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::numeric::odeint::no_progress_error> >) {
+    		std::cout <<"integration_failed" << std::endl;
+    		_particle_vector[i].integration_failed = true;
+    	}
 	}
 }
 
@@ -77,7 +82,7 @@ void Population::calculate_particle_distances(){
 	#pragma omp parallel for schedule(runtime)
     for (int i=0; i < _n_sims; ++i) {
     	_particle_vector[i].get_state_vec();
-    	_particle_vector[i].set_distance_vector(dist.stable_dist( _particle_vector[i].get_state_vec(), fit_species ));
+    	_particle_vector[i].set_distance_vector(dist.stable_dist( _particle_vector[i].get_state_vec(), fit_species, _particle_vector[i].integration_failed));
     }
 }
 
@@ -103,7 +108,7 @@ boost::python::list Population::get_flattened_distances_list() {
 			auto species = sim[j];
 
 			for(int k=0; k<species.size(); ++k ) {
-				long dist_val = species[k];
+				double dist_val = species[k];
 				py_list_distances.append(dist_val);
 			}
 		}

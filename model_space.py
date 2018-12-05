@@ -8,9 +8,10 @@ class Model:
     # Priors should be loaded from input files
     # model ref refers to the index of the model in the cpp module.
     ##
-    def __init__(self, model_ref, prior):
+    def __init__(self, model_ref, prior, init_species_prior):
         self._model_ref = model_ref
         self._prior = prior
+        self._init_specices_prior = init_species_prior
         self._n_params = len(prior)
         self._param_kdes = []
         self._has_kde = False
@@ -57,8 +58,7 @@ class Model:
                     model_sim_params.append(kern)
 
                 else:
-                    raise ("Type not recognised")
-
+                    raise("Type not recognised")
 
             return model_sim_params
 
@@ -73,6 +73,16 @@ class Model:
 
             return sim_params
 
+    def sample_init_state(self):
+        init_species = []
+
+        for s in self._init_specices_prior:
+            lwr_bound = self._init_specices_prior[s][0]
+            upr_bound = self._init_specices_prior[s][1]
+            param_val = np.random.uniform(lwr_bound, upr_bound)
+            init_species.append(param_val)
+
+        return init_species
 
     def get_model_ref(self):
         return self._model_ref
@@ -155,3 +165,4 @@ class ModelSpace:
         for m in self._model_list:
             print(m.population_sample_count)
             print(m.population_accepted_count)
+            print("")

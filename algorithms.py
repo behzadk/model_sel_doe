@@ -4,6 +4,7 @@ import population_modules
 import numpy as np
 import os
 import csv
+import matplotlib.pyplot as plt
 
 class ABC_rejection:
     def __init__(self, t_0, t_end, dt, model_list, population_size, n_sims_batch, n_species_fit, n_distances):
@@ -71,12 +72,13 @@ class ABC_rejection:
                 particle_models = self.model_space.sample_model_space(self.n_sims_batch)  # Model objects in this simulation
 
                 # 2. Sample particles for each model
-                input_params, model_refs = alg_utils.generate_particles(particle_models)          # Extract input parameters and model references
-                input_state_init = self.test_generate_init_states()
+                init_state, input_params, model_refs = alg_utils.generate_particles(particle_models)          # Extract input parameters and model references
+                # input_state_init = self.test_generate_init_states()
 
                 # 3. Simulate population
                 p = population_modules.Population(self.n_sims_batch, self.t_0, self.t_end,
-                                                  self.dt, input_state_init, input_params, model_refs)
+                                                  self.dt, init_state, input_params, model_refs)
+
                 p.generate_particles()
                 p.simulate_particles()
 
@@ -97,7 +99,31 @@ class ABC_rejection:
 
                 print("Accepted particles: ", accepted_particles)
                 # print(pop_distances)
+                sim = p.get_particle_state_list(0)
+                n_species = np.shape(init_state)[1]
+                print(len(sim))
+                print(n_species)
 
+                sim = np.reshape(sim, (int(len(sim)/(n_species)), n_species))
+                time_points = np.arange(self.t_0, self.t_end+self.dt, self.dt)
+
+                print(max(sim[:,0]))
+                print(max(sim[:,1]))
+                print(max(sim[:,2]))
+                print(max(sim[:,3]))
+                print(max(sim[:,4]))
+
+                plt.plot(sim[:, 0])
+                plt.plot(sim[:, 1])
+                plt.yscale('log')
+                plt.show()
+
+                plt.plot( sim[:, 2])
+                plt.plot(sim[:, 3])
+                plt.yscale('log')
+                plt.show()
+
+                exit()
             # 5. Generate new distributions for models
             self.model_space.generate_model_kdes(all_judgements, all_particles_simmed, all_inputs)
             self.model_space.update_model_data(all_particles_simmed, all_judgements)

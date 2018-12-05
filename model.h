@@ -20,12 +20,16 @@ class Models{
 				std::cout << params[0] << std::endl;
 		    }
 
-
 		void run_model(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&, int&);
-		void model_lv(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&);
-		void rpr_model(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&);
 		void spock_model(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&);
-		void hello_world();
+
+		void model_0(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&);
+		void model_1(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&);
+		void model_2(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&);
+		void model_3(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&);
+		void model_4(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&);
+		void model_5(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&);
+		void model_6(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&);
 
 		std::vector<model_t> models_vec;
 

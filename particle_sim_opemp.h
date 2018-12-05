@@ -25,7 +25,15 @@ typedef runge_kutta_dopri5<
           state_type , double ,
           state_type , double ,
           openmp_range_algebra
-        > stepper_type;
+        > dopri5_stepper_type;
+// typedef adams_bashforth_moulton<
+//           state_type , double ,
+//           state_type , double ,
+//           openmp_range_algebra
+//         > stepper_type;
+
+
+// typedef rosenbrock4<double, double, double> stepper_type;
 typedef void (Models::*model_t)(const std::vector<double> &, std::vector<double> &, double, std::vector<double>&);
 
 
@@ -33,7 +41,7 @@ class Particle
 {
 	private:
 		Models m;
-		std::vector<std::vector<long>> sim_distances;
+		std::vector<std::vector<double>> sim_distances;
 
 	public:
 		// Constructor
@@ -50,8 +58,8 @@ class Particle
 		time_type times_array;
 
 		void simulate_particle(double, std::vector<double>);
-		void set_distance_vector(std::vector<std::vector<long>>);
-		std::vector<std::vector<long>> get_sim_distances() {return sim_distances;};
+		void set_distance_vector(std::vector<std::vector<double>>);
+		std::vector<std::vector<double>> get_sim_distances() {return sim_distances;};
 
 		// changes the operator () to instead call
 		// the object as if it were a function
@@ -60,6 +68,8 @@ class Particle
 
 		std::vector<state_type>& get_state_vec();
 		boost::python::list get_state_pylist();
+
+		bool integration_failed = false;
 };
 
 

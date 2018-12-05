@@ -1,15 +1,14 @@
-#include "model.h"
 #include <array>
 #include <iostream>
 #include <vector>
 #include <math.h>
-
-using namespace std;
-// typedef void (Models::*model_t)(const std::vector<double> &, std::vector<double> &, double t, std::vector<double>&);
+#include "model.h"
 
 Models::Models() {
-	// models vec is initiated at construction. Contains all models
-	models_vec = {&Models::rpr_model, &Models::model_lv, &Models::spock_model};
+	// models_vec = { &Models::model_0, &Models::model_1, &Models::model_2, 
+	// 	&Models::model_3, &Models::model_4, &Models::model_5, &Models::model_6};
+	models_vec = { &Models::spock_model};
+
 }
 
 void Models::run_model(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params, int &model_ref)
@@ -17,42 +16,8 @@ void Models::run_model(const std::vector <double> &y , std::vector <double> &dxd
 	(this->*models_vec[model_ref])(y, dxdt, t, part_params);
 }
 
-void Models::model_lv(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params)
-{
-	// Unpack parameters
-	const int A = part_params[0];
-	const int B = part_params[1];
-	const int C = part_params[2];
-	const int D = part_params[3];
-
-	//Functions (None)
-	
-	//Differential equations
-	dxdt[0] = A * y[0] - B * y[0] * y[1];
-	dxdt[1] = -C * y[1] + D * y[0] * y[1];
-}
-
-void Models::rpr_model(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params)
-{
-	// Unpack parameters
-	const double alpha0 = part_params[0];
-	const double alpha_param = part_params[1];
-	const double coeff = part_params[2];
-	const double beta_param = part_params[3];
-	//Functions (None)
-	
-	//Differential equations
-	dxdt[0] = (-y[0] + (alpha_param /( 1 + pow(y[5],coeff))) + alpha0);
-    dxdt[1] = (-y[1] + (alpha_param/ (1 + pow(y[3],coeff))) + alpha0);
-    dxdt[2] = (-y[2] + (alpha_param / (1 + pow(y[4],coeff))) + alpha0);
-    dxdt[3] = (-beta_param*(y[3] - y[0]));
-    dxdt[4] = (-beta_param*(y[4] - y[1]));
-    dxdt[5] = (-beta_param*(y[5] - y[2]));
-}
-
 void Models::spock_model(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params)
 {
-
 	const double D = part_params[0];
 	const double mux_m = part_params[1];
 	const double muc_m = part_params[2];
@@ -136,9 +101,235 @@ void Models::spock_model(const std::vector <double> &y , std::vector <double> &d
 }
 
 
-void Models::hello_world(){
-	std::cout << "hello_world" << std::endl;
+void Models::model_0(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params)
+{
+const double D = part_params[0];
+const double kA_a = part_params[1];
+const double KB_y = part_params[2];
+const double kBmax_y = part_params[3];
+const double nB_y = part_params[4];
+const double omega_max_y = part_params[5];
+const double K_omega_y = part_params[6];
+const double n_omega_y = part_params[7];
+const double K_x = part_params[8];
+const double g_x = part_params[9];
+const double mu_max_x = part_params[10];
+const double kA_b = part_params[11];
+const double KB_z = part_params[12];
+const double kBmax_z = part_params[13];
+const double nB_z = part_params[14];
+const double omega_max_z = part_params[15];
+const double K_omega_z = part_params[16];
+const double n_omega_z = part_params[17];
+const double K_c = part_params[18];
+const double g_c = part_params[19];
+const double mu_max_c = part_params[20];
+const double S0_glu = part_params[21];
+
+// Order is: N_x, N_c, S_glu, A_a, A_b, B_y, B_z, 
+
+dxdt[0] = ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  - omega_max_y * pow( y[5] , n_omega_y ) / ( pow( K_omega_y , n_omega_y ) + pow( y[5] , n_omega_y ) ) - D) * y[0] ;
+dxdt[1] = ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  - omega_max_z * pow( y[6] , n_omega_z ) / ( pow( K_omega_z , n_omega_z ) + pow( y[6] , n_omega_z ) ) - D) * y[1] ;
+dxdt[2] =  D * (S0_glu - y[2] ) - ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  * y[0] / g_x )- ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  * y[1] / g_c );
+dxdt[3] =  + kA_a * y[0]  - D * y[3] ;
+dxdt[4] =  + kA_b * y[1]  - D * y[4] ;
+dxdt[5] =  + kBmax_y  * y[1]  - D * y[5] ;
+dxdt[6] =  + kBmax_z  * ( pow( y[4] , nB_z ) / ( pow( KB_z, nB_z ) + pow( y[4] , nB_z ) ) ) * y[1]  - D * y[6] ;
+
 }
 
+void Models::model_1(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params)
+{
+const double D = part_params[0];
+const double kA_a = part_params[1];
+const double KB_y = part_params[2];
+const double kBmax_y = part_params[3];
+const double nB_y = part_params[4];
+const double omega_max_y = part_params[5];
+const double K_omega_y = part_params[6];
+const double n_omega_y = part_params[7];
+const double K_x = part_params[8];
+const double g_x = part_params[9];
+const double mu_max_x = part_params[10];
+const double kA_b = part_params[11];
+const double KB_z = part_params[12];
+const double kBmax_z = part_params[13];
+const double nB_z = part_params[14];
+const double omega_max_z = part_params[15];
+const double K_omega_z = part_params[16];
+const double n_omega_z = part_params[17];
+const double K_c = part_params[18];
+const double g_c = part_params[19];
+const double mu_max_c = part_params[20];
+const double S0_glu = part_params[21];
 
+// Order is: N_x, N_c, S_glu, A_a, A_b, B_y, B_z, 
+
+dxdt[0] = ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  - omega_max_y * pow( y[5] , n_omega_y ) / ( pow( K_omega_y , n_omega_y ) + pow( y[5] , n_omega_y ) ) - D) * y[0] ;
+dxdt[1] = ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  - omega_max_z * pow( y[6] , n_omega_z ) / ( pow( K_omega_z , n_omega_z ) + pow( y[6] , n_omega_z ) ) - D) * y[1] ;
+dxdt[2] =  D * (S0_glu - y[2] ) - ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  * y[0] / g_x )- ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  * y[1] / g_c );
+dxdt[3] =  + kA_a * y[0]  - D * y[3] ;
+dxdt[4] =  + kA_b * y[1]  - D * y[4] ;
+dxdt[5] =  + kBmax_y  * y[1]  - D * y[5] ;
+dxdt[6] =  + kBmax_z  * ( pow( y[3] , nB_z ) / ( pow( KB_z, nB_z ) + pow( y[3] , nB_z ) ) ) * y[1]  - D * y[6] ;
+
+}
+
+void Models::model_2(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params)
+{
+const double D = part_params[0];
+const double kA_a = part_params[1];
+const double KB_y = part_params[2];
+const double kBmax_y = part_params[3];
+const double nB_y = part_params[4];
+const double omega_max_y = part_params[5];
+const double K_omega_y = part_params[6];
+const double n_omega_y = part_params[7];
+const double K_x = part_params[8];
+const double g_x = part_params[9];
+const double mu_max_x = part_params[10];
+const double K_c = part_params[11];
+const double g_c = part_params[12];
+const double mu_max_c = part_params[13];
+const double S0_glu = part_params[14];
+
+// Order is: N_x, N_c, S_glu, A_a, B_y, 
+
+dxdt[0] = ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  - D) * y[0] ;
+dxdt[1] = ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  - omega_max_y * pow( y[4] , n_omega_y ) / ( pow( K_omega_y , n_omega_y ) + pow( y[4] , n_omega_y ) ) - D) * y[1] ;
+dxdt[2] =  D * (S0_glu - y[2] ) - ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  * y[0] / g_x )- ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  * y[1] / g_c );
+dxdt[3] =  + kA_a * y[0]  - D * y[3] ;
+dxdt[4] =  + kBmax_y  * ( pow( KB_y , nB_y ) / ( pow( KB_y , nB_y ) + pow( y[3] , nB_y ) ) ) * y[0]  - D * y[4] ;
+
+}
+
+void Models::model_3(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params)
+{
+const double D = part_params[0];
+const double KB_y = part_params[1];
+const double K_c = part_params[2];
+const double K_omega_y = part_params[3];
+const double K_x = part_params[4];
+const double S0_glu = part_params[5];
+const double g_c = part_params[6];
+const double g_x = part_params[7];
+const double kA_a = part_params[8];
+const double kBmax_y = part_params[9];
+const double mu_max_c = part_params[10];
+const double mu_max_x = part_params[11];
+const double nB_y = part_params[12];
+const double n_omega_y = part_params[13];
+const double omega_max_y = part_params[14];
+
+
+
+// Order is: N_x, N_c, S_glu, A_a, B_y, 
+
+dxdt[0] = ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  - D) * y[0] ;
+dxdt[1] = ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  - omega_max_y * pow( y[4] , n_omega_y ) / ( pow( K_omega_y , n_omega_y ) + pow( y[4] , n_omega_y ) ) - D) * y[1] ;
+dxdt[2] =  D * (S0_glu - y[2] ) - ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  * y[0] / g_x )- ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  * y[1] / g_c );
+dxdt[3] =  + kA_a * y[1]  - D * y[3] ;
+dxdt[4] =  + kBmax_y  * ( pow( y[3] , nB_y ) / ( pow( KB_y, nB_y ) + pow( y[3] , nB_y ) ) ) * y[0]  - D * y[4] ;
+
+}
+
+void Models::model_4(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params)
+{
+const double D = part_params[0];
+const double KB_y = part_params[1];
+const double kBmax_y = part_params[2];
+const double nB_y = part_params[3];
+const double omega_max_y = part_params[4];
+const double K_omega_y = part_params[5];
+const double n_omega_y = part_params[6];
+const double K_x = part_params[7];
+const double g_x = part_params[8];
+const double mu_max_x = part_params[9];
+const double kA_b = part_params[10];
+const double K_c = part_params[11];
+const double g_c = part_params[12];
+const double mu_max_c = part_params[13];
+const double S0_glu = part_params[14];
+
+// Order is: N_x, N_c, S_glu, A_b, B_y, 
+
+dxdt[0] = ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  - D) * y[0] ;
+dxdt[1] = ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  - omega_max_y * pow( y[4] , n_omega_y ) / ( pow( K_omega_y , n_omega_y ) + pow( y[4] , n_omega_y ) ) - D) * y[1] ;
+dxdt[2] =  D * (S0_glu - y[2] ) - ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  * y[0] / g_x )- ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  * y[1] / g_c );
+dxdt[3] =  + kA_b * y[1]  - D * y[3] ;
+dxdt[4] =  + kBmax_y  * ( pow( KB_y , nB_y ) / ( pow( KB_y , nB_y ) + pow( y[3] , nB_y ) ) ) * y[0]  - D * y[4] ;
+
+}
+
+void Models::model_5(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params)
+{
+const double D = part_params[0];
+const double kA_a = part_params[1];
+const double KB_y = part_params[2];
+const double kBmax_y = part_params[3];
+const double nB_y = part_params[4];
+const double omega_max_y = part_params[5];
+const double K_omega_y = part_params[6];
+const double n_omega_y = part_params[7];
+const double KB_z = part_params[8];
+const double kBmax_z = part_params[9];
+const double nB_z = part_params[10];
+const double omega_max_z = part_params[11];
+const double K_omega_z = part_params[12];
+const double n_omega_z = part_params[13];
+const double K_x = part_params[14];
+const double g_x = part_params[15];
+const double mu_max_x = part_params[16];
+const double K_c = part_params[17];
+const double g_c = part_params[18];
+const double mu_max_c = part_params[19];
+const double S0_glu = part_params[20];
+
+// Order is: N_x, N_c, S_glu, A_a, B_y, B_z, 
+
+dxdt[0] = ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  - omega_max_y * pow( y[4] , n_omega_y ) / ( pow( K_omega_y , n_omega_y ) + pow( y[4] , n_omega_y ) ) - D) * y[0] ;
+dxdt[1] = ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  - omega_max_z * pow( y[5] , n_omega_z ) / ( pow( K_omega_z , n_omega_z ) + pow( y[5] , n_omega_z ) ) - D) * y[1] ;
+dxdt[2] =  D * (S0_glu - y[2] ) - ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  * y[0] / g_x )- ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  * y[1] / g_c );
+dxdt[3] =  + kA_a * y[0]  - D * y[3] ;
+dxdt[4] =  + kBmax_y  * ( pow( y[3] , nB_y ) / ( pow( KB_y, nB_y ) + pow( y[3] , nB_y ) ) ) * y[0]  - D * y[4] ;
+dxdt[5] =  + kBmax_z  * ( pow( KB_z , nB_z ) / ( pow( KB_z , nB_z ) + pow( y[3] , nB_z ) ) ) * y[0]  - D * y[5] ;
+
+}
+
+void Models::model_6(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params)
+{
+const double D = part_params[0];
+const double kA_a = part_params[1];
+const double KB_y = part_params[2];
+const double kBmax_y = part_params[3];
+const double nB_y = part_params[4];
+const double omega_max_y = part_params[5];
+const double K_omega_y = part_params[6];
+const double n_omega_y = part_params[7];
+const double KB_z = part_params[8];
+const double kBmax_z = part_params[9];
+const double nB_z = part_params[10];
+const double omega_max_z = part_params[11];
+const double K_omega_z = part_params[12];
+const double n_omega_z = part_params[13];
+const double K_x = part_params[14];
+const double g_x = part_params[15];
+const double mu_max_x = part_params[16];
+const double kA_b = part_params[17];
+const double K_c = part_params[18];
+const double g_c = part_params[19];
+const double mu_max_c = part_params[20];
+const double S0_glu = part_params[21];
+
+// Order is: N_x, N_c, S_glu, A_a, A_b, B_y, B_z, 
+
+dxdt[0] = ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  - omega_max_y * pow( y[5] , n_omega_y ) / ( pow( K_omega_y , n_omega_y ) + pow( y[5] , n_omega_y ) ) - D) * y[0] ;
+dxdt[1] = ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  - omega_max_z * pow( y[6] , n_omega_z ) / ( pow( K_omega_z , n_omega_z ) + pow( y[6] , n_omega_z ) ) - D) * y[1] ;
+dxdt[2] =  D * (S0_glu - y[2] ) - ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  * y[0] / g_x )- ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  * y[1] / g_c );
+dxdt[3] =  + kA_a * y[0]  - D * y[3] ;
+dxdt[4] =  + kA_b * y[1]  - D * y[4] ;
+dxdt[5] =  + kBmax_y  * ( pow( y[3] , nB_y ) / ( pow( KB_y, nB_y ) + pow( y[3] , nB_y ) ) ) * y[0]  - D * y[5] ;
+dxdt[6] =  + kBmax_z  * ( pow( y[4] , nB_z ) / ( pow( KB_z, nB_z ) + pow( y[4] , nB_z ) ) ) * ( pow( KB_z , nB_z ) / ( pow( KB_z , nB_z ) + pow( y[3] , nB_z ) ) ) * y[0]  - D * y[6] ;
+
+}
 

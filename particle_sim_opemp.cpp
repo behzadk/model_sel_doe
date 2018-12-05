@@ -49,7 +49,7 @@ struct simulation_observer
 
 
 
-Particle::Particle(state_type init_state, std::vector <double> params, Models model_obj, int model_idx)
+Particle::Particle(state_type init_state, std::vector<double> params, Models model_obj, int model_idx)
 {
 	Models m = model_obj;
 	part_params = params;
@@ -87,12 +87,21 @@ void Particle::simulate_particle(double dt, std::vector<double> time_points) {
 
     // auto range = boost::irange((int) t0, (int) t_end, dt);
     
-    boost::numeric::odeint::max_step_checker mx_check =  boost::numeric::odeint::max_step_checker(1E6);
-    
+    boost::numeric::odeint::max_step_checker mx_check =  boost::numeric::odeint::max_step_checker(1000);
 
-    integrate_times( make_controlled( 1E-3 , 1E-3, dt, stepper_type() ) , 
+
+    integrate_times( make_controlled( 1E-6, 1E-6, dt, dopri5_stepper_type() ) , 
     boost::ref( *this ) , state_init , time_points.begin(), time_points.end(),
     dt, simulation_observer(state_vec), mx_check );
+    // int time_size = time_points.size();
+    // double start_time = time_points[0];
+    // double end_time = time_points[time_size-1];
+
+    // integrate_adaptive( make_controlled( 1E-6, 1E-6, dt, stepper_type() ) , 
+    // boost::ref( *this ) , state_init , start_time, end_time,
+    // dt, simulation_observer(state_vec));
+
+
 
 }
 
@@ -116,6 +125,6 @@ std::vector<state_type>& Particle::get_state_vec() {
     return state_vec;
 }
 
-void Particle::set_distance_vector(std::vector<std::vector<long>> sim_dist) {
+void Particle::set_distance_vector(std::vector<std::vector<double>> sim_dist) {
     this->sim_distances = sim_dist;
 }

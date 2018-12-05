@@ -1,4 +1,4 @@
-
+import numpy as np
 
 
 
@@ -8,12 +8,17 @@
 def generate_particles(models_list):
     pop_model_refs = [m.get_model_ref() for m in models_list]
     pop_params_list = []
+    init_state_list = []
+
 
     for m in models_list:
         params = m.sample_particle()
+        init_state = m.sample_init_state()
+
+        init_state_list.append(init_state)
         pop_params_list.append(params)
 
-    return pop_params_list, pop_model_refs
+    return init_state_list, pop_params_list, pop_model_refs
 
 
 ##
@@ -25,12 +30,21 @@ def generate_particles(models_list):
 def check_distances(particle_distances, epsilon_array):
     particle_judgements = []
 
-    for particle in particle_distances:
-        particle_accept = True
-        for species in particle:
-            for epsilon_idx, dist in enumerate(species):
-                if dist >= epsilon_array[epsilon_idx]:
-                    particle_accept = False
+    particle_accept = False
+
+    for part_distance in particle_distances:
+        # print(part_distance)
+
+        if np.isnan(part_distance).any():
+            particle_accept = False
+            continue
+
+        else:
+            print(part_distance)
+            for species in part_distance:
+                for epsilon_idx, dist in enumerate(species):
+                    if dist >= epsilon_array[epsilon_idx]:
+                        particle_accept = False
 
         particle_judgements.append(particle_accept)
 

@@ -4,7 +4,7 @@
 #include "particle_sim_opemp.h"
 
 
-typedef std::vector<std::vector<std::vector<long>>> PopDistances;
+typedef std::vector<std::vector<std::vector<double>>> PopDistances;
 class Population {
 	public:
 		Population(const int, const int, const int, 
