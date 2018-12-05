@@ -2,21 +2,14 @@
 #include "model.h"
 
 #include <boost/numeric/odeint.hpp>
-#include <boost/python.hpp>
-#include <boost/python/args.hpp>
-#include <boost/thread/thread.hpp>
 #include <omp.h>
 #include <boost/numeric/odeint/external/openmp/openmp.hpp>
 #include "particle_sim_opemp.h"
-#include <openacc.h>
 using namespace std;
 using namespace boost::numeric::odeint;
 using namespace boost::python;
-#include <boost/python/numpy.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-#include <boost/range/irange.hpp>
 #include <boost/numeric/odeint/integrate/max_step_checker.hpp>
-#include <typeinfo>
 #include "distances.h"
 
 class ScopedGILRelease
@@ -89,17 +82,9 @@ void Particle::simulate_particle(double dt, std::vector<double> time_points) {
     
     boost::numeric::odeint::max_step_checker mx_check =  boost::numeric::odeint::max_step_checker(1000);
 
-
     integrate_times( make_controlled( 1E-6, 1E-6, dt, dopri5_stepper_type() ) , 
     boost::ref( *this ) , state_init , time_points.begin(), time_points.end(),
     dt, simulation_observer(state_vec), mx_check );
-    // int time_size = time_points.size();
-    // double start_time = time_points[0];
-    // double end_time = time_points[time_size-1];
-
-    // integrate_adaptive( make_controlled( 1E-6, 1E-6, dt, stepper_type() ) , 
-    // boost::ref( *this ) , state_init , start_time, end_time,
-    // dt, simulation_observer(state_vec));
 
 
 

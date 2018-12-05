@@ -26,11 +26,6 @@ typedef runge_kutta_dopri5<
           state_type , double ,
           openmp_range_algebra
         > dopri5_stepper_type;
-// typedef adams_bashforth_moulton<
-//           state_type , double ,
-//           state_type , double ,
-//           openmp_range_algebra
-//         > stepper_type;
 
 
 // typedef rosenbrock4<double, double, double> stepper_type;

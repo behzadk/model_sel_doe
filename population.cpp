@@ -4,13 +4,11 @@
 #include <boost/numeric/odeint.hpp>
 #include <boost/python.hpp>
 #include <boost/python/args.hpp>
-// #include <boost/thread/thread.hpp>
 #include <omp.h>
 #include <boost/numeric/odeint/external/openmp/openmp.hpp>
 #include "particle_sim_opemp.h"
 #include <boost/python/numpy.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-#include <typeinfo>
 #include "population.h"
 #include "distances.h"
 

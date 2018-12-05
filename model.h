@@ -5,7 +5,6 @@
 using namespace std;
 #include <array>
 #include <iostream>
-#include <functional> // for std::function
 #include <vector>
 
 class Models{
