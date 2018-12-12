@@ -207,8 +207,8 @@ def main():
 
 
     t_0 = 0
-    t_end = 5000
-    dt = 5
+    t_end = 500
+    dt = 0.1
     input_file = "input_multi_model.xml"
 
 
@@ -222,7 +222,7 @@ def main():
     #         model = Model(0, prior_dicts_list[idx], init_dicts_list[idx])
     #         model_list.append(model)
 
-    ABC = algorithms.ABC_rejection(t_0, t_end, dt, model_list, 1, 10, 2, 2)
+    ABC = algorithms.ABC_rejection(t_0, t_end, dt, model_list, 1, 1, 2, 2)
     ABC.run_abc_rejection()
 
 

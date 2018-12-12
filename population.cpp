@@ -36,7 +36,7 @@ Population::Population(const int n_sims, const int t_0,
     }
 
 	_all_params = unpack_parameters(params_list);
-	_all_state_init = unpack_parameters(state_init_list);
+	_all_state_init = unpack_parameters_to_ublas(state_init_list);
 	_model_refs = unpack_model_references(model_ref_list);
 }
 
@@ -136,6 +136,29 @@ std::vector< std::vector<double> > Population::unpack_parameters(boost::python::
     }
     return all_params;
 }
+
+
+/*
+ * Unpacks the nested pylist of parameters to vector of ublas vectors
+ * 
+ */
+std::vector< ublas_vec_t > Population::unpack_parameters_to_ublas(boost::python::list nested_parameters) {
+    std::vector< ublas_vec_t > all_params;
+    for (int i = 0; i < _n_sims; ++i){
+    	boost::python::list temp_sim_params = boost::python::extract<boost::python::list>(nested_parameters[i]);
+
+    	int num_species = boost::python::len(temp_sim_params);
+    	ublas_vec_t params_temp(num_species);
+
+        for (int j = 0; j < len(temp_sim_params); ++j){
+            params_temp(j) = ( boost::python::extract<double>(temp_sim_params[j]));
+            std::cout << params_temp(j) << std::endl;
+        }
+        all_params.push_back(params_temp);
+    }
+    return all_params;
+}
+
 
 /*
  * Unpacks the list of model references. Each element refers to the index of the model that

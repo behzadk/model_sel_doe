@@ -44,7 +44,7 @@ class Particle
 
 	public:
 		// Constructor
-		Particle(state_type, std::vector<double>, Models, int);
+		Particle(ublas_vec_t, std::vector <double>, Models, int);
 
 		model_t particle_model;
 		int particle_model_int;
@@ -52,27 +52,19 @@ class Particle
 		int model_ref;
 
 		std::vector <double> part_params;
-		state_type state_init;
+		ublas_vec_t state_init;
 		vector <state_type> state_vec;
 		time_type times_array;
 
-		void simulate_particle(double, std::vector<double>);
 		void set_distance_vector(std::vector<std::vector<double>>);
 		std::vector<std::vector<double>> get_sim_distances() {return sim_distances;};
 
-		void run_model_func( const ublas_vec_t & , ublas_vec_t &, double);
-		void spock_jac(const ublas_vec_t & , ublas_mat_t & , const double &, ublas_vec_t &);
-		void rpr_jac(const ublas_vec_t & , ublas_mat_t & , const double &, ublas_vec_t &);
 
 		void simulate_particle_rosenbrock(double , std::vector<double> );
-		// changes the operator () to instead call
-		// the object as if it were a function
-		void operator() ( const state_type &, state_type &, double);
-		void operator() ( const ublas_vec_t & , ublas_vec_t &, double); // ublas model
+
+		// Overloaded operators to run model step and jacobian
+		void operator() ( const ublas_vec_t & , ublas_vec_t &, double); //  model
 		void operator() ( const ublas_vec_t & , ublas_mat_t & ,const double &, ublas_vec_t &); // jac
-
-
-		void hello_world();
 
 		std::vector<state_type>& get_state_vec();
 		boost::python::list get_state_pylist();
