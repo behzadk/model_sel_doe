@@ -7,7 +7,9 @@
 Models::Models() {
 	// models_vec = { &Models::model_0, &Models::model_1, &Models::model_2, 
 	// 	&Models::model_3, &Models::model_4, &Models::model_5, &Models::model_6};
-	models_vec = { &Models::spock_model};
+	
+	// models_vec = { &Models::spock_model};
+	models_ublas_vec = { &Models::spock_model};
 
 }
 
@@ -16,7 +18,33 @@ void Models::run_model(const std::vector <double> &y , std::vector <double> &dxd
 	(this->*models_vec[model_ref])(y, dxdt, t, part_params);
 }
 
-void Models::spock_model(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params)
+void Models::run_model_ublas(const ublas_vec_t &y , ublas_vec_t &dxdt , double t, std::vector <double> &part_params, int &model_ref)
+{
+	(this->*models_ublas_vec[model_ref])(y, dxdt, t, part_params);
+}
+
+
+
+void Models::rpr_model(const ublas_vec_t  &y , ublas_vec_t &dxdt , double t, std::vector <double> &part_params)
+{
+	// Unpack parameters
+	const double alpha0 = part_params[0];
+	const double alpha_param = part_params[1];
+	const double coeff = part_params[2];
+	const double beta_param = part_params[3];
+	//Functions (None)
+	
+	//Differential equations
+	dxdt[0] = (-y[0] + (alpha_param /( 1 + pow(y[5],coeff))) + alpha0);
+    dxdt[1] = (-y[1] + (alpha_param/ (1 + pow(y[3],coeff))) + alpha0);
+    dxdt[2] = (-y[2] + (alpha_param / (1 + pow(y[4],coeff))) + alpha0);
+    dxdt[3] = (-beta_param*(y[3] - y[0]));
+    dxdt[4] = (-beta_param*(y[4] - y[1]));
+    dxdt[5] = (-beta_param*(y[5] - y[2]));
+}
+
+
+void Models::spock_model(const ublas_vec_t  &y , ublas_vec_t &dxdt , double t, std::vector <double> &part_params)
 {
 	const double D = part_params[0];
 	const double mux_m = part_params[1];
@@ -91,6 +119,22 @@ void Models::spock_model(const std::vector <double> &y , std::vector <double> &d
 
 	// Rate of AHL expression
 	double k_alpha = P_B * k_alpha_max;
+
+	// std::cout << "y3" << y[3] << std::endl;
+	// std::cout << "omega_c"<< omega_c << std::endl;
+	// std::cout << "mux"<< mux << std::endl;
+	// std::cout << "muc"<< muc << std::endl;
+	// std::cout << "CL"<< CL << std::endl;
+	// std::cout << "pL"<< pL << std::endl;
+	// std::cout << "CFT"<< CFT << std::endl;
+	// std::cout << "P_T"<< P_T << std::endl;
+	// std::cout << "CB"<< CB << std::endl;
+	// std::cout << "CFB"<< CFB << std::endl;
+	// std::cout << "P_B"<< P_B << std::endl;
+	// std::cout << "k_beta"<< k_beta << std::endl;
+	// std::cout << "k_alpha"<< k_alpha << std::endl;
+
+
 
     dxdt[0] = (mux - D)*y[0];
     dxdt[1] = (muc - D - omega_c) * y[1];

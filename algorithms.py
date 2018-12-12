@@ -79,49 +79,39 @@ class ABC_rejection:
                 p = population_modules.Population(self.n_sims_batch, self.t_0, self.t_end,
                                                   self.dt, init_state, input_params, model_refs)
 
+
                 p.generate_particles()
+
                 p.simulate_particles()
 
-                # 3. Calculate distances for population
-                p.calculate_particle_distances()
-                p.accumulate_distances()
-                pop_distances = p.get_flattened_distances_list()
+                # # 3. Calculate distances for population
+                # p.calculate_particle_distances()
+                # print("calculated distances")
+                # p.accumulate_distances()
+                # pop_distances = p.get_flattened_distances_list()
+                #
+                # # 4. Accept or reject particles
+                # pop_distances = np.reshape(pop_distances, (self.n_sims_batch, self.n_species_fit, self.n_distances))
+                # part_judgements = alg_utils.check_distances(pop_distances, epsilon_array=epsilon)
+                #
+                # accepted_particles += sum(part_judgements)
+                #
+                # all_inputs = all_inputs + input_params
+                # all_judgements = all_judgements + part_judgements
+                # all_particles_simmed = all_particles_simmed + particle_models.tolist()
 
-                # 4. Accept or reject particles
-                pop_distances = np.reshape(pop_distances, (self.n_sims_batch, self.n_species_fit, self.n_distances))
-                part_judgements = alg_utils.check_distances(pop_distances, epsilon_array=epsilon)
+                # print("Accepted particles: ", accepted_particles)
+                # # print(pop_distances)
+                # sim = p.get_particle_state_list(0)
+                # print(np.shape(sim))
+                # n_species = np.shape(init_state)[1]
+                # print(len(sim))
+                # print(n_species)
+                #
+                # sim = np.reshape(sim, (int(len(sim)/(n_species)), n_species))
+                # time_points = np.arange(self.t_0, self.t_end+self.dt, self.dt)
 
-                accepted_particles += sum(part_judgements)
 
-                all_inputs = all_inputs + input_params
-                all_judgements = all_judgements + part_judgements
-                all_particles_simmed = all_particles_simmed + particle_models.tolist()
-
-                print("Accepted particles: ", accepted_particles)
-                # print(pop_distances)
-                sim = p.get_particle_state_list(0)
-                n_species = np.shape(init_state)[1]
-                print(len(sim))
-                print(n_species)
-
-                sim = np.reshape(sim, (int(len(sim)/(n_species)), n_species))
-                time_points = np.arange(self.t_0, self.t_end+self.dt, self.dt)
-
-                print(max(sim[:,0]))
-                print(max(sim[:,1]))
-                print(max(sim[:,2]))
-                print(max(sim[:,3]))
-                print(max(sim[:,4]))
-
-                plt.plot(sim[:, 0])
-                plt.plot(sim[:, 1])
-                plt.yscale('log')
-                plt.show()
-
-                plt.plot( sim[:, 2])
-                plt.plot(sim[:, 3])
-                plt.yscale('log')
-                plt.show()
 
                 exit()
             # 5. Generate new distributions for models

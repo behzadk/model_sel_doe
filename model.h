@@ -6,9 +6,23 @@ using namespace std;
 #include <array>
 #include <iostream>
 #include <vector>
+#include <boost/python.hpp>
+#include <boost/python/args.hpp>
+#include <boost/thread/thread.hpp>
+#include <boost/phoenix/core.hpp>
+
+#include <boost/phoenix/core.hpp>
+#include <boost/phoenix/operator.hpp>
+#include <boost/numeric/odeint.hpp>
+
 
 class Models{
+	typedef boost::numeric::ublas::vector< double > ublas_vec_t;
+	typedef boost::numeric::ublas::matrix< double > ublas_mat_t;
+
 	typedef void (Models::*model_t)(const std::vector<double> &, std::vector<double> &, double, std::vector<double>&);
+	typedef void (Models::*model_ublas_t)(const ublas_vec_t  &, ublas_vec_t &, double, std::vector<double>&);
+
 
 	public:
 		int x = 1;
@@ -20,7 +34,10 @@ class Models{
 		    }
 
 		void run_model(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&, int&);
-		void spock_model(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&);
+		void run_model_ublas(const ublas_vec_t  &, ublas_vec_t &, double, std::vector <double>&, int&);
+
+		void spock_model(const ublas_vec_t  & , ublas_vec_t & , double , std::vector <double> &);
+		void rpr_model(const ublas_vec_t  & , ublas_vec_t & , double , std::vector <double> &);
 
 		void model_0(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&);
 		void model_1(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&);
@@ -31,6 +48,7 @@ class Models{
 		void model_6(const std::vector <double> &, std::vector <double> &, double, std::vector <double>&);
 
 		std::vector<model_t> models_vec;
+		std::vector<model_ublas_t> models_ublas_vec;
 
 };
 

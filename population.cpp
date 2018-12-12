@@ -61,12 +61,16 @@ void Population::simulate_particles() {
 	#pragma omp parallel for schedule(runtime)
 	for (int i=0; i < _n_sims; ++i) {
 		try{ 
-        _particle_vector[i].simulate_particle( _dt, _time_array);
+        // _particle_vector[i].simulate_particle( _dt, _time_array);
+        _particle_vector[i].simulate_particle_rosenbrock( _dt, _time_array);
+
     	} catch (boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::numeric::odeint::no_progress_error> >) {
     		std::cout <<"integration_failed" << std::endl;
     		_particle_vector[i].integration_failed = true;
     	}
 	}
+
+	std::cout << "particles simulated" << std::endl;
 }
 
 
@@ -77,7 +81,7 @@ void Population::calculate_particle_distances(){
 	std::vector<int> fit_species = {0, 1};
 	DistanceFunctions dist = DistanceFunctions();
 
-	#pragma omp parallel for schedule(runtime)
+	// #pragma omp parallel for schedule(runtime)
     for (int i=0; i < _n_sims; ++i) {
     	_particle_vector[i].get_state_vec();
     	_particle_vector[i].set_distance_vector(dist.stable_dist( _particle_vector[i].get_state_vec(), fit_species, _particle_vector[i].integration_failed));

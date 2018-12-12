@@ -31,6 +31,10 @@ typedef runge_kutta_dopri5<
 // typedef rosenbrock4<double, double, double> stepper_type;
 typedef void (Models::*model_t)(const std::vector<double> &, std::vector<double> &, double, std::vector<double>&);
 
+typedef boost::numeric::ublas::vector< double > ublas_vec_t;
+typedef boost::numeric::ublas::matrix< double > ublas_mat_t;
+
+
 
 class Particle
 {
@@ -56,9 +60,18 @@ class Particle
 		void set_distance_vector(std::vector<std::vector<double>>);
 		std::vector<std::vector<double>> get_sim_distances() {return sim_distances;};
 
+		void run_model_func( const ublas_vec_t & , ublas_vec_t &, double);
+		void spock_jac(const ublas_vec_t & , ublas_mat_t & , const double &, ublas_vec_t &);
+		void rpr_jac(const ublas_vec_t & , ublas_mat_t & , const double &, ublas_vec_t &);
+
+		void simulate_particle_rosenbrock(double , std::vector<double> );
 		// changes the operator () to instead call
 		// the object as if it were a function
 		void operator() ( const state_type &, state_type &, double);
+		void operator() ( const ublas_vec_t & , ublas_vec_t &, double); // ublas model
+		void operator() ( const ublas_vec_t & , ublas_mat_t & ,const double &, ublas_vec_t &); // jac
+
+
 		void hello_world();
 
 		std::vector<state_type>& get_state_vec();
