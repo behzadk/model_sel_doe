@@ -1,6 +1,5 @@
 import algorithms
 from model_space import Model
-import xmltodict
 import xml.etree.ElementTree as ET
 import csv
 import os
