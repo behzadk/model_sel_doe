@@ -1,9 +1,8 @@
 import numpy as np
 
-
-
 ##
-# Generates particles corresponding to each model in the model list
+# Generates particles consisting of a initial state and parameter sample from a list of models.
+#
 ##
 def generate_particles(models_list):
     pop_model_refs = [m.get_model_ref() for m in models_list]
@@ -30,17 +29,14 @@ def generate_particles(models_list):
 def check_distances(particle_distances, epsilon_array):
     particle_judgements = []
 
-    particle_accept = False
-
     for part_distance in particle_distances:
-        # print(part_distance)
+        particle_accept = True
 
         if np.isnan(part_distance).any():
             particle_accept = False
             continue
 
         else:
-            print(part_distance)
             for species in part_distance:
                 for epsilon_idx, dist in enumerate(species):
                     if dist >= epsilon_array[epsilon_idx]:

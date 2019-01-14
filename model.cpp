@@ -5,19 +5,9 @@
 #include "model.h"
 
 Models::Models() {
-	// models_vec = { &Models::model_0, &Models::model_1, &Models::model_2, 
-	// 	&Models::model_3, &Models::model_4, &Models::model_5, &Models::model_6};
-	
-	// models_vec = { &Models::spock_model};
-	models_ublas_vec = {&Models::spock_model};
-	models_jac_vec = {&Models::spock_jac};
-
-}
-
-void Models::run_model(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params, int &model_ref)
-{
-	(this->*models_vec[model_ref])(y, dxdt, t, part_params);
-}
+	 models_ublas_vec = {&Models::model_0, &Models::model_1, &Models::model_2, &Models::model_3, &Models::model_4, &Models::model_5, &Models::model_6, &Models::model_7, &Models::model_8, &Models::model_9, &Models::model_10, &Models::model_11, &Models::model_12, &Models::model_13, &Models::model_14, &Models::model_15, &Models::model_16, &Models::model_17, &Models::model_18, &Models::model_19, &Models::model_20, &Models::model_21, &Models::model_22, &Models::model_23, &Models::model_24, &Models::model_25, &Models::model_26, &Models::model_27, &Models::model_28, &Models::model_29, &Models::model_30, &Models::model_31, &Models::model_32, &Models::model_33, &Models::model_34, &Models::model_35, &Models::model_36, &Models::model_37, &Models::model_38, &Models::model_39, &Models::model_40, &Models::model_41, &Models::model_42, &Models::model_43, &Models::model_44, &Models::model_45, &Models::model_46, &Models::model_47, &Models::model_48, &Models::model_49, &Models::model_50, &Models::model_51, &Models::model_52, &Models::model_53, &Models::model_54, &Models::model_55, &Models::model_56, &Models::model_57, &Models::model_58, &Models::model_59, &Models::model_60, &Models::model_61, &Models::model_62, &Models::model_63, &Models::model_64, &Models::model_65, &Models::model_66, &Models::model_67, &Models::model_68, &Models::model_69, &Models::model_70, &Models::model_71, &Models::model_72, &Models::model_73, &Models::model_74, &Models::model_75, &Models::model_76, &Models::model_77, &Models::model_78, &Models::model_79, &Models::model_80, &Models::model_81, &Models::model_82, &Models::model_83, &Models::model_84, &Models::model_85, &Models::model_86, &Models::model_87, &Models::model_88, &Models::model_89, &Models::model_90, &Models::model_91, &Models::model_92, &Models::model_93, &Models::model_94, &Models::model_95, &Models::model_96, &Models::model_97, &Models::model_98, &Models::model_99, &Models::model_100, &Models::model_101, &Models::model_102, &Models::model_103, &Models::model_104, &Models::model_105, &Models::model_106, &Models::model_107, &Models::model_108, &Models::model_109, &Models::model_110, &Models::model_111, &Models::model_112, &Models::model_113, &Models::model_114, &Models::model_115, &Models::model_116, &Models::model_117, &Models::model_118, &Models::model_119, &Models::model_120, &Models::model_121, &Models::model_122, &Models::model_123, &Models::model_124, &Models::model_125, &Models::model_126, &Models::model_127, &Models::model_128, &Models::model_129, &Models::model_130, &Models::model_131, &Models::model_132, &Models::model_133, &Models::model_134, &Models::model_135, &Models::model_136, &Models::model_137, &Models::model_138, &Models::model_139, &Models::model_140, &Models::model_141, &Models::model_142, &Models::model_143, &Models::model_144, &Models::model_145, &Models::model_146, &Models::model_147, &Models::model_148, &Models::model_149, &Models::model_150, &Models::model_151, &Models::model_152, &Models::model_153};
+	 models_jac_vec = {&Models::jac_0, &Models::jac_1, &Models::jac_2, &Models::jac_3, &Models::jac_4, &Models::jac_5, &Models::jac_6, &Models::jac_7, &Models::jac_8, &Models::jac_9, &Models::jac_10, &Models::jac_11, &Models::jac_12, &Models::jac_13, &Models::jac_14, &Models::jac_15, &Models::jac_16, &Models::jac_17, &Models::jac_18, &Models::jac_19, &Models::jac_20, &Models::jac_21, &Models::jac_22, &Models::jac_23, &Models::jac_24, &Models::jac_25, &Models::jac_26, &Models::jac_27, &Models::jac_28, &Models::jac_29, &Models::jac_30, &Models::jac_31, &Models::jac_32, &Models::jac_33, &Models::jac_34, &Models::jac_35, &Models::jac_36, &Models::jac_37, &Models::jac_38, &Models::jac_39, &Models::jac_40, &Models::jac_41, &Models::jac_42, &Models::jac_43, &Models::jac_44, &Models::jac_45, &Models::jac_46, &Models::jac_47, &Models::jac_48, &Models::jac_49, &Models::jac_50, &Models::jac_51, &Models::jac_52, &Models::jac_53, &Models::jac_54, &Models::jac_55, &Models::jac_56, &Models::jac_57, &Models::jac_58, &Models::jac_59, &Models::jac_60, &Models::jac_61, &Models::jac_62, &Models::jac_63, &Models::jac_64, &Models::jac_65, &Models::jac_66, &Models::jac_67, &Models::jac_68, &Models::jac_69, &Models::jac_70, &Models::jac_71, &Models::jac_72, &Models::jac_73, &Models::jac_74, &Models::jac_75, &Models::jac_76, &Models::jac_77, &Models::jac_78, &Models::jac_79, &Models::jac_80, &Models::jac_81, &Models::jac_82, &Models::jac_83, &Models::jac_84, &Models::jac_85, &Models::jac_86, &Models::jac_87, &Models::jac_88, &Models::jac_89, &Models::jac_90, &Models::jac_91, &Models::jac_92, &Models::jac_93, &Models::jac_94, &Models::jac_95, &Models::jac_96, &Models::jac_97, &Models::jac_98, &Models::jac_99, &Models::jac_100, &Models::jac_101, &Models::jac_102, &Models::jac_103, &Models::jac_104, &Models::jac_105, &Models::jac_106, &Models::jac_107, &Models::jac_108, &Models::jac_109, &Models::jac_110, &Models::jac_111, &Models::jac_112, &Models::jac_113, &Models::jac_114, &Models::jac_115, &Models::jac_116, &Models::jac_117, &Models::jac_118, &Models::jac_119, &Models::jac_120, &Models::jac_121, &Models::jac_122, &Models::jac_123, &Models::jac_124, &Models::jac_125, &Models::jac_126, &Models::jac_127, &Models::jac_128, &Models::jac_129, &Models::jac_130, &Models::jac_131, &Models::jac_132, &Models::jac_133, &Models::jac_134, &Models::jac_135, &Models::jac_136, &Models::jac_137, &Models::jac_138, &Models::jac_139, &Models::jac_140, &Models::jac_141, &Models::jac_142, &Models::jac_143, &Models::jac_144, &Models::jac_145, &Models::jac_146, &Models::jac_147, &Models::jac_148, &Models::jac_149, &Models::jac_150, &Models::jac_151, &Models::jac_152, &Models::jac_153};
+};
 
 void Models::run_model_ublas(const ublas_vec_t &y , ublas_vec_t &dxdt , double t, std::vector <double> &part_params, int &model_ref)
 {
@@ -27,520 +17,14151 @@ void Models::run_model_ublas(const ublas_vec_t &y , ublas_vec_t &dxdt , double t
 void Models::run_jac(const ublas_vec_t & x , ublas_mat_t &J , const double & t , ublas_vec_t &dfdt, std::vector <double> &part_params, int &model_ref)
 {
 	(this->*models_jac_vec[model_ref])(x, J, t, dfdt, part_params);
-
 }
 
-void Models::rpr_model(const ublas_vec_t  &y , ublas_vec_t &dxdt , double t, std::vector <double> &part_params)
+void Models::model_0(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
 {
-	// Unpack parameters
-	const double alpha0 = part_params[0];
-	const double alpha_param = part_params[1];
-	const double coeff = part_params[2];
-	const double beta_param = part_params[3];
-	//Functions (None)
-	
-	//Differential equations
-	dxdt[0] = (-y[0] + (alpha_param /( 1 + pow(y[5],coeff))) + alpha0);
-    dxdt[1] = (-y[1] + (alpha_param/ (1 + pow(y[3],coeff))) + alpha0);
-    dxdt[2] = (-y[2] + (alpha_param / (1 + pow(y[4],coeff))) + alpha0);
-    dxdt[3] = (-beta_param*(y[3] - y[0]));
-    dxdt[4] = (-beta_param*(y[4] - y[1]));
-    dxdt[5] = (-beta_param*(y[5] - y[2]));
-}
-
-void Models::rpr_jac(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
-{
-
-    const double alpha0 = part_params[0];
-    const double alpha_param = part_params[1];
-    const double coeff = part_params[2];
-    const double beta_param = part_params[3];
-
-    J( 0 , 0 ) = -1;
-    J( 0 , 1 ) = 0;
-    J( 0 , 2 ) = 0;
-    J( 0 , 3 ) = 0;
-    J( 0 , 4 ) = 0;
-    J( 0 , 5 ) = -alpha_param*coeff*std::pow(y[5], coeff)/(y[5]*std::pow(std::pow(y[5], coeff) + 1, 2));
-    J( 1 , 0 ) = 0;
-    J( 1 , 1 ) = -1;
-    J( 1 , 2 ) = 0;
-    J( 1 , 3 ) = -alpha_param*coeff*std::pow(y[3], coeff)/(y[3]*std::pow(std::pow(y[3], coeff) + 1, 2));
-    J( 1 , 4 ) = 0;
-    J( 1 , 5 ) = 0;
-    J( 2 , 0 ) = 0;
-    J( 2 , 1 ) = 0;
-    J( 2 , 2 ) = -1;
-    J( 2 , 3 ) = 0;
-    J( 2 , 4 ) = -alpha_param*coeff*std::pow(y[4], coeff)/(y[4]*std::pow(std::pow(y[4], coeff) + 1, 2));
-    J( 2 , 5 ) = 0;
-    J( 3 , 0 ) = beta_param;
-    J( 3 , 1 ) = 0;
-    J( 3 , 2 ) = 0;
-    J( 3 , 3 ) = -beta_param;
-    J( 3 , 4 ) = 0;
-    J( 3 , 5 ) = 0;
-    J( 4 , 0 ) = 0;
-    J( 4 , 1 ) = beta_param;
-    J( 4 , 2 ) = 0;
-    J( 4 , 3 ) = 0;
-    J( 4 , 4 ) = -beta_param;
-    J( 4 , 5 ) = 0;
-    J( 5 , 0 ) = 0;
-    J( 5 , 1 ) = 0;
-    J( 5 , 2 ) = beta_param;
-    J( 5 , 3 ) = 0;
-    J( 5 , 4 ) = 0;
-    J( 5 , 5 ) = -beta_param;
-
-    dfdt[0] = 0.0;
-    dfdt[1] = 0.0;
-    dfdt[2] = 0.0;
-    dfdt[3] = 0.0;
-    dfdt[4] = 0.0;
-    dfdt[5] = 0.0;
-
-}
-
-void Models::spock_model(const ublas_vec_t  &y , ublas_vec_t &dxdt , double t, std::vector <double> &part_params)
-{
+	//Unpack parameters
 	const double D = part_params[0];
-	const double mux_m = part_params[1];
-	const double muc_m = part_params[2];
-	const double Kx = part_params[3];
-	const double Kc = part_params[4];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
 
-	const double omega_c_max = part_params[5];
-	const double K_omega = part_params[6];
-	const double n_omega = part_params[7];
-	const double S0 = part_params[8];
-
-	const double gx = part_params[9];
-	const double gc = part_params[10];
-	const double C0L = part_params[11];
-	const double KDL = part_params[12];
-
-	const double nL = part_params[13];
-	const double K1L = part_params[14]; 
-	const double K2L = part_params[15];
-
-	const double ymaxL = part_params[16];
-	const double K1T = part_params[17];
-	const double K2T = part_params[18];
-
-	const double ymaxT = part_params[19];
-	const double C0B = part_params[20];
-	const double LB = part_params[21];
-	const double NB = part_params[22];
-
-	const double KDB = part_params[23];
-	const double K1B = part_params[24];
-	const double K2B = part_params[25];
-	const double K3B = part_params[26];
-
-	const double ymaxB = part_params[27];
-	const double cgt = part_params[28];
-	const double k_alpha_max = part_params[29];
-	const double k_beta_max = part_params[30];
-
-
-    //Death rate given by a hill function
-    double omega_c = omega_c_max * pow(y[3], n_omega) / (pow(K_omega, n_omega) + pow(y[3], n_omega));
-
-    //Growth rates of killer (x) and competitor (c)
-	double mux = mux_m * y[2] / (Kx + y[2]);
-	double muc = muc_m * y[2] / (Kc + y[2]);
-
-	// Concentration of ligand bound to LuxR
-	double CL = C0L * pow(y[4], nL) / (pow(KDL, nL) + pow(y[4], nL));
-
-	// Probability of expression of TetR from the Plux promoter
-	double pL = (K1L + K2L * CL) / (1 + K1L + K2L * CL);
-
-	// Concentration of ligand free TetR
-	double CFT = pL * ymaxL * cgt;
-
-	// Probability of expression of bacteriocin from Ptet promoter
-	double P_T = K1T/(1 + K1T + 2 * K2T * CFT + K2T * K2T * CFT * CFT);
-
-	// Concentration of arabinose bound to AraC
-	double CB = C0B*pow(LB, NB)/( pow(KDB,NB) + pow(LB,NB) );
-
-	// Concentration of free AraC
-	double CFB = C0B - CB;
-
-	// Expression rate of AHL from araBAD promoter
-	double P_B = (K1B + K2B*CB)/(1 + K1B + K2B*CB + K3B*CFB);
-
-	// Rate of bacteriocin expression
-	double k_beta = P_T * k_beta_max;
-
-	// Rate of AHL expression
-	double k_alpha = P_B * k_alpha_max;
-
-	// std::cout << "y3" << y[3] << std::endl;
-	// std::cout << "omega_c"<< omega_c << std::endl;
-	// std::cout << "mux"<< mux << std::endl;
-	// std::cout << "muc"<< muc << std::endl;
-	// std::cout << "CL"<< CL << std::endl;
-	// std::cout << "pL"<< pL << std::endl;
-	// std::cout << "CFT"<< CFT << std::endl;
-	// std::cout << "P_T"<< P_T << std::endl;
-	// std::cout << "CB"<< CB << std::endl;
-	// std::cout << "CFB"<< CFB << std::endl;
-	// std::cout << "P_B"<< P_B << std::endl;
-	// std::cout << "k_beta"<< k_beta << std::endl;
-	// std::cout << "k_alpha"<< k_alpha << std::endl;
-
-
-
-    dxdt[0] = (mux - D)*y[0];
-    dxdt[1] = (muc - D - omega_c) * y[1];
-	dxdt[2] = D * (S0 - y[2]) - (mux * y[0] / gx) - (muc * y[1] / gc);
-	dxdt[3] = (k_beta * y[0]) - D * y[3];
-	dxdt[4] = (k_alpha *  y[0]) - D * y[4];
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1 + y[0]*kA_1;
 
 }
-
-void Models::spock_jac(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+void Models::jac_0(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
 {
-    const double D = part_params[0];
-    const double mux_m = part_params[1];
-    const double muc_m = part_params[2];
-    const double Kx = part_params[3];
-    const double Kc = part_params[4];
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
 
-    const double omega_c_max = part_params[5];
-    const double K_omega = part_params[6];
-    const double n_omega = part_params[7];
-    const double S0 = part_params[8];
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
 
-    const double gx = part_params[9];
-    const double gc = part_params[10];
-    const double C0L = part_params[11];
-    const double KDL = part_params[12];
-
-    const double nL = part_params[13];
-    const double K1L = part_params[14]; 
-    const double K2L = part_params[15];
-
-    const double ymaxL = part_params[16];
-    const double K1T = part_params[17];
-    const double K2T = part_params[18];
-
-    const double ymaxT = part_params[19];
-    const double C0B = part_params[20];
-    const double LB = part_params[21];
-    const double NB = part_params[22];
-
-    const double KDB = part_params[23];
-    const double K1B = part_params[24];
-    const double K2B = part_params[25];
-    const double K3B = part_params[26];
-
-    const double ymaxB = part_params[27];
-    const double cgt = part_params[28];
-    const double k_alpha_max = part_params[29];
-    const double k_beta_max = part_params[30];
-
-    //Death rate given by a hill function
-    double omega_c = omega_c_max * pow(y[3], n_omega) / (pow(K_omega, n_omega) + pow(y[3], n_omega));
-
-    //Growth rates of killer (x) and competitor (c)
-    double mux = mux_m * y[2] / (Kx + y[2]);
-    double muc = muc_m * y[2] / (Kc + y[2]);
-
-    // Concentration of ligand bound to LuxR
-    double CL = C0L * pow(y[4], nL) / (pow(KDL, nL) + pow(y[4], nL));
-
-    // Probability of expression of TetR from the Plux promoter
-    double pL = (K1L + K2L * CL) / (1 + K1L + K2L * CL);
-
-    // Concentration of ligand free TetR
-    double CFT = pL * ymaxL * cgt;
-
-    // Probability of expression of bacteriocin from Ptet promoter
-    double P_T = K1T/(1 + K1T + 2 * K2T * CFT + K2T * K2T * CFT * CFT);
-
-    // Concentration of arabinose bound to AraC
-    double CB = C0B*pow(LB, NB)/( pow(KDB,NB) + pow(LB,NB) );
-
-    // Concentration of free AraC
-    double CFB = C0B - CB;
-
-    // Expression rate of AHL from araBAD promoter
-    double P_B = (K1B + K2B*CB)/(1 + K1B + K2B*CB + K3B*CFB);
-
-    // Rate of bacteriocin expression
-    double k_beta = P_T * k_beta_max;
-
-    // Rate of AHL expression
-    double k_alpha = P_B * k_alpha_max;
-
-
-    J( 0 , 0 ) = -D + y[2]*mux_m/(Kx + y[2]);
-    J( 0 , 1 ) = 0;
-    J( 0 , 2 ) = y[0]*(-y[2]*mux_m/std::pow(Kx + y[2], 2) + mux_m/(Kx + y[2]));
-    J( 0 , 3 ) = 0;
-    J( 0 , 4 ) = 0;
-    J( 1 , 0 ) = 0;
-    J( 1 , 1 ) = -std::pow(y[3], n_omega)*omega_c_max/(std::pow(y[3], n_omega) + std::pow(K_omega, n_omega)) - D + y[2]*muc_m/(Kc + y[2]);
-    J( 1 , 2 ) = y[1]*(-y[2]*muc_m/std::pow(Kc + y[2], 2) + muc_m/(Kc + y[2]));
-    J( 1 , 3 ) = y[1]*(std::pow(y[3], 2*n_omega)*n_omega*omega_c_max/(y[3]*std::pow(std::pow(y[3], n_omega) + std::pow(K_omega, n_omega), 2)) - std::pow(y[3], n_omega)*n_omega*omega_c_max/(y[3]*(std::pow(y[3], n_omega) + std::pow(K_omega, n_omega))));
-    J( 1 , 4 ) = 0;
-    J( 2 , 0 ) = -y[2]*mux_m/(gx*(Kx + y[2]));
-    J( 2 , 1 ) = -y[2]*muc_m/(gc*(Kc + y[2]));
-    J( 2 , 2 ) = -D + y[1]*y[2]*muc_m/(gc*std::pow(Kc + y[2], 2)) - y[1]*muc_m/(gc*(Kc + y[2])) + y[0]*y[2]*mux_m/(gx*std::pow(Kx + y[2], 2)) - y[0]*mux_m/(gx*(Kx + y[2]));
-    J( 2 , 3 ) = 0;
-    J( 2 , 4 ) = 0;
-    J( 3 , 0 ) = P_T*k_beta_max;
-    J( 3 , 1 ) = 0;
-    J( 3 , 2 ) = 0;
-    J( 3 , 3 ) = -D;
-    J( 3 , 4 ) = 0;
-    J( 4 , 0 ) = P_B*k_alpha_max;
-    J( 4 , 1 ) = 0;
-    J( 4 , 2 ) = 0;
-    J( 4 , 3 ) = 0;
-    J( 4 , 4 ) = -D;
-
-    // dfdt[0] = 0.0;
-    // dfdt[1] = 0.0;
-    // dfdt[2] = 0.0;
-    // dfdt[3] = 0.0;
-    // dfdt[4] = 0.0;
 }
-
-
-void Models::model_0(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params)
+void Models::model_1(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
 {
-const double D = part_params[0];
-const double kA_a = part_params[1];
-const double KB_y = part_params[2];
-const double kBmax_y = part_params[3];
-const double nB_y = part_params[4];
-const double omega_max_y = part_params[5];
-const double K_omega_y = part_params[6];
-const double n_omega_y = part_params[7];
-const double K_x = part_params[8];
-const double g_x = part_params[9];
-const double mu_max_x = part_params[10];
-const double kA_b = part_params[11];
-const double KB_z = part_params[12];
-const double kBmax_z = part_params[13];
-const double nB_z = part_params[14];
-const double omega_max_z = part_params[15];
-const double K_omega_z = part_params[16];
-const double n_omega_z = part_params[17];
-const double K_c = part_params[18];
-const double g_c = part_params[19];
-const double mu_max_c = part_params[20];
-const double S0_glu = part_params[21];
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
 
-// Order is: N_x, N_c, S_glu, A_a, A_b, B_y, B_z, 
-
-dxdt[0] = ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  - omega_max_y * pow( y[5] , n_omega_y ) / ( pow( K_omega_y , n_omega_y ) + pow( y[5] , n_omega_y ) ) - D) * y[0] ;
-dxdt[1] = ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  - omega_max_z * pow( y[6] , n_omega_z ) / ( pow( K_omega_z , n_omega_z ) + pow( y[6] , n_omega_z ) ) - D) * y[1] ;
-dxdt[2] =  D * (S0_glu - y[2] ) - ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  * y[0] / g_x )- ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  * y[1] / g_c );
-dxdt[3] =  + kA_a * y[0]  - D * y[3] ;
-dxdt[4] =  + kA_b * y[1]  - D * y[4] ;
-dxdt[5] =  + kBmax_y  * y[1]  - D * y[5] ;
-dxdt[6] =  + kBmax_z  * ( pow( y[4] , nB_z ) / ( pow( KB_z, nB_z ) + pow( y[4] , nB_z ) ) ) * y[1]  - D * y[6] ;
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1 + y[0]*kA_1;
 
 }
-
-void Models::model_1(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params)
+void Models::jac_1(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
 {
-const double D = part_params[0];
-const double kA_a = part_params[1];
-const double KB_y = part_params[2];
-const double kBmax_y = part_params[3];
-const double nB_y = part_params[4];
-const double omega_max_y = part_params[5];
-const double K_omega_y = part_params[6];
-const double n_omega_y = part_params[7];
-const double K_x = part_params[8];
-const double g_x = part_params[9];
-const double mu_max_x = part_params[10];
-const double kA_b = part_params[11];
-const double KB_z = part_params[12];
-const double kBmax_z = part_params[13];
-const double nB_z = part_params[14];
-const double omega_max_z = part_params[15];
-const double K_omega_z = part_params[16];
-const double n_omega_z = part_params[17];
-const double K_c = part_params[18];
-const double g_c = part_params[19];
-const double mu_max_c = part_params[20];
-const double S0_glu = part_params[21];
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
 
-// Order is: N_x, N_c, S_glu, A_a, A_b, B_y, B_z, 
-
-dxdt[0] = ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  - omega_max_y * pow( y[5] , n_omega_y ) / ( pow( K_omega_y , n_omega_y ) + pow( y[5] , n_omega_y ) ) - D) * y[0] ;
-dxdt[1] = ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  - omega_max_z * pow( y[6] , n_omega_z ) / ( pow( K_omega_z , n_omega_z ) + pow( y[6] , n_omega_z ) ) - D) * y[1] ;
-dxdt[2] =  D * (S0_glu - y[2] ) - ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  * y[0] / g_x )- ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  * y[1] / g_c );
-dxdt[3] =  + kA_a * y[0]  - D * y[3] ;
-dxdt[4] =  + kA_b * y[1]  - D * y[4] ;
-dxdt[5] =  + kBmax_y  * y[1]  - D * y[5] ;
-dxdt[6] =  + kBmax_z  * ( pow( y[3] , nB_z ) / ( pow( KB_z, nB_z ) + pow( y[3] , nB_z ) ) ) * y[1]  - D * y[6] ;
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
 
 }
-
-void Models::model_2(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params)
+void Models::model_2(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
 {
-const double D = part_params[0];
-const double kA_a = part_params[1];
-const double KB_y = part_params[2];
-const double kBmax_y = part_params[3];
-const double nB_y = part_params[4];
-const double omega_max_y = part_params[5];
-const double K_omega_y = part_params[6];
-const double n_omega_y = part_params[7];
-const double K_x = part_params[8];
-const double g_x = part_params[9];
-const double mu_max_x = part_params[10];
-const double K_c = part_params[11];
-const double g_c = part_params[12];
-const double mu_max_c = part_params[13];
-const double S0_glu = part_params[14];
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
 
-// Order is: N_x, N_c, S_glu, A_a, B_y, 
-
-dxdt[0] = ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  - D) * y[0] ;
-dxdt[1] = ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  - omega_max_y * pow( y[4] , n_omega_y ) / ( pow( K_omega_y , n_omega_y ) + pow( y[4] , n_omega_y ) ) - D) * y[1] ;
-dxdt[2] =  D * (S0_glu - y[2] ) - ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  * y[0] / g_x )- ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  * y[1] / g_c );
-dxdt[3] =  + kA_a * y[0]  - D * y[3] ;
-dxdt[4] =  + kBmax_y  * ( pow( KB_y , nB_y ) / ( pow( KB_y , nB_y ) + pow( y[3] , nB_y ) ) ) * y[0]  - D * y[4] ;
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1 + y[0]*kA_1;
 
 }
-
-void Models::model_3(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params)
+void Models::jac_2(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
 {
-const double D = part_params[0];
-const double KB_y = part_params[1];
-const double K_c = part_params[2];
-const double K_omega_y = part_params[3];
-const double K_x = part_params[4];
-const double S0_glu = part_params[5];
-const double g_c = part_params[6];
-const double g_x = part_params[7];
-const double kA_a = part_params[8];
-const double kBmax_y = part_params[9];
-const double mu_max_c = part_params[10];
-const double mu_max_x = part_params[11];
-const double nB_y = part_params[12];
-const double n_omega_y = part_params[13];
-const double omega_max_y = part_params[14];
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
 
-
-
-// Order is: N_x, N_c, S_glu, A_a, B_y, 
-
-dxdt[0] = ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  - D) * y[0] ;
-dxdt[1] = ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  - omega_max_y * pow( y[4] , n_omega_y ) / ( pow( K_omega_y , n_omega_y ) + pow( y[4] , n_omega_y ) ) - D) * y[1] ;
-dxdt[2] =  D * (S0_glu - y[2] ) - ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  * y[0] / g_x )- ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  * y[1] / g_c );
-dxdt[3] =  + kA_a * y[1]  - D * y[3] ;
-dxdt[4] =  + kBmax_y  * ( pow( y[3] , nB_y ) / ( pow( KB_y, nB_y ) + pow( y[3] , nB_y ) ) ) * y[0]  - D * y[4] ;
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
 
 }
-
-void Models::model_4(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params)
+void Models::model_3(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
 {
-const double D = part_params[0];
-const double KB_y = part_params[1];
-const double kBmax_y = part_params[2];
-const double nB_y = part_params[3];
-const double omega_max_y = part_params[4];
-const double K_omega_y = part_params[5];
-const double n_omega_y = part_params[6];
-const double K_x = part_params[7];
-const double g_x = part_params[8];
-const double mu_max_x = part_params[9];
-const double kA_b = part_params[10];
-const double K_c = part_params[11];
-const double g_c = part_params[12];
-const double mu_max_c = part_params[13];
-const double S0_glu = part_params[14];
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
 
-// Order is: N_x, N_c, S_glu, A_b, B_y, 
-
-dxdt[0] = ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  - D) * y[0] ;
-dxdt[1] = ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  - omega_max_y * pow( y[4] , n_omega_y ) / ( pow( K_omega_y , n_omega_y ) + pow( y[4] , n_omega_y ) ) - D) * y[1] ;
-dxdt[2] =  D * (S0_glu - y[2] ) - ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  * y[0] / g_x )- ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  * y[1] / g_c );
-dxdt[3] =  + kA_b * y[1]  - D * y[3] ;
-dxdt[4] =  + kBmax_y  * ( pow( KB_y , nB_y ) / ( pow( KB_y , nB_y ) + pow( y[3] , nB_y ) ) ) * y[0]  - D * y[4] ;
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1 + y[0]*kA_1;
 
 }
-
-void Models::model_5(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params)
+void Models::jac_3(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
 {
-const double D = part_params[0];
-const double kA_a = part_params[1];
-const double KB_y = part_params[2];
-const double kBmax_y = part_params[3];
-const double nB_y = part_params[4];
-const double omega_max_y = part_params[5];
-const double K_omega_y = part_params[6];
-const double n_omega_y = part_params[7];
-const double KB_z = part_params[8];
-const double kBmax_z = part_params[9];
-const double nB_z = part_params[10];
-const double omega_max_z = part_params[11];
-const double K_omega_z = part_params[12];
-const double n_omega_z = part_params[13];
-const double K_x = part_params[14];
-const double g_x = part_params[15];
-const double mu_max_x = part_params[16];
-const double K_c = part_params[17];
-const double g_c = part_params[18];
-const double mu_max_c = part_params[19];
-const double S0_glu = part_params[20];
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
 
-// Order is: N_x, N_c, S_glu, A_a, B_y, B_z, 
-
-dxdt[0] = ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  - omega_max_y * pow( y[4] , n_omega_y ) / ( pow( K_omega_y , n_omega_y ) + pow( y[4] , n_omega_y ) ) - D) * y[0] ;
-dxdt[1] = ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  - omega_max_z * pow( y[5] , n_omega_z ) / ( pow( K_omega_z , n_omega_z ) + pow( y[5] , n_omega_z ) ) - D) * y[1] ;
-dxdt[2] =  D * (S0_glu - y[2] ) - ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  * y[0] / g_x )- ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  * y[1] / g_c );
-dxdt[3] =  + kA_a * y[0]  - D * y[3] ;
-dxdt[4] =  + kBmax_y  * ( pow( y[3] , nB_y ) / ( pow( KB_y, nB_y ) + pow( y[3] , nB_y ) ) ) * y[0]  - D * y[4] ;
-dxdt[5] =  + kBmax_z  * ( pow( KB_z , nB_z ) / ( pow( KB_z , nB_z ) + pow( y[3] , nB_z ) ) ) * y[0]  - D * y[5] ;
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
 
 }
-
-void Models::model_6(const std::vector <double> &y , std::vector <double> &dxdt , double t, std::vector <double> &part_params)
+void Models::model_4(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
 {
-const double D = part_params[0];
-const double kA_a = part_params[1];
-const double KB_y = part_params[2];
-const double kBmax_y = part_params[3];
-const double nB_y = part_params[4];
-const double omega_max_y = part_params[5];
-const double K_omega_y = part_params[6];
-const double n_omega_y = part_params[7];
-const double KB_z = part_params[8];
-const double kBmax_z = part_params[9];
-const double nB_z = part_params[10];
-const double omega_max_z = part_params[11];
-const double K_omega_z = part_params[12];
-const double n_omega_z = part_params[13];
-const double K_x = part_params[14];
-const double g_x = part_params[15];
-const double mu_max_x = part_params[16];
-const double kA_b = part_params[17];
-const double K_c = part_params[18];
-const double g_c = part_params[19];
-const double mu_max_c = part_params[20];
-const double S0_glu = part_params[21];
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
 
-// Order is: N_x, N_c, S_glu, A_a, A_b, B_y, B_z, 
-
-dxdt[0] = ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  - omega_max_y * pow( y[5] , n_omega_y ) / ( pow( K_omega_y , n_omega_y ) + pow( y[5] , n_omega_y ) ) - D) * y[0] ;
-dxdt[1] = ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  - omega_max_z * pow( y[6] , n_omega_z ) / ( pow( K_omega_z , n_omega_z ) + pow( y[6] , n_omega_z ) ) - D) * y[1] ;
-dxdt[2] =  D * (S0_glu - y[2] ) - ( ( mu_max_x * y[2] / ( K_x + y[2] ) )  * y[0] / g_x )- ( ( mu_max_c * y[2] / ( K_c + y[2] ) )  * y[1] / g_c );
-dxdt[3] =  + kA_a * y[0]  - D * y[3] ;
-dxdt[4] =  + kA_b * y[1]  - D * y[4] ;
-dxdt[5] =  + kBmax_y  * ( pow( y[3] , nB_y ) / ( pow( KB_y, nB_y ) + pow( y[3] , nB_y ) ) ) * y[0]  - D * y[5] ;
-dxdt[6] =  + kBmax_z  * ( pow( y[4] , nB_z ) / ( pow( KB_z, nB_z ) + pow( y[4] , nB_z ) ) ) * ( pow( KB_z , nB_z ) / ( pow( KB_z , nB_z ) + pow( y[3] , nB_z ) ) ) * y[0]  - D * y[6] ;
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
 
 }
+void Models::jac_4(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
 
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_5(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+
+}
+void Models::jac_5(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_6(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+
+}
+void Models::jac_6(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_7(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+
+}
+void Models::jac_7(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_8(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+	dydt[6] = -y[6]*D + y[1]*kA_2;
+
+}
+void Models::jac_8(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[6], nB_mccB)*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = 0;
+	J( 3 , 6 ) = -std::pow(y[6], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*std::pow(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 6 ) = 0;
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = 0;
+	J( 6 , 1 ) = kA_2;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_9(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+	dydt[6] = -y[6]*D + y[1]*kA_2;
+
+}
+void Models::jac_9(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[6], nB_mccB)*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = 0;
+	J( 3 , 6 ) = -std::pow(y[6], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*std::pow(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 6 ) = 0;
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = 0;
+	J( 6 , 1 ) = kA_2;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_10(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+	dydt[6] = -y[6]*D + y[1]*kA_2;
+
+}
+void Models::jac_10(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[6], nB_mccB)*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = 0;
+	J( 3 , 6 ) = -std::pow(y[6], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*std::pow(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 6 ) = 0;
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = 0;
+	J( 6 , 1 ) = kA_2;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_11(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+	dydt[6] = -y[6]*D + y[1]*kA_2;
+
+}
+void Models::jac_11(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[6], nB_mccB)*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = 0;
+	J( 3 , 6 ) = -std::pow(y[6], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*std::pow(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 6 ) = 0;
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = 0;
+	J( 6 , 1 ) = kA_2;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_12(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1 + y[0]*kA_1;
+
+}
+void Models::jac_12(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_13(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1 + y[0]*kA_1;
+
+}
+void Models::jac_13(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_14(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+
+}
+void Models::jac_14(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_15(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+
+}
+void Models::jac_15(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_16(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+	dydt[6] = -y[6]*D + y[1]*kA_2;
+
+}
+void Models::jac_16(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[6], nB_mccB)*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = 0;
+	J( 3 , 6 ) = -std::pow(y[6], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*std::pow(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 6 ) = 0;
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = 0;
+	J( 6 , 1 ) = kA_2;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_17(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+	dydt[6] = -y[6]*D + y[1]*kA_2;
+
+}
+void Models::jac_17(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[6], nB_mccB)*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = 0;
+	J( 3 , 6 ) = -std::pow(y[6], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*std::pow(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 6 ) = 0;
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = 0;
+	J( 6 , 1 ) = kA_2;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_18(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1 + y[0]*kA_1;
+
+}
+void Models::jac_18(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) - std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV))) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_19(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_1;
+
+}
+void Models::jac_19(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) - std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV))) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_20(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_1;
+
+}
+void Models::jac_20(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) - std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV))) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_21(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1 + y[0]*kA_1;
+
+}
+void Models::jac_21(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_22(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1 + y[0]*kA_1;
+
+}
+void Models::jac_22(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_23(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+
+}
+void Models::jac_23(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_24(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+
+}
+void Models::jac_24(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_25(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccV = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccV = part_params[13];
+	const double n_omega_mccV = part_params[14];
+	const double omega_max_mccV = part_params[15];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) + std::pow(y[5], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_1;
+	dydt[5] = -y[5]*D + y[1]*kA_2;
+
+}
+void Models::jac_25(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccV = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccV = part_params[13];
+	const double n_omega_mccV = part_params[14];
+	const double omega_max_mccV = part_params[15];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_26(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccV = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccV = part_params[13];
+	const double n_omega_mccV = part_params[14];
+	const double omega_max_mccV = part_params[15];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) + std::pow(y[5], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_1;
+	dydt[5] = -y[5]*D + y[1]*kA_2;
+
+}
+void Models::jac_26(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccV = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccV = part_params[13];
+	const double n_omega_mccV = part_params[14];
+	const double omega_max_mccV = part_params[15];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_27(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+	dydt[6] = -y[6]*D + y[1]*kA_2;
+
+}
+void Models::jac_27(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[6], nB_mccB)*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = 0;
+	J( 3 , 6 ) = -std::pow(y[6], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*std::pow(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 6 ) = 0;
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = 0;
+	J( 6 , 1 ) = kA_2;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_28(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+	dydt[6] = -y[6]*D + y[1]*kA_2;
+
+}
+void Models::jac_28(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[6], nB_mccB)*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = 0;
+	J( 3 , 6 ) = -std::pow(y[6], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*std::pow(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 6 ) = 0;
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = 0;
+	J( 6 , 1 ) = kA_2;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_29(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1 + y[0]*kA_1;
+
+}
+void Models::jac_29(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_30(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1 + y[0]*kA_1;
+
+}
+void Models::jac_30(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_31(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_1;
+
+}
+void Models::jac_31(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_32(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_1;
+
+}
+void Models::jac_32(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_33(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_1;
+
+}
+void Models::jac_33(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) - std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV))) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_34(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1 + y[0]*kA_1;
+
+}
+void Models::jac_34(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_35(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+
+}
+void Models::jac_35(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_36(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccV = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccV = part_params[13];
+	const double n_omega_mccV = part_params[14];
+	const double omega_max_mccV = part_params[15];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) + std::pow(y[5], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_1;
+	dydt[5] = -y[5]*D + y[1]*kA_2;
+
+}
+void Models::jac_36(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccV = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccV = part_params[13];
+	const double n_omega_mccV = part_params[14];
+	const double omega_max_mccV = part_params[15];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_37(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+	dydt[6] = -y[6]*D + y[1]*kA_2;
+
+}
+void Models::jac_37(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[6], nB_mccB)*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = 0;
+	J( 3 , 6 ) = -std::pow(y[6], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*std::pow(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 6 ) = 0;
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = 0;
+	J( 6 , 1 ) = kA_2;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_38(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1 + y[0]*kA_1;
+
+}
+void Models::jac_38(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_39(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_1;
+
+}
+void Models::jac_39(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_40(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+	dydt[6] = -y[6]*D + y[0]*kA_2;
+
+}
+void Models::jac_40(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[6], nB_mccB)*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = 0;
+	J( 3 , 6 ) = -std::pow(y[6], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*std::pow(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 6 ) = 0;
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = kA_2;
+	J( 6 , 1 ) = 0;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_41(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+	dydt[6] = -y[6]*D + y[0]*kA_2;
+
+}
+void Models::jac_41(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[6], nB_mccB)*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = 0;
+	J( 3 , 6 ) = -std::pow(y[6], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*std::pow(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 6 ) = 0;
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = kA_2;
+	J( 6 , 1 ) = 0;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_42(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+	dydt[6] = -y[6]*D + y[0]*kA_2;
+
+}
+void Models::jac_42(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[6], nB_mccB)*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = 0;
+	J( 3 , 6 ) = -std::pow(y[6], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*std::pow(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 6 ) = 0;
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = kA_2;
+	J( 6 , 1 ) = 0;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_43(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+	dydt[6] = -y[6]*D + y[0]*kA_2;
+
+}
+void Models::jac_43(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[6], nB_mccB)*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = 0;
+	J( 3 , 6 ) = -std::pow(y[6], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*std::pow(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 6 ) = 0;
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = kA_2;
+	J( 6 , 1 ) = 0;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_44(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+	dydt[6] = -y[6]*D + y[0]*kA_2;
+
+}
+void Models::jac_44(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[6], nB_mccB)*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = 0;
+	J( 3 , 6 ) = -std::pow(y[6], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*std::pow(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 6 ) = 0;
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = kA_2;
+	J( 6 , 1 ) = 0;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_45(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+	dydt[6] = -y[6]*D + y[0]*kA_2;
+
+}
+void Models::jac_45(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[6], nB_mccB)*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = 0;
+	J( 3 , 6 ) = -std::pow(y[6], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*std::pow(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 6 ) = 0;
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = kA_2;
+	J( 6 , 1 ) = 0;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_46(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccV = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccV = part_params[13];
+	const double n_omega_mccV = part_params[14];
+	const double omega_max_mccV = part_params[15];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) + std::pow(y[5], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1;
+	dydt[5] = -y[5]*D + y[0]*kA_2;
+
+}
+void Models::jac_46(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccV = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccV = part_params[13];
+	const double n_omega_mccV = part_params[14];
+	const double omega_max_mccV = part_params[15];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_47(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccV = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccV = part_params[13];
+	const double n_omega_mccV = part_params[14];
+	const double omega_max_mccV = part_params[15];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) + std::pow(y[5], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1;
+	dydt[5] = -y[5]*D + y[0]*kA_2;
+
+}
+void Models::jac_47(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccV = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccV = part_params[13];
+	const double n_omega_mccV = part_params[14];
+	const double omega_max_mccV = part_params[15];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_48(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+	dydt[6] = -y[6]*D + y[0]*kA_2;
+
+}
+void Models::jac_48(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[6], nB_mccB)*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = 0;
+	J( 3 , 6 ) = -std::pow(y[6], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*std::pow(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 6 ) = 0;
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = kA_2;
+	J( 6 , 1 ) = 0;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_49(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+	dydt[6] = -y[6]*D + y[0]*kA_2;
+
+}
+void Models::jac_49(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[6], nB_mccB)*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = 0;
+	J( 3 , 6 ) = -std::pow(y[6], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*std::pow(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 6 ) = 0;
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = kA_2;
+	J( 6 , 1 ) = 0;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_50(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccV = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccV = part_params[13];
+	const double n_omega_mccV = part_params[14];
+	const double omega_max_mccV = part_params[15];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) + std::pow(y[5], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1;
+	dydt[5] = -y[5]*D + y[0]*kA_2;
+
+}
+void Models::jac_50(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccV = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccV = part_params[13];
+	const double n_omega_mccV = part_params[14];
+	const double omega_max_mccV = part_params[15];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_51(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+	dydt[6] = -y[6]*D + y[0]*kA_2;
+
+}
+void Models::jac_51(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[6], nB_mccB)*kBmax_mccB/(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = 0;
+	J( 3 , 6 ) = -std::pow(y[6], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*std::pow(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[6], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[6]*(std::pow(y[6], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 6 ) = 0;
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = kA_2;
+	J( 6 , 1 ) = 0;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_52(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+
+}
+void Models::jac_52(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_53(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+
+}
+void Models::jac_53(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_54(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+
+}
+void Models::jac_54(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_55(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+
+}
+void Models::jac_55(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_56(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+
+}
+void Models::jac_56(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_57(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+
+}
+void Models::jac_57(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_58(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+
+}
+void Models::jac_58(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_59(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+
+}
+void Models::jac_59(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_60(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1;
+
+}
+void Models::jac_60(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_61(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1;
+
+}
+void Models::jac_61(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_62(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+
+}
+void Models::jac_62(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_63(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_1 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1;
+
+}
+void Models::jac_63(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_64(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+	dydt[6] = -y[6]*D + y[1]*kA_2;
+
+}
+void Models::jac_64(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 6 ) = 0;
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = std::pow(y[6], nB_mccV)*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 4 , 6 ) = -std::pow(y[6], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*std::pow(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = 0;
+	J( 6 , 1 ) = kA_2;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_65(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+	dydt[6] = -y[6]*D + y[1]*kA_2;
+
+}
+void Models::jac_65(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 6 ) = 0;
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = std::pow(y[6], nB_mccV)*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 4 , 6 ) = -std::pow(y[6], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*std::pow(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = 0;
+	J( 6 , 1 ) = kA_2;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_66(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+	dydt[6] = -y[6]*D + y[1]*kA_2;
+
+}
+void Models::jac_66(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 6 ) = 0;
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = std::pow(y[6], nB_mccV)*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 4 , 6 ) = -std::pow(y[6], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*std::pow(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = 0;
+	J( 6 , 1 ) = kA_2;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_67(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+	dydt[6] = -y[6]*D + y[1]*kA_2;
+
+}
+void Models::jac_67(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 6 ) = 0;
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = std::pow(y[6], nB_mccV)*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 4 , 6 ) = -std::pow(y[6], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*std::pow(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = 0;
+	J( 6 , 1 ) = kA_2;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_68(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1 + y[0]*kA_1;
+
+}
+void Models::jac_68(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) - std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB))) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_69(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_1;
+
+}
+void Models::jac_69(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) - std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB))) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_70(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_1;
+
+}
+void Models::jac_70(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) - std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB))) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_71(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+	dydt[6] = -y[6]*D + y[1]*kA_2;
+
+}
+void Models::jac_71(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 6 ) = 0;
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = std::pow(y[6], nB_mccV)*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 4 , 6 ) = -std::pow(y[6], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*std::pow(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = 0;
+	J( 6 , 1 ) = kA_2;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_72(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+	dydt[6] = -y[6]*D + y[1]*kA_2;
+
+}
+void Models::jac_72(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 6 ) = 0;
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = std::pow(y[6], nB_mccV)*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 4 , 6 ) = -std::pow(y[6], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*std::pow(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = 0;
+	J( 6 , 1 ) = kA_2;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_73(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccB = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccB = part_params[13];
+	const double n_omega_mccB = part_params[14];
+	const double omega_max_mccB = part_params[15];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_1;
+	dydt[5] = -y[5]*D + y[1]*kA_2;
+
+}
+void Models::jac_73(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccB = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccB = part_params[13];
+	const double n_omega_mccB = part_params[14];
+	const double omega_max_mccB = part_params[15];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_74(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccB = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccB = part_params[13];
+	const double n_omega_mccB = part_params[14];
+	const double omega_max_mccB = part_params[15];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_1;
+	dydt[5] = -y[5]*D + y[1]*kA_2;
+
+}
+void Models::jac_74(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccB = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccB = part_params[13];
+	const double n_omega_mccB = part_params[14];
+	const double omega_max_mccB = part_params[15];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_75(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1 + y[0]*kA_1;
+
+}
+void Models::jac_75(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_76(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1 + y[0]*kA_1;
+
+}
+void Models::jac_76(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_77(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_1;
+
+}
+void Models::jac_77(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_78(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_1;
+
+}
+void Models::jac_78(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_79(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+	dydt[6] = -y[6]*D + y[1]*kA_2;
+
+}
+void Models::jac_79(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 6 ) = 0;
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = std::pow(y[6], nB_mccV)*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 4 , 6 ) = -std::pow(y[6], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*std::pow(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = 0;
+	J( 6 , 1 ) = kA_2;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_80(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+	dydt[6] = -y[6]*D + y[1]*kA_2;
+
+}
+void Models::jac_80(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 6 ) = 0;
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = std::pow(y[6], nB_mccV)*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 4 , 6 ) = -std::pow(y[6], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*std::pow(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = 0;
+	J( 6 , 1 ) = kA_2;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_81(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_1;
+
+}
+void Models::jac_81(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) - std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB))) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_82(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_1;
+	dydt[6] = -y[6]*D + y[1]*kA_2;
+
+}
+void Models::jac_82(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 6 ) = 0;
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = std::pow(y[6], nB_mccV)*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 4 , 6 ) = -std::pow(y[6], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*std::pow(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_1;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = 0;
+	J( 6 , 1 ) = kA_2;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_83(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccB = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccB = part_params[13];
+	const double n_omega_mccB = part_params[14];
+	const double omega_max_mccB = part_params[15];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_1;
+	dydt[5] = -y[5]*D + y[1]*kA_2;
+
+}
+void Models::jac_83(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccB = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccB = part_params[13];
+	const double n_omega_mccB = part_params[14];
+	const double omega_max_mccB = part_params[15];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_84(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1 + y[0]*kA_1;
+
+}
+void Models::jac_84(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_85(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_1;
+
+}
+void Models::jac_85(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_1;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_86(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+	dydt[6] = -y[6]*D + y[0]*kA_2;
+
+}
+void Models::jac_86(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 6 ) = 0;
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = std::pow(y[6], nB_mccV)*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 4 , 6 ) = -std::pow(y[6], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*std::pow(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = kA_2;
+	J( 6 , 1 ) = 0;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_87(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+	dydt[6] = -y[6]*D + y[0]*kA_2;
+
+}
+void Models::jac_87(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 6 ) = 0;
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = std::pow(y[6], nB_mccV)*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 4 , 6 ) = -std::pow(y[6], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*std::pow(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = kA_2;
+	J( 6 , 1 ) = 0;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_88(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+	dydt[6] = -y[6]*D + y[0]*kA_2;
+
+}
+void Models::jac_88(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 6 ) = 0;
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = std::pow(y[6], nB_mccV)*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 4 , 6 ) = -std::pow(y[6], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*std::pow(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = kA_2;
+	J( 6 , 1 ) = 0;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_89(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+	dydt[6] = -y[6]*D + y[0]*kA_2;
+
+}
+void Models::jac_89(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 6 ) = 0;
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = std::pow(y[6], nB_mccV)*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 4 , 6 ) = -std::pow(y[6], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*std::pow(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = kA_2;
+	J( 6 , 1 ) = 0;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_90(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+	dydt[6] = -y[6]*D + y[0]*kA_2;
+
+}
+void Models::jac_90(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 6 ) = 0;
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = std::pow(y[6], nB_mccV)*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 4 , 6 ) = -std::pow(y[6], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*std::pow(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = kA_2;
+	J( 6 , 1 ) = 0;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_91(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+	dydt[6] = -y[6]*D + y[0]*kA_2;
+
+}
+void Models::jac_91(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 6 ) = 0;
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = std::pow(y[6], nB_mccV)*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 4 , 6 ) = -std::pow(y[6], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*std::pow(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = kA_2;
+	J( 6 , 1 ) = 0;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_92(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccB = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccB = part_params[13];
+	const double n_omega_mccB = part_params[14];
+	const double omega_max_mccB = part_params[15];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1;
+	dydt[5] = -y[5]*D + y[0]*kA_2;
+
+}
+void Models::jac_92(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccB = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccB = part_params[13];
+	const double n_omega_mccB = part_params[14];
+	const double omega_max_mccB = part_params[15];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_93(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccB = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccB = part_params[13];
+	const double n_omega_mccB = part_params[14];
+	const double omega_max_mccB = part_params[15];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1;
+	dydt[5] = -y[5]*D + y[0]*kA_2;
+
+}
+void Models::jac_93(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccB = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccB = part_params[13];
+	const double n_omega_mccB = part_params[14];
+	const double omega_max_mccB = part_params[15];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_94(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+	dydt[6] = -y[6]*D + y[0]*kA_2;
+
+}
+void Models::jac_94(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 6 ) = 0;
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = std::pow(y[6], nB_mccV)*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 4 , 6 ) = -std::pow(y[6], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*std::pow(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = kA_2;
+	J( 6 , 1 ) = 0;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_95(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+	dydt[6] = -y[6]*D + y[0]*kA_2;
+
+}
+void Models::jac_95(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 6 ) = 0;
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = std::pow(y[6], nB_mccV)*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 4 , 6 ) = -std::pow(y[6], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*std::pow(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = kA_2;
+	J( 6 , 1 ) = 0;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_96(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_1 A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_1;
+	dydt[6] = -y[6]*D + y[0]*kA_2;
+
+}
+void Models::jac_96(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_1 = part_params[10];
+	const double kA_2 = part_params[11];
+	const double kBmax_mccB = part_params[12];
+	const double kBmax_mccV = part_params[13];
+	const double mu_max_c = part_params[14];
+	const double mu_max_x = part_params[15];
+	const double nB_mccB = part_params[16];
+	const double nB_mccV = part_params[17];
+	const double n_omega_mccB = part_params[18];
+	const double n_omega_mccV = part_params[19];
+	const double omega_max_mccB = part_params[20];
+	const double omega_max_mccV = part_params[21];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 0 , 6 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 1 , 6 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 2 , 6 ) = 0;
+	J( 3 , 0 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 6 ) = 0;
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = std::pow(y[6], nB_mccV)*kBmax_mccV/(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 4 , 6 ) = -std::pow(y[6], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*std::pow(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[6], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[6]*(std::pow(y[6], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_1;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+	J( 5 , 6 ) = 0;
+	J( 6 , 0 ) = kA_2;
+	J( 6 , 1 ) = 0;
+	J( 6 , 2 ) = 0;
+	J( 6 , 3 ) = 0;
+	J( 6 , 4 ) = 0;
+	J( 6 , 5 ) = 0;
+	J( 6 , 6 ) = -D;
+
+}
+void Models::model_97(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccB = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccB = part_params[13];
+	const double n_omega_mccB = part_params[14];
+	const double omega_max_mccB = part_params[15];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1;
+	dydt[5] = -y[5]*D + y[0]*kA_2;
+
+}
+void Models::jac_97(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kA_2 = part_params[9];
+	const double kBmax_mccB = part_params[10];
+	const double mu_max_c = part_params[11];
+	const double mu_max_x = part_params[12];
+	const double nB_mccB = part_params[13];
+	const double n_omega_mccB = part_params[14];
+	const double omega_max_mccB = part_params[15];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = 0;
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_98(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1;
+
+}
+void Models::jac_98(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_99(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1;
+
+}
+void Models::jac_99(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_100(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_1 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_1;
+
+}
+void Models::jac_100(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_1 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = kA_1;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_101(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_2 + y[0]*kA_2;
+
+}
+void Models::jac_101(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_102(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_2 + y[0]*kA_2;
+
+}
+void Models::jac_102(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_103(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_2 + y[0]*kA_2;
+
+}
+void Models::jac_103(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_104(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_2 + y[0]*kA_2;
+
+}
+void Models::jac_104(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_105(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_2;
+
+}
+void Models::jac_105(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_106(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_2;
+
+}
+void Models::jac_106(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_107(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_2;
+
+}
+void Models::jac_107(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_108(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_2;
+
+}
+void Models::jac_108(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_109(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_2 + y[0]*kA_2;
+
+}
+void Models::jac_109(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_110(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_2 + y[0]*kA_2;
+
+}
+void Models::jac_110(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_111(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_2;
+
+}
+void Models::jac_111(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_112(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_2;
+
+}
+void Models::jac_112(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_113(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_2 + y[0]*kA_2;
+
+}
+void Models::jac_113(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) - std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV))) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = kA_2;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_114(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_2;
+
+}
+void Models::jac_114(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) - std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV))) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_115(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_2;
+
+}
+void Models::jac_115(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) - std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV))) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_116(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_2 + y[0]*kA_2;
+
+}
+void Models::jac_116(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_117(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_2 + y[0]*kA_2;
+
+}
+void Models::jac_117(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_118(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_2;
+
+}
+void Models::jac_118(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_119(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_2;
+
+}
+void Models::jac_119(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_120(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_2 + y[0]*kA_2;
+
+}
+void Models::jac_120(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = kA_2;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_121(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_2 + y[0]*kA_2;
+
+}
+void Models::jac_121(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = kA_2;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_122(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_2;
+
+}
+void Models::jac_122(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_123(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_2;
+
+}
+void Models::jac_123(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_124(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[1]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_2;
+
+}
+void Models::jac_124(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) - std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[1]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV))) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_125(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_2 + y[0]*kA_2;
+
+}
+void Models::jac_125(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_126(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[0]*kA_2;
+
+}
+void Models::jac_126(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = kA_2;
+	J( 5 , 1 ) = 0;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_127(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_2 + y[0]*kA_2;
+
+}
+void Models::jac_127(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = kA_2;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_128(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_2;
+
+}
+void Models::jac_128(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_129(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_2;
+
+}
+void Models::jac_129(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_130(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_2;
+
+}
+void Models::jac_130(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_131(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_2;
+
+}
+void Models::jac_131(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_132(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_2;
+
+}
+void Models::jac_132(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_133(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_2;
+
+}
+void Models::jac_133(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_134(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_2;
+
+}
+void Models::jac_134(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_135(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_2;
+
+}
+void Models::jac_135(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_136(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -std::pow(y[4], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_2;
+
+}
+void Models::jac_136(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_137(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_2;
+
+}
+void Models::jac_137(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = kA_2;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_138(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccV)*y[0]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_2;
+
+}
+void Models::jac_138(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = kA_2;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_139(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	//Species order is: N_x N_c S_glu B_mccB B_mccV A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[4]*D;
+	dydt[5] = -y[5]*D + y[1]*kA_2;
+
+}
+void Models::jac_139(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double KB_mccV = part_params[2];
+	const double K_c = part_params[3];
+	const double K_omega_mccB = part_params[4];
+	const double K_omega_mccV = part_params[5];
+	const double K_x = part_params[6];
+	const double S0_glu = part_params[7];
+	const double g_c = part_params[8];
+	const double g_x = part_params[9];
+	const double kA_2 = part_params[10];
+	const double kBmax_mccB = part_params[11];
+	const double kBmax_mccV = part_params[12];
+	const double mu_max_c = part_params[13];
+	const double mu_max_x = part_params[14];
+	const double nB_mccB = part_params[15];
+	const double nB_mccV = part_params[16];
+	const double n_omega_mccB = part_params[17];
+	const double n_omega_mccV = part_params[18];
+	const double omega_max_mccB = part_params[19];
+	const double omega_max_mccV = part_params[20];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 0 , 5 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - std::pow(y[4], n_omega_mccV)*omega_max_mccV/(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 5 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 2 , 5 ) = 0;
+	J( 3 , 0 ) = 0;
+	J( 3 , 1 ) = std::pow(y[5], nB_mccB)*kBmax_mccB/(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = 0;
+	J( 3 , 5 ) = -std::pow(y[5], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*std::pow(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[5], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[5]*(std::pow(y[5], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = std::pow(y[5], nB_mccV)*kBmax_mccV/(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+	J( 4 , 5 ) = -std::pow(y[5], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*std::pow(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[5], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[5]*(std::pow(y[5], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 5 , 0 ) = 0;
+	J( 5 , 1 ) = kA_2;
+	J( 5 , 2 ) = 0;
+	J( 5 , 3 ) = 0;
+	J( 5 , 4 ) = 0;
+	J( 5 , 5 ) = -D;
+
+}
+void Models::model_140(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccV A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccV)*y[1]*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_2;
+
+}
+void Models::jac_140(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccV = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccV = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccV = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccV = part_params[12];
+	const double n_omega_mccV = part_params[13];
+	const double omega_max_mccV = part_params[14];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[1]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = kA_2;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_141(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_2 + y[0]*kA_2;
+
+}
+void Models::jac_141(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) - std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB))) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = kA_2;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_142(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_2;
+
+}
+void Models::jac_142(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) - std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB))) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_143(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_2;
+
+}
+void Models::jac_143(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) - std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB))) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_144(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_2 + y[0]*kA_2;
+
+}
+void Models::jac_144(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = kA_2;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_145(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_2 + y[0]*kA_2;
+
+}
+void Models::jac_145(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = kA_2;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_146(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_2;
+
+}
+void Models::jac_146(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_147(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_2;
+
+}
+void Models::jac_147(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_148(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[1]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_2;
+
+}
+void Models::jac_148(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) - std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[1]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB))) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_149(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_2 + y[0]*kA_2;
+
+}
+void Models::jac_149(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = kA_2;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_150(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[0]*kA_2;
+
+}
+void Models::jac_150(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = kA_2;
+	J( 4 , 1 ) = 0;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_151(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_2;
+
+}
+void Models::jac_151(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = kA_2;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_152(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_2 
+	dydt[0] = -std::pow(y[3], n_omega_mccB)*y[0]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_2;
+
+}
+void Models::jac_152(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = 0;
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = kA_2;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}
+void Models::model_153(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	//Species order is: N_x N_c S_glu B_mccB A_2 
+	dydt[0] = -D*y[0] + y[0]*y[2]*mu_max_x/(K_x + y[2]);
+	dydt[1] = -std::pow(y[3], n_omega_mccB)*y[1]*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D*y[1] + y[1]*y[2]*mu_max_c/(K_c + y[2]);
+	dydt[2] = D*(S0_glu - y[2]) - y[1]*y[2]*mu_max_c/(g_c*(K_c + y[2])) - y[0]*y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	dydt[3] = std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)) - y[3]*D;
+	dydt[4] = -y[4]*D + y[1]*kA_2;
+
+}
+void Models::jac_153(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
+{
+	//Unpack parameters
+	const double D = part_params[0];
+	const double KB_mccB = part_params[1];
+	const double K_c = part_params[2];
+	const double K_omega_mccB = part_params[3];
+	const double K_x = part_params[4];
+	const double S0_glu = part_params[5];
+	const double g_c = part_params[6];
+	const double g_x = part_params[7];
+	const double kA_2 = part_params[8];
+	const double kBmax_mccB = part_params[9];
+	const double mu_max_c = part_params[10];
+	const double mu_max_x = part_params[11];
+	const double nB_mccB = part_params[12];
+	const double n_omega_mccB = part_params[13];
+	const double omega_max_mccB = part_params[14];
+
+	J( 0 , 0 ) = -D + y[2]*mu_max_x/(K_x + y[2]);
+	J( 0 , 1 ) = 0;
+	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
+	J( 0 , 3 ) = 0;
+	J( 0 , 4 ) = 0;
+	J( 1 , 0 ) = 0;
+	J( 1 , 1 ) = -std::pow(y[3], n_omega_mccB)*omega_max_mccB/(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)) - D + y[2]*mu_max_c/(K_c + y[2]);
+	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
+	J( 1 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[1]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
+	J( 1 , 4 ) = 0;
+	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
+	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
+	J( 2 , 3 ) = 0;
+	J( 2 , 4 ) = 0;
+	J( 3 , 0 ) = std::pow(y[4], nB_mccB)*kBmax_mccB/(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB));
+	J( 3 , 1 ) = 0;
+	J( 3 , 2 ) = 0;
+	J( 3 , 3 ) = -D;
+	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*std::pow(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB), 2)) + std::pow(y[4], nB_mccB)*y[0]*kBmax_mccB*nB_mccB/(y[4]*(std::pow(y[4], nB_mccB) + std::pow(KB_mccB, nB_mccB)));
+	J( 4 , 0 ) = 0;
+	J( 4 , 1 ) = kA_2;
+	J( 4 , 2 ) = 0;
+	J( 4 , 3 ) = 0;
+	J( 4 , 4 ) = -D;
+
+}

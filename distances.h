@@ -7,7 +7,7 @@ class DistanceFunctions {
 	
 	public:
 		DistanceFunctions();
-		std::vector<double> extract_species_to_fit(std::vector<state_type>&, int);
+		std::vector<double> extract_species_to_fit(std::vector<state_type>&, int, int);
 		double calculate_final_gradient(std::vector<double>&);
 		std::vector<double> get_signal_gradient(std::vector<double> &);
 		void find_signal_peaks_and_troughs(std::vector<double>&, std::vector<int>&, std::vector<int>&);

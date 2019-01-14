@@ -1,5 +1,6 @@
 #include <iostream>
 #include "model.h"
+#define BOOST_UBLAS_TYPE_CHECK 0
 
 #include <boost/numeric/odeint.hpp>
 #include <boost/python.hpp>
@@ -7,7 +8,6 @@
 #include <omp.h>
 #include <boost/numeric/odeint/external/openmp/openmp.hpp>
 #include "particle_sim_opemp.h"
-#include <boost/python/numpy.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include "population.h"
 #include "distances.h"
@@ -61,16 +61,22 @@ void Population::simulate_particles() {
 	#pragma omp parallel for schedule(runtime)
 	for (int i=0; i < _n_sims; ++i) {
 		try{ 
-        // _particle_vector[i].simulate_particle( _dt, _time_array);
-        _particle_vector[i].simulate_particle_rosenbrock( _dt, _time_array);
+        _particle_vector[i].simulate_particle_rosenbrock(_time_array);
 
     	} catch (boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::numeric::odeint::no_progress_error> >) {
-    		std::cout <<"integration_failed" << std::endl;
+    		// std::cout <<"integration_failed: no_progress_error" << std::endl;
     		_particle_vector[i].integration_failed = true;
-    	}
+    	} catch (boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::numeric::odeint::step_adjustment_error> >){        
+            // std::cout <<"integration_failed: step_adjustment_error" << std::endl;
+            _particle_vector[i].integration_failed = true;
+        } catch (boost::numeric::ublas::internal_logic){
+            // std::cout <<"integration_failed: ublas internal_logic" << std::endl;
+            _particle_vector[i].integration_failed = true;
+        } catch (std::runtime_error){
+            // std::cout <<"integration_failed: ublas internal_logic" << std::endl;
+            _particle_vector[i].integration_failed = true;
+        }
 	}
-
-	std::cout << "particles simulated" << std::endl;
 }
 
 
@@ -81,7 +87,7 @@ void Population::calculate_particle_distances(){
 	std::vector<int> fit_species = {0, 1};
 	DistanceFunctions dist = DistanceFunctions();
 
-	// #pragma omp parallel for schedule(runtime)
+	#pragma omp parallel for schedule(runtime)
     for (int i=0; i < _n_sims; ++i) {
     	_particle_vector[i].get_state_vec();
     	_particle_vector[i].set_distance_vector(dist.stable_dist( _particle_vector[i].get_state_vec(), fit_species, _particle_vector[i].integration_failed));
@@ -152,7 +158,6 @@ std::vector< ublas_vec_t > Population::unpack_parameters_to_ublas(boost::python:
 
         for (int j = 0; j < len(temp_sim_params); ++j){
             params_temp(j) = ( boost::python::extract<double>(temp_sim_params[j]));
-            std::cout << params_temp(j) << std::endl;
         }
         all_params.push_back(params_temp);
     }
@@ -192,6 +197,10 @@ boost::python::list Population::get_timepoints_list() {
 	return tp_list;
 }
 
+bool Population::check_integration_failure(int particle_ref) {
+    return _particle_vector[particle_ref].integration_failed;
+}
+
 
 BOOST_PYTHON_MODULE(population_modules)
 {
@@ -208,5 +217,6 @@ BOOST_PYTHON_MODULE(population_modules)
     	.def("get_flattened_distances_list", &Population::get_flattened_distances_list)
     	.def("get_particle_state_list", &Population::get_particle_state_list)
     	.def("get_timepoints_list", &Population::get_timepoints_list)
+        .def("check_integration_failure", &Population::check_integration_failure)
         ;
 }

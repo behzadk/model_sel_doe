@@ -23,7 +23,8 @@ class Population {
 		boost::python::list get_flattened_distances_list();
 		boost::python::list get_particle_state_list(int);
 		boost::python::list get_timepoints_list();
-
+		bool check_integration_failure(int);
+		
 	private:
 		int _n_sims;
 		int  _t_0;

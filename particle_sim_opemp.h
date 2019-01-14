@@ -60,7 +60,7 @@ class Particle
 		std::vector<std::vector<double>> get_sim_distances() {return sim_distances;};
 
 
-		void simulate_particle_rosenbrock(double , std::vector<double> );
+		void simulate_particle_rosenbrock(std::vector<double> );
 
 		// Overloaded operators to run model step and jacobian
 		void operator() ( const ublas_vec_t & , ublas_vec_t &, double); //  model
@@ -78,12 +78,9 @@ template <class T>
 void vec_to_pylist(std::vector<T> vector) {
     typename std::vector<T>::iterator iter;
     boost::python::list list;
-    cout << "here" <<endl;
     for (iter = vector.begin(); iter != vector.end(); ++iter) {
         list.append(iter);
-        cout << *iter <<endl;
     }
-    cout << "end" <<endl;
 }
 
 

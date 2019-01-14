@@ -1,6 +1,7 @@
 import numpy as np
 from scipy import stats
 import csv
+import pandas as pd
 
 class Model:
     ##
@@ -15,6 +16,7 @@ class Model:
         self._n_params = len(prior)
         self._param_kdes = []
         self._has_kde = False
+        self._sample_probability = 1
 
         # Model data. Number of times this model was sampled in each population and number of times it was accepted
         self.population_sample_count = []
@@ -52,6 +54,11 @@ class Model:
             for idx, kern in enumerate(self._param_kdes):
                 if isinstance(kern, stats.kde.gaussian_kde):
                     new_params = kern.resample(1)
+
+                    # Prevent sampling of negative parameter values
+                    while new_params < 0:
+                        new_params = kern.resample(1)
+
                     model_sim_params.append(new_params[0][0])
 
                 elif isinstance(kern, np.float64):
@@ -91,21 +98,14 @@ class Model:
 ##
 # Model space is initialised with a list of Model objects.
 #
-# This class controls sampling of models, and generation of a population of particles to be simulated
+# This class controls sampling of models, and generation of a population of particles to be simulated.
+# Used to apply operations to all models within a model space, and reports on all models in the model space.
 ##
 class ModelSpace:
     def __init__(self, model_list):
         self._model_list = model_list
         self._model_refs_list = [m.get_model_ref() for m in self._model_list]  # Extract model reference from each model
 
-    ##
-    # Samples model space based on???
-    # Returns a list of models to be simulated
-    ##
-    def sample_model_space(self, n_sims):
-        sampled_models = np.random.choice(self._model_list, n_sims)
-
-        return sampled_models
 
     ##
     # Generates new kdes for simulated models from the input parameters used for accepted particles
@@ -122,16 +122,14 @@ class ModelSpace:
             if len(accepted_params) > 1:
                 m.generate_kde(accepted_params)
 
-
             else:
-                print("accepted params <=  1")
-
+                continue
 
     ##
     # Appends a new entry for the counts of times sampled and times accepted in a population
     # Each time this is called
     ##
-    def update_model_data(self, simulated_particles, judgement_array):
+    def update_model_population_sample_data(self, simulated_particles, judgement_array):
         unique_models = self._model_list
 
         for m in unique_models:
@@ -140,29 +138,56 @@ class ModelSpace:
 
             for idx, particle in enumerate(simulated_particles):
                 if particle is m:
-                    sampled_count +=1
+                    sampled_count += 1
 
-                if judgement_array[idx]:
-                    accepted_count +=1
+                    if judgement_array[idx]:
+                        accepted_count += 1
 
             m.population_sample_count.append(sampled_count)
             m.population_accepted_count.append(accepted_count)
 
+    ##
+    #   Updates the model weights based upon the acceptance rate of the model in the most recent population:
+    #   P = #Accepted / #Sampled
+    ##
+    def update_model_sample_probabilities(self):
+        sum_accepted = sum(m.population_accepted_count[-1] for m in self._model_list)
 
+        for m in self._model_list:
+            num_accepted = m.population_accepted_count[-1]
+            m._sample_probability = num_accepted / sum_accepted
+
+    ##
+    # Samples model space based on???
+    # Returns a list of models to be simulated
+    ##
+    def sample_model_space(self, n_sims):
+        model_probabilities = [m._sample_probability for m in self._model_list] # Extract model sample probabilities
+
+        # model probabilities greater than 1 at start first population, therefore we sample uniformally
+        if sum(model_probabilities) > 1:
+            model_probabilities = None
+
+        print(model_probabilities)
+        sampled_models = np.random.choice(self._model_list, n_sims, p=model_probabilities)
+
+        return sampled_models
 
     def write_accepted_particle_params(self, out_dir, simulated_particles, judgement_array, input_params):
         for m in self._model_list:
-            out_path = out_dir + "/model_" + str(m.get_model_ref()) + "_accepted_params"
-            with open(out_path, 'w') as out_csv:
+            out_path = out_dir + "model_" + str(m.get_model_ref()) + "_accepted_params"
+            with open(out_path, 'a') as out_csv:
                 wr = csv.writer(out_csv)
-                for idx, particle in enumerate(simulated_particles):
-                    if m is particle and judgement_array[idx]:
-                        wr.writerow(input_params[idx])
+                for idx, particle in enumerate(simulated_particles):    #
+                    if m is particle and judgement_array[idx]:          # If
+                        wr.writerow([idx] + input_params[idx])
 
-
-
-    def model_space_report(self):
+    def model_space_report(self, output_dir, batch_num):
+        file_path = output_dir + 'model_space_report.csv'
+        column_names = ['model_idx', 'accepted_count', 'simulated_count']
+        models_data = []
         for m in self._model_list:
-            print(m.population_sample_count)
-            print(m.population_accepted_count)
-            print("")
+            models_data.append([m.get_model_ref(), sum(m.population_accepted_count), sum(m.population_sample_count)])
+
+        new_df = pd.DataFrame(data=models_data, columns=column_names)
+        new_df.to_csv(file_path)

@@ -12,10 +12,10 @@ DistanceFunctions::DistanceFunctions() {
 }
 
 
-std::vector<double> DistanceFunctions::extract_species_to_fit(std::vector<state_type>& state_vec, int species_idx)
+std::vector<double> DistanceFunctions::extract_species_to_fit(std::vector<state_type>& state_vec, int species_idx, int from_time_index=0)
 {
 	std::vector<double> species_val_vec;
-	for (auto tp_iter = state_vec.begin(); tp_iter != state_vec.end(); tp_iter++) {
+	for (auto tp_iter = state_vec.begin() + from_time_index; tp_iter != state_vec.end(); tp_iter++) {
         state_type sim_vec = *tp_iter;
         species_val_vec.push_back(sim_vec[species_idx]);
     }
@@ -27,7 +27,7 @@ std::vector<double> DistanceFunctions::get_signal_gradient(std::vector<double>& 
 {
 	std::vector<double> signal_gradient;
 
-	for (int i = 1; i <= signal.size(); i++) {
+	for (int i = 1; i < signal.size(); i++) {
 		double grad = signal[i] - signal[i-1];
 		signal_gradient.push_back(grad);
 	}
@@ -60,12 +60,11 @@ void DistanceFunctions::find_signal_peaks_and_troughs(std::vector<double>& signa
 	double previous_gradient;
 	
 
-	for (int i = 1; i <= signal_gradient.size(); i++) {
+	for (int i = 1; i < signal_gradient.size(); i++) {
 		// Set current and previous gradients
 		current_gradient = signal_gradient[i];
 		previous_gradient = signal_gradient[i-1];
 
-		
 		/* 
 		A peak is when positive state precedes negative state.
 		A trough is when negative state precedes positive state.
@@ -87,14 +86,18 @@ void DistanceFunctions::find_signal_peaks_and_troughs(std::vector<double>& signa
  *	for some systems, possibly I should scale down the signal first?
  */	
 double DistanceFunctions::standard_deviation(std::vector<double>& signal) {
-
 	double mean = std::accumulate(signal.begin(), signal.end(), 0.0) / signal.size();
+	double sq_sum = 0;
+	auto sq_diff_mean = [&](double time_point, double mean){return pow(time_point - mean, 2); };
 
-	auto sq_diff_mean = [&](double time_point, double mean){return (double) pow(time_point - mean, 2); };
-	auto sq_sum = [&](std::vector<double>& sig, double& mean) {return (double) std::accumulate(sig.begin(), sig.end(), 
-		mean, sq_diff_mean); };
+	for (auto it = signal.begin(); it != signal.end(); it++) {
+		sq_sum += sq_diff_mean(*it, mean);
+	}
 
-	double stdev = sqrt(sq_sum(signal, mean) / (signal.size() -1) );
+	// auto sq_sum = [&](std::vector<double>& sig, double& mean) {return  std::accumulate(sig.begin(), sig.end(), 
+	// 	mean, sq_diff_mean); };
+
+	double stdev = sqrt( sq_sum / (signal.size() -1) );
 
 	return stdev;
 }
@@ -121,19 +124,34 @@ bool DistanceFunctions::has_negative_species(std::vector<state_type>& state_vec)
 std::vector<std::vector<double>> DistanceFunctions::stable_dist(std::vector<state_type>& state_vec, std::vector<int> species_to_fit, bool integration_failed) {
 	std::vector<std::vector<double>> sim_distances;
 	double max_dist = std::numeric_limits<double>::max();
+	std::vector<double> max_distances = {max_dist, max_dist};
 
 	if (integration_failed or has_negative_species(state_vec)) {
 		for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
-			std::vector<double> max_distances = {max_dist, max_dist};
 			sim_distances.push_back(max_distances);
 		}
 		return sim_distances;
 	}
 
+	// If final value of fit species is less than 1e4, reject particle
+	double threshold_value = 1e4;
+	int from_time_index = 2000;
+	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
+		std::vector<double> signal = extract_species_to_fit(state_vec, *it, from_time_index);
+
+		if (signal.back() < threshold_value) {
+			for (auto it_2 = species_to_fit.begin(); it_2 != species_to_fit.end(); it_2++) {
+				sim_distances.push_back(max_distances);
+			}
+			return sim_distances;
+		}
+	}
+
+
 
 	// Iterate through all species to fit. Extract data.
 	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
-		std::vector<double> signal = extract_species_to_fit(state_vec, *it);
+		std::vector<double> signal = extract_species_to_fit(state_vec, *it, from_time_index);
 
 		std::vector<double> signal_gradient = get_signal_gradient(signal);
 
@@ -141,6 +159,7 @@ std::vector<std::vector<double>> DistanceFunctions::stable_dist(std::vector<stat
 		double final_gradient = abs(signal_gradient.end()[-1]);
 
 		std::vector<double> signal_distances = {final_gradient, stdev};
+
 		sim_distances.push_back(signal_distances);
 	}
 
