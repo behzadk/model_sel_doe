@@ -158,6 +158,16 @@ class ABC_rejection:
             except FileExistsError:
                 pass
 
+            try:
+                os.mkdir(folder_name + 'model_accepted_params')
+            except FileExistsError:
+                pass
+
+            try:
+                os.mkdir(folder_name + 'simulation_plots')
+            except FileExistsError:
+                pass
+
             accepted_particles_count = 0
             total_sims = 0
 

@@ -159,10 +159,20 @@ def ABC_rejection():
     t_0 = 0
     t_end = 5000
     dt = 1
-
-    # Set input file and output directories
+    
     input_folder = './input_files_two_species/'
-    output_folder = './output_two_species_bigspace/'
+    output_folder = './output/'
+    experiment_name = 'two_species_big_NUM/'
+    experiment_number = str(0)
+    experiment_folder = experiment_name.replace('NUM', experiment_number)
+
+    output_folder = output_folder + experiment_folder
+
+    try:
+        os.mkdir(output_folder)
+        
+    except FileExistsError:
+        pass
 
     # Load models from input files
     model_list = []

@@ -1,4 +1,5 @@
 output/
+population_modules.so
 __pycache__/
 venv/
 population_modules.so
