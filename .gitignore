@@ -1,5 +1,6 @@
 output/
 __pycache__/
+venv/
 population_modules.so
 venv/
 log.boost.1
