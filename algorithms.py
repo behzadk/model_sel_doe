@@ -36,7 +36,7 @@ class ABC_rejection:
         self.n_species_fit = n_species_fit
         self.n_distances = n_distances
 
-        self.epsilon_array = [ [10, 10] ]
+        self.epsilon_array = [ [100, 10] ]
         # self.epsilon_array = [ [1e12, 1e12], [1e9, 1e12], [1e7, 1e12], [1e6, 1e12], [1e5, 1e12], [1e4, 1e12], [1e3, 1e12], [1e2, 1e12], [1e1, 1e12] ]
 
 
@@ -159,6 +159,8 @@ class ABC_rejection:
                 pass
 
             accepted_particles_count = 0
+            total_sims = 0
+
             all_judgements = []
             all_inputs = []
             all_particles_simmed = []
@@ -205,10 +207,9 @@ class ABC_rejection:
                                                                 batch_part_judgements, input_params)
 
 
-                accepted_particles_count += sum(batch_part_judgements)
 
-                all_inputs = all_inputs + input_params
-                all_judgements = all_judgements + batch_part_judgements
+                # all_inputs = all_inputs + input_params
+                # all_judgements = all_judgements + batch_part_judgements
 
                 # plot accepted particles
                 if sum(batch_part_judgements) > 0:
@@ -221,9 +222,12 @@ class ABC_rejection:
                 #                                  init_states, model_refs)
 
                 # print(pop_distances)
-                print("Population: ", population_number, "Accepted particles: ", accepted_particles_count, "Total simulations: ", len(all_particles_simmed))
+                accepted_particles_count += sum(batch_part_judgements)
+                total_sims += len(model_refs)
 
-                self.model_space.update_model_population_sample_data(all_particles_simmed, all_judgements)
+                print("Population: ", population_number, "Accepted particles: ", accepted_particles_count, "Total simulations: ", total_sims)
+
+                self.model_space.update_model_population_sample_data(particle_models.tolist(), batch_part_judgements)
                 self.model_space.model_space_report(folder_name, batch_num)
 
                 batch_num += 1
