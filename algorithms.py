@@ -157,13 +157,10 @@ class Rejection:
         except FileExistsError:
             pass
 
-        try:
-            os.mkdir(folder_name + 'model_accepted_params')
-        except FileExistsError:
-            pass
 
+        sim_params_folder = folder_name + 'model_sim_params/'
         try:
-            os.mkdir(folder_name + 'model_sim_params')
+            os.mkdir(sim_params_folder)
         except FileExistsError:
             pass
 
@@ -174,11 +171,6 @@ class Rejection:
 
         accepted_particles_count = 0
         total_sims = 0
-
-        all_judgements = []
-        all_inputs = []
-        all_particles_simmed = []
-
         batch_num = 0
 
         while accepted_particles_count < self.population_size:
@@ -195,32 +187,22 @@ class Rejection:
             self.pop_obj.generate_particles()
             self.pop_obj.simulate_particles()
 
-            all_particles_simmed = all_particles_simmed + particle_models.tolist()
-
             # 3. Calculate distances for population
             self.pop_obj.calculate_particle_distances()
             self.pop_obj.accumulate_distances()
             batch_distances = self.pop_obj.get_flattened_distances_list()
             batch_distances = np.reshape(batch_distances, (self.n_sims_batch, self.n_species_fit, self.n_distances))
 
-
-            if len(batch_distances) == 0:
-                continue
-
             # 4. Accept or reject particles
             batch_part_judgements = alg_utils.check_distances(batch_distances, epsilon_array=self.epsilon)
 
-            self.write_particle_params(folder_name + 'model_sim_params/', batch_num, particle_models.tolist(),
+
+            # Write data
+            self.write_particle_params(sim_params_folder, batch_num, particle_models.tolist(),
                                                    input_params, init_states, batch_part_judgements)
 
             self.write_particle_distances(folder_name, model_refs, batch_num, particle_models.tolist(),
                                           batch_part_judgements, batch_distances)
-
-            # # Write accepted parameters every batch
-            # self.model_space.write_accepted_particle_params(folder_name+'model_accepted_params/',
-            #                                                 particle_models.tolist(),
-            #                                                 batch_part_judgements, input_params)
-
 
             accepted_particles_count += sum(batch_part_judgements)
             total_sims += len(model_refs)

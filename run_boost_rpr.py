@@ -185,7 +185,7 @@ def ABC_rejection():
         model_list.append(model_new)
 
     # Run ABC_rejecction algorithm
-    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 20, 100, 2, 2, output_folder)
+    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 300, 2, 2, output_folder)
     rejection_alg.run_rejection()
     print("")
 
