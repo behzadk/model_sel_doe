@@ -324,21 +324,29 @@ def plot_accepted_parameters(model_ref, input_dir, accepted_params_dir, bins):
 
 
 if __name__ == "__main__":
-    wd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp"
+    wd = "/home/behzad/myriad_home/Scratch/cpp_consortium_sim/model_sel_doe/"
     model_space_report_path = wd + \
-        "/output_two_species_bigspace/Population_0/model_space_report.csv"
-    model_ref_path = '/home/behzad/Documents/barnes_lab/sympy_consortium_framework/output/3_species_space/model_ref'
+        "/output/two_species_big_0/Population_0/model_space_report.csv"
+    model_ref_path = '/home/behzad/Documents/barnes_lab/sympy_consortium_framework/output/two_species_no_symm/model_ref.csv'
 
     accepted_params_dir = wd + \
-        "/output_two_species_bigspace/Population_0/model_accepted_params/"
+        "/output/two_species_big_0/Population_0/model_accepted_params/"
     inputs_dir = wd + "/input_files_two_species/"
 
     report_summary(model_space_report_path)
-    growth_distribution(41, inputs_dir, accepted_params_dir)
-    growth_distribution(5, inputs_dir, accepted_params_dir)
-    growth_distribution(88, inputs_dir, accepted_params_dir)
-    growth_distribution(104, inputs_dir, accepted_params_dir)
-    growth_distribution(106, inputs_dir, accepted_params_dir)
+
+    plot_spock_acceptance_ratio(model_space_report_path, model_ref_path, "test")
+
+    plot_all_acceptance_ratios(model_space_report_path, "all_models.png")
+    plot_above_threshold(model_space_report_path, 0.4, "top_models.png")
+    acceptance_ratio_hist(model_space_report_path, 20, "acceptance_ratio_hist.png")
+    # plot_accepted_parameters(104, inputs_dir, accepted_params_dir, 25)
+
+    # growth_distribution(41, inputs_dir, accepted_params_dir)
+    # growth_distribution(5, inputs_dir, accepted_params_dir)
+    # growth_distribution(88, inputs_dir, accepted_params_dir)
+    # growth_distribution(104, inputs_dir, accepted_params_dir)
+    # growth_distribution(106, inputs_dir, accepted_params_dir)
 
     # two_D_parameter_plots(5, inputs_dir, accepted_params_dir)
     # two_D_parameter_plots(41, inputs_dir, accepted_params_dir)
@@ -346,9 +354,3 @@ if __name__ == "__main__":
     # two_D_parameter_plots(104, inputs_dir, accepted_params_dir)
     # two_D_parameter_plots(106, inputs_dir, accepted_params_dir)
 
-    # plot_spock_acceptance_ratio(model_space_report_path, model_ref_path, "test")
-
-    # plot_all_acceptance_ratios(model_space_report_path, "all_models.png")
-    # plot_above_threshold(model_space_report_path, 0.2, "top_models.png")
-    # acceptance_ratio_hist(model_space_report_path, 20, "acceptance_ratio_hist.png")
-    # plot_accepted_parameters(104, inputs_dir, accepted_params_dir, 25)

@@ -58,6 +58,8 @@ void Population::generate_particles(){
  * Performs simulation of all particles in the population
 */
 void Population::simulate_particles() {
+
+
 	#pragma omp parallel for schedule(runtime)
 	for (int i=0; i < _n_sims; ++i) {
 		try{ 

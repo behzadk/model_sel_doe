@@ -222,10 +222,11 @@ class ABC_rejection:
                 # all_judgements = all_judgements + batch_part_judgements
 
                 # plot accepted particles
-                if sum(batch_part_judgements) > 0:
-                    self.plot_accepted_particles(folder_name + 'simulation_plots/', population_number,
-                                                 batch_num, batch_part_judgements,
-                                                 init_states, model_refs)
+
+                # if sum(batch_part_judgements) > 0:
+                #     self.plot_accepted_particles(folder_name + 'simulation_plots/', population_number,
+                #                                  batch_num, batch_part_judgements,
+                #                                  init_states, model_refs)
 
                 # self.plot_all_particles(folder_name, population_number,
                 #                                  batch_num, batch_part_judgements,
@@ -236,10 +237,9 @@ class ABC_rejection:
                 total_sims += len(model_refs)
 
                 print("Population: ", population_number, "Accepted particles: ", accepted_particles_count, "Total simulations: ", total_sims)
-
                 self.model_space.update_model_population_sample_data(particle_models.tolist(), batch_part_judgements)
                 self.model_space.model_space_report(folder_name, batch_num)
-
+                sys.stdout.flush()
                 batch_num += 1
 
 

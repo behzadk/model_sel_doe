@@ -10,18 +10,18 @@ module load python3/recommended
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/lustre/home/ucbtbdk/Scratch/cpp_consortium_sim/model_sel_doe
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/lustre/home/ucbtbdk/software/boost_1_63_0/libs
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/lustre/home/ucbtbdk/software/boost_1_63_0/stage/lib
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/lustre/home/ucbtbdk/software/boost_1_65_1/libs
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/lustre/home/ucbtbdk/software/boost_1_65_1/stage/lib
 
-export INCLUDE=$INCLUDE:/lustre/home/ucbtbdk/software/boost_1_63_0/
+export INCLUDE=$INCLUDE:/lustre/home/ucbtbdk/software/boost_1_65_1/
 
-export C_INCLUDE_PATH=$C_INCLUDE_PATH:/lustre/home/ucbtbdk/software/boost_1_63_0/stage/lib
-export C_INCLUDE_PATH=$C_INCLUDE_PATH:/lustre/home/ucbtbdk/software/boost_1_63_0/libs
-export C_INCLUDE_PATH=$C_INCLUDE_PATH:/lustre/home/ucbtbdk/software/boost_1_63_0
+export C_INCLUDE_PATH=$C_INCLUDE_PATH:/lustre/home/ucbtbdk/software/boost_1_65_1/stage/lib
+export C_INCLUDE_PATH=$C_INCLUDE_PATH:/lustre/home/ucbtbdk/software/boost_1_65_1/libs
+export C_INCLUDE_PATH=$C_INCLUDE_PATH:/lustre/home/ucbtbdk/software/boost_1_65_1
 
 
-export LIBRARY_PATH=$LIBRARY_PATH:/lustre/home/ucbtbdk/software/boost_1_63_0/stage/lib
-export LIBRARY_PATH=$LIBRARY_PATH:/lustre/home/ucbtbdk/software/boost_1_63_0/libs
+export LIBRARY_PATH=$LIBRARY_PATH:/lustre/home/ucbtbdk/software/boost_1_65_1/stage/lib
+export LIBRARY_PATH=$LIBRARY_PATH:/lustre/home/ucbtbdk/software/boost_1_65_1/libs
 
 
 # echo $venv
@@ -32,14 +32,14 @@ python3 -V
 #$ -S /bin/bash
 
 # 2. Request ten minutes of wallclock time (format hours:minutes:seconds).
-#$ -l h_rt=0:10:0
+#$ -l h_rt=20:0:0
 
 # 3. Request 1 gigabyte of RAM (must be an integer)
 #$ -l mem=1G
 
 # 5. Set the name of the job.
 #$ -N test_cpp
-g++ -std=c++11 -g -shared -o population_modules.so -Wall -fPIC -fopenmp  particle_sim_opemp.cpp model.cpp distances.cpp population.cpp -I/lustre/home/ucbtbdk/software/boost_1_63_0 -lboost_system -lboost_python -lpython3.6m -I/shared/ucl/apps/python/bundles/python3-3.0.0/venv/include/python3.6m/
+g++ -std=c++11 -g -shared -o population_modules.so -Wall -fPIC -fopenmp  particle_sim_opemp.cpp model.cpp distances.cpp population.cpp -I/lustre/home/ucbtbdk/software/boost_1_65_1 -lboost_system -lboost_python3 -lpython3.6m -I/shared/ucl/apps/python/bundles/python3-3.0.0/venv/include/python3.6m/
 
 # ./build.sh
 # python3 run_boost_rpr.py
