@@ -325,6 +325,7 @@ def plot_accepted_parameters(model_ref, input_dir, accepted_params_dir, bins):
 
 if __name__ == "__main__":
     wd = "/home/behzad/myriad_home/Scratch/cpp_consortium_sim/model_sel_doe/"
+    wd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
     model_space_report_path = wd + \
         "/output/two_species_big_0/Population_0/model_space_report.csv"
     model_ref_path = '/home/behzad/Documents/barnes_lab/sympy_consortium_framework/output/two_species_no_symm/model_ref.csv'
