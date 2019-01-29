@@ -153,7 +153,6 @@ def test_param_dicts():
     }
 
 
-
 def ABC_rejection():
     # Set time points
     t_0 = 0
