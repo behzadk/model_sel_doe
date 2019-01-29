@@ -2,6 +2,7 @@ import numpy as np
 from scipy import stats
 import csv
 import pandas as pd
+import os
 
 class Model:
     ##
@@ -9,11 +10,11 @@ class Model:
     # Priors should be loaded from input files
     # model ref refers to the index of the model in the cpp module.
     ##
-    def __init__(self, model_ref, prior, init_species_prior):
+    def __init__(self, model_ref, params_prior, init_species_prior):
         self._model_ref = model_ref
-        self._prior = prior
-        self._init_specices_prior = init_species_prior
-        self._n_params = len(prior)
+        self._params_prior = params_prior
+        self._init_species_prior = init_species_prior
+        self._n_params = len(params_prior)
         self._param_kdes = []
         self._has_kde = False
         self._sample_probability = 1
@@ -72,9 +73,9 @@ class Model:
         else:  # Sample from uniform prior
             sim_params = []
 
-            for param in self._prior:
-                lwr_bound = self._prior[param][0]
-                upr_bound = self._prior[param][1]
+            for param in self._params_prior:
+                lwr_bound = self._params_prior[param][0]
+                upr_bound = self._params_prior[param][1]
                 param_val = np.random.uniform(lwr_bound, upr_bound)
                 sim_params.append(param_val)
 
@@ -83,9 +84,9 @@ class Model:
     def sample_init_state(self):
         init_species = []
 
-        for s in self._init_specices_prior:
-            lwr_bound = self._init_specices_prior[s][0]
-            upr_bound = self._init_specices_prior[s][1]
+        for s in self._init_species_prior:
+            lwr_bound = self._init_species_prior[s][0]
+            upr_bound = self._init_species_prior[s][1]
             param_val = np.random.uniform(lwr_bound, upr_bound)
             init_species.append(param_val)
 
@@ -172,15 +173,6 @@ class ModelSpace:
         sampled_models = np.random.choice(self._model_list, n_sims, p=model_probabilities)
 
         return sampled_models
-
-    def write_accepted_particle_params(self, out_dir, simulated_particles, judgement_array, input_params):
-        for m in self._model_list:
-            out_path = out_dir + "model_" + str(m.get_model_ref()) + "_accepted_params"
-            with open(out_path, 'a') as out_csv:
-                wr = csv.writer(out_csv)
-                for idx, particle in enumerate(simulated_particles):    #
-                    if m is particle and judgement_array[idx]:          # If
-                        wr.writerow([idx] + input_params[idx])
 
     def model_space_report(self, output_dir, batch_num):
         file_path = output_dir + 'model_space_report.csv'
