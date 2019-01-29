@@ -36,6 +36,56 @@ def report_summary(model_space_report_path):
     print("Dead models: ", len(df))
 
 
+def generate_replicates_and_std(distances_df, model_space_report_df, num_replicates):
+    models = model_space_report_df.model_idx.values
+    batches = distances_df.batch_num.unique()
+    batch_sim_indexes = distances_df.sim_idx.unique()
+
+    total_simulations = len(distances_df)
+
+    distances_df['replicate'] = pd.qcut(range(total_simulations), num_replicates, labels=np.arange(num_replicates))
+
+
+    # Create replicate subset
+    for rep_num in range(num_replicates):
+        rep_subset_df = distances_df.loc[distances_df['replicate'] == rep_num]
+
+        replicate_acceptance_ratios = []
+
+        # Calculate acceptance ratio for each model within a subset
+        for m in models:
+            models_subset_df = rep_subset_df.loc[rep_subset_df['model_ref'] == m]
+            num_accepted = len(models_subset_df.loc[models_subset_df['Accepted'] == True].index)
+            num_rejected = len(models_subset_df.loc[models_subset_df['Accepted'] == False].index)
+
+            try:
+                acceptance_ratio = num_accepted / (num_rejected + num_accepted)
+            except(ZeroDivisionError):
+                acceptance_ratio = np.NaN
+
+            replicate_acceptance_ratios.append(acceptance_ratio)
+
+        replicate_name = 'replicate_NUM'.replace('NUM', str(rep_num))
+        model_space_report_df[replicate_name] = replicate_acceptance_ratios
+
+
+    # Calculate standard deviation between replicates
+    model_standard_deviations = []
+    for m in models:
+        model_subset_df = model_space_report_df.loc[model_space_report_df['model_idx'] == m]
+        model_replicate_acceptance_ratios = []
+
+        for rep_num in range(num_replicates):
+            replicate_name = 'replicate_NUM'.replace('NUM', str(rep_num))
+            replicate_ratio = model_subset_df[replicate_name].values[0]
+            model_replicate_acceptance_ratios.append(replicate_ratio)
+
+        model_standard_deviations.append(np.std(model_replicate_acceptance_ratios))
+
+    model_space_report_df['stdev'] = model_standard_deviations
+
+    return model_space_report_df
+
 def find_spock(model_ref_path):
     df = pd.read_csv(model_ref_path)
     col_names = list(df)
@@ -323,9 +373,11 @@ def plot_accepted_parameters(model_ref, input_dir, accepted_params_dir, bins):
             plt.show()
 
 
+
 if __name__ == "__main__":
     wd = "/home/behzad/myriad_home/Scratch/cpp_consortium_sim/model_sel_doe/"
     wd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
+    
     model_space_report_path = wd + \
         "/output/two_species_big_0/Population_0/model_space_report.csv"
     model_ref_path = '/home/behzad/Documents/barnes_lab/sympy_consortium_framework/output/two_species_no_symm/model_ref.csv'
@@ -334,13 +386,19 @@ if __name__ == "__main__":
         "/output/two_species_big_0/Population_0/model_accepted_params/"
     inputs_dir = wd + "/input_files_two_species/"
 
-    report_summary(model_space_report_path)
+    distances_path = wd + "/output/two_species_big_0/Population_0/distances.csv"
 
-    plot_spock_acceptance_ratio(model_space_report_path, model_ref_path, "test")
+    model_space_report_df = pd.read_csv(model_space_report_path)
+    distances_df = pd.read_csv(distances_path)
+    model_space_df = generate_replicates_and_std(distances_df, model_space_report_df, 5)
+    print(model_space_df)
 
-    plot_all_acceptance_ratios(model_space_report_path, "all_models.png")
-    plot_above_threshold(model_space_report_path, 0.4, "top_models.png")
-    acceptance_ratio_hist(model_space_report_path, 20, "acceptance_ratio_hist.png")
+    # plot_spock_acceptance_ratio(model_space_report_path, model_ref_path, "test")
+
+    # plot_all_acceptance_ratios(model_space_report_path, "all_models.png")
+    # plot_above_threshold(model_space_report_path, 0.4, "top_models.png")
+    # acceptance_ratio_hist(model_space_report_path, 20, "acceptance_ratio_hist.png")
+
     # plot_accepted_parameters(104, inputs_dir, accepted_params_dir, 25)
 
     # growth_distribution(41, inputs_dir, accepted_params_dir)
