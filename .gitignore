@@ -1,3 +1,10 @@
+
+input_multi_model.xml
+log.test.1
+nohup.out
+output_two_species_bigspace/
+run_py.sh
+old_model_source_header
 output/
 population_modules.so
 __pycache__/

@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -43,20 +44,23 @@ def generate_replicates_and_std(distances_df, model_space_report_df, num_replica
 
     total_simulations = len(distances_df)
 
-    distances_df['replicate'] = pd.qcut(range(total_simulations), num_replicates, labels=np.arange(num_replicates))
-
+    distances_df['replicate'] = pd.qcut(
+        range(total_simulations), num_replicates, labels=np.arange(num_replicates))
 
     # Create replicate subset
     for rep_num in range(num_replicates):
         rep_subset_df = distances_df.loc[distances_df['replicate'] == rep_num]
-
+        print("Replicate: ", rep_num, " ",
+              " Simulations: ", len(rep_subset_df.index))
         replicate_acceptance_ratios = []
 
         # Calculate acceptance ratio for each model within a subset
         for m in models:
             models_subset_df = rep_subset_df.loc[rep_subset_df['model_ref'] == m]
-            num_accepted = len(models_subset_df.loc[models_subset_df['Accepted'] == True].index)
-            num_rejected = len(models_subset_df.loc[models_subset_df['Accepted'] == False].index)
+            num_accepted = len(
+                models_subset_df.loc[models_subset_df['Accepted'] == True].index)
+            num_rejected = len(
+                models_subset_df.loc[models_subset_df['Accepted'] == False].index)
 
             try:
                 acceptance_ratio = num_accepted / (num_rejected + num_accepted)
@@ -67,7 +71,6 @@ def generate_replicates_and_std(distances_df, model_space_report_df, num_replica
 
         replicate_name = 'replicate_NUM'.replace('NUM', str(rep_num))
         model_space_report_df[replicate_name] = replicate_acceptance_ratios
-
 
     # Calculate standard deviation between replicates
     model_standard_deviations = []
@@ -80,11 +83,15 @@ def generate_replicates_and_std(distances_df, model_space_report_df, num_replica
             replicate_ratio = model_subset_df[replicate_name].values[0]
             model_replicate_acceptance_ratios.append(replicate_ratio)
 
-        model_standard_deviations.append(np.std(model_replicate_acceptance_ratios))
+        model_standard_deviations.append(
+            np.std(model_replicate_acceptance_ratios))
 
     model_space_report_df['stdev'] = model_standard_deviations
 
-    return model_space_report_df
+    sims_per_replicate = len(distances_df.loc[distances_df['replicate'] == 0])
+
+    return model_space_report_df, sims_per_replicate
+
 
 def find_spock(model_ref_path):
     df = pd.read_csv(model_ref_path)
@@ -157,25 +164,41 @@ def plot_spock_acceptance_ratio(model_space_report_path, model_ref_path, output_
     plt.show()
 
 
-def plot_all_acceptance_ratios(model_space_report_path, output_img_name):
-    df = pd.read_csv(model_space_report_path)
+def plot_acceptance_ratios(output_dir, model_space_report_df, num_replicates, sims_per_replicate, acceptance_threshold=0):
+    output_name = "all_model_acceptance_ratios_#REPS#".replace('#REPS#', str(num_replicates))
+    out_path = outpu/t_dir + output_name
+    df = model_space_report_df
 
-    models = df.model_idx.values
     accepted_count = df.accepted_count.values
     simulated_count = df.simulated_count.values
 
     acceptance_ratio = []
+    models = df.model_idx.values
 
     for m in models:
         acceptance_ratio.append(accepted_count[m] / simulated_count[m])
 
     df['acceptance_ratio'] = acceptance_ratio
-    plt.bar(models, df.acceptance_ratio, width=1)
-    plt.xlabel('Model reference')
-    plt.ylabel(' #accepted / #sampled')
-    plt.savefig(output_img_name, dpi=300)
 
-    plt.show()
+    df = df.loc[df['acceptance_ratio'] >= acceptance_threshold]
+    model_stdevs = df.stdev
+    print()
+    models = df.model_idx.values
+    matplotlib.rcParams.update({'errorbar.capsize': 2})
+    # plt.scatter(models, df.acceptance_ratio, s=15)
+
+    uplims = np.zeros(models.shape)
+    title = 'n=' + str(num_replicates) + ' Sims=' + str(sims_per_replicate)
+    plt.title(title)
+    plt.bar(models, df.acceptance_ratio,)
+    plt.errorbar(models, df.acceptance_ratio,
+                 yerr=model_stdevs,
+                 linestyle="None", color='black')
+    plt.xlabel('Model reference')
+    plt.ylabel('#accepted / #sampled')
+    plt.savefig(out_path, dpi=300)
+    # plt.show()
+    plt.close()
 
 
 def plot_above_threshold(model_space_report_path, acceptance_threshold, output_img_name):
@@ -232,7 +255,8 @@ def acceptance_ratio_hist(model_space_report_path, bins, output_img_name):
 
 
 def two_D_parameter_plots(model_ref, input_dir, accepted_params_dir):
-    output_name = "model_IDX_param_posterior.png".replace('IDX', str(model_ref))
+    output_name = "model_IDX_param_posterior.png".replace(
+        'IDX', str(model_ref))
 
     input_params_file = input_dir + \
         "params_IDX.csv".replace("IDX", str(model_ref))
@@ -251,7 +275,8 @@ def two_D_parameter_plots(model_ref, input_dir, accepted_params_dir):
     plot_params = ['D', 'mu_max_x', 'mu_max_c']
     # plot_params = ['D', 'kBmax_mccB', 'kBmax_mccV']
 
-    accepted_params_df = pd.read_csv(accepted_params_file, names=param_names_list, header=None, index_col=None)
+    accepted_params_df = pd.read_csv(
+        accepted_params_file, names=param_names_list, header=None, index_col=None)
     accepted_params_df = accepted_params_df.reset_index()
 
     plt.rcParams.update({'font.size': 8})
@@ -288,14 +313,14 @@ def two_D_parameter_plots(model_ref, input_dir, accepted_params_dir):
 
             axes[idx_1, idx_2].scatter(p_1_values, p_2_values, s=1.5)
 
-
     plt.savefig(output_name, dpi=300)
     # plt.show()
+
 
 def growth_distribution(model_ref, input_dir, accepted_params_dir):
     output_name = "model_IDX_growth_ratio.png".replace('IDX', str(model_ref))
     input_params_file = input_dir + \
-    "params_IDX.csv".replace("IDX", str(model_ref))
+        "params_IDX.csv".replace("IDX", str(model_ref))
     accepted_params_file = accepted_params_dir + \
         "model_IDX_accepted_params".replace('IDX', str(model_ref))
 
@@ -307,7 +332,8 @@ def growth_distribution(model_ref, input_dir, accepted_params_dir):
     param_names_list = input_df.param_name.values.tolist()
     print(param_names_list)
 
-    accepted_params_df = pd.read_csv(accepted_params_file, names=param_names_list, header=None, index_col=None)
+    accepted_params_df = pd.read_csv(
+        accepted_params_file, names=param_names_list, header=None, index_col=None)
     accepted_params_df = accepted_params_df.reset_index()
 
     # Load parameters list
@@ -327,6 +353,7 @@ def growth_distribution(model_ref, input_dir, accepted_params_dir):
     plt.title('Model_' + str(model_ref), fontsize=20)
     plt.savefig(output_name, dpi=300)
     plt.cla()
+
 
 def plot_accepted_parameters(model_ref, input_dir, accepted_params_dir, bins):
     input_params_file = input_dir + \
@@ -373,25 +400,34 @@ def plot_accepted_parameters(model_ref, input_dir, accepted_params_dir, bins):
             plt.show()
 
 
-
 if __name__ == "__main__":
     wd = "/home/behzad/myriad_home/Scratch/cpp_consortium_sim/model_sel_doe/"
     wd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
-    
-    model_space_report_path = wd + \
-        "/output/two_species_big_0/Population_0/model_space_report.csv"
+
+    output_folder = wd + "/output"
+    experiment_folder = "/two_species_big_1"
+    output_dir = output_folder + experiment_folder
+
+    model_space_report_path = experiment_folder + \
+        "/Population_0/model_space_report.csv"
     model_ref_path = '/home/behzad/Documents/barnes_lab/sympy_consortium_framework/output/two_species_no_symm/model_ref.csv'
 
-    accepted_params_dir = wd + \
-        "/output/two_species_big_0/Population_0/model_accepted_params/"
+    accepted_params_dir = experiment_folder + \
+        "/Population_0/model_accepted_params/"
     inputs_dir = wd + "/input_files_two_species/"
 
-    distances_path = wd + "/output/two_species_big_0/Population_0/distances.csv"
+    distances_path = experiment_folder + "/Population_0/distances.csv"
 
     model_space_report_df = pd.read_csv(model_space_report_path)
     distances_df = pd.read_csv(distances_path)
-    model_space_df = generate_replicates_and_std(distances_df, model_space_report_df, 5)
-    print(model_space_df)
+
+    reps = np.arange(0, 310, 10)
+    print(reps)
+    for num_replicates in reps:
+        model_space_df, sims_per_replicate = generate_replicates_and_std(output_folder,
+            distances_df, model_space_report_df, num_replicates)
+
+        plot_acceptance_ratios(output_dir, model_space_df, num_replicates, sims_per_replicate)
 
     # plot_spock_acceptance_ratio(model_space_report_path, model_ref_path, "test")
 
@@ -412,4 +448,3 @@ if __name__ == "__main__":
     # two_D_parameter_plots(88, inputs_dir, accepted_params_dir)
     # two_D_parameter_plots(104, inputs_dir, accepted_params_dir)
     # two_D_parameter_plots(106, inputs_dir, accepted_params_dir)
-
