@@ -166,7 +166,7 @@ def plot_spock_acceptance_ratio(model_space_report_path, model_ref_path, output_
 
 def plot_acceptance_ratios(output_dir, model_space_report_df, num_replicates, sims_per_replicate, acceptance_threshold=0):
     output_name = "all_model_acceptance_ratios_#REPS#".replace('#REPS#', str(num_replicates))
-    out_path = outpu/t_dir + output_name
+    out_path = output_dir + output_name
     df = model_space_report_df
 
     accepted_count = df.accepted_count.values
@@ -404,30 +404,32 @@ if __name__ == "__main__":
     wd = "/home/behzad/myriad_home/Scratch/cpp_consortium_sim/model_sel_doe/"
     wd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
 
-    output_folder = wd + "/output"
-    experiment_folder = "/two_species_big_1"
-    output_dir = output_folder + experiment_folder
+    sim_output_folder = wd + "/output"
+    sim_experiment_folder = sim_output_folder + "/two_species_big_1"
+    
 
-    model_space_report_path = experiment_folder + \
+    model_space_report_path = sim_experiment_folder + \
         "/Population_0/model_space_report.csv"
     model_ref_path = '/home/behzad/Documents/barnes_lab/sympy_consortium_framework/output/two_species_no_symm/model_ref.csv'
 
-    accepted_params_dir = experiment_folder + \
+    accepted_params_dir = sim_experiment_folder + \
         "/Population_0/model_accepted_params/"
     inputs_dir = wd + "/input_files_two_species/"
 
-    distances_path = experiment_folder + "/Population_0/distances.csv"
+    distances_path = sim_experiment_folder + "/Population_0/distances.csv"
 
     model_space_report_df = pd.read_csv(model_space_report_path)
     distances_df = pd.read_csv(distances_path)
 
-    reps = np.arange(0, 310, 10)
+    vis_output_dir = "./output/"
+
+    reps = np.arange(1, 310, 10)
     print(reps)
     for num_replicates in reps:
-        model_space_df, sims_per_replicate = generate_replicates_and_std(output_folder,
-            distances_df, model_space_report_df, num_replicates)
+        model_space_df, sims_per_replicate = generate_replicates_and_std(distances_df, 
+            model_space_report_df, num_replicates)
 
-        plot_acceptance_ratios(output_dir, model_space_df, num_replicates, sims_per_replicate)
+        plot_acceptance_ratios(vis_output_dir, model_space_df, num_replicates, sims_per_replicate)
 
     # plot_spock_acceptance_ratio(model_space_report_path, model_ref_path, "test")
 
