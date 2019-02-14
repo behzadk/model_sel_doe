@@ -2,8 +2,6 @@
 #define BOOST_UBLAS_TYPE_CHECK 0
 
 #include "model.h"
-
-
 #include <boost/numeric/odeint.hpp>
 #include <omp.h>
 #include <boost/numeric/odeint/external/openmp/openmp.hpp>
@@ -15,10 +13,17 @@ using namespace boost::python;
 #include <boost/numeric/odeint/integrate/max_step_checker.hpp>
 #include "distances.h"
 
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/io.hpp>
+#include <boost/numeric/ublas/lu.hpp>
+
+#include <gsl/gsl_math.h>
+#include <gsl/gsl_eigen.h>
+
+#include <eigen3/Eigen/Dense>
+
 using namespace std;
 using namespace boost::numeric::odeint;
-
-
 
 class ScopedGILRelease
 {
@@ -44,17 +49,19 @@ struct simulation_observer
     simulation_observer( std::vector< state_type > &states, rosenbrock4_controller<rosenbrock4<double> > &stepper_controller )
     : m_states( states ), m_stepper_controller( stepper_controller )  { }
 
-    void operator()( const ublas_vec_t x , double t )
+    void operator()( ublas_vec_t x , double t )
     {
         m_steps +=1;
-        // std::cout << m_steps << std::endl;
         std::vector<double> new_state;
 
         for(int i = 0; i < x.size(); i++){
             double val = x(i);
-            new_state.push_back(val);
 
-            if(val < 0) throw runtime_error("Negative species value");
+            if (val < 1e-200) throw runtime_error("species_decayed");
+
+            if(val < 0) throw runtime_error("negative_species");
+
+            new_state.push_back(val);
 
         }
 
@@ -72,7 +79,10 @@ Particle::Particle(ublas_vec_t init_state, std::vector<double> params, Models mo
 }
 
 
-
+/*
+* Overloaded functions to either run jacobian or model, depending upon the inputs.
+* 
+*/
 void Particle::operator() (const ublas_vec_t & y , ublas_vec_t &dxdt , double t ) // run_model_func
 {
     std::vector<model_t> m_vec = m.models_vec;
@@ -103,8 +113,275 @@ void Particle::simulate_particle_rosenbrock(std::vector<double> time_points)
     integrate_times(  rosen_stepper, 
         make_pair(boost::ref( *this ), boost::ref( *this )) , 
         state_init , time_points.begin(), time_points.end() , 1e-6, simulation_observer(state_vec, rosen_stepper), mx_step);
+}
+
+
+/*
+*   Not working
+*
+*
+*/
+boost::python::list Particle::get_eigenvalues_eigen()
+{   
+    // matrix dimensions defined by the number of species
+    int n_species = state_init.size();
+
+    // Set y vector as final state of simulation
+    ublas_vec_t y(n_species);
+    for (int i=0; i < n_species; i++) {
+        y(i) = state_vec.back()[i];
+    }
+    
+    // Init matrix n_species x n_species
+    ublas_mat_t J (n_species, n_species);
+
+    // Not sure why this is necessary
+    ublas_vec_t dfdt(n_species);
+
+    // Dummy values
+    const double t = 0;
+
+    // Fill jacobian matrix
+    m.run_jac(y, J, t, dfdt, part_params, model_ref);
+
+    // Transfer jacobian from ublas matrix to eigen matrix
+    Eigen::MatrixXd mat(n_species, n_species);
+    for (int i = 0; i < n_species; i++) {
+        for (int j = 0; j < n_species; j++) {
+            double val = J(i, j);
+            mat(i, j) = val;
+        }
+    }
+
+    std::cout << "" << std::endl;
+
+
+    Eigen::EigenSolver<Eigen::MatrixXd> eig_solver;
+    std::cout << "Eigen determinant: " << mat.determinant() << std::endl;
+    std::cout << "Eigen trace: " << mat.trace() << std::endl;
+    std::cout << "Max iterations: " << eig_solver.getMaxIterations() <<std::endl;
+    
+
+    Eigen::VectorXcd eivals = mat.eigenvalues();
+    std::cout << eivals << std::endl;
+
+    eig_solver.compute(mat);
+
+    // Extract eigenvalues
+    boost::python::list output;
+    complex<double> eval;
+    for(int i = 0; i < n_species; i++)
+    {
+        boost::python::list eigenval;
+
+        eval = eig_solver.eigenvalues().col(0)[i];
+
+        double real_part = eval.real();
+        double imag_part = eval.imag();
+
+        std::cout << real_part << std::endl;
+        eigenval.append(real_part);
+        eigenval.append(imag_part);
+
+        output.append(eigenval);
+    }
+
+    std::cout << "Eigneolver info: " << eig_solver.info() << std::endl;
+
+    return output;
 
 }
+
+/*
+*   Not working
+*
+*
+*/
+boost::python::list Particle::get_eigenvalues()
+{
+    int n_species = state_init.size();
+    std::cout << "n_species: " << n_species << std::endl;
+    ublas_vec_t y(n_species);
+    for (int i=0; i < n_species; i++) {
+        y(i) = state_vec.back()[i];
+    }
+    
+    // Init matrix n_species x n_species
+    ublas_mat_t J (n_species, n_species);
+
+    // Not sure why this is necessary
+    ublas_vec_t dfdt(n_species);
+
+    // Dummy values
+    const double t = 0;
+
+    // Fill jacobian matrix
+    m.run_jac(y, J, t, dfdt, part_params, model_ref);
+
+    // Init array 
+    double data[n_species][n_species];
+
+    // Unpack ublas jac into standard array
+    for (int i = 0; i < n_species; i++) {
+        for (int j = 0; j < n_species; j++) {
+            double val = J(i, j);
+            // int pos = (i * n_species) + j;
+            data[i][j] = val;
+        }
+    }
+
+    boost::python::list output;
+
+    // Find eigenvalues and eigenvectors. Copy of example for non-symmmetric complex problem
+    // https://www.gnu.org/software/gsl/doc/html/eigen.html#examples
+    // gsl_matrix_view mat_view = gsl_matrix_view_array (data, n_species, n_species);
+    gsl_matrix *gsl_J = gsl_matrix_alloc(n_species, n_species);
+    gsl_vector_complex *eval = gsl_vector_complex_alloc (n_species);
+    
+    gsl_eigen_nonsymm_workspace * w = gsl_eigen_nonsymm_alloc(n_species);
+    gsl_eigen_nonsymm_params(0, 0, w);
+    for(int i = 0; i < n_species; i++) {
+        for(int j = 0; j < n_species; j++) {
+            gsl_matrix_set(gsl_J, i, j, data[i][j]);
+        }
+    }
+
+    gsl_eigen_nonsymm(gsl_J, eval, w); /*diagonalize E which is M at t fixed*/
+
+    boost::python::list eigen_values;
+
+    for (int i = 0; i < n_species; i++)
+    {
+        boost::python::list eig;
+
+        gsl_complex eval_i = gsl_vector_complex_get(eval, i);
+
+        double real_val = GSL_REAL(eval_i);
+        double img_val = GSL_IMAG(eval_i);
+
+        eig.append(real_val);
+        eig.append(img_val);
+
+        eigen_values.append(eig);
+    }
+
+    output.append(eigen_values);
+    // output.append(eig_real_product);
+
+    return output;
+}
+
+double Particle::get_trace()
+{
+    int n_species = state_init.size();
+
+    ublas_vec_t y(n_species);
+    for (int i=0; i < n_species; i++) {
+        y(i) = state_vec.back()[i];
+    }
+    
+    // Init matrix n_species x n_species
+    ublas_mat_t J (n_species, n_species);
+
+    // Dummy parameters
+    const double t = 0;
+
+    ublas_vec_t dfdt(n_species);
+
+    // Fill jacobian matrix
+    m.run_jac(y, J, t, dfdt, part_params, model_ref);
+
+    double trace = 0;
+
+    for (int i=0; i < n_species; i++) {
+        trace = trace + J(i, i);
+    }
+
+    return trace;
+}
+
+
+
+/*
+* Returns the jacobian using the end state
+*/
+boost::python::list Particle::get_end_state_jacobian()
+{
+    int n_species = state_init.size();
+    
+    ublas_vec_t y(n_species);
+    for (int i=0; i < n_species; i++) {
+        y(i) = state_vec.back()[i];
+    }
+    
+
+    // Init matrix n_species x n_species
+    ublas_mat_t J (n_species, n_species);
+
+    // Not sure why this is necessary
+    ublas_vec_t dfdt(n_species);
+
+    // Dummy values
+    const double t = 0;
+
+    // Fill jacobian matrix
+    m.run_jac(y, J, t, dfdt, part_params, model_ref);
+
+
+    // Unpack ublas jac into python list
+    boost::python::list py_J;
+    for (int i = 0; i < n_species; i++) {
+        for (int j = 0; j < n_species; j++) {
+            double val = J(i, j);
+            py_J.append(val);
+        }
+    }
+
+    return py_J;
+}
+
+/*
+* Returns the jacobian using the initial state
+*
+*
+*
+*/
+boost::python::list Particle::get_init_state_jacobian()
+{
+    int n_species = state_init.size();
+    
+    ublas_vec_t y(n_species);
+    for (int i=0; i < n_species; i++) {
+        y(i) = state_init[i];
+    }
+    
+
+    // Init matrix n_species x n_species
+    ublas_mat_t J (n_species, n_species);
+
+    // Not sure why this is necessary
+    ublas_vec_t dfdt(n_species);
+
+    // Dummy values
+    const double t = 0;
+
+    // Fill jacobian matrix
+    m.run_jac(y, J, t, dfdt, part_params, model_ref);
+
+
+    // Unpack ublas jac into python list
+    boost::python::list py_J;
+    for (int i = 0; i < n_species; i++) {
+        for (int j = 0; j < n_species; j++) {
+            double val = J(i, j);
+            py_J.append(val);
+        }
+    }
+
+    return py_J;
+}
+
+
 
 /*
  * Iterates the state vector, returning a flattened boost::python::list of the results.
@@ -132,4 +409,105 @@ std::vector<state_type>& Particle::get_state_vec() {
 
 void Particle::set_distance_vector(std::vector<std::vector<double>> sim_dist) {
     this->sim_distances = sim_dist;
+}
+
+/*
+Code from here http://programmingexamples.net/wiki/CPP/Boost/Math/uBLAS/determinant
+*/
+int Particle::determinant_sign(const boost::numeric::ublas::permutation_matrix<std::size_t>& pm)
+{
+    int pm_sign=1;
+    std::size_t size = pm.size();
+    for (std::size_t i = 0; i < size; ++i)
+        if (i != pm(i))
+            pm_sign *= -1.0; // swap_rows would swap a pair of rows here, so we change sign
+    return pm_sign;
+}
+
+double Particle::get_determinant() {
+    int n_species = state_init.size();
+    
+    ublas_vec_t y(n_species);
+    for (int i=0; i < n_species; i++) {
+        y(i) = state_vec.back()[i];
+        std::cout << (y(i)) << std::endl;
+    }
+    
+    // Init matrix n_species x n_species
+    ublas_mat_t J (n_species, n_species);
+
+    // Not sure why this is necessary
+    ublas_vec_t dfdt(n_species);
+
+    // Dummy values
+    const double t = 0;
+
+    // Fill jacobian matrix
+    m.run_jac(y, J, t, dfdt, part_params, model_ref);
+
+    boost::numeric::ublas::permutation_matrix<std::size_t> pm(J.size1());
+    long double det = 1.0;
+    if( boost::numeric::ublas::lu_factorize(J, pm) ) {
+        det = 0.0;
+    } else {
+        for(int i = 0; i < J.size1(); i++){
+            det *= J(i,i); // multiply by elements on diagonal
+        }
+
+        det = det * determinant_sign( pm );
+    }
+
+    return det;
+}
+
+boost::python::list Particle::get_final_species_values()
+{
+    int n_species = state_init.size();
+
+    boost::python::list end_state;
+
+    ublas_vec_t y(n_species);
+    for (int i=0; i < n_species; i++) {
+        end_state.append(state_vec.back()[i]);
+        std::cout << (y(i)) << std::endl;
+    }
+
+    return end_state;
+}
+
+
+
+void Particle::laplace_expansion()
+{
+    int n_species = state_init.size();
+    
+    ublas_vec_t y(n_species);
+    for (int i=0; i < n_species; i++) {
+        y(i) = state_vec.back()[i];
+    }
+    
+    // Init matrix n_species x n_species
+    ublas_mat_t J (n_species, n_species);
+
+    // Not sure why this is necessary
+    ublas_vec_t dfdt(n_species);
+
+    // Dummy values
+    const double t = 0;
+
+    // Fill jacobian matrix
+    m.run_jac(y, J, t, dfdt, part_params, model_ref);
+
+
+    int i, j;
+
+    long double sol = 0;
+    // Iterate columns
+    for (int j=0; j < J.size1(); j++) {
+        
+
+    }
+
+
+
 }

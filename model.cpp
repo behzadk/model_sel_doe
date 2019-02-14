@@ -11,11 +11,13 @@ Models::Models() {
 
 void Models::run_model_ublas(const ublas_vec_t &y , ublas_vec_t &dxdt , double t, std::vector <double> &part_params, int &model_ref)
 {
+
 	(this->*models_ublas_vec[model_ref])(y, dxdt, t, part_params);
 }
 
 void Models::run_jac(const ublas_vec_t & x , ublas_mat_t &J , const double & t , ublas_vec_t &dfdt, std::vector <double> &part_params, int &model_ref)
 {
+
 	(this->*models_jac_vec[model_ref])(x, J, t, dfdt, part_params);
 }
 
@@ -2960,29 +2962,29 @@ void Models::jac_30(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*
 	const double omega_max_mccV = part_params[14];
 
 	J( 0 , 0 ) = -std::pow(y[3], n_omega_mccV)*omega_max_mccV/(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)) - D + y[2]*mu_max_x/(K_x + y[2]);
-	J( 0 , 1 ) = 0;
+	J( 0 , 1 ) = 0.0;
 	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
 	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*std::pow(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[3], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[3]*(std::pow(y[3], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
-	J( 0 , 4 ) = 0;
-	J( 1 , 0 ) = 0;
+	J( 0 , 4 ) = 0.0;
+	J( 1 , 0 ) = 0.0;
 	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
 	J( 1 , 2 ) = -y[1]*y[2]*mu_max_c/std::pow(K_c + y[2], 2) + y[1]*mu_max_c/(K_c + y[2]);
-	J( 1 , 3 ) = 0;
-	J( 1 , 4 ) = 0;
+	J( 1 , 3 ) = 0.0;
+	J( 1 , 4 ) = 0.0;
 	J( 2 , 0 ) = -y[2]*mu_max_x/(g_x*(K_x + y[2]));
 	J( 2 , 1 ) = -y[2]*mu_max_c/(g_c*(K_c + y[2]));
 	J( 2 , 2 ) = -D + y[1]*y[2]*mu_max_c/(g_c*std::pow(K_c + y[2], 2)) - y[1]*mu_max_c/(g_c*(K_c + y[2])) + y[0]*y[2]*mu_max_x/(g_x*std::pow(K_x + y[2], 2)) - y[0]*mu_max_x/(g_x*(K_x + y[2]));
-	J( 2 , 3 ) = 0;
-	J( 2 , 4 ) = 0;
+	J( 2 , 3 ) = 0.0;
+	J( 2 , 4 ) = 0.0;
 	J( 3 , 0 ) = std::pow(y[4], nB_mccV)*kBmax_mccV/(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV));
-	J( 3 , 1 ) = 0;
-	J( 3 , 2 ) = 0;
+	J( 3 , 1 ) = 0.0;
+	J( 3 , 2 ) = 0.0;
 	J( 3 , 3 ) = -D;
 	J( 3 , 4 ) = -std::pow(y[4], 2*nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*std::pow(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV), 2)) + std::pow(y[4], nB_mccV)*y[0]*kBmax_mccV*nB_mccV/(y[4]*(std::pow(y[4], nB_mccV) + std::pow(KB_mccV, nB_mccV)));
 	J( 4 , 0 ) = kA_1;
-	J( 4 , 1 ) = 0;
-	J( 4 , 2 ) = 0;
-	J( 4 , 3 ) = 0;
+	J( 4 , 1 ) = 0.0;
+	J( 4 , 2 ) = 0.0;
+	J( 4 , 3 ) = 0.0;
 	J( 4 , 4 ) = -D;
 
 }
@@ -3811,6 +3813,7 @@ void Models::model_40(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std:
 	dydt[5] = -y[5]*D + y[1]*kA_1;
 
 }
+
 void Models::jac_40(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*/ , ublas_vec_t &dfdt, std::vector <double> &part_params)
 {
 	//Unpack parameters
@@ -3841,6 +3844,33 @@ void Models::jac_40(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*
 	J( 0 , 2 ) = -y[0]*y[2]*mu_max_x/std::pow(K_x + y[2], 2) + y[0]*mu_max_x/(K_x + y[2]);
 	J( 0 , 3 ) = std::pow(y[3], 2*n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*std::pow(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB), 2)) - std::pow(y[3], n_omega_mccB)*y[0]*n_omega_mccB*omega_max_mccB/(y[3]*(std::pow(y[3], n_omega_mccB) + std::pow(K_omega_mccB, n_omega_mccB)));
 	J( 0 , 4 ) = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	
+	// long double g = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+	// double k = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2)) - std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+
+	// double part_a = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2));
+	// double part_a_1 = std::pow(y[4], 2*n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV;
+	// double part_a_2 = (y[4]*std::pow(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV), 2));
+
+	// double part_b = std::pow(y[4], n_omega_mccV)*y[0]*n_omega_mccV*omega_max_mccV/(y[4]*(std::pow(y[4], n_omega_mccV) + std::pow(K_omega_mccV, n_omega_mccV)));
+
+	// if (std::isnan(g)){
+	// 	std::cout << y[0] << std::endl;
+	// 	std::cout << y[1] << std::endl;
+	// 	std::cout << y[2] << std::endl;
+	// 	std::cout << y[3] << std::endl;
+	// 	std::cout << y[4] << std::endl;
+	// 	std::cout << y[5] << std::endl;
+	// 	std::cout << "" << std::endl;
+	// 	std::cout << part_a << std::endl;
+	// 	std::cout << part_b << std::endl;
+	// 	std::cout << "" << std::endl;
+	// 	std::cout << part_a_1 << std::endl;
+	// 	std::cout << part_a_2 << std::endl;
+	// 	std::cout << part_a_1/part_a_2 << std::endl;
+	// 	exit(0);
+	// }
+
 	J( 0 , 5 ) = 0;
 	J( 1 , 0 ) = 0;
 	J( 1 , 1 ) = -D + y[2]*mu_max_c/(K_c + y[2]);
@@ -3872,6 +3902,15 @@ void Models::jac_40(const ublas_vec_t & y , ublas_mat_t &J , const double &/* t*
 	J( 5 , 3 ) = 0;
 	J( 5 , 4 ) = 0;
 	J( 5 , 5 ) = -D;
+
+	// for (int i=0; i < y.size(); i++){
+	// 	for (int j=0; j < y.size(); j++){
+	// 		double val = J(i, j);
+	// 		if (std::isnan(val)) {
+	// 			J(i, j) = 0.0;
+	// 		}
+	// 	}
+	// }
 
 }
 void Models::model_41(const ublas_vec_t  &y , ublas_vec_t &dydt , double t, std::vector <double> &part_params)

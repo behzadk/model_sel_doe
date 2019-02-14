@@ -45,3 +45,5 @@ def check_distances(particle_distances, epsilon_array):
         particle_judgements.append(particle_accept)
 
     return particle_judgements
+
+

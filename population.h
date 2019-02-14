@@ -21,10 +21,22 @@ class Population {
 		PopDistances get_population_distances() {return _all_distances;};
 		
 		boost::python::list get_flattened_distances_list();
-		boost::python::list get_particle_state_list(int);
 		boost::python::list get_timepoints_list();
+		boost::python::list get_particle_state_list(int);
+		boost::python::list get_particle_eigenvalues(int);
+		boost::python::list get_particle_init_state_jacobian(int);
+		boost::python::list get_particle_end_state_jacobian(int);
+
+
+		double get_particle_det(int);
+		void get_particle_laplace_expansion(int);
+
 		bool check_integration_failure(int);
-		
+		std::string get_particle_integration_error(int);
+		boost::python::list get_all_particle_integration_errors();
+
+		double get_particle_trace(int);
+
 	private:
 		int _n_sims;
 		int  _t_0;

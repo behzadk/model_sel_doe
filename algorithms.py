@@ -36,7 +36,7 @@ class Rejection:
         self.n_species_fit = n_species_fit
         self.n_distances = n_distances
 
-        self.epsilon = [100, 10]
+        self.epsilon = [100, 10, 1e3]
 
         # Init model space
         self.model_space = ModelSpace(model_list)
@@ -112,12 +112,12 @@ class Rejection:
                     idx +=1
 
             with open(out_path, 'a') as out_csv:
-                wr = csv.writer(out_csv)
+                wr = csv.writer(out_csv, quoting=csv.QUOTE_NONNUMERIC)
                 wr.writerow(col_header)
 
         # Write distances
         with open(out_path, 'a') as out_csv:
-            wr = csv.writer(out_csv)
+            wr = csv.writer(out_csv, quoting=csv.QUOTE_NONNUMERIC)
 
             for idx, m_ref in enumerate(model_refs):
                 row_vals = [idx, batch_num, m_ref, judgement_array[idx]]
@@ -146,6 +146,68 @@ class Rejection:
                 for idx, particle in enumerate(simulated_particles):
                     if m is particle:
                         wr.writerow([idx] + [batch_num] + [judgement_array[idx]] + input_params[idx] + input_init_species[idx])
+
+    def write_eigenvalues(self, out_dir, model_refs, batch_num, simulated_particles, end_state=False, init_state=False):
+        if end_state == True:
+            out_path = out_dir + "eigenvalues_end_state.csv"
+
+        elif init_state == True:
+            out_path = out_dir + "eigenvalues_init_state.csv"
+
+        else:
+            print("State to use for jacobian not specified, exiting...")
+            exit()
+
+        # If file doesn't exist, write header
+        if not os.path.isfile(out_path):
+            col_header = ['sim_idx', 'batch_num', 'model_ref', 'integ_error']
+            for i in range(10):
+                str_eig_real = 'eig_#I#_real'.replace('#I#', str(i))
+                str_eig_imag = 'eig_#I#_imag'.replace('#I#', str(i))
+                col_header = col_header + [str_eig_real] + [str_eig_imag]
+
+            with open(out_path, 'a') as out_csv:
+                wr = csv.writer(out_csv)
+                wr.writerow(col_header)
+
+        with open(out_path, 'a') as out_csv:
+            wr = csv.writer(out_csv)
+
+
+            for sim_idx, m_ref in enumerate(model_refs):
+                n_species = len(simulated_particles[sim_idx]._init_species_prior)
+
+                jac = []
+                if end_state == True:
+                    jac = self.pop_obj.get_particle_end_state_jacobian(sim_idx)
+
+                elif init_state == True:
+                    jac = self.pop_obj.get_particle_init_state_jacobian(sim_idx)
+
+
+                jac = np.reshape(jac, (n_species, n_species))
+
+                try:
+                    eigenvalues = np.linalg.eigvals(jac)
+
+                except(np.linalg.LinAlgError) as e:
+                    eigenvalues = [np.nan for i in range(n_species)]
+
+                eigenvalues = [[i.real, i.imag] for i in eigenvalues]
+
+                real_parts = [i[0] for i in eigenvalues]
+                imag_parts = [i[1] for i in eigenvalues]
+
+                integ_error = self.pop_obj.get_particle_integration_error(sim_idx)
+                row_vals = [sim_idx, batch_num, m_ref, integ_error]
+
+                for idx_e, i in enumerate(eigenvalues):
+                    row_vals = row_vals + [real_parts[idx_e]] + [imag_parts[idx_e]]
+
+                wr.writerow(row_vals)
+
+
+
 
     def run_rejection(self):
         population_number = 0
@@ -188,7 +250,10 @@ class Rejection:
             self.pop_obj.simulate_particles()
 
             # 3. Calculate distances for population
+            print("calculating distances")
             self.pop_obj.calculate_particle_distances()
+            print("got distances")
+
             self.pop_obj.accumulate_distances()
             batch_distances = self.pop_obj.get_flattened_distances_list()
             batch_distances = np.reshape(batch_distances, (self.n_sims_batch, self.n_species_fit, self.n_distances))
@@ -204,12 +269,17 @@ class Rejection:
             self.write_particle_distances(folder_name, model_refs, batch_num, particle_models.tolist(),
                                           batch_part_judgements, batch_distances)
 
+            self.write_eigenvalues(folder_name, model_refs, batch_num, particle_models.tolist(), end_state=True)
+            self.write_eigenvalues(folder_name, model_refs, batch_num, particle_models.tolist(), init_state=True)
+
             accepted_particles_count += sum(batch_part_judgements)
             total_sims += len(model_refs)
+            integ_errors = self.pop_obj.get_all_particle_integration_errors()
 
             print("Population: ", population_number, "Accepted particles: ", accepted_particles_count, "Total simulations: ", total_sims)
             self.model_space.update_model_population_sample_data(particle_models.tolist(), batch_part_judgements)
             self.model_space.model_space_report(folder_name, batch_num)
+
             sys.stdout.flush()
             batch_num += 1
 

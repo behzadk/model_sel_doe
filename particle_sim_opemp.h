@@ -68,8 +68,20 @@ class Particle
 
 		std::vector<state_type>& get_state_vec();
 		boost::python::list get_state_pylist();
+		boost::python::list get_eigenvalues();
+		boost::python::list get_eigenvalues_eigen();
+		boost::python::list get_end_state_jacobian();
+		boost::python::list get_init_state_jacobian();
+		boost::python::list get_final_species_values();
+		
+		int determinant_sign(const boost::numeric::ublas::permutation_matrix<std::size_t>&);
+		double get_determinant();
+		void laplace_expansion();
 
+		double get_trace();
+		
 		bool integration_failed = false;
+		std::string integration_error;
 };
 
 

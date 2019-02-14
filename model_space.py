@@ -95,7 +95,6 @@ class Model:
     def get_model_ref(self):
         return self._model_ref
 
-
 ##
 # Model space is initialised with a list of Model objects.
 #
