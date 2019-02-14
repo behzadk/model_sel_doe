@@ -17,8 +17,8 @@ using namespace boost::python;
 #include <boost/numeric/ublas/io.hpp>
 #include <boost/numeric/ublas/lu.hpp>
 
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_eigen.h>
+// #include <gsl/gsl_math.h>
+// #include <gsl/gsl_eigen.h>
 
 #include <eigen3/Eigen/Dense>
 
@@ -192,84 +192,85 @@ boost::python::list Particle::get_eigenvalues_eigen()
 
 }
 
-/*
-*   Not working
-*
-*
-*/
-boost::python::list Particle::get_eigenvalues()
-{
-    int n_species = state_init.size();
-    std::cout << "n_species: " << n_species << std::endl;
-    ublas_vec_t y(n_species);
-    for (int i=0; i < n_species; i++) {
-        y(i) = state_vec.back()[i];
-    }
+
+// /*
+// *   Not working
+// *
+// *
+// */
+// boost::python::list Particle::get_eigenvalues()
+// {
+//     int n_species = state_init.size();
+//     std::cout << "n_species: " << n_species << std::endl;
+//     ublas_vec_t y(n_species);
+//     for (int i=0; i < n_species; i++) {
+//         y(i) = state_vec.back()[i];
+//     }
     
-    // Init matrix n_species x n_species
-    ublas_mat_t J (n_species, n_species);
+//     // Init matrix n_species x n_species
+//     ublas_mat_t J (n_species, n_species);
 
-    // Not sure why this is necessary
-    ublas_vec_t dfdt(n_species);
+//     // Not sure why this is necessary
+//     ublas_vec_t dfdt(n_species);
 
-    // Dummy values
-    const double t = 0;
+//     // Dummy values
+//     const double t = 0;
 
-    // Fill jacobian matrix
-    m.run_jac(y, J, t, dfdt, part_params, model_ref);
+//     // Fill jacobian matrix
+//     m.run_jac(y, J, t, dfdt, part_params, model_ref);
 
-    // Init array 
-    double data[n_species][n_species];
+//     // Init array 
+//     double data[n_species][n_species];
 
-    // Unpack ublas jac into standard array
-    for (int i = 0; i < n_species; i++) {
-        for (int j = 0; j < n_species; j++) {
-            double val = J(i, j);
-            // int pos = (i * n_species) + j;
-            data[i][j] = val;
-        }
-    }
+//     // Unpack ublas jac into standard array
+//     for (int i = 0; i < n_species; i++) {
+//         for (int j = 0; j < n_species; j++) {
+//             double val = J(i, j);
+//             // int pos = (i * n_species) + j;
+//             data[i][j] = val;
+//         }
+//     }
 
-    boost::python::list output;
+//     boost::python::list output;
 
-    // Find eigenvalues and eigenvectors. Copy of example for non-symmmetric complex problem
-    // https://www.gnu.org/software/gsl/doc/html/eigen.html#examples
-    // gsl_matrix_view mat_view = gsl_matrix_view_array (data, n_species, n_species);
-    gsl_matrix *gsl_J = gsl_matrix_alloc(n_species, n_species);
-    gsl_vector_complex *eval = gsl_vector_complex_alloc (n_species);
+//     // Find eigenvalues and eigenvectors. Copy of example for non-symmmetric complex problem
+//     // https://www.gnu.org/software/gsl/doc/html/eigen.html#examples
+//     // gsl_matrix_view mat_view = gsl_matrix_view_array (data, n_species, n_species);
+//     gsl_matrix *gsl_J = gsl_matrix_alloc(n_species, n_species);
+//     gsl_vector_complex *eval = gsl_vector_complex_alloc (n_species);
     
-    gsl_eigen_nonsymm_workspace * w = gsl_eigen_nonsymm_alloc(n_species);
-    gsl_eigen_nonsymm_params(0, 0, w);
-    for(int i = 0; i < n_species; i++) {
-        for(int j = 0; j < n_species; j++) {
-            gsl_matrix_set(gsl_J, i, j, data[i][j]);
-        }
-    }
+//     gsl_eigen_nonsymm_workspace * w = gsl_eigen_nonsymm_alloc(n_species);
+//     gsl_eigen_nonsymm_params(0, 0, w);
+//     for(int i = 0; i < n_species; i++) {
+//         for(int j = 0; j < n_species; j++) {
+//             gsl_matrix_set(gsl_J, i, j, data[i][j]);
+//         }
+//     }
 
-    gsl_eigen_nonsymm(gsl_J, eval, w); /*diagonalize E which is M at t fixed*/
+//     gsl_eigen_nonsymm(gsl_J, eval, w); /*diagonalize E which is M at t fixed*/
 
-    boost::python::list eigen_values;
+//     boost::python::list eigen_values;
 
-    for (int i = 0; i < n_species; i++)
-    {
-        boost::python::list eig;
+//     for (int i = 0; i < n_species; i++)
+//     {
+//         boost::python::list eig;
 
-        gsl_complex eval_i = gsl_vector_complex_get(eval, i);
+//         gsl_complex eval_i = gsl_vector_complex_get(eval, i);
 
-        double real_val = GSL_REAL(eval_i);
-        double img_val = GSL_IMAG(eval_i);
+//         double real_val = GSL_REAL(eval_i);
+//         double img_val = GSL_IMAG(eval_i);
 
-        eig.append(real_val);
-        eig.append(img_val);
+//         eig.append(real_val);
+//         eig.append(img_val);
 
-        eigen_values.append(eig);
-    }
+//         eigen_values.append(eig);
+//     }
 
-    output.append(eigen_values);
-    // output.append(eig_real_product);
+//     output.append(eigen_values);
+//     // output.append(eig_real_product);
 
-    return output;
-}
+//     return output;
+// }
 
 double Particle::get_trace()
 {
