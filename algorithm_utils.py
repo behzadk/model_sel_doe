@@ -47,3 +47,10 @@ def check_distances(particle_distances, epsilon_array):
     return particle_judgements
 
 
+def fsolve_conversion(y, pop_obj, particle_ref):
+    if type(y) == np.ndarray:
+        y = y.tolist()
+
+    sol = pop_obj.py_model_func(y, particle_ref)
+
+    return sol

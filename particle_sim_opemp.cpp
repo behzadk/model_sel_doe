@@ -115,6 +115,40 @@ void Particle::simulate_particle_rosenbrock(std::vector<double> time_points)
         state_init , time_points.begin(), time_points.end() , 1e-6, simulation_observer(state_vec, rosen_stepper), mx_step);
 }
 
+/*
+* Exposes the model function to python. Takes an input of species values as a list and returns the dydt values as
+* a python list
+*/
+boost::python::list Particle::py_model_func(boost::python::list input_y)
+{
+    
+    int n_species = state_init.size();
+    ublas_vec_t y(n_species);
+
+    // Load python data into ublas vector
+    for(int i = 0; i < n_species; i++)
+    {
+        double val = boost::python::extract<double>(input_y[i]);
+        y(i) = val;
+    }
+
+    ublas_vec_t dydt(n_species);
+    double t;
+
+    // Simulate model
+    std::vector<model_t> m_vec = m.models_vec;
+    m.run_model_ublas(y, dydt, t, part_params, model_ref);
+
+    // Convert dydt to boost python list
+    boost::python::list output;
+    for(int i = 0; i < n_species; i++)
+    {
+        output.append(dydt[i]);
+    }
+
+    return output;
+}
+
 
 /*
 *   Not working
@@ -302,6 +336,39 @@ double Particle::get_trace()
 }
 
 
+boost::python::list Particle::get_jacobian(boost::python::list input_y)
+{
+    int n_species = state_init.size();
+    
+    ublas_vec_t y(n_species);
+    for (int i=0; i < n_species; i++) {
+        y(i) = boost::python::extract<double>(input_y[i]);
+    }
+
+    // Init matrix n_species x n_species
+    ublas_mat_t J (n_species, n_species);
+
+    // Not sure why this is necessary
+    ublas_vec_t dfdt(n_species);
+
+    // Dummy values
+    const double t = 0;
+
+    // Fill jacobian matrix
+    m.run_jac(y, J, t, dfdt, part_params, model_ref);
+
+    // Unpack ublas jac into python list
+    boost::python::list py_J;
+    for (int i = 0; i < n_species; i++) {
+        for (int j = 0; j < n_species; j++) {
+            double val = J(i, j);
+            py_J.append(val);
+        }
+    }
+
+    return py_J;
+
+}
 
 /*
 * Returns the jacobian using the end state
@@ -470,7 +537,6 @@ boost::python::list Particle::get_final_species_values()
     ublas_vec_t y(n_species);
     for (int i=0; i < n_species; i++) {
         end_state.append(state_vec.back()[i]);
-        std::cout << (y(i)) << std::endl;
     }
 
     return end_state;

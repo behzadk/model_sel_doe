@@ -9,6 +9,8 @@ import sys
 from matplotlib.backends.backend_pdf import PdfPages
 import matplotlib.pyplot as plt
 import plotting
+from scipy.optimize import fsolve
+
 
 def blockPrinting(func):
     def func_wrapper(*args, **kwargs):
@@ -147,12 +149,17 @@ class Rejection:
                     if m is particle:
                         wr.writerow([idx] + [batch_num] + [judgement_array[idx]] + input_params[idx] + input_init_species[idx])
 
-    def write_eigenvalues(self, out_dir, model_refs, batch_num, simulated_particles, end_state=False, init_state=False):
+    def write_eigenvalues(self, out_dir, model_refs, batch_num, simulated_particles,
+                          end_state=False, init_state=False, do_fsolve=False):
         if end_state == True:
             out_path = out_dir + "eigenvalues_end_state.csv"
 
         elif init_state == True:
             out_path = out_dir + "eigenvalues_init_state.csv"
+
+        elif do_fsolve == True:
+            out_path = out_dir + "eigenvalues_do_fsolve_state.csv"
+
 
         else:
             print("State to use for jacobian not specified, exiting...")
@@ -184,6 +191,12 @@ class Rejection:
                 elif init_state == True:
                     jac = self.pop_obj.get_particle_init_state_jacobian(sim_idx)
 
+                elif do_fsolve == True:
+                    final_state = self.pop_obj.get_particle_final_species_values(sim_idx)
+                    steady_state = fsolve(alg_utils.fsolve_conversion, final_state, args=(self.pop_obj, sim_idx))
+                    steady_state = steady_state.tolist()
+
+                    jac = self.pop_obj.get_particle_jacobian(steady_state, sim_idx)
 
                 jac = np.reshape(jac, (n_species, n_species))
 
@@ -269,8 +282,10 @@ class Rejection:
             self.write_particle_distances(folder_name, model_refs, batch_num, particle_models.tolist(),
                                           batch_part_judgements, batch_distances)
 
-            self.write_eigenvalues(folder_name, model_refs, batch_num, particle_models.tolist(), end_state=True)
-            self.write_eigenvalues(folder_name, model_refs, batch_num, particle_models.tolist(), init_state=True)
+            self.write_eigenvalues(folder_name, model_refs, batch_num, particle_models.tolist(), do_fsolve=True)
+
+            # self.write_eigenvalues(folder_name, model_refs, batch_num, particle_models.tolist(), end_state=True)
+            # self.write_eigenvalues(folder_name, model_refs, batch_num, particle_models.tolist(), init_state=True)
 
             accepted_particles_count += sum(batch_part_judgements)
             total_sims += len(model_refs)

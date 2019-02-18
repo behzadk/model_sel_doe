@@ -26,7 +26,10 @@ class Population {
 		boost::python::list get_particle_eigenvalues(int);
 		boost::python::list get_particle_init_state_jacobian(int);
 		boost::python::list get_particle_end_state_jacobian(int);
+		boost::python::list get_particle_final_species_values(int);
+		boost::python::list get_particle_jacobian(boost::python::list, int);
 
+		boost::python::list py_model_func(boost::python::list, int);
 
 		double get_particle_det(int);
 		void get_particle_laplace_expansion(int);
@@ -34,7 +37,6 @@ class Population {
 		bool check_integration_failure(int);
 		std::string get_particle_integration_error(int);
 		boost::python::list get_all_particle_integration_errors();
-
 		double get_particle_trace(int);
 
 	private:

@@ -72,8 +72,12 @@ class Particle
 		boost::python::list get_eigenvalues_eigen();
 		boost::python::list get_end_state_jacobian();
 		boost::python::list get_init_state_jacobian();
+		boost::python::list get_jacobian(boost::python::list);
+
 		boost::python::list get_final_species_values();
-		
+
+		boost::python::list py_model_func(boost::python::list);
+
 		int determinant_sign(const boost::numeric::ublas::permutation_matrix<std::size_t>&);
 		double get_determinant();
 		void laplace_expansion();

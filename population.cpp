@@ -5,10 +5,12 @@
 #include <boost/numeric/odeint.hpp>
 #include <boost/python.hpp>
 #include <boost/python/args.hpp>
+#include <boost/python/numpy/ndarray.hpp>
 #include <omp.h>
 #include <boost/numeric/odeint/external/openmp/openmp.hpp>
 #include "particle_sim_opemp.h"
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include <boost/python/extract.hpp>
 #include "population.h"
 #include "distances.h"
 
@@ -233,13 +235,21 @@ boost::python::list Population::get_particle_init_state_jacobian(int particle_re
     return(_particle_vector[particle_ref].get_init_state_jacobian());
 }
 
+boost::python::list Population::get_particle_jacobian(boost::python::list py_state, int particle_ref)
+{
+    return(_particle_vector[particle_ref].get_jacobian(py_state));
+}
+
 
 boost::python::list Population::get_particle_end_state_jacobian(int particle_ref)
 {
     return(_particle_vector[particle_ref].get_end_state_jacobian());
 }
 
-
+boost::python::list Population::get_particle_final_species_values(int particle_ref)
+{
+    return(_particle_vector[particle_ref].get_final_species_values());
+}
 
 double Population::get_particle_det(int particle_ref)
 {
@@ -279,6 +289,10 @@ std::string Population::get_particle_integration_error(int particle_ref)
     return _particle_vector[particle_ref].integration_error;
 }
 
+boost::python::list Population::py_model_func(boost::python::list input_y, int particle_ref)
+{
+    return _particle_vector[particle_ref].py_model_func(input_y);
+}
 
 BOOST_PYTHON_MODULE(population_modules)
 {
@@ -304,5 +318,8 @@ BOOST_PYTHON_MODULE(population_modules)
         .def("get_particle_end_state_jacobian", &Population::get_particle_end_state_jacobian)
         .def("get_particle_det", &Population::get_particle_det)
         .def("get_particle_laplace_expansion", &Population::get_particle_laplace_expansion)
+        .def("py_model_func", &Population::py_model_func)
+        .def("get_particle_final_species_values", &Population::get_particle_final_species_values)
+        .def("get_particle_jacobian", &Population::get_particle_jacobian)
         ;
 }
