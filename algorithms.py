@@ -167,7 +167,7 @@ class Rejection:
 
         # If file doesn't exist, write header
         if not os.path.isfile(out_path):
-            col_header = ['sim_idx', 'batch_num', 'model_ref', 'integ_error']
+            col_header = ['sim_idx', 'batch_num', 'model_ref', 'integ_error', 'fsolve_error']
             for i in range(10):
                 str_eig_real = 'eig_#I#_real'.replace('#I#', str(i))
                 str_eig_imag = 'eig_#I#_imag'.replace('#I#', str(i))
@@ -182,6 +182,8 @@ class Rejection:
 
 
             for sim_idx, m_ref in enumerate(model_refs):
+                fsolve_error = 0
+
                 n_species = len(simulated_particles[sim_idx]._init_species_prior)
 
                 jac = []
@@ -193,7 +195,12 @@ class Rejection:
 
                 elif do_fsolve == True:
                     final_state = self.pop_obj.get_particle_final_species_values(sim_idx)
-                    steady_state = fsolve(alg_utils.fsolve_conversion, final_state, args=(self.pop_obj, sim_idx))
+                    res = fsolve(alg_utils.fsolve_conversion, final_state,
+                                               args=(self.pop_obj, sim_idx), full_output=True)
+                    steady_state = res[0]
+                    ier = res[2]
+                    fsolve_error = ier
+
                     steady_state = steady_state.tolist()
 
                     jac = self.pop_obj.get_particle_jacobian(steady_state, sim_idx)
@@ -212,7 +219,7 @@ class Rejection:
                 imag_parts = [i[1] for i in eigenvalues]
 
                 integ_error = self.pop_obj.get_particle_integration_error(sim_idx)
-                row_vals = [sim_idx, batch_num, m_ref, integ_error]
+                row_vals = [sim_idx, batch_num, m_ref, integ_error, fsolve_error]
 
                 for idx_e, i in enumerate(eigenvalues):
                     row_vals = row_vals + [real_parts[idx_e]] + [imag_parts[idx_e]]
