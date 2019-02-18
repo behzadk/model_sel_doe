@@ -195,8 +195,8 @@ class Rejection:
 
                 elif do_fsolve == True:
                     final_state = self.pop_obj.get_particle_final_species_values(sim_idx)
-                    res = fsolve(alg_utils.fsolve_conversion, final_state,
-                                               args=(self.pop_obj, sim_idx), full_output=True)
+                    res = fsolve(alg_utils.fsolve_conversion, final_state, fprime=alg_utils.fsolve_jac_conversion,
+                                               args=(self.pop_obj, sim_idx, n_species), full_output=True)
                     steady_state = res[0]
                     ier = res[2]
                     fsolve_error = ier

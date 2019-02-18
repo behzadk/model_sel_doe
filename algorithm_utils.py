@@ -47,10 +47,20 @@ def check_distances(particle_distances, epsilon_array):
     return particle_judgements
 
 
-def fsolve_conversion(y, pop_obj, particle_ref):
+def fsolve_conversion(y, pop_obj, particle_ref, n_species):
     if type(y) == np.ndarray:
         y = y.tolist()
 
     sol = pop_obj.py_model_func(y, particle_ref)
 
     return sol
+
+def fsolve_jac_conversion(y, pop_obj, particle_ref, n_species):
+    if type(y) == np.ndarray:
+        y = y.tolist()
+
+    jac = pop_obj.get_particle_jacobian(y, particle_ref)
+
+    jac = np.reshape(jac, (n_species, n_species))
+
+    return jac
