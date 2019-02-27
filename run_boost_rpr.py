@@ -7,11 +7,14 @@ import population_modules
 from model_space import ModelSpace
 import algorithm_utils as alg_utils
 import numpy as np
+import matplotlib as mpl
+
 import matplotlib.pyplot as plt
 from operator import mul
 import classification
-
+import seaborn as sns; sns.set()
 from scipy.optimize import fsolve
+import classification
 
 def extract_parameters_from_xml(input_file):
     tree = ET.parse(input_file)
@@ -423,11 +426,11 @@ def eig_classification_test():
 
 
 
-def steady_state_test():
+def steady_state_test(expnum):
     # Set time points
     t_0 = 0
-    t_end = 5000
-    dt = 0.1
+    t_end = 250
+    dt = 1
 
     input_folder = './input_files_two_species/'
     output_folder = './output/'
@@ -445,7 +448,7 @@ def steady_state_test():
         init_params = import_input_file(input_params)
         init_species = import_input_file(input_init_species)
 
-        if i == 30:
+        if i != 30:
             model_new = Model(i, init_params, init_species)
             model_list.append(model_new)
 
@@ -462,14 +465,121 @@ def steady_state_test():
     pop_obj.generate_particles()
     pop_obj.simulate_particles()
     n_species = len(init_states[0])
+    time_points = pop_obj.get_timepoints_list()
+    state_list = pop_obj.get_particle_state_list(0)
+    try:
+        state_list = np.reshape(state_list, (len(time_points), n_species))
+    except ValueError:
+        return 0
 
-    final_state = pop_obj.get_particle_final_species_values(0)
+    eigenvalues_t = []
+    for i in range(1, len(time_points)):
+        state = state_list[i]
+        state = state.tolist()
 
-    out_y = out_y.tolist()
-    jac = pop_obj.get_particle_jacobian(out_y, 0)
-    print(out_y)
-    print(jac)
-    exit()
+        jac = pop_obj.get_particle_jacobian(state, 0)
+
+        #
+        # jac = pop_obj.get_particle_jacobian(state, 0)
+        jac = np.reshape(jac, (n_species, n_species))
+        try:
+            eigenvalues = np.linalg.eigvals(jac)
+
+        except(np.linalg.LinAlgError) as e:
+            eigenvalues = [np.nan for i in range(n_species)]
+
+        eigenvalues = [[i.real, i.imag] for i in eigenvalues]
+
+        real_parts = [i[0] for i in eigenvalues]
+        abs_real = [abs(i) for i in real_parts]
+        try:
+            max_idx = real_parts[np.nanargmax(abs_real)]
+            eigenvalues_t.append(max_idx)
+
+        except:
+            print(time_points[i], "all nans")
+            return 0
+            eigenvalues_t.append(max_idx)
+
+
+    const_eig_idx = None
+
+    for idx, val in enumerate(eigenvalues_t):
+        if idx == 0:
+            continue
+
+        if val == eigenvalues_t[idx-1]:
+            const_eig_idx = time_points[idx]
+
+
+    # Final eigenvalues
+    final_state = state_list[-1]
+    res = fsolve(alg_utils.fsolve_conversion, final_state, fprime=alg_utils.fsolve_jac_conversion,
+                 args=(pop_obj, 0, n_species), full_output=True)
+
+    steady_state = res[0]
+    steady_state[0] = steady_state[0] + 0.1
+
+    ier = res[2]
+    fsolve_error = ier
+
+    steady_state = steady_state.tolist()
+
+    jac = pop_obj.get_particle_jacobian(steady_state, 0)
+    jac = np.reshape(jac, (n_species, n_species))
+
+    try:
+        eigenvalues = np.linalg.eigvals(jac)
+
+    except(np.linalg.LinAlgError) as e:
+        return 0
+
+    eigenvalues = [[i.real, i.imag] for i in eigenvalues]
+
+    real_parts = [i[0] for i in eigenvalues]
+    imag_parts = [i[1] for i in eigenvalues]
+
+    all_negative =  all(i < 0 for i in real_parts)
+    all_real = all(i==0.0 for i in imag_parts)
+    num_conjugate_pairs = len(classification.get_conjugate_pairs(eigenvalues))
+
+
+    plt.rcParams['figure.figsize'] = [15, 10]
+
+    font = {'size': 15, }
+    axes = {'labelsize': 'large', 'titlesize': 'large'}
+
+    mpl.rc('font', **font)
+    mpl.rc('axes', **axes)
+
+
+    fig, (ax1, ax2) = plt.subplots(ncols=2)
+    # ax1 = axes[0, 0]
+    # ax2 = axes[0, 1]
+    # ax3 = axes[1, 0]
+    # ax4 = axes[1, 1]
+
+    sns.lineplot(time_points[1:], eigenvalues_t, ax=ax1)
+
+    sns.lineplot(time_points, state_list[:, 0], ax=ax2)
+    sns.lineplot(time_points, state_list[:, 1], ax=ax2)
+    # sns.lineplot(time_points, state_list[:, 2], ax=ax3)
+    # sns.lineplot(time_points, state_list[:, 3], ax=ax4)
+
+    print(type(const_eig_idx))
+
+    ax1.set(yscale='symlog', xlabel='time', ylabel='Leading eigenvalue')
+    ax2.set(yscale='symlog', xlabel='time', ylabel='Population (num cells)')
+    text = ("all negative parts: ", str(all_negative), "\n", "all real parts: ", str(all_real), "\n",
+            "num conjugate pairs: ", str(num_conjugate_pairs))
+    ax1.text(0.85, 0.85, text, fontsize=10) #add text
+
+    plt.suptitle('Time course max eig and two species population')
+
+    plt.savefig("./output/"+str(expnum)+".pdf")
+    plt.close()
+
+
 
 def ABC_rejection():
     # Set time points
@@ -497,6 +607,7 @@ def ABC_rejection():
         input_params = input_folder + "params_" + str(i) + ".csv"
         input_init_species = input_folder + "species_" + str(i) + ".csv"
         init_params = import_input_file(input_params)
+
         init_species = import_input_file(input_init_species)
         model_new = Model(i, init_params, init_species)
         model_list.append(model_new)
@@ -506,12 +617,53 @@ def ABC_rejection():
     rejection_alg.run_rejection()
     print("")
 
+def random_jacobian():
+    # Set time points
+    t_0 = 0
+    t_end = 5000
+    dt = 1
+
+    input_folder = './input_files_two_species_random_jac/'
+    output_folder = './output/'
+    experiment_name = 'two_species_random_jac/'
+    experiment_number = str(3)
+    experiment_folder = experiment_name.replace('NUM', experiment_number)
+
+    output_folder = output_folder + experiment_folder
+
+    try:
+        os.mkdir(output_folder)
+
+    except FileExistsError:
+        pass
+
+    # Load models from input files
+    model_list = []
+    for i in range(int((len(os.listdir(input_folder)) / 2))):
+        input_params = input_folder + "params_" + str(i) + ".csv"
+        input_init_species = input_folder + "species_" + str(i) + ".csv"
+        init_params = import_input_file(input_params)
+
+        init_species = import_input_file(input_init_species)
+        model_new = Model(i, init_params, init_species)
+
+        if i == 23:
+            model_list.append(model_new)
+
+    # Run ABC_rejecction algorithm
+    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 10000, 2, 3, output_folder)
+    rejection_alg.find_eigensystems()
+    print("")
+
+
 def ABCSMC():
     pass
 
 if __name__ == "__main__":
-    # steady_state_test()
-    ABC_rejection()
+    # for i in range(50):
+    #     steady_state_test(i)
+    random_jacobian()
+    # ABC_rejection()
     # eig_classification_test()
     # repressilator_test()
     exit()

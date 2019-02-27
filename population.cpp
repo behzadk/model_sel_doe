@@ -32,12 +32,21 @@ Population::Population(const int n_sims, const int t_0,
 	_t_0 = t_0;
 	_t_end = t_end;
 	_dt = dt;
-
-	// Fill time points array
-    for(double i=_t_0; i <_t_end; i+=_dt){
-        _time_array.push_back(i);
+    std::cout << _dt << std::endl;
+    // Forwards in time simulation
+    if (_dt > 0) {
+        for(double i=_t_0; i <_t_end; i+=_dt){
+            _time_array.push_back(i);
+        }
     }
 
+    // Backwards in time simulation
+    if (_dt < 0) {
+        for(double i=_t_0; i >_t_end; i+=_dt) {
+            _time_array.push_back(i);
+        }
+    }
+    
 	_all_params = unpack_parameters(params_list);
 	_all_state_init = unpack_parameters_to_ublas(state_init_list);
 	_model_refs = unpack_model_references(model_ref_list);
@@ -110,6 +119,7 @@ void Population::calculate_particle_distances()
     	_particle_vector[i].set_distance_vector(dist.stable_dist( _particle_vector[i].get_state_vec(), fit_species, _particle_vector[i].integration_failed));
     }
 }
+
 
 /*
  * Extracts the distances from all particles into a member vector.
@@ -294,6 +304,22 @@ boost::python::list Population::py_model_func(boost::python::list input_y, int p
     return _particle_vector[particle_ref].py_model_func(input_y);
 }
 
+
+double Population::get_particle_sum_stdev(int particle_ref, int from_time_point)
+{
+    return _particle_vector[particle_ref].get_sum_stdev(from_time_point);
+}
+
+long double Population::get_particle_sum_grad(int particle_ref)
+{
+    return _particle_vector[particle_ref].get_sum_grad();
+}
+
+boost::python::list Population::get_particle_grads(int particle_ref)
+{
+    return _particle_vector[particle_ref].get_all_grads();
+}
+
 BOOST_PYTHON_MODULE(population_modules)
 {
 	class_<PopDistances>("pop_dist_vec")
@@ -321,5 +347,8 @@ BOOST_PYTHON_MODULE(population_modules)
         .def("py_model_func", &Population::py_model_func)
         .def("get_particle_final_species_values", &Population::get_particle_final_species_values)
         .def("get_particle_jacobian", &Population::get_particle_jacobian)
+        .def("get_particle_sum_stdev", &Population::get_particle_sum_stdev)
+        .def("get_particle_sum_grad", &Population::get_particle_sum_grad)
+        .def("get_particle_grads", &Population::get_particle_grads)
         ;
 }

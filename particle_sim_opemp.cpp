@@ -110,9 +110,16 @@ void Particle::simulate_particle_rosenbrock(std::vector<double> time_points)
 
     max_step_checker mx_step = max_step_checker(1e4);
 
+    double dt = 1e-7;
+
+    // // Check if step size is negative
+    if ( ( time_points[1] - time_points[0] ) < 0 ) {
+        dt = dt * -1;
+    }
+
     integrate_times(  rosen_stepper, 
         make_pair(boost::ref( *this ), boost::ref( *this )) , 
-        state_init , time_points.begin(), time_points.end() , 1e-6, simulation_observer(state_vec, rosen_stepper), mx_step);
+        state_init , time_points.begin(), time_points.end() , dt, simulation_observer(state_vec, rosen_stepper), mx_step);
 }
 
 /*
@@ -462,9 +469,10 @@ boost::python::list Particle::get_state_pylist() {
         ScopedGILRelease noGil = ScopedGILRelease();
         for (auto sim_iter = state_vec.begin(); sim_iter != state_vec.end(); ++sim_iter) {
             auto sim_vec = *sim_iter;
-            BOOST_FOREACH(uint64_t n, sim_vec) {
-                temp_reslist.append(n);
-            }
+           for(int i=0; i < sim_vec.size(); i++) {
+                double val = sim_vec[i];
+                temp_reslist.append(val);
+           }
         }
 
     }
@@ -478,6 +486,8 @@ std::vector<state_type>& Particle::get_state_vec() {
 void Particle::set_distance_vector(std::vector<std::vector<double>> sim_dist) {
     this->sim_distances = sim_dist;
 }
+
+
 
 /*
 Code from here http://programmingexamples.net/wiki/CPP/Boost/Math/uBLAS/determinant
@@ -543,7 +553,6 @@ boost::python::list Particle::get_final_species_values()
 }
 
 
-
 void Particle::laplace_expansion()
 {
     int n_species = state_init.size();
@@ -570,11 +579,31 @@ void Particle::laplace_expansion()
 
     long double sol = 0;
     // Iterate columns
-    for (int j=0; j < J.size1(); j++) {
-        
+}
 
-    }
+double Particle::get_sum_stdev(int from_time_point)
+{
+    DistanceFunctions dist = DistanceFunctions();
 
+    int n_species = state_init.size();
+    return dist.get_sum_stdev(state_vec, n_species, from_time_point);
+}
 
+long double Particle::get_sum_grad()
+{
+    DistanceFunctions dist = DistanceFunctions();
+
+    int n_species = state_init.size();
+    return dist.get_sum_grad(state_vec, n_species);
+
+}
+
+boost::python::list Particle::get_all_grads()
+{
+
+    DistanceFunctions dist = DistanceFunctions();
+    int n_species = state_init.size();
+
+    return dist.get_all_species_grads(state_vec, n_species);
 
 }

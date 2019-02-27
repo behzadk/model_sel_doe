@@ -75,6 +75,10 @@ class Particle
 		boost::python::list get_jacobian(boost::python::list);
 
 		boost::python::list get_final_species_values();
+		double get_sum_stdev(int);
+		long double get_sum_grad();
+		boost::python::list get_all_grads();
+
 
 		boost::python::list py_model_func(boost::python::list);
 

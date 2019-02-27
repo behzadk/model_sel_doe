@@ -15,6 +15,7 @@ DistanceFunctions::DistanceFunctions() {
 std::vector<double> DistanceFunctions::extract_species_to_fit(std::vector<state_type>& state_vec, int species_idx, int from_time_index=0)
 {
 	std::vector<double> species_val_vec;
+
 	for (auto tp_iter = state_vec.begin() + from_time_index; tp_iter != state_vec.end(); tp_iter++) {
         state_type sim_vec = *tp_iter;
         species_val_vec.push_back(sim_vec[species_idx]);
@@ -37,12 +38,13 @@ std::vector<double> DistanceFunctions::get_signal_gradient(std::vector<double>& 
 
 }
 
-double DistanceFunctions::calculate_final_gradient(std::vector<double>& species_vals)
+long double DistanceFunctions::calculate_final_gradient(std::vector<double>& species_vals)
 {
-	double i = abs(species_vals.end()[-2]);
-	double j = abs(species_vals.end()[-1]);
+	double i = species_vals.end()[-2];
+	double j = species_vals.end()[-1];
 
-	return (abs(j - i));
+	long double grad = j - i;
+	return grad;
 }
 
 
@@ -87,17 +89,24 @@ void DistanceFunctions::find_signal_peaks_and_troughs(std::vector<double>& signa
  *	for some systems, possibly I should scale down the signal first?
  */	
 double DistanceFunctions::standard_deviation(std::vector<double>& signal) {
-	double mean = std::accumulate(signal.begin(), signal.end(), 0.0) / signal.size();
+	double mean;
+	double sum_signal = 0.0;
 
-	long double sq_sum = 0;
+	for (int i = 0; i < signal.size(); i++) {
+		double val = signal[i];
+		sum_signal = sum_signal + signal[i];
+	}
+
+	mean = sum_signal / signal.size();
+
+	double sq_sum = 0.0;
 
 	// auto sq_diff_mean = [&](double time_point, double mean){return pow(time_point - mean, 2); };
 	//sum square
-	for (auto it = signal.begin(); it != signal.end(); it++) {
-		long double val = std::pow(*it - mean, 2);
+	for (int i = 0; i < signal.size(); i++) {
+		double val = std::pow( (signal[i] - mean) , 2);
 		sq_sum += val;
 	}
-
 
 	// for (auto it = signal.begin(); it != signal.end(); it++) {
 	// 	sq_sum += sq_diff_mean(*it, mean);
@@ -106,12 +115,10 @@ double DistanceFunctions::standard_deviation(std::vector<double>& signal) {
 	// auto sq_sum = [&](std::vector<double>& sig, double& mean) {return  std::accumulate(sig.begin(), sig.end(), 
 	// 	mean, sq_diff_mean); };
 
-	double stdev = sqrt( sq_sum / (signal.size() -1) );
-
-	if (stdev == 0.0) {
-		std::cout << sq_sum << std::endl;
-		std::cout << signal.size() << std::endl;
+	if (sq_sum == 0){
+		return 0;
 	}
+	double stdev = sqrt( sq_sum / (signal.size()) );
 
 
 	return stdev;
@@ -152,7 +159,7 @@ std::vector<std::vector<double>> DistanceFunctions::stable_dist(std::vector<stat
 
 	// If final value of fit species is less than 1e4, reject particle
 	double threshold_value = 0;
-	int from_time_index = 2000;
+	int from_time_index = 4500;
 	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
 		std::vector<double> signal = extract_species_to_fit(state_vec, *it, from_time_index);
 
@@ -171,7 +178,7 @@ std::vector<std::vector<double>> DistanceFunctions::stable_dist(std::vector<stat
 		std::vector<double> signal_gradient = get_signal_gradient(signal);
 
 		double stdev = standard_deviation(signal);
-		double final_gradient = abs(signal_gradient.end()[-1]);
+		double final_gradient = fabs(signal_gradient.end()[-1]);
 		double final_value = signal.end()[-1];
 
 		std::vector<double> signal_distances = {final_gradient, stdev, final_value};
@@ -183,3 +190,47 @@ std::vector<std::vector<double>> DistanceFunctions::stable_dist(std::vector<stat
 
 }
 
+double DistanceFunctions::get_sum_stdev(std::vector<state_type>& state_vec, int n_species, int from_time_index) {
+	double sum_stdev = 0;
+
+	for (int i = 0; i < n_species; i++) {
+		std::vector<double> signal = extract_species_to_fit(state_vec, i, from_time_index);
+		double stdev = standard_deviation(signal);
+		sum_stdev = sum_stdev + stdev;
+	}
+
+	return sum_stdev;
+}
+
+long double DistanceFunctions::get_sum_grad(std::vector<state_type>& state_vec, int n_species) {
+
+	long double sum_grad = 0;
+	for (int i = 0; i < n_species; i++) {
+		std::vector<double> signal = extract_species_to_fit(state_vec, n_species, 0);
+
+		// std::vector<double> signal_gradient = get_signal_gradient(signal);
+
+		long double final_gradient = calculate_final_gradient(signal);
+		sum_grad = sum_grad + final_gradient;
+	}
+
+	return sum_grad;
+
+}
+
+boost::python::list DistanceFunctions::get_all_species_grads(std::vector<state_type>& state_vec, int n_species) {
+	boost::python::list all_grads;
+
+	for (int i = 0; i < n_species; i++) {
+		std::vector<double> signal = extract_species_to_fit(state_vec, n_species, 0);
+
+		std::vector<double> signal_gradient = get_signal_gradient(signal);
+
+		long double final_gradient = calculate_final_gradient(signal);
+		all_grads.append(final_gradient);
+	}
+
+	return all_grads;
+
+
+}
