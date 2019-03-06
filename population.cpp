@@ -32,7 +32,6 @@ Population::Population(const int n_sims, const int t_0,
 	_t_0 = t_0;
 	_t_end = t_end;
 	_dt = dt;
-    std::cout << _dt << std::endl;
     // Forwards in time simulation
     if (_dt > 0) {
         for(double i=_t_0; i <_t_end; i+=_dt){
@@ -46,7 +45,7 @@ Population::Population(const int n_sims, const int t_0,
             _time_array.push_back(i);
         }
     }
-    
+
 	_all_params = unpack_parameters(params_list);
 	_all_state_init = unpack_parameters_to_ublas(state_init_list);
 	_model_refs = unpack_model_references(model_ref_list);

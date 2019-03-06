@@ -420,7 +420,6 @@ class Rejection:
 
             accepted_particles_count += sum(batch_part_judgements)
             total_sims += len(model_refs)
-            integ_errors = self.pop_obj.get_all_particle_integration_errors()
 
             print("Population: ", population_number, "Accepted particles: ", accepted_particles_count, "Total simulations: ", total_sims)
             self.model_space.update_model_population_sample_data(particle_models.tolist(), batch_part_judgements)

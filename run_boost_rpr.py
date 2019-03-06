@@ -589,8 +589,8 @@ def ABC_rejection():
     
     input_folder = './input_files_two_species/'
     output_folder = './output/'
-    experiment_name = 'two_species_big_NUM/'
-    experiment_number = str(3)
+    experiment_name = 'two_species_stable_NUM/'
+    experiment_number = str(0)
     experiment_folder = experiment_name.replace('NUM', experiment_number)
 
     output_folder = output_folder + experiment_folder
@@ -623,9 +623,9 @@ def random_jacobian():
     t_end = 5000
     dt = 1
 
-    input_folder = './input_files_two_species_random_jac/'
+    input_folder = './input_files_two_species/'
     output_folder = './output/'
-    experiment_name = 'two_species_random_jac/'
+    experiment_name = 'two_species_stable/'
     experiment_number = str(3)
     experiment_folder = experiment_name.replace('NUM', experiment_number)
 
@@ -652,7 +652,7 @@ def random_jacobian():
 
     # Run ABC_rejecction algorithm
     rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 10000, 2, 3, output_folder)
-    rejection_alg.find_eigensystems()
+    rejection_alg.run_rejection()
     print("")
 
 
@@ -662,8 +662,7 @@ def ABCSMC():
 if __name__ == "__main__":
     # for i in range(50):
     #     steady_state_test(i)
-    random_jacobian()
-    # ABC_rejection()
+    ABC_rejection()
     # eig_classification_test()
     # repressilator_test()
     exit()
