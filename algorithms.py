@@ -97,7 +97,6 @@ class Rejection:
             time_points = self.pop_obj.get_timepoints_list()
 
             tp = int(len(state_list) / len(init_states[sim_idx]))
-            print(tp)
             state_list = np.reshape(state_list, (tp, len(init_states[sim_idx])))
             np.savetxt(out_path, state_list, delimiter=',')
 
@@ -439,7 +438,7 @@ class Rejection:
                                           batch_part_judgements, batch_distances)
 
             self.write_eigenvalues(folder_name, model_refs, batch_num, particle_models.tolist(), do_fsolve=True)
-            self.write_all_particle_state_lists(folder_name, population_number, batch_num, init_states, model_refs)
+            # self.write_all_particle_state_lists(folder_name, population_number, batch_num, init_states, model_refs)
 
             accepted_particles_count += sum(batch_part_judgements)
             total_sims += len(model_refs)
