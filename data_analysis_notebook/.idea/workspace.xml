@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="79f487c7-6e4b-44ef-8b50-c200af3bff49" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/data_analysis_notebook.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/R_User_Library.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.ipynb_checkpoints/data_exploration-checkpoint.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.ipynb_checkpoints/eigenvalues_end_vs_init-checkpoint.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.ipynb_checkpoints/exploration-checkpoint.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.ipynb_checkpoints/fsolve_check-checkpoint.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.ipynb_checkpoints/manuscript simulations-checkpoint.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.ipynb_checkpoints/manuscript_posterior_probability-checkpoint.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.ipynb_checkpoints/sum_stdev_analysis-checkpoint.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.ipynb_checkpoints/unsupervised_learning-checkpoint.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/a" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/complex vs .png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data_exploration.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/diff_species_lead_eig.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eigenvalues_end_vs_init.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/figures/figure1_parts/accepted_sims.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/figures/figure1_parts/posterior_probability.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/figures/figure1_parts/prior_illustration.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/figures/figure1_parts/rejected_sims.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fsolve_check.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manuscript simulations.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manuscript_posterior_probability.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/network_vis.R" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posterior_analysis.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/real vs complex acceptance rate.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sum_stdev_analysis.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/unsupervised_learning.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../algorithm_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/../algorithm_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../algorithms.py" beforeDir="false" afterPath="$PROJECT_DIR$/../algorithms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/.ipynb_checkpoints/Untitled-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/.ipynb_checkpoints/data_exploration-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/.ipynb_checkpoints/eigenvalues_end_vs_init-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/.ipynb_checkpoints/exploration-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/.ipynb_checkpoints/fsolve_check-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/.ipynb_checkpoints/sum_stdev_analysis-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/.ipynb_checkpoints/unsupervised_learning-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/Untitled.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/a" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/complex vs .png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/data_exploration.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/data_utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/diff_species_lead_eig.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/eigenvalues_end_vs_init.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/fsolve_check.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/network_vis.R" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_0_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_100_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_101_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_102_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_103_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_104_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_105_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_106_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_107_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_108_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_109_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_10_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_110_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_111_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_112_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_113_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_114_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_115_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_116_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_117_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_118_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_119_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_11_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_120_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_121_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_122_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_123_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_124_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_125_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_126_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_12_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_13_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_14_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_15_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_16_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_17_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_18_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_19_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_1_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_20_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_21_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_22_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_23_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_24_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_25_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_26_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_27_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_28_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_29_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_2_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_30_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_31_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_32_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_33_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_34_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_35_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_36_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_37_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_38_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_39_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_3_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_40_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_41_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_42_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_43_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_44_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_45_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_46_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_47_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_48_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_49_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_4_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_50_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_51_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_52_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_53_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_54_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_55_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_56_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_57_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_58_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_59_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_5_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_60_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_61_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_62_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_63_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_64_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_65_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_66_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_67_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_68_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_69_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_6_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_70_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_71_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_72_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_73_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_74_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_75_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_76_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_77_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_78_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_79_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_7_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_80_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_81_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_82_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_83_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_84_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_85_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_86_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_87_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_88_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_89_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_8_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_90_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_91_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_92_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_93_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_94_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_95_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_96_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_97_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_98_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_99_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/networks_output/model_9_adj_mat.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/real vs complex acceptance rate.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/sum_stdev_analysis.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data_analsis_notebook/unsupervised_learning.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../distances.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../distances.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../model_space.py" beforeDir="false" afterPath="$PROJECT_DIR$/../model_space.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../run_boost_rpr.py" beforeDir="false" afterPath="$PROJECT_DIR$/../run_boost_rpr.py" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/posterior_analysis.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="20" column="10" lean-forward="true" selection-start-line="20" selection-start-column="10" selection-end-line="20" selection-end-column="10" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/posterior_analysis.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="2871" />
+    <option name="y" value="225" />
+    <option name="width" value="965" />
+    <option name="height" value="889" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="data_analysis_notebook" type="b2602c69:ProjectViewProjectNode" />
+              <item name="data_analysis_notebook" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="79f487c7-6e4b-44ef-8b50-c200af3bff49" name="Default Changelist" comment="" />
+      <created>1552403058367</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1552403058367</updated>
+      <workItem from="1552403059445" duration="583000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="583000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="2560" y="-2" width="1080" height="1922" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Favorites" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22147001" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Python Console" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Database" />
+      <window_info anchor="right" id="Remote Host" />
+      <window_info anchor="right" id="R Packages" />
+      <window_info anchor="right" id="SciView" />
+      <window_info anchor="right" id="R Graphics" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/posterior_analysis.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="10" lean-forward="true" selection-start-line="20" selection-start-column="10" selection-end-line="20" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

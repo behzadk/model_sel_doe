@@ -127,7 +127,7 @@ double DistanceFunctions::standard_deviation(std::vector<double>& signal) {
 bool DistanceFunctions::has_negative_species(std::vector<state_type>& state_vec) {
 	for (auto tp_iter = state_vec.begin(); tp_iter != state_vec.end(); tp_iter++) {
 		std::vector<double> sim_vec = *tp_iter;
-		auto min_value = *std::min_element(sim_vec.begin(),sim_vec.end());
+		double min_value = *std::min_element(sim_vec.begin(),sim_vec.end());
 
 		if (min_value < 0) {
 			return true;
@@ -159,7 +159,8 @@ std::vector<std::vector<double>> DistanceFunctions::stable_dist(std::vector<stat
 
 	// If final value of fit species is less than 1e4, reject particle
 	double threshold_value = 0;
-	int from_time_index = 4500;
+
+	int from_time_index = 900;
 	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
 		std::vector<double> signal = extract_species_to_fit(state_vec, *it, from_time_index);
 

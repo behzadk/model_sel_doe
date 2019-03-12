@@ -15,13 +15,58 @@ class Model:
         self._params_prior = params_prior
         self._init_species_prior = init_species_prior
         self._n_params = len(params_prior)
-        self._param_kdes = []
-        self._has_kde = False
+
+        self._param_kdes = [None for i in range(self._n_params)]
+        self._init_state_kdes = [None for i in range(len(self._init_species_prior))]
+
+        self._param_has_kde = [False for i in range(self._n_params)]
+        self._init_species_has_kde = [False for i in range(len(self._init_species_prior))]
+
+
         self._sample_probability = 1
 
         # Model data. Number of times this model was sampled in each population and number of times it was accepted
         self.population_sample_count = []
         self.population_accepted_count = []
+
+    def alt_generate_params_kde(self, params_list, fit_params_id):
+        params_list = np.asarray(params_list)
+        for idx, param_key in enumerate(list(self._params_prior.keys())):
+            if param_key in fit_params_id:
+                param_vals = params_list[:, idx]
+                try:
+                    kernel = stats.gaussian_kde(param_vals)
+                    self._param_kdes[idx] = (kernel)
+                    self._param_has_kde[idx] = True
+
+                except np.linalg.linalg.LinAlgError:
+                    self._param_kdes[idx] = (param_vals[0])
+                    self._param_has_kde[idx] = False
+
+            else:
+                self._param_has_kde[idx] = False
+
+
+        self._has_kde = True
+
+
+
+    def alt_generate_species_kde(self, species_list, fit_params_id):
+        species_list = np.asarray(species_list)
+        for idx, species_key in enumerate(list(self._init_species_prior.keys())):
+            if species_key in fit_params_id:
+                param_vals = species_list[:, idx]
+                try:
+                    kernel = stats.gaussian_kde(param_vals)
+                    self._init_state_kdes[idx] = (kernel)
+                    self._init_species_has_kde[idx] = True
+
+                except np.linalg.linalg.LinAlgError:
+                    self._init_state_kdes[idx] = (param_vals[0])
+                    # self._init_species_has_kde[idx] = False
+
+            else:
+                self._init_species_has_kde[idx] = False
 
     ##
     # Generates a KDE from a list of parameters, where each row is a complete set of parameters
@@ -42,53 +87,49 @@ class Model:
             except np.linalg.linalg.LinAlgError:
                 self._param_kdes.append(param_vals[0])
 
-        self._has_kde = True
-
     ##
     # Samples simulation parameters.
     # If KDE has been generated, parameters are sampled from KDE
     # Else, parameters are sampled from the prior
     ##
     def sample_particle(self):
-        if self._has_kde:  # Sample from kde
-            model_sim_params = []
-            for idx, kern in enumerate(self._param_kdes):
-                if isinstance(kern, stats.kde.gaussian_kde):
-                    new_params = kern.resample(1)
+        sim_params = []
 
-                    # Prevent sampling of negative parameter values
-                    while new_params < 0:
-                        new_params = kern.resample(1)
+        for idx, id in enumerate(self._params_prior):
+            if self._param_has_kde[idx]:
+                new_params = self._param_kdes[idx].resample(1)
 
-                    model_sim_params.append(new_params[0][0])
+                # Prevent sampling of negative parameter values
+                while new_params < 0:
+                    new_params = self._param_kdes[idx].resample(1)
 
-                elif isinstance(kern, np.float64):
-                    model_sim_params.append(kern)
+                sim_params.append(new_params[0][0])
 
-                else:
-                    raise("Type not recognised")
-
-            return model_sim_params
-
-        else:  # Sample from uniform prior
-            sim_params = []
-
-            for param in self._params_prior:
-                lwr_bound = self._params_prior[param][0]
-                upr_bound = self._params_prior[param][1]
+            else:  # Sample from uniform prior
+                lwr_bound = self._params_prior[id][0]
+                upr_bound = self._params_prior[id][1]
                 param_val = np.random.uniform(lwr_bound, upr_bound)
                 sim_params.append(param_val)
 
-            return sim_params
+        return sim_params
 
     def sample_init_state(self):
         init_species = []
 
-        for s in self._init_species_prior:
-            lwr_bound = self._init_species_prior[s][0]
-            upr_bound = self._init_species_prior[s][1]
-            param_val = np.random.uniform(lwr_bound, upr_bound)
-            init_species.append(param_val)
+        for idx, s in enumerate(self._init_species_prior):
+            if self._init_species_has_kde[idx]:
+                species_val = self._init_state_kdes[idx].resample(1)
+
+                while species_val[0][0] < 0:
+                    species_val = self._init_state_kdes[idx].resample(1)
+
+                init_species.append(species_val[0][0])
+
+            else:
+                lwr_bound = self._init_species_prior[s][0]
+                upr_bound = self._init_species_prior[s][1]
+                species_val = np.random.uniform(lwr_bound, upr_bound)
+                init_species.append(species_val)
 
         return init_species
 
@@ -106,6 +147,35 @@ class ModelSpace:
         self._model_list = model_list
         self._model_refs_list = [m.get_model_ref() for m in self._model_list]  # Extract model reference from each model
 
+    def alt_generate_model_param_kdes(self, judgement_array, simulated_particles, input_params, fit_parameters):
+        unique_models = self._model_list
+
+        for m in unique_models:
+            accepted_params = []
+            for idx, part in enumerate(simulated_particles):
+                if part is m and judgement_array[idx]:
+                    accepted_params.append(input_params[idx])
+
+            if len(accepted_params) > 1:
+                m.alt_generate_params_kde(accepted_params, fit_parameters)
+
+            else:
+                continue
+
+    def alt_generate_model_init_species_kdes(self, judgement_array, simulated_particles, input_init_state, fit_parameters):
+        unique_models = self._model_list
+
+        for m in unique_models:
+            accepted_params = []
+            for idx, part in enumerate(simulated_particles):
+                if part is m and judgement_array[idx]:
+                    accepted_params.append(input_init_state[idx])
+
+            if len(accepted_params) > 1:
+                m.alt_generate_species_kde(accepted_params, fit_parameters)
+
+            else:
+                continue
 
     ##
     # Generates new kdes for simulated models from the input parameters used for accepted particles

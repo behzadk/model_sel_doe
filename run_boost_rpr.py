@@ -584,13 +584,13 @@ def steady_state_test(expnum):
 def ABC_rejection():
     # Set time points
     t_0 = 0
-    t_end = 5000
+    t_end = 1000
     dt = 1
     
     input_folder = './input_files_two_species/'
     output_folder = './output/'
     experiment_name = 'two_species_stable_NUM/'
-    experiment_number = str(0)
+    experiment_number = str(5)
     experiment_folder = experiment_name.replace('NUM', experiment_number)
 
     output_folder = output_folder + experiment_folder
@@ -617,6 +617,45 @@ def ABC_rejection():
     rejection_alg.run_rejection()
     print("")
 
+def ABCSMC():
+    # Set time points
+    t_0 = 0
+    t_end = 5000
+    dt = 1
+
+    input_folder = './input_files_two_species/'
+    output_folder = './output/'
+    experiment_name = 'two_species_stable_ABSMC_NUM/'
+    experiment_number = str(0)
+    experiment_folder = experiment_name.replace('NUM', experiment_number)
+
+    output_folder = output_folder + experiment_folder
+
+    try:
+        os.mkdir(output_folder)
+
+    except FileExistsError:
+        pass
+
+    # Load models from input files
+    model_list = []
+    for i in range(int((len(os.listdir(input_folder)) / 2))):
+        input_params = input_folder + "params_" + str(i) + ".csv"
+        input_init_species = input_folder + "species_" + str(i) + ".csv"
+        init_params = import_input_file(input_params)
+
+        init_species = import_input_file(input_init_species)
+        model_new = Model(i, init_params, init_species)
+        if i == 30:
+            model_list.append(model_new)
+
+    # Run ABC_rejecction algorithm
+    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 5000, 2, 3, output_folder)
+
+    parameters_to_optimise = ['D', 'N_x', 'N_c']
+    rejection_alg.run_paramter_optimisation(parameters_to_optimise)
+
+
 def random_jacobian():
     # Set time points
     t_0 = 0
@@ -625,8 +664,8 @@ def random_jacobian():
 
     input_folder = './input_files_two_species/'
     output_folder = './output/'
-    experiment_name = 'two_species_stable/'
-    experiment_number = str(3)
+    experiment_name = 'two_species_stable_NUM/'
+    experiment_number = str(5)
     experiment_folder = experiment_name.replace('NUM', experiment_number)
 
     output_folder = output_folder + experiment_folder
@@ -656,12 +695,11 @@ def random_jacobian():
     print("")
 
 
-def ABCSMC():
-    pass
 
 if __name__ == "__main__":
     # for i in range(50):
     #     steady_state_test(i)
+    # ABCSMC()
     ABC_rejection()
     # eig_classification_test()
     # repressilator_test()

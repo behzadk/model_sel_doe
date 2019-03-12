@@ -38,7 +38,7 @@ class Rejection:
         self.n_species_fit = n_species_fit
         self.n_distances = n_distances
 
-        self.epsilon = [100, 10, 1e3]
+        self.epsilon = [100, 10, 1e4]
 
         # Init model space
         self.model_space = ModelSpace(model_list)
@@ -87,6 +87,22 @@ class Rejection:
             plot_species = [i for i in range(self.n_species_fit)]
             plotting.plot_simulation(pdf, sim_idx, model_ref, state_list, time_points, plot_species)
         pdf.close()
+
+    def write_all_particle_state_lists(self, out_dir, pop_num, batch_num, init_states, model_refs):
+        for sim_idx, m_ref in enumerate(model_refs):
+            out_path = out_dir + "/simulation_states/Population_" + str(pop_num) + "_batch_" + \
+                       str(batch_num) + "_idx_" + str(sim_idx) + "_state.csv"
+
+            state_list = self.pop_obj.get_particle_state_list(sim_idx)
+            time_points = self.pop_obj.get_timepoints_list()
+
+            tp = int(len(state_list) / len(init_states[sim_idx]))
+            print(tp)
+            state_list = np.reshape(state_list, (tp, len(init_states[sim_idx])))
+            np.savetxt(out_path, state_list, delimiter=',')
+
+
+
 
 
     def write_accepted_particle_distances(self, out_dir, model_refs, part_judgments, distances):
@@ -378,6 +394,12 @@ class Rejection:
         except FileExistsError:
             pass
 
+        try:
+            os.mkdir(folder_name + 'simulation_states')
+
+        except FileExistsError:
+            pass
+
         accepted_particles_count = 0
         total_sims = 0
         batch_num = 0
@@ -417,6 +439,7 @@ class Rejection:
                                           batch_part_judgements, batch_distances)
 
             self.write_eigenvalues(folder_name, model_refs, batch_num, particle_models.tolist(), do_fsolve=True)
+            self.write_all_particle_state_lists(folder_name, population_number, batch_num, init_states, model_refs)
 
             accepted_particles_count += sum(batch_part_judgements)
             total_sims += len(model_refs)
@@ -532,6 +555,80 @@ class Rejection:
         plt.yscale('log')
         plt.show()
 
+    def run_paramter_optimisation(self, parameters_to_optimise):
+        population_number = 0
+
+        folder_name = self.out_dir + "Population_" + str(population_number) + "/"
+
+        try:
+            os.mkdir(folder_name)
+        except FileExistsError:
+            pass
+
+        sim_params_folder = folder_name + 'model_sim_params/'
+        try:
+            os.mkdir(sim_params_folder)
+        except FileExistsError:
+            pass
+
+        try:
+            os.mkdir(folder_name + 'simulation_plots')
+        except FileExistsError:
+            pass
+
+        accepted_particles_count = 0
+        total_sims = 0
+        batch_num = 0
+
+        while accepted_particles_count < self.population_size:
+
+            # 1. Sample from model space
+            particle_models = self.model_space.sample_model_space(self.n_sims_batch)  # Model objects in this simulation
+
+            # 2. Sample particles for each model
+            init_states, input_params, model_refs = alg_utils.generate_particles(particle_models)          # Extract input parameters and model references
+
+            # 3. Simulate population
+            self.pop_obj = population_modules.Population(self.n_sims_batch, self.t_0, self.t_end,
+                                              self.dt, init_states, input_params, model_refs)
+            self.pop_obj.generate_particles()
+            self.pop_obj.simulate_particles()
+
+            # 3. Calculate distances for population
+            print("calculating distances")
+            self.pop_obj.calculate_particle_distances()
+            print("got distances")
+
+            self.pop_obj.accumulate_distances()
+            batch_distances = self.pop_obj.get_flattened_distances_list()
+            batch_distances = np.reshape(batch_distances, (self.n_sims_batch, self.n_species_fit, self.n_distances))
+
+            # 4. Accept or reject particles
+            batch_part_judgements = alg_utils.check_distances(batch_distances, epsilon_array=self.epsilon)
+            num_true = sum(batch_part_judgements)
+            total = len(batch_part_judgements)
+            print(num_true / total)
+
+            self.model_space.alt_generate_model_param_kdes(batch_part_judgements, particle_models.tolist(), input_params, parameters_to_optimise)
+            self.model_space.alt_generate_model_init_species_kdes(batch_part_judgements, particle_models.tolist(), init_states, parameters_to_optimise)
+
+            self.wr
+            # # Write data
+            # self.write_particle_params(sim_params_folder, batch_num, particle_models.tolist(),
+            #                                        input_params, init_states, batch_part_judgements)
+            #
+            # self.write_particle_distances(folder_name, model_refs, batch_num, particle_models.tolist(),
+            #                               batch_part_judgements, batch_distances)
+            #
+            # self.write_eigenvalues(folder_name, model_refs, batch_num, particle_models.tolist(), do_fsolve=True)
+            #
+            # accepted_particles_count += sum(batch_part_judgements)
+            # total_sims += len(model_refs)
+            #
+            # print("Population: ", population_number, "Accepted particles: ", accepted_particles_count, "Total simulations: ", total_sims)
+            # self.model_space.update_model_population_sample_data(particle_models.tolist(), batch_part_judgements)
+            # self.model_space.model_space_report(folder_name, batch_num)
+
 
     def run_random_jacobian(self):
         population_number = 0
@@ -552,6 +649,12 @@ class Rejection:
 
         try:
             os.mkdir(folder_name + 'simulation_plots')
+        except FileExistsError:
+            pass
+
+        try:
+            os.mkdir(folder_name + 'simulation_states')
+
         except FileExistsError:
             pass
 
