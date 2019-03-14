@@ -25,7 +25,7 @@ using namespace boost::python;
 */
 Population::Population(const int n_sims, const int t_0, 
     const int t_end, const float dt, boost::python::list state_init_list,
-    boost::python::list params_list, boost::python::list model_ref_list)
+    boost::python::list params_list, boost::python::list model_ref_list, boost::python::list py_fit_species)
 {
 
 	_n_sims = n_sims;
@@ -49,6 +49,10 @@ Population::Population(const int n_sims, const int t_0,
 	_all_params = unpack_parameters(params_list);
 	_all_state_init = unpack_parameters_to_ublas(state_init_list);
 	_model_refs = unpack_model_references(model_ref_list);
+
+    for (int j = 0; j < len(py_fit_species); ++j) {
+            fit_species.push_back( boost::python::extract<double>(py_fit_species[j]));
+    }
 }
 
 
@@ -109,7 +113,6 @@ void Population::simulate_particles()
 */
 void Population::calculate_particle_distances()
 {
-	std::vector<int> fit_species = {0, 1};
 	DistanceFunctions dist = DistanceFunctions();
 
 	#pragma omp parallel for schedule(runtime)
@@ -325,7 +328,7 @@ BOOST_PYTHON_MODULE(population_modules)
 		.def(boost::python::vector_indexing_suite<PopDistances>());
 
     class_<Population>("Population", init<const int, const int, 
-    const int, const float, boost::python::list, boost::python::list, boost::python::list>())
+    const int, const float, boost::python::list, boost::python::list, boost::python::list, boost::python::list>())
     	.def("generate_particles", &Population::generate_particles)
     	.def("simulate_particles", &Population::simulate_particles)
     	.def("calculate_particle_distances", &Population::calculate_particle_distances)

@@ -39,7 +39,7 @@ def check_distances(particle_distances, epsilon_array):
         else:
             for species in part_distance:
                 for epsilon_idx, dist in enumerate(species):
-                    if epsilon_idx <=1 and dist >=epsilon_array[epsilon_idx]:
+                    if epsilon_idx <=1 and dist >= epsilon_array[epsilon_idx]:
                         particle_accept = False
 
                     elif epsilon_idx == 2 and dist <=epsilon_array[epsilon_idx]:

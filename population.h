@@ -8,10 +8,12 @@ typedef std::vector<std::vector<std::vector<double>>> PopDistances;
 class Population {
 	public:
 		Population(const int, const int, const int, 
-			const float, boost::python::list, boost::python::list, boost::python::list);
+			const float, boost::python::list, boost::python::list, boost::python::list, boost::python::list);
 
 		std::vector< std::vector<double> > unpack_parameters(boost::python::list);
 		std::vector<int> unpack_model_references(boost::python::list);
+		std::vector<int> fit_species;
+
 		void generate_particles();
 		void simulate_particles();
 		void calculate_particle_distances();

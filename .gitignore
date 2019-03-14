@@ -1,4 +1,5 @@
 data_analysis_notebook/networks_output/
+data_analysis_notebook/figures/
 input_multi_model.xml
 log.test.1
 nohup.out
@@ -13,4 +14,3 @@ visualisation/output/
 population_modules.so
 venv/
 log.boost.1
-

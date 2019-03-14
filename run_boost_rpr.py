@@ -587,13 +587,15 @@ def ABC_rejection():
     t_end = 1000
     dt = 1
     
-    input_folder = './input_files_two_species/priors/'
+    input_folder = './input_files_three_species/priors/'
     output_folder = './output/'
-    experiment_name = 'two_species_stable_NUM/'
-    experiment_number = str(7)
+    experiment_name = 'three_species_stable_NUM/'
+    experiment_number = str(0)
     experiment_folder = experiment_name.replace('NUM', experiment_number)
 
     output_folder = output_folder + experiment_folder
+
+    fit_species = [0, 1, 2]
 
     try:
         os.mkdir(output_folder)
@@ -613,19 +615,19 @@ def ABC_rejection():
         model_list.append(model_new)
 
     # Run ABC_rejecction algorithm
-    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 300, 2, 3, output_folder)
+    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 300, fit_species, 3, output_folder)
     rejection_alg.run_rejection()
     print("")
 
 def ABCSMC():
     # Set time points
     t_0 = 0
-    t_end = 5000
+    t_end = 1000
     dt = 1
 
-    input_folder = './input_files_two_species/'
+    input_folder = './input_files_three_species/'
     output_folder = './output/'
-    experiment_name = 'two_species_stable_ABSMC_NUM/'
+    experiment_name = 'three_species_stable_ABSMC_NUM/'
     experiment_number = str(0)
     experiment_folder = experiment_name.replace('NUM', experiment_number)
 

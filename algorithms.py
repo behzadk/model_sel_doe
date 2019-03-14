@@ -27,7 +27,7 @@ def blockPrinting(func):
 class Rejection:
     def __init__(self, t_0, t_end, dt,
                  model_list, population_size, n_sims_batch,
-                 n_species_fit, n_distances, out_dir):
+                 fit_species, n_distances, out_dir):
         self.t_0 = t_0
         self.t_end = t_end
         self.dt = dt
@@ -35,7 +35,7 @@ class Rejection:
 
         self.population_size = population_size
         self.n_sims_batch = n_sims_batch
-        self.n_species_fit = n_species_fit
+        self.fit_species = fit_species
         self.n_distances = n_distances
 
         self.epsilon = [100, 10, 1e4]
@@ -60,7 +60,7 @@ class Rejection:
                 state_list = np.reshape(state_list, (len(time_points), len(init_states[idx])))
                 model_ref = model_refs[idx]
 
-                plot_species = [i for i in range(self.n_species_fit)]
+                plot_species = [i for i in range(len(self.fit_species))]
                 plotting.plot_simulation(pdf, model_ref, state_list, time_points, plot_species)
         pdf.close()
 
@@ -84,7 +84,7 @@ class Rejection:
 
             model_ref = model_refs[sim_idx]
 
-            plot_species = [i for i in range(self.n_species_fit)]
+            plot_species = [i for i in self.fit_species]
             plotting.plot_simulation(pdf, sim_idx, model_ref, state_list, time_points, plot_species)
         pdf.close()
 
@@ -111,7 +111,7 @@ class Rejection:
             for idx, is_accepted in enumerate(part_judgments):
                 record_vals = [idx, model_refs[idx]]
                 if is_accepted:
-                    for n in range(self.n_species_fit):
+                    for n in self.fit_species:
                         for d in distances[idx][n]:
                             record_vals.append(d)
 
@@ -124,7 +124,7 @@ class Rejection:
         if not os.path.isfile(out_path):
             col_header = ['sim_idx', 'batch_num', 'model_ref', 'Accepted']
             idx = 1
-            for n in range(self.n_species_fit):
+            for n in self.fit_species:
                 for d in self.epsilon:
                     col_header.append('d'+str(idx))
                     idx +=1
@@ -140,7 +140,7 @@ class Rejection:
             for idx, m_ref in enumerate(model_refs):
                 row_vals = [idx, batch_num, m_ref, judgement_array[idx]]
 
-                for n in range(self.n_species_fit):
+                for n in self.fit_species:
                     for d in distances[idx][n]:
                         row_vals.append(d)
 
@@ -413,7 +413,7 @@ class Rejection:
 
             # 3. Simulate population
             self.pop_obj = population_modules.Population(self.n_sims_batch, self.t_0, self.t_end,
-                                              self.dt, init_states, input_params, model_refs)
+                                              self.dt, init_states, input_params, model_refs, self.fit_species)
             self.pop_obj.generate_particles()
             self.pop_obj.simulate_particles()
 
@@ -424,7 +424,7 @@ class Rejection:
 
             self.pop_obj.accumulate_distances()
             batch_distances = self.pop_obj.get_flattened_distances_list()
-            batch_distances = np.reshape(batch_distances, (self.n_sims_batch, self.n_species_fit, self.n_distances))
+            batch_distances = np.reshape(batch_distances, (self.n_sims_batch, len(self.fit_species), self.n_distances))
 
             # 4. Accept or reject particles
             batch_part_judgements = alg_utils.check_distances(batch_distances, epsilon_array=self.epsilon)
@@ -486,7 +486,7 @@ class Rejection:
 
             # 3. Simulate population
             self.pop_obj = population_modules.Population(self.n_sims_batch, self.t_0, self.t_end,
-                                              self.dt, init_states, input_params, model_refs)
+                                              self.dt, init_states, input_params, model_refs, self.fit_species)
             self.pop_obj.generate_particles()
 
             # Iterate init states, accepting all negative systems
@@ -590,6 +590,7 @@ class Rejection:
             # 3. Simulate population
             self.pop_obj = population_modules.Population(self.n_sims_batch, self.t_0, self.t_end,
                                               self.dt, init_states, input_params, model_refs)
+
             self.pop_obj.generate_particles()
             self.pop_obj.simulate_particles()
 
@@ -600,7 +601,8 @@ class Rejection:
 
             self.pop_obj.accumulate_distances()
             batch_distances = self.pop_obj.get_flattened_distances_list()
-            batch_distances = np.reshape(batch_distances, (self.n_sims_batch, self.n_species_fit, self.n_distances))
+
+            batch_distances = np.reshape(batch_distances, (self.n_sims_batch, len(self.fit_species), self.n_distances))
 
             # 4. Accept or reject particles
             batch_part_judgements = alg_utils.check_distances(batch_distances, epsilon_array=self.epsilon)
@@ -611,7 +613,6 @@ class Rejection:
             self.model_space.alt_generate_model_param_kdes(batch_part_judgements, particle_models.tolist(), input_params, parameters_to_optimise)
             self.model_space.alt_generate_model_init_species_kdes(batch_part_judgements, particle_models.tolist(), init_states, parameters_to_optimise)
 
-            self.wr
             # # Write data
             # self.write_particle_params(sim_params_folder, batch_num, particle_models.tolist(),
             #                                        input_params, init_states, batch_part_judgements)
