@@ -2,6 +2,71 @@ import numpy as np
 import seaborn as sns; sns.set()
 import matplotlib.pyplot as plt
 import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
+import math
+
+def kolmogorov_smirnov_test(sample_one, sample_two):
+    n_1 = len(sample_one)
+    n_2 = len(sample_two)
+
+    sample_one.sort()
+    sample_two.sort()
+
+    sample_one_cdf = [i*1 / n_1 for i in range(1, n_1+1)]
+    sample_two_cdf = [i*1 / n_2 for i in range(1, n_2+1)]
+
+    s_one_idx = 0
+    s_two_idx = 0
+
+    combined_sample = []
+
+    max_diff = 0
+
+    while s_one_idx < n_1 and s_two_idx < n_2:
+        v1 = sample_one[s_one_idx]
+        v2 = sample_two[s_two_idx]
+
+
+        diff = abs(sample_one_cdf[s_one_idx] - sample_two_cdf[s_two_idx])
+        if diff > max_diff:
+            max_diff = diff
+
+        if v1 < v2:
+            combined_sample.append(v1)
+            s_one_idx += 1
+
+        elif v2 < v1:
+            combined_sample.append(v2)
+            s_two_idx += 1
+
+        else:
+            combined_sample.append(v1)
+            s_one_idx += 1
+            s_two_idx += 1
+
+    return max_diff
+
+def normalise_parameters(model_posterior_df):
+    # Get param names
+    param_names = model_posterior_df.columns[3:]
+    free_params = []
+
+    # Extract parameter columns that are not constants
+    for param in param_names:
+        if model_posterior_df[param].nunique() == 1:
+            continue
+
+        else:
+            free_params.append(param)
+
+    # Normalise free parameter columns
+    for param in free_params:
+        scaler = MinMaxScaler()
+        model_posterior_df[param] = scaler.fit_transform(model_posterior_df[[param]])
+
+
+    return model_posterior_df, free_params
+
 
 def recur_get_connected_nodes(adj_mat, path_length, path_sign, visited_nodes, from_idx, target_idx, loop_found, path_log, output):
     n_species = np.shape(adj_mat)[0]
@@ -67,26 +132,68 @@ def get_num_parts(adj_mat_df):
     adj_mat_df.drop([adj_mat_df.columns[0]], axis=1, inplace=True)
 
     col_names = adj_mat_df.columns
+
     strain_indexes = [idx for idx, i in enumerate(col_names) if 'N_' in i]
+    AHL_indexes = [idx for idx, i in enumerate(col_names) if 'A_' in i]
+    microcin_indexes = [idx for idx, i in enumerate(col_names) if 'B_' in i]
+
     adj_mat = adj_mat_df.values
 
     n_species = np.shape(adj_mat)[0]
-    num_parts = 0
-    for strain_idx in strain_indexes:
-        num_parts += sum(adj_mat[:, strain_idx])
+    total_num_parts = 0
 
-    return num_parts
+    for strain_idx in strain_indexes:
+        total_num_parts += abs(sum(adj_mat[:, strain_idx]))
+
+    num_AHL_parts = 0
+    for idx in AHL_indexes:
+        if sum(adj_mat[:, idx]) >=1:
+            num_AHL_parts +=1
+
+    num_microcin_parts = 0
+    for idx in microcin_indexes:
+        if abs(sum(adj_mat[:, idx])) >= 1:
+            num_microcin_parts += 1
+
+    return total_num_parts, num_AHL_parts, num_microcin_parts
+
+def make_KS_df(model_idx, model_posterior_df):
+    model_posterior_df, free_params = normalise_parameters(model_posterior_df)
+    accepted_sims = model_posterior_df.loc[model_posterior_df['Accepted'] == True]
+
+    if len(accepted_sims) <= 1:
+        return None
+
+    D_crit = 1.36 * math.sqrt(1 / len(accepted_sims) + 1 / len(model_posterior_df))
+
+    KS_data_df = pd.DataFrame(columns=['model_idx', 'D_crit'])
+    KS_data_df['model_idx'] = [model_idx]
+    KS_data_df['D_crit'] = [D_crit]
+
+
+    for param in free_params:
+        D_n = kolmogorov_smirnov_test(accepted_sims[param].values, model_posterior_df[param].values)
+        KS_data_df[param] = D_n
+
+    return KS_data_df
+
 
 def make_num_parts(model_space_report_df, adj_matrix_path_template):
     models = model_space_report_df.model_idx.values
     all_num_parts = []
+    all_AHL_num_parts = []
+    all_microcin_num_parts = []
+
     for m in models:
         adj_mat_path = adj_matrix_path_template.replace("#REF#", str(m))
-        adj_mat_df = pd.read_csv(adj_mat_path)
-        num_parts = get_num_parts(adj_mat_df)
-        all_num_parts.append(num_parts)
 
-    return all_num_parts
+        adj_mat_df = pd.read_csv(adj_mat_path)
+        total_num_parts, num_AHL_parts, num_microcin_parts = get_num_parts(adj_mat_df)
+        all_num_parts.append(total_num_parts)
+        all_AHL_num_parts.append(num_AHL_parts)
+        all_microcin_num_parts.append(num_microcin_parts)
+
+    return all_num_parts, all_AHL_num_parts, all_microcin_num_parts
 
 
 def make_feedback_loop_counts(model_space_report_df, adj_matrix_path_template):
@@ -119,9 +226,6 @@ def make_feedback_loop_counts(model_space_report_df, adj_matrix_path_template):
 
 
     return positive_loops, negative_loops
-
-
-
 
 
 
@@ -480,26 +584,26 @@ def set_accepted_column(df):
     df.loc[df['d1']]
 
 def main():
-    output_dir= "./output/two_species_big_3/Population_0"
-    distances_path= output_dir + "/distances.csv"
-    eigenvalues_path= output_dir + "/eigenvalues.csv"
-    model_space_report_path= output_dir + "/model_space_report.csv"
+    output_dir = "./output/two_species_big_3/Population_0"
+    distances_path = output_dir + "/distances.csv"
+    eigenvalues_path = output_dir + "/eigenvalues.csv"
+    model_space_report_path = output_dir + "/model_space_report.csv"
 
-    distaces_df= pd.read_csv(distances_path)
-    distaces_df= distances_pre_processing(distaces_df)
+    distaces_df = pd.read_csv(distances_path)
+    distaces_df = distances_pre_processing(distaces_df)
 
-    eigenvalues_df= pd.read_csv(eigenvalues_path)
+    eigenvalues_df = pd.read_csv(eigenvalues_path)
 
     # Ignore failed simulations
-    eigenvalues_df= eigenvalues_df.loc[eigenvalues_df['integ_error'].isnull()]
+    eigenvalues_df = eigenvalues_df.loc[eigenvalues_df['integ_error'].isnull()]
 
-    joint_df= pd.merge(left=eigenvalues_df, right=distaces_df, how='inner', on=['sim_idx', 'batch_num', 'model_ref'])
+    joint_df = pd.merge(left=eigenvalues_df, right=distaces_df, how='inner', on=['sim_idx', 'batch_num', 'model_ref'])
     joint_df.reset_index()
 
-    joint_df= species_sustained(joint_df)
-    joint_df= make_max_eig(joint_df)
-    joint_df= all_negative_eigs(joint_df)
-    joint_df= all_real_eigs(joint_df)
+    joint_df = species_sustained(joint_df)
+    joint_df = make_max_eig(joint_df)
+    joint_df = all_negative_eigs(joint_df)
+    joint_df = all_real_eigs(joint_df)
 
     print(len(joint_df))
     print(joint_df.columns)

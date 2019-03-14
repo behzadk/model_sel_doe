@@ -587,10 +587,10 @@ def ABC_rejection():
     t_end = 1000
     dt = 1
     
-    input_folder = './input_files_two_species/'
+    input_folder = './input_files_two_species/priors/'
     output_folder = './output/'
     experiment_name = 'two_species_stable_NUM/'
-    experiment_number = str(5)
+    experiment_number = str(7)
     experiment_folder = experiment_name.replace('NUM', experiment_number)
 
     output_folder = output_folder + experiment_folder
