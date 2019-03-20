@@ -2,7 +2,7 @@
 
 cpp_dir=$HOME'/software/cpp_consortium_sim/model_sel_doe/'
 venv=$cpp_dir'venv/cpp_py/bin/activate'
-inputs_folder=./input_files_two_species/
+inputs_folder=./input_files_three_species/
 
 module unload compilers
 module load compilers/gnu/4.9.2
