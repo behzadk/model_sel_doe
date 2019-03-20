@@ -125,14 +125,15 @@ visualise_network <- function(adj_mat_path) {
 }
 
 
-adjacency_mat_dir <- "/home/behzad/Documents/barnes_lab/sympy_consortium_framework/output/two_species_no_symm/adj_matricies"
+# adjacency_mat_dir <- "/home/behzad/Documents/barnes_lab/sympy_consortium_framework/output/two_species_no_symm/adj_matricies"
+adjacency_mat_dir <- "/home/behzad/Documents/barnes_lab/sympy_consortium_framework/output/3_species_space/adj_matricies"
 
 files <- list.files(path=adjacency_mat_dir, pattern="*.csv", full.names=TRUE, recursive=FALSE)
 this_dir <- get_directory()
 
 for (f in files) {
     system_net <- visualise_network(f)
-    out_dir <-  "/networks_output/"
+    out_dir <-  "/networks_output/three_species/"
     out_name <- basename(f)
     print(out_name)
     out_name <- tools::file_path_sans_ext(out_name)

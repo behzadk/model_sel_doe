@@ -11,7 +11,7 @@ import math
 import sklearn
 from sklearn.preprocessing import MinMaxScaler
 
-plt.rcParams['figure.figsize'] = [20, 15]
+plt.rcParams['figure.figsize'] = [30, 30]
 
 font = {'size'   : 11, }
 axes = {'labelsize': 'small', 'titlesize': 'small'}
@@ -126,9 +126,8 @@ def visualise_posterior_distributions(posterior_dir, priors_dir, output_dir):
 
         D_crit = round(D_crit, 4)
         axes[-1].text(0.6, 0.5, r"$D_{crit} = " + str(D_crit) + "$",
-                     horizontalalignment='center',
-                     verticalalignment='center',
-                     transform=axes[i].transAxes)
+                     horizontalalignment='right',
+                     verticalalignment='center')
 
         axes[-1].set_axis_off()
         axes[-1].legend(handles, labels, loc='lower right')
@@ -137,7 +136,7 @@ def visualise_posterior_distributions(posterior_dir, priors_dir, output_dir):
         figure_name = figure_name.replace('REF', str(model_ref))
 
         plt.tight_layout()
-        plt.savefig(figure_name, dpi=100)
+        plt.savefig(figure_name, dpi=100, bbox_inches='tight')
         plt.close(fig)
 
 def generate_posterior_KS_csv(posterior_dir, priors_dir, output_dir):
@@ -159,6 +158,8 @@ def generate_posterior_KS_csv(posterior_dir, priors_dir, output_dir):
 
 
 def main():
+    # Two species
+    """
     wd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
     data_dir = wd + "output/two_species_stable_6/Population_0/"
 
@@ -168,7 +169,21 @@ def main():
     distributions_dir = output_dir + "distributions/"
     KS_out_dir = output_dir + "KS_data/"
 
-    # generate_posterior_KS_csv(posterior_params_dir, priors_dir, KS_out_dir)
+    generate_posterior_KS_csv(posterior_params_dir, priors_dir, KS_out_dir)
+    visualise_posterior_distributions(posterior_params_dir, priors_dir, distributions_dir)
+    """
+
+    # Three species
+    wd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
+    data_dir = wd + "output/three_species_stable_comb/Population_0/"
+
+    posterior_params_dir = data_dir + "model_sim_params/"
+    priors_dir = wd + "input_files_three_species/priors/"
+    output_dir = wd + "data_analysis_notebook/posterior_analysis/three_species/"
+    distributions_dir = output_dir + "distributions/"
+    KS_out_dir = output_dir + "KS_data/"
+
+    generate_posterior_KS_csv(posterior_params_dir, priors_dir, KS_out_dir)
     visualise_posterior_distributions(posterior_params_dir, priors_dir, distributions_dir)
 
 
