@@ -16,6 +16,8 @@ import seaborn as sns; sns.set()
 from scipy.optimize import fsolve
 import classification
 
+import sys
+
 def extract_parameters_from_xml(input_file):
     tree = ET.parse(input_file)
     root = tree.getroot()
@@ -590,7 +592,8 @@ def ABC_rejection():
     input_folder = './input_files_three_species/priors/'
     output_folder = './output/'
     experiment_name = 'three_species_stable_NUM/'
-    experiment_number = str(0)
+    experiment_number = str(sys.argv[1])
+    
     experiment_folder = experiment_name.replace('NUM', experiment_number)
 
     output_folder = output_folder + experiment_folder
@@ -615,7 +618,7 @@ def ABC_rejection():
         model_list.append(model_new)
 
     # Run ABC_rejecction algorithm
-    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 300, fit_species, 3, output_folder)
+    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 288, fit_species, 3, output_folder)
     rejection_alg.run_rejection()
     print("")
 
