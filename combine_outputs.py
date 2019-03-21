@@ -131,12 +131,13 @@ def combine_model_sim_params(exp_1_dir, exp_2_dir, start_batches, output_dir):
 
 def main():
     data_dir = "./output/"
-    exp_1_dir = data_dir + "three_species_stable_0/Population_0/"
-    exp_2_dir = data_dir + "three_species_stable_1/Population_0/"
+    exp_1_dir = data_dir + "three_species_stable_comb/Population_0/"
+    exp_2_dir = data_dir + "three_species_stable_4/Population_0/"
 
-    new_output_dir = data_dir + "three_species_stable_comb/Population_0/"
+    new_output_dir = data_dir + "three_species_stable_comb_2/Population_0/"
+
     try:
-        os.mkdir(new_output_dir)
+        os.makedirs(new_output_dir)
     except FileExistsError:
         pass
 
@@ -145,10 +146,11 @@ def main():
     start_batches = exp_1_df.iloc[-1]['batch_num'] + 1
     del exp_1_df
 
+
+    combine_model_space_reports(exp_1_dir, exp_2_dir, new_output_dir)
     combine_model_sim_params(exp_1_dir, exp_2_dir, start_batches, new_output_dir)
-    # combine_eigenvalues(exp_1_dir, exp_2_dir, new_output_dir)
-    # combine_model_space_reports(exp_1_dir, exp_2_dir, new_output_dir)
-    # combine_distances(exp_1_dir, exp_2_dir, new_output_dir)
+    combine_eigenvalues(exp_1_dir, exp_2_dir, new_output_dir)
+    combine_distances(exp_1_dir, exp_2_dir, new_output_dir)
 
 if __name__ == "__main__":
     main()

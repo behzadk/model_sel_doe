@@ -426,8 +426,6 @@ def eig_classification_test():
     py_trace = sum([jac[i][i] for i in range(n_species)])
 
 
-
-
 def steady_state_test(expnum):
     # Set time points
     t_0 = 0

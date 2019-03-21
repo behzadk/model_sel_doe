@@ -629,7 +629,6 @@ class Rejection:
             # self.model_space.update_model_population_sample_data(particle_models.tolist(), batch_part_judgements)
             # self.model_space.model_space_report(folder_name, batch_num)
 
-
     def run_random_jacobian(self):
         population_number = 0
 
@@ -777,6 +776,9 @@ class Rejection:
 
             sys.stdout.flush()
             batch_num += 1
+
+    def run_ABC_SMC(self):
+
 
 
 class ABC_SMC:
