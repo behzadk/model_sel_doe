@@ -45,27 +45,54 @@ struct simulation_observer
     std::vector< state_type >& m_states;
     size_t m_steps;
     rosenbrock4_controller<rosenbrock4<double> > m_stepper_controller;
+    std::vector<int> m_fit_species;
 
-    simulation_observer( std::vector< state_type > &states, rosenbrock4_controller<rosenbrock4<double> > &stepper_controller )
-    : m_states( states ), m_stepper_controller( stepper_controller )  { }
+    simulation_observer( std::vector< state_type > &states, rosenbrock4_controller<rosenbrock4<double> > &stepper_controller, std::vector<int> &fit_species )
+    : m_states( states ), m_stepper_controller( stepper_controller ), m_fit_species(fit_species)  { }
 
     void operator()( ublas_vec_t x , double t )
     {
         m_steps +=1;
         std::vector<double> new_state;
+        bool species_decayed = false;
+        bool negative_species = false;
+
+        for (auto it = m_fit_species.begin(); it != m_fit_species.end(); it++) {
+            if(x(*it) < 1e-100) {
+                species_decayed = true;
+            }
+        }
+
+        // //Test
+        // if(x(0) < 1e-100) {
+        //     species_decayed = true;
+        // }
+        
+        // //Test
+        // if(x(1) < 1e-100) {
+        //     species_decayed = true;
+        // }
+
 
         for(int i = 0; i < x.size(); i++){
             double val = x(i);
 
-            if (val < 1e-200) throw runtime_error("species_decayed");
+            // if (val < 1e-200) {
+            //     species_decayed = true;
+            // }
 
-            if(val < 0) throw runtime_error("negative_species");
+            if(val < 0) {
+                negative_species = true;
+            };
 
             new_state.push_back(val);
 
         }
-
         m_states.push_back( new_state );
+
+        if (species_decayed) throw runtime_error("species_decayed");
+        if (negative_species) throw runtime_error("negative_species");
+
     }
 };
 
@@ -98,9 +125,9 @@ void Particle::operator() (const ublas_vec_t & x , ublas_mat_t &J , const double
 * Simulates particle for a given vector of time points. Currently uses default error tolerances and initial step of 
 * 1e-6
 */
-void Particle::simulate_particle_rosenbrock(std::vector<double> time_points)
+void Particle::simulate_particle_rosenbrock(std::vector<double> time_points, double abs_tol, double rel_tol, std::vector<int> fit_species)
 {
-    auto rosen_stepper = rosenbrock4_controller< rosenbrock4< double > >( 1.0e-6 , 1.0e-6 );
+    auto rosen_stepper = rosenbrock4_controller< rosenbrock4< double > >( abs_tol , rel_tol);
 
     // auto rosen_stepper = make_controlled< rosenbrock4< double > >( 1.0e-6 , 1.0e-6 );
     // PROBLEM: Solver is getting stuck trying to find smaller and smaller dt. Eventually reaching
@@ -108,9 +135,9 @@ void Particle::simulate_particle_rosenbrock(std::vector<double> time_points)
     // SOLUTION: Write custom stepper that checks dt and throws exception if dt reaches a very small number!
     // https://stackoverflow.com/questions/14465725/limit-number-of-steps-in-boostodeint-integration?noredirect=1&lq=1
 
-    max_step_checker mx_step = max_step_checker(1e4);
+    max_step_checker mx_step = max_step_checker(1e5);
 
-    double dt = 1e-7;
+    double dt = time_points[1] - time_points[0];
 
     // // Check if step size is negative
     if ( ( time_points[1] - time_points[0] ) < 0 ) {
@@ -119,7 +146,7 @@ void Particle::simulate_particle_rosenbrock(std::vector<double> time_points)
 
     integrate_times(  rosen_stepper, 
         make_pair(boost::ref( *this ), boost::ref( *this )) , 
-        state_init , time_points.begin(), time_points.end() , dt, simulation_observer(state_vec, rosen_stepper), mx_step);
+        state_init , time_points.begin(), time_points.end() , dt, simulation_observer(state_vec, rosen_stepper, fit_species), mx_step);
 }
 
 /*

@@ -38,7 +38,9 @@ class Rejection:
         self.fit_species = fit_species
         self.n_distances = n_distances
 
-        self.epsilon = [100, 10, 1e4]
+        # self.epsilon = [100, 10, 1e4]
+        # self.epsilon = [0.01, 0.001, 1e-5]
+        self.epsilon = [0.01, 0.001, 1e-3]
 
         # Init model space
         self.model_space = ModelSpace(model_list)
@@ -46,31 +48,32 @@ class Rejection:
         self.out_dir = out_dir
 
     def plot_accepted_particles(self, out_dir, pop_num, batch_num, part_judgements, init_states, model_refs):
-        out_path = out_dir + "Population_" + str(pop_num) + "_batch_" + str(batch_num) + "_plots.pdf"
+        out_path = out_dir + "Population_" + str(pop_num) + "_batch_" + str(batch_num) + "_accepted_plots.pdf"
 
         # Make new pdf
-        pdf = PdfPages(out_path)
+        with PdfPages(out_path) as pdf:
+            # Iterate all particles in batch
+            for idx, is_accepted in enumerate(part_judgements):
+                if is_accepted:
+                    state_list = self.pop_obj.get_particle_state_list(idx)
+                    time_points = self.pop_obj.get_timepoints_list()
 
-        # Iterate all particles in batch
-        for idx, is_accepted in enumerate(part_judgements):
-            if is_accepted:
-                state_list = self.pop_obj.get_particle_state_list(idx)
-                time_points = self.pop_obj.get_timepoints_list()
+                    state_list = np.reshape(state_list, (len(time_points), len(init_states[idx])))
+                    model_ref = model_refs[idx]
 
-                state_list = np.reshape(state_list, (len(time_points), len(init_states[idx])))
-                model_ref = model_refs[idx]
+                    plot_species = [i for i in range(len(self.fit_species))]
 
-                plot_species = [i for i in range(len(self.fit_species))]
-                plotting.plot_simulation(pdf, model_ref, state_list, time_points, plot_species)
-        pdf.close()
-
+                    plotting.plot_simulation(pdf, idx, model_ref, state_list, time_points, plot_species, out_path)
+            
+        # pdf.close()
 
     def plot_all_particles(self, out_dir, pop_num, batch_num, init_states, model_refs):
-        out_path = out_dir + "/simulation_plots/Population_" + str(pop_num) + "_batch_" + str(batch_num) + "_plots.pdf"
+        out_path = out_dir + "/simulation_plots/Population_" + str(pop_num) + "_batch_" + str(batch_num) + "all_plots.pdf"
 
         # Make new pdf
         pdf = PdfPages(out_path)
 
+        negative_count = 0
         # Iterate all particles in batch
         for sim_idx, m_ref in enumerate(model_refs):
             state_list = self.pop_obj.get_particle_state_list(sim_idx)
@@ -80,18 +83,29 @@ class Rejection:
                 state_list = np.reshape(state_list, (len(time_points), len(init_states[sim_idx])))
 
             except(ValueError):
-                continue
+                print(len(state_list)/len(init_states[sim_idx]))
+                time_points = range(int(len(state_list)/len(init_states[sim_idx])))
+                state_list = np.reshape(state_list, (len(time_points), len(init_states[sim_idx])))
+
+
+
+            if np.min(state_list) < 0 or np.isnan(state_list).any():
+                negative_count += 1
+                # print(np.min(state_list))
 
             model_ref = model_refs[sim_idx]
+            error_msg = self.pop_obj.get_particle_integration_error(sim_idx)
 
             plot_species = [i for i in self.fit_species]
-            plotting.plot_simulation(pdf, sim_idx, model_ref, state_list, time_points, plot_species)
+            plotting.plot_simulation(pdf, sim_idx, model_ref, state_list, time_points, plot_species, error_msg)
+
+        print("negative count: ", negative_count)
         pdf.close()
 
     def write_all_particle_state_lists(self, out_dir, pop_num, batch_num, init_states, model_refs):
         for sim_idx, m_ref in enumerate(model_refs):
             out_path = out_dir + "/simulation_states/Population_" + str(pop_num) + "_batch_" + \
-                       str(batch_num) + "_idx_" + str(sim_idx) + "_state.csv"
+                str(batch_num) + "_idx_" + str(sim_idx) + "_state.csv"
 
             state_list = self.pop_obj.get_particle_state_list(sim_idx)
             time_points = self.pop_obj.get_timepoints_list()
@@ -99,10 +113,6 @@ class Rejection:
             tp = int(len(state_list) / len(init_states[sim_idx]))
             state_list = np.reshape(state_list, (tp, len(init_states[sim_idx])))
             np.savetxt(out_path, state_list, delimiter=',')
-
-
-
-
 
     def write_accepted_particle_distances(self, out_dir, model_refs, part_judgments, distances):
         out_path = out_dir + "distances.csv"
@@ -127,7 +137,7 @@ class Rejection:
             for n in self.fit_species:
                 for d in self.epsilon:
                     col_header.append('d'+str(idx))
-                    idx +=1
+                    idx += 1
 
             with open(out_path, 'a') as out_csv:
                 wr = csv.writer(out_csv, quoting=csv.QUOTE_NONNUMERIC)
@@ -147,7 +157,7 @@ class Rejection:
                 wr.writerow(row_vals)
 
     def write_particle_params(self, out_dir, batch_num, simulated_particles,
-                                  input_params, input_init_species,  judgement_array):
+                              input_params, input_init_species,  judgement_array):
         for m in self.model_space._model_list:
             out_path = out_dir + "model_" + str(m.get_model_ref()) + "_all_params"
 
@@ -190,7 +200,6 @@ class Rejection:
                 row_vals = [sim_idx, batch_num, m_ref, sum_stdev]
 
                 wr.writerow(row_vals)
-
 
     def write_particle_sum_grads(self, out_dir, model_refs, batch_num, simulated_particles, from_timepoint):
         out_path = out_dir + "sum_grad.csv"
@@ -243,7 +252,6 @@ class Rejection:
 
                 wr.writerow(row_vals)
 
-
     def write_eigenvalues(self, out_dir, model_refs, batch_num, simulated_particles,
                           end_state=False, init_state=False, do_fsolve=False):
         if end_state == True:
@@ -274,7 +282,6 @@ class Rejection:
         with open(out_path, 'a') as out_csv:
             wr = csv.writer(out_csv)
 
-
             for sim_idx, m_ref in enumerate(model_refs):
                 fsolve_error = 0
 
@@ -290,7 +297,7 @@ class Rejection:
                 elif do_fsolve == True:
                     final_state = self.pop_obj.get_particle_final_species_values(sim_idx)
                     res = fsolve(alg_utils.fsolve_conversion, final_state, fprime=alg_utils.fsolve_jac_conversion,
-                                               args=(self.pop_obj, sim_idx, n_species), full_output=True)
+                                 args=(self.pop_obj, sim_idx, n_species), full_output=True)
                     steady_state = res[0]
 
                     ier = res[2]
@@ -321,7 +328,6 @@ class Rejection:
 
                 wr.writerow(row_vals)
 
-
     def write_time_to_stability(self, out_dir, model_refs, batch_num, simulated_particles):
 
         out_path = out_dir + "time_to_stab.csv"
@@ -330,11 +336,9 @@ class Rejection:
         if not os.path.isfile(out_path):
             col_header = ['sim_idx', 'batch_num', 'model_ref', 'time_to_stab']
 
-
             with open(out_path, 'a') as out_csv:
                 wr = csv.writer(out_csv)
                 wr.writerow(col_header)
-
 
         time_points = self.pop_obj.get_timepoints_list()
 
@@ -368,9 +372,6 @@ class Rejection:
                 row_vals = [sim_idx, batch_num, m_ref, time_to_stab]
                 wr.writerow(row_vals)
 
-
-
-
     def run_rejection(self):
         population_number = 0
 
@@ -380,7 +381,6 @@ class Rejection:
             os.mkdir(folder_name)
         except FileExistsError:
             pass
-
 
         sim_params_folder = folder_name + 'model_sim_params/'
         try:
@@ -403,6 +403,9 @@ class Rejection:
         total_sims = 0
         batch_num = 0
 
+        abs_tol = 1e-20
+        rel_tol = 1e-12
+
         while accepted_particles_count < self.population_size:
 
             # 1. Sample from model space
@@ -413,7 +416,7 @@ class Rejection:
 
             # 3. Simulate population
             self.pop_obj = population_modules.Population(self.n_sims_batch, self.t_0, self.t_end,
-                                              self.dt, init_states, input_params, model_refs, self.fit_species)
+                                                         self.dt, init_states, input_params, model_refs, self.fit_species, abs_tol, rel_tol)
             self.pop_obj.generate_particles()
             self.pop_obj.simulate_particles()
 
@@ -429,10 +432,9 @@ class Rejection:
             # 4. Accept or reject particles
             batch_part_judgements = alg_utils.check_distances(batch_distances, epsilon_array=self.epsilon)
 
-
             # Write data
             self.write_particle_params(sim_params_folder, batch_num, particle_models.tolist(),
-                                                   input_params, init_states, batch_part_judgements)
+                                       input_params, init_states, batch_part_judgements)
 
             self.write_particle_distances(folder_name, model_refs, batch_num, particle_models.tolist(),
                                           batch_part_judgements, batch_distances)
@@ -440,12 +442,29 @@ class Rejection:
             self.write_eigenvalues(folder_name, model_refs, batch_num, particle_models.tolist(), do_fsolve=True)
             # self.write_all_particle_state_lists(folder_name, population_number, batch_num, init_states, model_refs)
 
+            # self.plot_all_particles(folder_name, 0, batch_num, init_states, model_refs)
+            # self.plot_accepted_particles(folder_name, 0, batch_num, batch_part_judgements, init_states, model_refs)
             accepted_particles_count += sum(batch_part_judgements)
             total_sims += len(model_refs)
 
             print("Population: ", population_number, "Accepted particles: ", accepted_particles_count, "Total simulations: ", total_sims)
             self.model_space.update_model_population_sample_data(particle_models.tolist(), batch_part_judgements)
             self.model_space.model_space_report(folder_name, batch_num)
+
+            negative_count = 0
+            no_prog_count = 0
+
+            for sim_idx, m_ref in enumerate(model_refs):
+                error_msg = self.pop_obj.get_particle_integration_error(sim_idx)
+                if error_msg == 'negative_species':
+                    negative_count +=1
+
+                elif error_msg == 'no_progress_error':
+                    no_prog_count +=1
+
+            print("Negative ratio: ", negative_count/len(model_refs))
+            print("no prog ratio: ", no_prog_count/len(model_refs))
+
 
             sys.stdout.flush()
             batch_num += 1
@@ -459,7 +478,6 @@ class Rejection:
             os.mkdir(folder_name)
         except FileExistsError:
             pass
-
 
         sim_params_folder = folder_name + 'model_sim_params/'
         try:
@@ -486,7 +504,7 @@ class Rejection:
 
             # 3. Simulate population
             self.pop_obj = population_modules.Population(self.n_sims_batch, self.t_0, self.t_end,
-                                              self.dt, init_states, input_params, model_refs, self.fit_species)
+                                                         self.dt, init_states, input_params, model_refs, self.fit_species)
             self.pop_obj.generate_particles()
 
             # Iterate init states, accepting all negative systems
@@ -498,7 +516,7 @@ class Rejection:
                 n_species = len(init_states[sim_idx])
 
                 root = fsolve(alg_utils.fsolve_conversion, init_states[sim_idx], fprime=alg_utils.fsolve_jac_conversion,
-                             args=(self.pop_obj, sim_idx, n_species), full_output=True)
+                              args=(self.pop_obj, sim_idx, n_species), full_output=True)
 
                 steady_state = root[0]
 
@@ -539,7 +557,6 @@ class Rejection:
                     acc_input_params.append(input_params[sim_idx])
                     acc_model_refs.append(model_refs[sim_idx])
                     acc_particle_models.append(particle_models.tolist()[sim_idx])
-
 
             total_sims += 1
             print(total_sims)
@@ -589,7 +606,7 @@ class Rejection:
 
             # 3. Simulate population
             self.pop_obj = population_modules.Population(self.n_sims_batch, self.t_0, self.t_end,
-                                              self.dt, init_states, input_params, model_refs)
+                                                         self.dt, init_states, input_params, model_refs)
 
             self.pop_obj.generate_particles()
             self.pop_obj.simulate_particles()
@@ -639,7 +656,6 @@ class Rejection:
         except FileExistsError:
             pass
 
-
         sim_params_folder = folder_name + 'model_sim_params/'
         try:
             os.mkdir(sim_params_folder)
@@ -671,7 +687,7 @@ class Rejection:
 
             # 3. Simulate population
             self.pop_obj = population_modules.Population(self.n_sims_batch, self.t_0, self.t_end,
-                                              self.dt, init_states, input_params, model_refs)
+                                                         self.dt, init_states, input_params, model_refs)
             self.pop_obj.generate_particles()
             self.pop_obj.simulate_particles()
             self.plot_all_particles(folder_name, 0, batch_num, init_states, model_refs)
@@ -685,7 +701,7 @@ class Rejection:
                 n_species = len(init_states[sim_idx])
 
                 root = fsolve(alg_utils.fsolve_conversion, init_states[sim_idx], fprime=alg_utils.fsolve_jac_conversion,
-                             args=(self.pop_obj, sim_idx, n_species), full_output=True)
+                              args=(self.pop_obj, sim_idx, n_species), full_output=True)
 
                 steady_state = root[0]
 
@@ -724,7 +740,6 @@ class Rejection:
             if len(acc_init_states) == 0:
                 continue
 
-
             n_sims_batch = len(acc_init_states)
 
             # Simulate all systems that pass the eigenstability test
@@ -734,7 +749,7 @@ class Rejection:
             succ_particle_models = []
 
             self.pop_obj = population_modules.Population(n_sims_batch, 0, 100,
-                                              self.dt, acc_init_states, acc_input_params, acc_model_refs)
+                                                         self.dt, acc_init_states, acc_input_params, acc_model_refs)
             self.pop_obj.generate_particles()
             self.pop_obj.simulate_particles()
 
@@ -778,6 +793,93 @@ class Rejection:
             batch_num += 1
 
     def run_ABC_SMC(self):
+        pass
+
+
+class SimpleSimulation():
+    def __init__(self, t_0, t_end, dt,
+                 model_list, batch_size, num_batches, fit_species, out_dir):
+        self.t_0 = t_0
+        self.t_end = t_end
+        self.dt = dt
+        self.model_list = model_list
+        self.batch_size = batch_size
+        self.num_batches = num_batches
+        self.fit_species = fit_species
+
+        # Init model space
+        self.model_space = ModelSpace(model_list)
+
+        self.out_dir = out_dir
+
+    def plot_all_particles(self, out_dir, batch_num, init_states, model_refs):
+        out_path = self.out_dir + "batch_" + str(batch_num) + "_plots.pdf"
+
+        # Make new pdf
+        pdf = PdfPages(out_path)
+
+        negative_count = 0
+        
+        # Iterate all particles in batch
+        for sim_idx, m_ref in enumerate(model_refs):
+            state_list = self.pop_obj.get_particle_state_list(sim_idx)
+            time_points = self.pop_obj.get_timepoints_list()
+
+            try:
+                state_list = np.reshape(state_list, (len(time_points), len(init_states[sim_idx])))
+
+            except(ValueError):
+                new_index = len(state_list)/ len(init_states[sim_idx])
+                time_points = time_points[0:  int(new_index)]
+                state_list = np.reshape(state_list, (len(time_points), len(init_states[sim_idx])))
+                
+            if np.min(state_list) < 0 or np.isnan(state_list).any():
+                negative_count += 1
+                print(np.min(state_list))
+
+            model_ref = model_refs[sim_idx]
+            error_msg = self.pop_obj.get_particle_integration_error(sim_idx)
+
+            plot_species = [i for i in self.fit_species]
+            plotting.plot_simulation(pdf, sim_idx, model_ref, state_list, time_points, plot_species, error_msg=error_msg)
+        
+        print("negative simulations: ", negative_count)
+
+        pdf.close()
+
+
+
+    def simulate_and_plot(self):
+        try:
+            os.mkdir(self.out_dir)
+        except FileExistsError:
+            pass
+
+        for batch_num in range(self.num_batches):
+            # 1. Sample from model space
+            particle_models = self.model_space.sample_model_space(self.batch_size)  # Model objects in this simulation
+
+            # 2. Sample particles for each model
+            init_states, input_params, model_refs = alg_utils.generate_particles(particle_models)          # Extract input parameters and model references
+
+            abs_tol = 1e-20
+            rel_tol = 1e-12
+
+            # 3. Simulate population
+            self.pop_obj = population_modules.Population(self.batch_size, self.t_0, self.t_end,
+                                                         self.dt, init_states, input_params, model_refs, self.fit_species, abs_tol, rel_tol)
+            print("Generating particles...")
+            self.pop_obj.generate_particles()
+
+            print("Simulating particles...")
+            self.pop_obj.simulate_particles()
+
+            print("plotting simulations... ")
+            self.plot_all_particles(self.out_dir, batch_num, init_states, model_refs)
+
+            sys.stdout.flush()
+            batch_num += 1
+
 
 
 

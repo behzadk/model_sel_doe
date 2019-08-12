@@ -118,22 +118,24 @@ visualise_network <- function(adj_mat_path) {
   
   size_node <- 20
   ggnet_obj <- ggnet2(net, size=size_node, label=species_names, alpha=0.5, color=species_colours, 
-                      edge.alpha=0.4, edge.color=edge_colours, edge.size = 1.5,
+                      edge.alpha=0.4, edge.color=edge_colours, edge.size = 1.5, edge.curved=1,
                       arrow.size = 10, arrow.gap = 0.060, arrow.type = "closed")
 
   return(ggnet_obj)
 }
 
 
-# adjacency_mat_dir <- "/home/behzad/Documents/barnes_lab/sympy_consortium_framework/output/two_species_no_symm/adj_matricies"
-adjacency_mat_dir <- "/home/behzad/Documents/barnes_lab/sympy_consortium_framework/output/3_species_space/adj_matricies"
+
+
+adjacency_mat_dir <- "/home/behzad/Documents/barnes_lab/sympy_consortium_framework/output/two_species_no_symm/adj_matricies"
+# adjacency_mat_dir <- "/home/behzad/Documents/barnes_lab/sympy_consortium_framework/output/3_species_space/adj_matricies"
 
 files <- list.files(path=adjacency_mat_dir, pattern="*.csv", full.names=TRUE, recursive=FALSE)
 this_dir <- get_directory()
 
 for (f in files) {
     system_net <- visualise_network(f)
-    out_dir <-  "/networks_output/three_species/"
+    out_dir <-  "/networks_output/two_species/"
     out_name <- basename(f)
     print(out_name)
     out_name <- tools::file_path_sans_ext(out_name)

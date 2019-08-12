@@ -12,11 +12,17 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from operator import mul
 import classification
-import seaborn as sns; sns.set()
+import seaborn as sns;
+
+sns.set()
 from scipy.optimize import fsolve
 import classification
 
 import sys
+import glob
+
+import pandas as pd
+
 
 def extract_parameters_from_xml(input_file):
     tree = ET.parse(input_file)
@@ -59,18 +65,18 @@ def extract_parameters_from_xml(input_file):
 
     return input_params_dict_list, input_init_species_dict_list
 
+
 def import_input_file(input_path):
     data_dict = {}
     with open(input_path) as fin:
         reader = csv.reader(fin, skipinitialspace=True)
         for row in reader:
-            data_dict[row[0]] =  [float(i) for i in row[1:]]
+            data_dict[row[0]] = [float(i) for i in row[1:]]
 
     return data_dict
 
 
 def test_param_dicts():
-
     model_rpr_prior_dict = {
         'alpha0': (0, 1),
         'alpha': (1000, 1000),
@@ -85,26 +91,24 @@ def test_param_dicts():
         'D': (0, 10)
     }
 
-
-
-  ## Parameters for oscillations
+    ## Parameters for oscillations
     model_spock_dict = {
-        'D': (0.321967092171 , 0.321967092171 ),
-        'mux_m': (0.745202817213 , 0.745202817213 ),
-        'muc_m': (1.0342287987 , 1.0342287987),
+        'D': (0.321967092171, 0.321967092171),
+        'mux_m': (0.745202817213, 0.745202817213),
+        'muc_m': (1.0342287987, 1.0342287987),
         'Kx': (1.5e-5, 1.5e-5),
         'Kc': (1.5e-5, 1.5e-5),
-        'omega_c_max': (0.940702659365, 0.940702659365 ),
+        'omega_c_max': (0.940702659365, 0.940702659365),
         'K_omega': (8.06623324476e-07, 8.06623324476e-07),
         'n_omega': (1.94421248119, 1.94421248119),
         'S0': (4.0, 4.0),
         'gX': (1e12, 1e12),
         'gC': (1e12, 1e12),
         'C0L': (5.14386903636e-05, 5.14386903636e-05),
-        'KDL': (7.84665370817e-08, 7.84665370817e-08 ),
-        'nL': (3.43520850107, 3.43520850107 ),
+        'KDL': (7.84665370817e-08, 7.84665370817e-08),
+        'nL': (3.43520850107, 3.43520850107),
         'K1L': (0.000288693934548, 0.000288693934548),
-        'K2L': (3019.25026822 , 3019.25026822),
+        'K2L': (3019.25026822, 3019.25026822),
         'ymaxL': (3027.50877859, 3027.50877859),
         'K1T': (285.812160169, 285.812160169),
         'K2T': (75.9278560627, 75.9278560627),
@@ -119,7 +123,7 @@ def test_param_dicts():
         'ymaxB': (37.659017537, 37.659017537),
         'cgt': (0.088849069628, 0.088849069628),
         'k_alpha_max': (5.27450373726e-17, 5.27450373726e-17),
-        'k_beta_max': (6.95020587806e-16, 6.95020587806e-16 ),
+        'k_beta_max': (6.95020587806e-16, 6.95020587806e-16),
     }
 
     ## Spock init oscillations
@@ -149,9 +153,9 @@ def test_param_dicts():
         'nL': (2.0, 3.8),
         'K1L': (0.00015, 0.0004),
         'K2L': (2500, 5000),
-        'ymaxL': (2500,  5000),
+        'ymaxL': (2500, 5000),
         'K1T': (0, 5000),
-        'K2T': (0,  100),
+        'K2T': (0, 100),
         'ymaxT': (16, 27),
         'C0B': (2e-5, 1e-4),
         'LB': (0, 1e-2),
@@ -165,6 +169,7 @@ def test_param_dicts():
         'k_alpha_max': (1e-22, 1e-15),
         'k_beta_max': (1e-22, 1e-15),
     }
+
 
 def repressilator_test():
     # http://people.cs.uchicago.edu/~lebovitz/Eodesbook/stabeq.pdf
@@ -200,7 +205,7 @@ def repressilator_test():
         particle_models)  # Extract input parameters and model references
 
     pop_obj = population_modules.Population(n_sims_batch, t_0, t_end,
-                                              dt, init_states, input_params, model_refs)
+                                            dt, init_states, input_params, model_refs)
     pop_obj.generate_particles()
     pop_obj.simulate_particles()
 
@@ -272,7 +277,7 @@ def eig_test():
 
     # Load models from input files
     model_list = []
-    for i in range(int((len(os.listdir(input_folder))/2))):
+    for i in range(int((len(os.listdir(input_folder)) / 2))):
         input_params = input_folder + "params_" + str(i) + ".csv"
         input_init_species = input_folder + "species_" + str(i) + ".csv"
         init_params = import_input_file(input_params)
@@ -290,7 +295,7 @@ def eig_test():
     n_sims_batch = 1
 
     pop_obj = population_modules.Population(n_sims_batch, t_0, t_end,
-                                              dt, init_states, input_params, model_refs)
+                                            dt, init_states, input_params, model_refs)
     pop_obj.generate_particles()
     pop_obj.simulate_particles()
 
@@ -315,11 +320,9 @@ def eig_test():
     jac = np.asarray(pop_obj.get_particle_jacobian(0))
     jac = np.reshape(jac, (n_species, n_species))
 
-
     sign, logdet = np.linalg.slogdet(jac)
     py_det = sign * np.exp(logdet)
     cpp_det = pop_obj.get_particle_det(0)
-
 
     py_eig = np.linalg.eigvals(jac)
     py_trace = sum([jac[i][i] for i in range(n_species)])
@@ -330,7 +333,6 @@ def eig_test():
     print("\tTrace: ", py_trace)
     print("\tDet: ", py_det)
     print("")
-
 
     eig_val_product = classification.eigenvalue_product(eig_vals)
     sum_eigenvalues = classification.sum_eigenvalues(eig_vals)
@@ -344,7 +346,7 @@ def eig_test():
     print("\tsum eig: ", sum_eigenvalues)
     print("\tTrace: ", trace)
     print("\tDet: ", cpp_det)
-    print("\tratio: ", cpp_det/eig_val_product)
+    print("\tratio: ", cpp_det / eig_val_product)
     print("")
 
     print("Python eigenvalues")
@@ -359,7 +361,6 @@ def eig_test():
         # print("Vector magnitude", np.linalg.norm(vec[:, 0], ord=1))
         print("")
 
-
     if batch_part_judgements[0]:
         sol = pop_obj.get_particle_state_list(0)
         t = pop_obj.get_timepoints_list()
@@ -372,6 +373,7 @@ def eig_test():
         plt.plot(t, N_2)
         plt.yscale('log')
         plt.show()
+
 
 def eig_classification_test():
     # Set time points
@@ -389,7 +391,7 @@ def eig_classification_test():
 
     # Load models from input files
     model_list = []
-    for i in range(int((len(os.listdir(input_folder))/2))):
+    for i in range(int((len(os.listdir(input_folder)) / 2))):
         input_params = input_folder + "params_" + str(i) + ".csv"
         input_init_species = input_folder + "species_" + str(i) + ".csv"
         init_params = import_input_file(input_params)
@@ -407,7 +409,7 @@ def eig_classification_test():
     n_sims_batch = 1
 
     pop_obj = population_modules.Population(n_sims_batch, t_0, t_end,
-                                              dt, init_states, input_params, model_refs)
+                                            dt, init_states, input_params, model_refs)
     pop_obj.generate_particles()
     pop_obj.simulate_particles()
     n_species = len(init_states[0])
@@ -416,12 +418,11 @@ def eig_classification_test():
     jac = np.reshape(jac, (n_species, n_species))
 
     eigenvalues = np.linalg.eigvals(jac)
-    eigenvalues = [ [i.real, i.imag] for i in eigenvalues]
+    eigenvalues = [[i.real, i.imag] for i in eigenvalues]
 
     classification.classify_eigensystem(eigenvalues)
 
     sign, logdet = np.linalg.slogdet(jac)
-
 
     py_trace = sum([jac[i][i] for i in range(n_species)])
 
@@ -501,16 +502,14 @@ def steady_state_test(expnum):
             return 0
             eigenvalues_t.append(max_idx)
 
-
     const_eig_idx = None
 
     for idx, val in enumerate(eigenvalues_t):
         if idx == 0:
             continue
 
-        if val == eigenvalues_t[idx-1]:
+        if val == eigenvalues_t[idx - 1]:
             const_eig_idx = time_points[idx]
-
 
     # Final eigenvalues
     final_state = state_list[-1]
@@ -539,10 +538,9 @@ def steady_state_test(expnum):
     real_parts = [i[0] for i in eigenvalues]
     imag_parts = [i[1] for i in eigenvalues]
 
-    all_negative =  all(i < 0 for i in real_parts)
-    all_real = all(i==0.0 for i in imag_parts)
+    all_negative = all(i < 0 for i in real_parts)
+    all_real = all(i == 0.0 for i in imag_parts)
     num_conjugate_pairs = len(classification.get_conjugate_pairs(eigenvalues))
-
 
     plt.rcParams['figure.figsize'] = [15, 10]
 
@@ -551,7 +549,6 @@ def steady_state_test(expnum):
 
     mpl.rc('font', **font)
     mpl.rc('axes', **axes)
-
 
     fig, (ax1, ax2) = plt.subplots(ncols=2)
     # ax1 = axes[0, 0]
@@ -572,13 +569,12 @@ def steady_state_test(expnum):
     ax2.set(yscale='symlog', xlabel='time', ylabel='Population (num cells)')
     text = ("all negative parts: ", str(all_negative), "\n", "all real parts: ", str(all_real), "\n",
             "num conjugate pairs: ", str(num_conjugate_pairs))
-    ax1.text(0.85, 0.85, text, fontsize=10) #add text
+    ax1.text(0.85, 0.85, text, fontsize=10)  # add text
 
     plt.suptitle('Time course max eig and two species population')
 
-    plt.savefig("./output/"+str(expnum)+".pdf")
+    plt.savefig("./output/" + str(expnum) + ".pdf")
     plt.close()
-
 
 
 def ABC_rejection():
@@ -586,27 +582,43 @@ def ABC_rejection():
     t_0 = 0
     t_end = 1000
     dt = 1
-    
-    input_folder = './input_files_three_species/priors/'
-    output_folder = './output/'
-    experiment_name = 'three_species_stable_NUM/'
-    experiment_number = str(sys.argv[1])
-    
+
+    print(sys.argv[2])
+
+    if int(sys.argv[2]) == 1:
+        input_folder = './input_files_two_species_0/input_files/'
+        output_folder = './output/'
+        experiment_name = 'two_species_stable_NUM/'
+        experiment_number = str(sys.argv[1])
+
+        fit_species = [0, 1]
+
+
+    elif int(sys.argv[2]) == 2:
+        input_folder = './input_files_three_species_0/input_files/'
+        output_folder = './output/'
+        experiment_name = 'three_species_stable_NUM/'
+        experiment_number = str(sys.argv[1])
+
+        fit_species = [0, 1, 2]
+
+
+    else:
+        print("Please specify routine... exiting ")
+        exit()
+
     experiment_folder = experiment_name.replace('NUM', experiment_number)
-
     output_folder = output_folder + experiment_folder
-
-    fit_species = [0, 1, 2]
 
     try:
         os.mkdir(output_folder)
-        
+
     except FileExistsError:
         pass
 
     # Load models from input files
     model_list = []
-    for i in range(int((len(os.listdir(input_folder))/2))):
+    for i in range(int((len(os.listdir(input_folder)) / 2))):
         input_params = input_folder + "params_" + str(i) + ".csv"
         input_init_species = input_folder + "species_" + str(i) + ".csv"
         init_params = import_input_file(input_params)
@@ -616,9 +628,12 @@ def ABC_rejection():
         model_list.append(model_new)
 
     # Run ABC_rejecction algorithm
+    # rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1, 10, fit_species, 3, output_folder)
+
     rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 288, fit_species, 3, output_folder)
     rejection_alg.run_rejection()
     print("")
+
 
 def ABCSMC():
     # Set time points
@@ -698,17 +713,95 @@ def random_jacobian():
     print("")
 
 
+def resample_and_plot_posterior():
+    # Set time points
+    t_0 = 0
+    t_end = 1000
+    dt = 1
+
+    print(sys.argv[2])
+
+    if int(sys.argv[2]) == 1:
+        input_folder = './input_files_two_species_0/input_files/'
+        output_folder = './output/resample_posterior/'
+
+        experiment_number = str(sys.argv[1])
+        experiment_name = 'two_species_stable_NUM/'.replace('NUM', experiment_number)
+        experiment_folder = './output/' + experiment_name
+
+        posterior_params_folder = experiment_folder + 'Population_0/model_sim_params/'
+        fit_species = [0, 1]
+
+
+    elif int(sys.argv[2]) == 2:
+        experiment_number = str(sys.argv[1])
+
+        input_folder = './input_files_three_species_0/input_files/'
+
+        experiment_name = 'three_species_stable_NUM/'.replace('NUM', experiment_number)
+        experiment_folder = './output/' + experiment_name
+
+        fit_species = [0, 1, 2]
+
+
+    else:
+        experiment_name = None
+        experiment_number = None
+        output_folder = None
+        input_folder = None
+        print("Please specify routine... exiting ")
+        exit()
+
+    posterior_params_folder = experiment_folder + 'Population_0/model_sim_params/'
+    output_folder = experiment_folder + 'resample_posterior_plots/'
+
+    try:
+        os.mkdir(output_folder)
+
+    except FileExistsError:
+        pass
+
+    model_list = []
+
+    # Load models
+    posterior_files_list = glob.glob(posterior_params_folder +'/*')
+    for f in posterior_files_list:
+        model_idx = int(os.path.basename(f).split("_")[1])
+        posterior_df = pd.read_csv(f)
+
+        posterior_df = posterior_df.loc[posterior_df['Accepted'] == True]
+
+        if len(posterior_df) <= 1:
+            continue
+
+        input_params = input_folder + "params_" + str(model_idx) + ".csv"
+        input_init_species = input_folder + "species_" + str(model_idx) + ".csv"
+
+        init_params = import_input_file(input_params)
+        init_species = import_input_file(input_init_species)
+
+        model_new = Model(model_idx, init_params, init_species)
+        alg_utils.make_posterior_kdes(model_new, posterior_df, init_params, init_species)
+
+        # model_new.alt_generate_params_kde()
+        model_list.append(model_new)
+
+        simple_sim = algorithms.SimpleSimulation(t_0, t_end, dt,
+                                                 model_list, batch_size=10, num_batches=1, fit_species=fit_species,
+                                                 out_dir=output_folder + 'model_' + str(model_idx) + '/')
+
+        simple_sim.simulate_and_plot()
+        # Run ABC_rejecction algorithm
+
 
 if __name__ == "__main__":
     # for i in range(50):
     #     steady_state_test(i)
     # ABCSMC()
+    # simulate_and_plot()
+    resample_and_plot_posterior()
     ABC_rejection()
     # eig_classification_test()
     # repressilator_test()
-    exit()
-    ABC_rejection()
-
-
-
-
+    # exit()
+    # ABC_rejection()

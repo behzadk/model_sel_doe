@@ -1,24 +1,25 @@
-import numpy as np
-import seaborn as sns; sns.set()
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import pandas as pd
-import data_utils
-import glob
-import os
-import matplotlib.style as style
-import math
-import sklearn
-from sklearn.preprocessing import MinMaxScaler
 import csv
+from sklearn.preprocessing import MinMaxScaler
+import sklearn
+import math
+import matplotlib.style as style
+import os
+import glob
+import data_utils
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+import numpy as np
+import seaborn as sns
+from tqdm import tqdm
 
 plt.rcParams['figure.figsize'] = [30, 30]
 
-font = {'size': 11, }
-axes = {'labelsize': 'small', 'titlesize': 'small'}
+# font = {'size': 25, }
+# axes = {'labelsize': 'medium', 'titlesize': 'medium'}
 
-mpl.rc('font', **font)
-mpl.rc('axes', **axes)
+# mpl.rc('font', **font)
+# mpl.rc('axes', **axes)
 
 
 def generate_file_paths(posterior_dir, priors_dir):
@@ -53,170 +54,64 @@ def generate_file_paths(posterior_dir, priors_dir):
 
 def import_input_file(input_path):
     data_dict = {}
+
     with open(input_path) as fin:
         reader = csv.reader(fin, skipinitialspace=True)
+
         for row in reader:
             data_dict[row[0]] = [float(i) for i in row[1:]]
 
     return data_dict
 
 
-def visualise_posterior_distributions(posterior_dir, priors_dir, output_dir):
-    # Plot settings
-    style.use('seaborn-muted')
-    sns.set_style("white")
-    sns.set_context("talk")
-    sns.despine(top=True)
-    show_hist = False
-    show_kde = True
-    norm_hist = True
-    nbins = 30
-
-    # Get ordered paths
+def generate_posterior_KS_csv(data_dir, priors_dir, output_dir):
+    print("Generating posterior KS csv files ...")
+    posterior_dir = data_dir + "model_sim_params/"
     ordered_posterior_paths, \
-    ordered_prior_param_paths, \
-    ordered_prior_species_paths = generate_file_paths(posterior_dir, priors_dir)
+        ordered_prior_param_paths, \
+        ordered_prior_species_paths = generate_file_paths(posterior_dir, priors_dir)
 
-    for model_ref, (f_posterior, f_prior_params, f_prior_species) in enumerate(zip(ordered_posterior_paths, ordered_prior_param_paths, ordered_prior_species_paths)):
-        print(model_ref)
-        model_posterior_df = pd.read_csv(f_posterior, sep=',')
-        model_prior_dict = import_input_file(f_prior_params)
-        model_prior_dict.update(import_input_file(f_prior_species))
+    out_path = output_dir + "model_NUM_KS.csv"
 
-        # model_prior_dict = model_prior_dict.update(import_input_file(f_prior_species))
-
-        param_names = model_posterior_df.columns[3:]
-        free_params = []
-
-        # Extract parameter columns that are not constants
-        for param in param_names:
-            if model_posterior_df[param].nunique() == 1:
-                continue
-
-            else:
-                free_params.append(param)
-
-        # model_posterior_df, free_params = data_utils.normalise_parameters(model_posterior_df)
-
-        accepted_sims = model_posterior_df.loc[model_posterior_df['Accepted'] == True]
-
-        if len(accepted_sims) <= 1:
-            continue
-
-        # Generate subplotgrid
-        ncols = 5
-        nrows = math.ceil(len(free_params)/ncols)
-        fig, axes = plt.subplots(nrows=nrows, ncols=ncols)
-        axes = axes.reshape(-1)
-
-        # Calculate kolmogorov_smirnov 95% critical value
-        D_crit = 1.36 * math.sqrt(1 / len(accepted_sims) + 1 / len(model_posterior_df))
-
-        # Iterate free parameters
-        i = 0
-        for param in free_params:
-            D_n = data_utils.kolmogorov_smirnov_test(accepted_sims[param].values, model_posterior_df[param].values)
-
-            if D_n > D_crit:
-                text_color = 'red'
-
-            else:
-                text_color = 'black'
-
-            sns.distplot((model_posterior_df[param]), bins=nbins, hist=show_hist, kde=show_kde,
-                         label="Sample distribution", ax=axes[i], norm_hist=norm_hist)
-            sns.distplot((accepted_sims[param]), bins=nbins, hist=show_hist, kde=show_kde,
-                         label="Posterior distribution", ax=axes[i], norm_hist=norm_hist)
-
-            param_lwr = np.log(model_prior_dict[param][0])
-            param_upr = np.log(model_prior_dict[param][0])
-
-            axes[i].set(xlim=((model_prior_dict[param][0]), (model_prior_dict[param][1])))
-
-            D_n = round(D_n, 4)
-            axes[i].text(1, 1, r"$D_n = " + str(D_n) + "$", fontsize='small',
-                 horizontalalignment='center',
-                 verticalalignment='center',
-                 transform=axes[i].transAxes, color=text_color)
-
-            # axes[i].set_title(r"$D_n = " + str(D_n) + "$")
-
-            i += 1
-
-        # plotting aesthetics
-        for ax in axes:
-            # ax.set(xscale='log', yscale='log')
-            ax.spines["right"].set_visible(False)
-            ax.spines["top"].set_visible(False)
-            ax.ticklabel_format(style='sci', axis='x', scilimits=(0, 0), useMathText=True)
-            legend=ax.legend()
-            legend.remove()
-
-        # Add legend in place of last subplot
-        handles, labels=axes[0].get_legend_handles_labels()
-
-        D_crit=round(D_crit, 4)
-        axes[-1].text(0.6, 0.5, r"$D_{crit} = " + str(D_crit) + "$",
-                     horizontalalignment='right',
-                     verticalalignment='center')
-
-        axes[-1].set_axis_off()
-        axes[-1].legend(handles, labels, loc='lower right')
-
-        figure_name=output_dir + "distribution_model_REF_.pdf"
-        figure_name=figure_name.replace('REF', str(model_ref))
-
-        plt.tight_layout()
-        plt.savefig(figure_name, dpi=100, bbox_inches='tight')
-        plt.close(fig)
-
-def generate_posterior_KS_csv(posterior_dir, priors_dir, output_dir):
-    ordered_posterior_paths, \
-    ordered_prior_param_paths, \
-    ordered_prior_species_paths=generate_file_paths(posterior_dir, priors_dir)
-
-    out_path=output_dir + "model_NUM_KS.csv"
-
-    for model_idx, f in enumerate(ordered_posterior_paths):
-        print(model_idx)
-        model_posterior_df=pd.read_csv(f, sep=',')
-        KS_df=data_utils.make_KS_df(model_idx, model_posterior_df)
+    for model_idx, f in enumerate(tqdm(ordered_posterior_paths)):
+        model_posterior_df = pd.read_csv(f, sep=',')
+        KS_df = data_utils.make_KS_df(model_idx, model_posterior_df)
         if KS_df is None:
             continue
 
         KS_df.to_csv(out_path.replace('NUM', str(model_idx)))
 
+    print("\n")
 
 
 def main():
     # Two species
-    """
+
     wd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
     data_dir = wd + "output/two_species_stable_6/Population_0/"
 
     posterior_params_dir = data_dir + "model_sim_params/"
-    priors_dir = wd + "input_files_two_species/"
+    priors_dir = wd + "input_files_two_species/priors/"
     output_dir = wd + "data_analysis_notebook/posterior_analysis/"
     distributions_dir = output_dir + "distributions/"
     KS_out_dir = output_dir + "KS_data/"
 
-    generate_posterior_KS_csv(posterior_params_dir, priors_dir, KS_out_dir)
+    # generate_posterior_KS_csv(posterior_params_dir, priors_dir, KS_out_dir)
     visualise_posterior_distributions(posterior_params_dir, priors_dir, distributions_dir)
-    """
+    exit()
 
     # Three species
-    wd="/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
-    data_dir=wd + "output/three_species_stable_comb/Population_0/"
+    wd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
+    data_dir = wd + "output/three_species_stable_comb/Population_0/"
 
-    posterior_params_dir=data_dir + "model_sim_params/"
-    priors_dir=wd + "input_files_three_species/priors/"
-    output_dir=wd + "data_analysis_notebook/posterior_analysis/three_species/"
-    distributions_dir=output_dir + "distributions/"
-    KS_out_dir=output_dir + "KS_data/"
+    posterior_params_dir = data_dir + "model_sim_params/"
+    priors_dir = wd + "input_files_three_species/priors/"
+    output_dir = wd + "data_analysis_notebook/posterior_analysis/three_species/"
+    distributions_dir = output_dir + "distributions/"
+    KS_out_dir = output_dir + "KS_data/"
 
     # generate_posterior_KS_csv(posterior_params_dir, priors_dir, KS_out_dir)
     visualise_posterior_distributions(posterior_params_dir, priors_dir, distributions_dir)
-
 
 if __name__ == "__main__":
     print("hello world")

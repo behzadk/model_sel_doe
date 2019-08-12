@@ -67,3 +67,12 @@ def fsolve_jac_conversion(y, pop_obj, particle_ref, n_species):
     jac = np.reshape(jac, (n_species, n_species))
 
     return jac
+
+def make_posterior_kdes(model, posterior_df, init_params, init_species):
+    for param_key, _ in init_params.items():
+        posterior_values = posterior_df[param_key].values
+        model.alt_generate_params_kde(posterior_values, param_key)
+
+    for species_key, _ in init_species.items():
+        posterior_values = posterior_df[species_key].values
+        model.alt_generate_params_kde(posterior_values, species_key)

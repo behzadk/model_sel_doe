@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/input_files" />
+      <excludeFolder url="file://$MODULE_DIR$/input_files_three_species" />
+      <excludeFolder url="file://$MODULE_DIR$/input_files_three_species_0" />
+      <excludeFolder url="file://$MODULE_DIR$/input_files_two_species_0" />
+      <excludeFolder url="file://$MODULE_DIR$/input_files_two_species_random_jac" />
+      <excludeFolder url="file://$MODULE_DIR$/old_model_source_header" />
+      <excludeFolder url="file://$MODULE_DIR$/output" />
+      <excludeFolder url="file://$MODULE_DIR$/output_two_species_bigspace" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="R Skeletons" level="application" />
+    <orderEntry type="library" name="R User Library" level="project" />
+  </component>
+  <component name="TemplatesService">
+    <option name="TEMPLATE_FOLDERS">
+      <list>
+        <option value="$MODULE_DIR$/venv/lib/python3.6/site-packages/pandas/io/formats/templates" />
+      </list>
+    </option>
+  </component>
+  <component name="TestRunnerService">
+    <option name="PROJECT_TEST_RUNNER" value="Unittests" />
+  </component>
+</module>

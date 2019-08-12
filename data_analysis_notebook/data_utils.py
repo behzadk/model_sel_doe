@@ -1,9 +1,21 @@
-import numpy as np
-import seaborn as sns; sns.set()
-import matplotlib.pyplot as plt
-import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
 import math
+from sklearn.preprocessing import MinMaxScaler
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+sns.set()
+
+import os
+
+
+def make_folder(folder_dir):
+    try:
+        os.mkdir(folder_dir)
+
+    except FileExistsError:
+        pass
+
 
 def kolmogorov_smirnov_test(sample_one, sample_two):
     n_1 = len(sample_one)
@@ -22,10 +34,10 @@ def kolmogorov_smirnov_test(sample_one, sample_two):
 
     max_diff = 0
 
+
     while s_one_idx < n_1 and s_two_idx < n_2:
         v1 = sample_one[s_one_idx]
         v2 = sample_two[s_two_idx]
-
 
         diff = abs(sample_one_cdf[s_one_idx] - sample_two_cdf[s_two_idx])
         if diff > max_diff:
@@ -44,7 +56,9 @@ def kolmogorov_smirnov_test(sample_one, sample_two):
             s_one_idx += 1
             s_two_idx += 1
 
+
     return max_diff
+
 
 def normalise_parameters(model_posterior_df):
     # Get param names
@@ -64,21 +78,20 @@ def normalise_parameters(model_posterior_df):
         scaler = MinMaxScaler()
         model_posterior_df[param] = scaler.fit_transform(model_posterior_df[[param]])
 
-
     return model_posterior_df, free_params
 
 
 def recur_get_connected_nodes(adj_mat, path_length, path_sign, visited_nodes, from_idx, target_idx, loop_found, path_log, output):
     n_species = np.shape(adj_mat)[0]
     neighbours = [i for i in range(n_species) if adj_mat[i, from_idx] != 0]
-    
+
     if loop_found:
         return 0
 
     if from_idx is target_idx:
-            loop_found = True
-            output.append([path_sign, path_length])
-            return 0
+        loop_found = True
+        output.append([path_sign, path_length])
+        return 0
 
     for n in neighbours:
         if n not in visited_nodes:
@@ -91,8 +104,37 @@ def recur_get_connected_nodes(adj_mat, path_length, path_sign, visited_nodes, fr
     return output
 
 
+def translate_param_names(param_names):
+    translated_param_names = []
+
+    for param in param_names:
+        split_name = param.split('_')
+        num_splits = len(split_name)
+
+        if num_splits > 1:
+            new_name = split_name[0]
+
+            for split in split_name[1:]:
+                new_name = new_name + "_{" + split
+
+
+            new_name = new_name + "}" * (num_splits - 1)
+
+        else:
+            new_name = split_name[0]
+
+        new_name = new_name.replace("}{", "}_{")
+        new_name = "$" + new_name + "$"
+        new_name = new_name.replace("omega", "\omega")
+        new_name = new_name.replace("mu", "\mu")
+        # new_name = new_name.replace("B", "\beta")
+
+        translated_param_names.append(new_name)
+
+    return translated_param_names
+
+
 # Counts feedback existing between all.
-# 
 def get_feedback_loops(adj_mat_df):
     # Drop row names column
     adj_mat_df.drop([adj_mat_df.columns[0]], axis=1, inplace=True)
@@ -147,8 +189,8 @@ def get_num_parts(adj_mat_df):
 
     num_AHL_parts = 0
     for idx in AHL_indexes:
-        if sum(adj_mat[:, idx]) >=1:
-            num_AHL_parts +=1
+        if sum(adj_mat[:, idx]) >= 1:
+            num_AHL_parts += 1
 
     num_microcin_parts = 0
     for idx in microcin_indexes:
@@ -156,6 +198,7 @@ def get_num_parts(adj_mat_df):
             num_microcin_parts += 1
 
     return total_num_parts, num_AHL_parts, num_microcin_parts
+
 
 def make_KS_df(model_idx, model_posterior_df):
     model_posterior_df, free_params = normalise_parameters(model_posterior_df)
@@ -169,7 +212,6 @@ def make_KS_df(model_idx, model_posterior_df):
     KS_data_df = pd.DataFrame(columns=['model_idx', 'D_crit'])
     KS_data_df['model_idx'] = [model_idx]
     KS_data_df['D_crit'] = [D_crit]
-
 
     for param in free_params:
         D_n = kolmogorov_smirnov_test(accepted_sims[param].values, model_posterior_df[param].values)
@@ -196,7 +238,11 @@ def make_num_parts(model_space_report_df, adj_matrix_path_template):
     return all_num_parts, all_AHL_num_parts, all_microcin_num_parts
 
 
-def make_feedback_loop_counts(model_space_report_df, adj_matrix_path_template):
+def make_feedback_loop_counts(data_dir, input_files_dir):
+    model_space_report_df = pd.read_csv(data_dir + "model_space_report.csv")
+    adj_mat_name_template = "model_#REF#_adj_mat.csv"
+    adj_matrix_path_template = input_files_dir + "adj_matricies/" + adj_mat_name_template
+
     models = model_space_report_df.model_idx.values
     positive_loops = []
     negative_loops = []
@@ -212,11 +258,11 @@ def make_feedback_loop_counts(model_space_report_df, adj_matrix_path_template):
             loop_sign = loop[0]
             loop_length = loop[1]
 
-            if  loop_sign == 1:
-                positive_count += 1/loop_length
+            if loop_sign == 1:
+                positive_count += 1#/loop_length
 
             if loop_sign == -1:
-                negative_count += 1/loop_length
+                negative_count += 1#/loop_length
 
             if loop_sign != 1 and loop_sign != -1:
                 print("Loop sign is wrong: ", loop_sign)
@@ -224,9 +270,7 @@ def make_feedback_loop_counts(model_space_report_df, adj_matrix_path_template):
         positive_loops.append(positive_count)
         negative_loops.append(negative_count)
 
-
     return positive_loops, negative_loops
-
 
 
 def generate_replicates_and_std(all_sims_df, model_space_report_df, num_replicates):
@@ -242,8 +286,11 @@ def generate_replicates_and_std(all_sims_df, model_space_report_df, num_replicat
     # Create replicate subset
     for rep_num in range(num_replicates):
         rep_subset_df = all_sims_df.loc[all_sims_df['replicate'] == rep_num]
+
         print("Replicate: ", rep_num, " ",
               " Simulations: ", len(rep_subset_df.index))
+
+
         replicate_acceptance_ratios = []
 
         # Calculate acceptance ratio for each model within a subset
@@ -255,9 +302,9 @@ def generate_replicates_and_std(all_sims_df, model_space_report_df, num_replicat
                 models_subset_df.loc[models_subset_df['Accepted'] == False].index)
 
             try:
-                acceptance_ratio = num_accepted / (num_rejected + num_accepted)
+                acceptance_ratio = num_accepted / len(rep_subset_df)
             except(ZeroDivisionError):
-                acceptance_ratio = np.NaN
+                acceptance_ratio = 0
 
             replicate_acceptance_ratios.append(acceptance_ratio)
 
@@ -266,6 +313,7 @@ def generate_replicates_and_std(all_sims_df, model_space_report_df, num_replicat
 
     # Calculate standard deviation between replicates
     model_standard_deviations = []
+    mean_acceptance_ratios = []
     for m in models:
         model_subset_df = model_space_report_df.loc[model_space_report_df['model_idx'] == m]
         model_replicate_acceptance_ratios = []
@@ -279,12 +327,9 @@ def generate_replicates_and_std(all_sims_df, model_space_report_df, num_replicat
             np.std(model_replicate_acceptance_ratios))
 
     model_space_report_df['stdev'] = model_standard_deviations
-
     sims_per_replicate = len(all_sims_df.loc[all_sims_df['replicate'] == 0])
 
     return model_space_report_df, sims_per_replicate
-
-
 
 
 ##
@@ -342,6 +387,7 @@ def make_max_eig(df):
     max_real_eigs
 
     return max_real_eigs
+
 
 def make_sum_eig(df):
     # Make subset containing only eigenvalues
@@ -404,6 +450,8 @@ def all_negative_eigs(df):
 # Adds a column noting whether all the real part eigenvalues are positive
 #
 ##
+
+
 def all_positive_eigs(df):
     # Make subset containing only eigenvalues
     col_names = df.columns
@@ -461,6 +509,7 @@ def all_real_eigs(df):
     all_real
 
     return all_real
+
 
 def all_zero_eigs(df):
     # Make subset containing only eigenvalues
@@ -537,6 +586,7 @@ def get_conjugate_pairs(df):
 
     return df_num_conj_pairs
 
+
 def set_number_imaginary(df):
     eign_cols = [x for x in df.columns if 'eig' in x]
     real_part_cols = [x for x in eign_cols if 'real' in x]
@@ -561,12 +611,6 @@ def set_number_imaginary(df):
     return df_num_imag
 
 
-
-
-
-
-
-
 def distances_pre_processing(df):
     col_names = df.columns
     dist_cols = ['d1', 'd2', 'd3', 'd4', 'd5', 'd6']
@@ -582,6 +626,7 @@ def set_accepted_column(df):
     dist_cols = ['d1', 'd2', 'd3', 'd4', 'd5', 'd6']
 
     df.loc[df['d1']]
+
 
 def main():
     output_dir = "./output/two_species_big_3/Population_0"
@@ -611,17 +656,17 @@ def main():
     loc_all_negative
     # loc_all_negative = joint_df.loc[joint_df['all_negative_eigs'] == True]
     print(len(loc_all_negative))
-    loc_all_negative['sum_std']= loc_all_negative['d2'] + loc_all_negative['d3']
+    loc_all_negative['sum_std'] = loc_all_negative['d2'] + loc_all_negative['d3']
 
     # loc_all_negative = loc_all_negative.loc[loc_all_negative['N_1_sustained'] == True]
     # loc_all_negative = loc_all_negative.loc[loc_all_negative['N_2_sustained'] == True]
 
-    all_real= loc_all_negative.loc[loc_all_negative['all_real_eigs'] == True]
-    not_real= loc_all_negative.loc[loc_all_negative['all_real_eigs'] == False]
+    all_real = loc_all_negative.loc[loc_all_negative['all_real_eigs'] == True]
+    not_real = loc_all_negative.loc[loc_all_negative['all_real_eigs'] == False]
     print(len(all_real))
     exit()
-    ax= sns.scatterplot(x='sum_std', y='max_eig', data=all_real)
-    ax= sns.scatterplot(x='sum_std', y='max_eig', data=not_real)
+    ax = sns.scatterplot(x='sum_std', y='max_eig', data=all_real)
+    ax = sns.scatterplot(x='sum_std', y='max_eig', data=not_real)
 
     ax.set(xscale="symlog", yscale='symlog')
 

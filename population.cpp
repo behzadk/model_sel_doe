@@ -25,13 +25,15 @@ using namespace boost::python;
 */
 Population::Population(const int n_sims, const int t_0, 
     const int t_end, const float dt, boost::python::list state_init_list,
-    boost::python::list params_list, boost::python::list model_ref_list, boost::python::list py_fit_species)
+    boost::python::list params_list, boost::python::list model_ref_list, boost::python::list py_fit_species, double abs_tol, double rel_tol)
 {
 
 	_n_sims = n_sims;
 	_t_0 = t_0;
 	_t_end = t_end;
 	_dt = dt;
+    _abs_tol = abs_tol;
+    _rel_tol = rel_tol;
     // Forwards in time simulation
     if (_dt > 0) {
         for(double i=_t_0; i <_t_end; i+=_dt){
@@ -79,7 +81,7 @@ void Population::simulate_particles()
 	#pragma omp parallel for schedule(runtime)
 	for (int i=0; i < _n_sims; ++i) {
 		try { 
-            _particle_vector[i].simulate_particle_rosenbrock(_time_array);
+            _particle_vector[i].simulate_particle_rosenbrock(_time_array, _abs_tol, _rel_tol, fit_species);
 
     	} catch (boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::numeric::odeint::no_progress_error> >) {
             std::string error_string = "no_progress_error";
@@ -328,7 +330,7 @@ BOOST_PYTHON_MODULE(population_modules)
 		.def(boost::python::vector_indexing_suite<PopDistances>());
 
     class_<Population>("Population", init<const int, const int, 
-    const int, const float, boost::python::list, boost::python::list, boost::python::list, boost::python::list>())
+    const int, const float, boost::python::list, boost::python::list, boost::python::list, boost::python::list, double, double>())
     	.def("generate_particles", &Population::generate_particles)
     	.def("simulate_particles", &Population::simulate_particles)
     	.def("calculate_particle_distances", &Population::calculate_particle_distances)

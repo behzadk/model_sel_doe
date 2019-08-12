@@ -2,7 +2,7 @@
 
 cpp_dir=$HOME'/software/cpp_consortium_sim/model_sel_doe/'
 venv=$cpp_dir'venv/cpp_py/bin/activate'
-inputs_folder=./input_files_three_species/
+inputs_folder=./input_files_three_species_0/
 
 module unload compilers
 module load compilers/gnu/4.9.2
@@ -34,7 +34,7 @@ python3 -V
 #$ -S /bin/bash
 
 # 2. Request ten minutes of wallclock time (format hours:minutes:seconds).
-#$ -l h_rt=20:0:0
+#$ -l h_rt=15:0:0
 
 # 3. Request 1 gigabyte of RAM (must be an integer)
 #$ -l mem=1G

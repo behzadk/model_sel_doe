@@ -60,7 +60,7 @@ class Particle
 		std::vector<std::vector<double>> get_sim_distances() {return sim_distances;};
 
 
-		void simulate_particle_rosenbrock(std::vector<double> );
+		void simulate_particle_rosenbrock(std::vector<double>, double, double, std::vector<int>);
 
 		// Overloaded operators to run model step and jacobian
 		void operator() ( const ublas_vec_t & , ublas_vec_t &, double); //  model

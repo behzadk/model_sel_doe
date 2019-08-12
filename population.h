@@ -8,7 +8,7 @@ typedef std::vector<std::vector<std::vector<double>>> PopDistances;
 class Population {
 	public:
 		Population(const int, const int, const int, 
-			const float, boost::python::list, boost::python::list, boost::python::list, boost::python::list);
+			const float, boost::python::list, boost::python::list, boost::python::list, boost::python::list, double, double);
 
 		std::vector< std::vector<double> > unpack_parameters(boost::python::list);
 		std::vector<int> unpack_model_references(boost::python::list);
@@ -49,6 +49,8 @@ class Population {
 		int  _t_0;
 		int _t_end;
 		float _dt;
+		double _abs_tol;
+		double _rel_tol;
 		std::vector<double> _time_array;
 		std::vector<int> _model_refs;
 		PopDistances _all_distances;

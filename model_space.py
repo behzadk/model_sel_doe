@@ -29,18 +29,17 @@ class Model:
         self.population_sample_count = []
         self.population_accepted_count = []
 
-    def alt_generate_params_kde(self, params_list, fit_params_id):
-        params_list = np.asarray(params_list)
+    def alt_generate_params_kde(self, param_values, fit_params_key):
+
         for idx, param_key in enumerate(list(self._params_prior.keys())):
-            if param_key in fit_params_id:
-                param_vals = params_list[:, idx]
+            if param_key in fit_params_key:
                 try:
-                    kernel = stats.gaussian_kde(param_vals)
+                    kernel = stats.gaussian_kde(param_values)
                     self._param_kdes[idx] = (kernel)
                     self._param_has_kde[idx] = True
 
                 except np.linalg.linalg.LinAlgError:
-                    self._param_kdes[idx] = (param_vals[0])
+                    self._param_kdes[idx] = (param_values[0])
                     self._param_has_kde[idx] = False
 
             else:
