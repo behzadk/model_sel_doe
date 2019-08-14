@@ -154,10 +154,15 @@ std::vector<std::vector<double>> DistanceFunctions::osc_dist(std::vector<state_t
 		for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
 			sim_distances.push_back(max_distances);
 		}
-		return sim_distances;
-	}
 
-}
+	// If final value of fit species is less than 1e4, reject particle
+	double threshold_value = 0;
+
+	int from_time_index = 900;
+	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
+		std::vector<double> signal = extract_species_to_fit(state_vec, *it, from_time_index);
+
+	}
 
 
 /*! \brief Calculates distances for stable objective. Returns vector of distances for each species
@@ -187,12 +192,6 @@ std::vector<std::vector<double>> DistanceFunctions::stable_dist(std::vector<stat
 	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
 		std::vector<double> signal = extract_species_to_fit(state_vec, *it, from_time_index);
 
-		if (signal.back() < threshold_value) {
-			for (auto it_2 = species_to_fit.begin(); it_2 != species_to_fit.end(); it_2++) {
-				sim_distances.push_back(max_distances);
-			}
-			return sim_distances;
-		}
 	}
 
 	// Iterate through all species to fit. Extract data.
