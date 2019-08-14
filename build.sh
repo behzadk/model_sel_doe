@@ -1,6 +1,8 @@
 #!/bin/bash
 
 inputs_folder=./input_files_two_species_0/
+inputs_folder=./input_files_one_species_0/
+inputs_folder=./input_files_two_species_spock_manu_0/
 
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/behzad/Documents/barnes_lab/cplusplus_software/GSL/lib
 export LD_LIBRARY_PATH

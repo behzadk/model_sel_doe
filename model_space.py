@@ -94,7 +94,7 @@ class Model:
     def sample_particle(self):
         sim_params = []
 
-        for idx, id in enumerate(self._params_prior):
+        for idx, id in enumerate(sorted(self._params_prior)):
             if self._param_has_kde[idx]:
                 new_params = self._param_kdes[idx].resample(1)
 

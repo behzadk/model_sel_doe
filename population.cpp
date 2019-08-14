@@ -32,8 +32,11 @@ Population::Population(const int n_sims, const int t_0,
 	_t_0 = t_0;
 	_t_end = t_end;
 	_dt = dt;
+
     _abs_tol = abs_tol;
     _rel_tol = rel_tol;
+
+
     // Forwards in time simulation
     if (_dt > 0) {
         for(double i=_t_0; i <_t_end; i+=_dt){
@@ -113,14 +116,25 @@ void Population::simulate_particles()
 /*
  * Calculates the distances of all particles in the population.
 */
-void Population::calculate_particle_distances()
+void Population::calculate_particle_distances(int distance_function_mode)
 {
 	DistanceFunctions dist = DistanceFunctions();
 
 	#pragma omp parallel for schedule(runtime)
     for (int i=0; i < _n_sims; ++i) {
     	_particle_vector[i].get_state_vec();
-    	_particle_vector[i].set_distance_vector(dist.stable_dist( _particle_vector[i].get_state_vec(), fit_species, _particle_vector[i].integration_failed));
+
+        if (distance_function_mode == 0) {
+            _particle_vector[i].set_distance_vector(dist.stable_dist( _particle_vector[i].get_state_vec(), fit_species, _particle_vector[i].integration_failed));
+        }
+
+        else if (distance_function_mode == 1) {
+            _particle_vector[i].set_distance_vector(dist.osc_dist( _particle_vector[i].get_state_vec(), fit_species, _particle_vector[i].integration_failed));
+        }
+
+        else {
+            throw std::invalid_argument( "Invalid distance function mode. 0: Stable steady state objective. 1: Oscillatory objective" );        
+        }
     }
 }
 

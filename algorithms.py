@@ -27,7 +27,7 @@ def blockPrinting(func):
 class Rejection:
     def __init__(self, t_0, t_end, dt,
                  model_list, population_size, n_sims_batch,
-                 fit_species, n_distances, out_dir):
+                 fit_species, distance_function_mode, n_distances, out_dir):
         self.t_0 = t_0
         self.t_end = t_end
         self.dt = dt
@@ -36,6 +36,7 @@ class Rejection:
         self.population_size = population_size
         self.n_sims_batch = n_sims_batch
         self.fit_species = fit_species
+        self.distance_function_mode = distance_function_mode
         self.n_distances = n_distances
 
         # self.epsilon = [100, 10, 1e4]
@@ -422,7 +423,7 @@ class Rejection:
 
             # 3. Calculate distances for population
             print("calculating distances")
-            self.pop_obj.calculate_particle_distances()
+            self.pop_obj.calculate_particle_distances(self.distance_function_mode)
             print("got distances")
 
             self.pop_obj.accumulate_distances()
@@ -806,6 +807,7 @@ class SimpleSimulation():
         self.batch_size = batch_size
         self.num_batches = num_batches
         self.fit_species = fit_species
+        self.distance_function_mode = distance_function_mode
 
         # Init model space
         self.model_space = ModelSpace(model_list)
@@ -867,7 +869,7 @@ class SimpleSimulation():
 
             # 3. Simulate population
             self.pop_obj = population_modules.Population(self.batch_size, self.t_0, self.t_end,
-                                                         self.dt, init_states, input_params, model_refs, self.fit_species, abs_tol, rel_tol)
+                                                         self.dt, init_states, input_params, model_refs, self.fit_species, self.distance_function_mode, abs_tol, rel_tol)
             print("Generating particles...")
             self.pop_obj.generate_particles()
 

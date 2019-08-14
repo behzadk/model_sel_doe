@@ -137,6 +137,28 @@ bool DistanceFunctions::has_negative_species(std::vector<state_type>& state_vec)
 	return false;
 }
 
+/*! \brief Calculates distances for oscillatory objective. Returns vector of distances for each species
+ *        
+ *	Distances: Number of peaks, final peak amplitude and period frequency.
+ *	
+ */	
+std::vector<std::vector<double>> DistanceFunctions::osc_dist(std::vector<state_type>& state_vec, std::vector<int> species_to_fit, bool integration_failed) {
+	std::vector<std::vector<double>> sim_distances;
+
+	double max_dist = std::numeric_limits<double>::max();
+
+	std::vector<double> max_distances = {max_dist, max_dist, max_dist};
+
+	// Check if any species are negative
+	if (integration_failed or has_negative_species(state_vec)) {
+		for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
+			sim_distances.push_back(max_distances);
+		}
+		return sim_distances;
+	}
+
+}
+
 
 /*! \brief Calculates distances for stable objective. Returns vector of distances for each species
  *        
@@ -150,6 +172,7 @@ std::vector<std::vector<double>> DistanceFunctions::stable_dist(std::vector<stat
 
 	std::vector<double> max_distances = {max_dist, max_dist, max_dist};
 
+	// Check if any species are negative
 	if (integration_failed or has_negative_species(state_vec)) {
 		for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
 			sim_distances.push_back(max_distances);

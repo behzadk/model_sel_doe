@@ -18,6 +18,7 @@ class DistanceFunctions {
 		long double get_sum_grad(std::vector<state_type>&, int);
 		boost::python::list get_all_species_grads(std::vector<state_type>&, int);
 		std::vector<std::vector<double>> stable_dist(std::vector<state_type>&, std::vector<int>, bool);
+		std::vector<std::vector<double>> osc_dist(std::vector<state_type>&, std::vector<int>, bool);
 
 };
 

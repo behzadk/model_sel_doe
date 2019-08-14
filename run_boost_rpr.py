@@ -602,6 +602,14 @@ def ABC_rejection():
 
         fit_species = [0, 1, 2]
 
+    elif int(sys.argv[2]) == 3:
+        input_folder = './input_files_two_species_spock_manu_0/input_files/'
+        output_folder = './output/'
+        experiment_name = 'spock_manu_stable_NUM/'
+        experiment_number = str(sys.argv[1])
+
+        fit_species = [0, 1]
+
 
     else:
         print("Please specify routine... exiting ")
@@ -622,15 +630,15 @@ def ABC_rejection():
         input_params = input_folder + "params_" + str(i) + ".csv"
         input_init_species = input_folder + "species_" + str(i) + ".csv"
         init_params = import_input_file(input_params)
-
         init_species = import_input_file(input_init_species)
         model_new = Model(i, init_params, init_species)
         model_list.append(model_new)
 
+
     # Run ABC_rejecction algorithm
     # rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1, 10, fit_species, 3, output_folder)
 
-    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 288, fit_species, 3, output_folder)
+    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 25, fit_species, 0, 3, output_folder)
     rejection_alg.run_rejection()
     print("")
 
@@ -794,12 +802,96 @@ def resample_and_plot_posterior():
         # Run ABC_rejecction algorithm
 
 
+def simulate_and_plot():
+    # Set time points
+    t_0 = 0
+    t_end = 1000
+    dt = 1
+
+    print(sys.argv[2])
+
+    if int(sys.argv[2]) == 1:
+        input_folder = './input_files_two_species_0/input_files/'
+        output_folder = './output/'
+        experiment_name = 'two_species_stable_NUM/'
+        experiment_number = str(sys.argv[1])
+
+        fit_species = [0, 1]
+
+
+    elif int(sys.argv[2]) == 2:
+        input_folder = './input_files_three_species_0/input_files/'
+        output_folder = './output/'
+        experiment_name = 'three_species_stable_NUM/'
+        experiment_number = str(sys.argv[1])
+
+        fit_species = [0, 1, 2]
+
+    elif int(sys.argv[2]) == 3:
+        input_folder = './input_files_two_species_spock_manu_0/input_files/'
+        output_folder = './output/'
+        experiment_name = 'spock_manu_stable_NUM/'
+        experiment_number = str(sys.argv[1])
+
+        fit_species = [0, 1]
+
+    elif int(sys.argv[2]) == 4:
+        input_folder = './input_files_one_species_0/input_files/'
+        output_folder = './output/'
+        experiment_name = 'one_species_stable_NUM/'
+        experiment_number = str(sys.argv[1])
+
+        fit_species = [0]
+
+    else:
+        print("Please specify routine... exiting ")
+        exit()
+
+    experiment_folder = experiment_name.replace('NUM', experiment_number)
+    output_folder = output_folder + experiment_folder
+
+    try:
+        os.mkdir(output_folder)
+
+    except FileExistsError:
+        pass
+
+
+    # Load models from input files
+    model_list = []
+    for i in range(0, int((len(os.listdir(input_folder)) / 2))):
+        print(i)
+        input_init_species = input_folder + "species_" + str(i) + ".csv"
+        input_params = input_folder + "params_" + str(i) + ".csv"
+
+        init_params = import_input_file(input_params)
+        init_species = import_input_file(input_init_species)
+
+        init_params['kV_1'] = init_params['KB_1']
+        init_params['nV_1'] = init_params['nB_1']
+        init_params['K_V_1'] = init_params['K_omega_1']
+        init_params['kV_max_1'] = init_params['kBmax_1']
+        # init_params['omega_max_1'] = [0.0, 0.0]
+        # init_params['kBmax_1'] = [0, 0]
+
+
+        model_new = Model(i, init_params, init_species)
+        model_list = [model_new]
+
+
+    simple_sim = algorithms.SimpleSimulation(t_0, t_end, dt,
+                                             model_list, batch_size=50, num_batches=50, fit_species=fit_species,
+                                             out_dir=output_folder + 'model_' + str(i) + '/')
+
+    simple_sim.simulate_and_plot()
+
+
 if __name__ == "__main__":
     # for i in range(50):
     #     steady_state_test(i)
     # ABCSMC()
     # simulate_and_plot()
-    resample_and_plot_posterior()
+    # resample_and_plot_posterior()
     ABC_rejection()
     # eig_classification_test()
     # repressilator_test()

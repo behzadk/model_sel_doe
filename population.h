@@ -16,7 +16,7 @@ class Population {
 
 		void generate_particles();
 		void simulate_particles();
-		void calculate_particle_distances();
+		void calculate_particle_distances(int);
 		void accumulate_distances();
 		std::vector< ublas_vec_t > unpack_parameters_to_ublas(boost::python::list);
 
@@ -49,8 +49,10 @@ class Population {
 		int  _t_0;
 		int _t_end;
 		float _dt;
+		int _distance_function_mode;
 		double _abs_tol;
 		double _rel_tol;
+
 		std::vector<double> _time_array;
 		std::vector<int> _model_refs;
 		PopDistances _all_distances;
