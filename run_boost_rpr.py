@@ -638,7 +638,7 @@ def ABC_rejection():
     # Run ABC_rejecction algorithm
     # rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1, 10, fit_species, 3, output_folder)
 
-    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 25, fit_species, 0, 3, output_folder)
+    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 25, fit_species, 1, 3, output_folder)
     rejection_alg.run_rejection()
     print("")
 
@@ -794,11 +794,16 @@ def resample_and_plot_posterior():
         # model_new.alt_generate_params_kde()
         model_list.append(model_new)
 
-        simple_sim = algorithms.SimpleSimulation(t_0, t_end, dt,
-                                                 model_list, batch_size=10, num_batches=1, fit_species=fit_species,
-                                                 out_dir=output_folder + 'model_' + str(model_idx) + '/')
+        # simple_sim = algorithms.SimpleSimulation(t_0, t_end, dt,
+        #                                          model_list, batch_size=10, num_batches=1, fit_species=fit_species,
+        #                                          out_dir=output_folder + 'model_' + str(model_idx) + '/')
 
-        simple_sim.simulate_and_plot()
+        # simple_sim.simulate_and_plot()
+
+        rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 12, 2, 1, 3, output_folder)
+        rejection_alg.run_rejection()
+        print("")
+
         # Run ABC_rejecction algorithm
 
 
@@ -875,13 +880,18 @@ def simulate_and_plot():
         # init_params['kBmax_1'] = [0, 0]
 
 
-        model_new = Model(i, init_params, init_species)
-        model_list = [model_new]
+        if i == 125:
+            model_new = Model(i, init_params, init_species)
+            model_list = [model_new]
 
+    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 12, fit_species, 0, 3, output_folder)
+    rejection_alg.run_rejection()
+    print("")
 
+    exit()
     simple_sim = algorithms.SimpleSimulation(t_0, t_end, dt,
-                                             model_list, batch_size=50, num_batches=50, fit_species=fit_species,
-                                             out_dir=output_folder + 'model_' + str(i) + '/')
+                                             model_list, batch_size=1, num_batches=1, fit_species=fit_species,
+                                             distance_function_mode=1, out_dir=output_folder + 'model_osc_test' + '/')
 
     simple_sim.simulate_and_plot()
 
@@ -890,9 +900,9 @@ if __name__ == "__main__":
     # for i in range(50):
     #     steady_state_test(i)
     # ABCSMC()
-    # simulate_and_plot()
+    simulate_and_plot()
     # resample_and_plot_posterior()
-    ABC_rejection()
+    # ABC_rejection()
     # eig_classification_test()
     # repressilator_test()
     # exit()

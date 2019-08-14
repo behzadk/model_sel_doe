@@ -443,7 +443,7 @@ class Rejection:
             self.write_eigenvalues(folder_name, model_refs, batch_num, particle_models.tolist(), do_fsolve=True)
             # self.write_all_particle_state_lists(folder_name, population_number, batch_num, init_states, model_refs)
 
-            # self.plot_all_particles(folder_name, 0, batch_num, init_states, model_refs)
+            self.plot_all_particles(folder_name, 0, batch_num, init_states, model_refs)
             # self.plot_accepted_particles(folder_name, 0, batch_num, batch_part_judgements, init_states, model_refs)
             accepted_particles_count += sum(batch_part_judgements)
             total_sims += len(model_refs)
@@ -799,7 +799,7 @@ class Rejection:
 
 class SimpleSimulation():
     def __init__(self, t_0, t_end, dt,
-                 model_list, batch_size, num_batches, fit_species, out_dir):
+                 model_list, batch_size, num_batches, fit_species, distance_function_mode, out_dir):
         self.t_0 = t_0
         self.t_end = t_end
         self.dt = dt
@@ -869,12 +869,14 @@ class SimpleSimulation():
 
             # 3. Simulate population
             self.pop_obj = population_modules.Population(self.batch_size, self.t_0, self.t_end,
-                                                         self.dt, init_states, input_params, model_refs, self.fit_species, self.distance_function_mode, abs_tol, rel_tol)
+                                                         self.dt, init_states, input_params, model_refs, self.fit_species, abs_tol, rel_tol)
             print("Generating particles...")
             self.pop_obj.generate_particles()
 
             print("Simulating particles...")
             self.pop_obj.simulate_particles()
+
+            self.pop_obj.calculate_particle_distances(self.distance_function_mode)
 
             print("plotting simulations... ")
             self.plot_all_particles(self.out_dir, batch_num, init_states, model_refs)

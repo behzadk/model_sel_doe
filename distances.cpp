@@ -62,8 +62,10 @@ void DistanceFunctions::find_signal_peaks_and_troughs(std::vector<double>& signa
 	double current_gradient;
 	double previous_gradient;
 	
+	std::cout << signal_gradient.size() << std::endl;
 
 	for (int i = 1; i < signal_gradient.size(); i++) {
+		std::cout << signal_gradient[i] << std::endl;
 		// Set current and previous gradients
 		current_gradient = signal_gradient[i];
 		previous_gradient = signal_gradient[i-1];
@@ -74,12 +76,14 @@ void DistanceFunctions::find_signal_peaks_and_troughs(std::vector<double>& signa
 		*/
 		if (current_gradient < 0 && previous_gradient > 0) {
 			peak_idx.push_back(i);
+			std::cout << "peak" << i << std::endl;
 		} else if (current_gradient > 0 && previous_gradient < 0) {
+			std::cout << "trough" << i << std::endl;
+
 			trough_idx.push_back(i);
 		} else {
 			continue;
 		}
-
 	}
 }
 
@@ -137,81 +141,6 @@ bool DistanceFunctions::has_negative_species(std::vector<state_type>& state_vec)
 	return false;
 }
 
-/*! \brief Calculates distances for oscillatory objective. Returns vector of distances for each species
- *        
- *	Distances: Number of peaks, final peak amplitude and period frequency.
- *	
- */	
-std::vector<std::vector<double>> DistanceFunctions::osc_dist(std::vector<state_type>& state_vec, std::vector<int> species_to_fit, bool integration_failed) {
-	std::vector<std::vector<double>> sim_distances;
-
-	double max_dist = std::numeric_limits<double>::max();
-
-	std::vector<double> max_distances = {max_dist, max_dist, max_dist};
-
-	// Check if any species are negative
-	if (integration_failed or has_negative_species(state_vec)) {
-		for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
-			sim_distances.push_back(max_distances);
-		}
-
-	// If final value of fit species is less than 1e4, reject particle
-	double threshold_value = 0;
-
-	int from_time_index = 900;
-	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
-		std::vector<double> signal = extract_species_to_fit(state_vec, *it, from_time_index);
-
-	}
-
-
-/*! \brief Calculates distances for stable objective. Returns vector of distances for each species
- *        
- *	Calculates standard deviation of a signal. Be careful of sizes of numbers, might hit upper limits
- *	for some systems, possibly I should scale down the signal first?
- */	
-std::vector<std::vector<double>> DistanceFunctions::stable_dist(std::vector<state_type>& state_vec, std::vector<int> species_to_fit, bool integration_failed) {
-	std::vector<std::vector<double>> sim_distances;
-
-	double max_dist = std::numeric_limits<double>::max();
-
-	std::vector<double> max_distances = {max_dist, max_dist, max_dist};
-
-	// Check if any species are negative
-	if (integration_failed or has_negative_species(state_vec)) {
-		for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
-			sim_distances.push_back(max_distances);
-		}
-		return sim_distances;
-	}
-
-	// If final value of fit species is less than 1e4, reject particle
-	double threshold_value = 0;
-
-	int from_time_index = 900;
-	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
-		std::vector<double> signal = extract_species_to_fit(state_vec, *it, from_time_index);
-
-	}
-
-	// Iterate through all species to fit. Extract data.
-	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
-		std::vector<double> signal = extract_species_to_fit(state_vec, *it, from_time_index);
-
-		std::vector<double> signal_gradient = get_signal_gradient(signal);
-
-		double stdev = standard_deviation(signal);
-		double final_gradient = fabs(signal_gradient.end()[-1]);
-		double final_value = signal.end()[-1];
-
-		std::vector<double> signal_distances = {final_gradient, stdev, final_value};
-
-		sim_distances.push_back(signal_distances);
-	}
-
-	return sim_distances;
-
-}
 
 double DistanceFunctions::get_sum_stdev(std::vector<state_type>& state_vec, int n_species, int from_time_index) {
 	double sum_stdev = 0;
@@ -255,5 +184,71 @@ boost::python::list DistanceFunctions::get_all_species_grads(std::vector<state_t
 
 	return all_grads;
 
+}
+
+/*! \brief Calculates distances for oscillatory objective. Returns vector of distances for each species
+ *        
+ *	Distances: Number of peaks, final peak amplitude and period frequency.
+ *	
+ */	
+std::vector<std::vector<double>> DistanceFunctions::osc_dist(std::vector<state_type>& state_vec, std::vector<int> species_to_fit, bool integration_failed) {
+	std::vector<std::vector<double>> sim_distances;
+
+	double max_dist = std::numeric_limits<double>::max();
+
+	std::vector<double> max_distances = {max_dist, max_dist, max_dist};
+
+	double threshold_value = 0;
+
+	int from_time_index = 900;
+	std::cout << "Oscillatory distances" << std::endl;
+
+	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
+		std::vector<double> signal = extract_species_to_fit(state_vec, *it, from_time_index);
+		std::vector<double> signal_gradient = get_signal_gradient(signal);
+		
+		std::vector<int> peak_indexes;
+		std::vector<int> trough_indexes;
+
+		find_signal_peaks_and_troughs(signal_gradient, peak_indexes, trough_indexes);
+	}
+
+	return sim_distances;
+}
+
+
+/*! \brief Calculates distances for stable objective. Returns vector of distances for each species
+ *        
+ *	Calculates standard deviation of a signal. Be careful of sizes of numbers, might hit upper limits
+ *	for some systems, possibly I should scale down the signal first?
+ */	
+std::vector<std::vector<double>> DistanceFunctions::stable_dist(std::vector<state_type>& state_vec, std::vector<int> species_to_fit, bool integration_failed) {
+	std::vector<std::vector<double>> sim_distances;
+
+	double max_dist = std::numeric_limits<double>::max();
+
+	std::vector<double> max_distances = {max_dist, max_dist, max_dist};
+
+	int from_time_index = 900;
+	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
+		std::vector<double> signal = extract_species_to_fit(state_vec, *it, from_time_index);
+	}
+
+	// Iterate through all species to fit. Extract data.
+	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
+		std::vector<double> signal = extract_species_to_fit(state_vec, *it, from_time_index);
+
+		std::vector<double> signal_gradient = get_signal_gradient(signal);
+
+		double stdev = standard_deviation(signal);
+		double final_gradient = fabs(signal_gradient.end()[-1]);
+		double final_value = signal.end()[-1];
+
+		std::vector<double> signal_distances = {final_gradient, stdev, final_value};
+
+		sim_distances.push_back(signal_distances);
+	}
+
+	return sim_distances;
 
 }

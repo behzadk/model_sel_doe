@@ -1,5 +1,10 @@
 import numpy as np
 
+def reload_experiment_from_posterior(posterior_path):
+    pass
+
+
+
 ##
 # Generates particles consisting of a initial state and parameter sample from a list of models.
 #
