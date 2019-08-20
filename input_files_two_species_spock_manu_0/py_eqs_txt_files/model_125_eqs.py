@@ -6,9 +6,9 @@
 
 	dB_1 = ( - D * B_1 ) +  kBmax_1  * ( KB_1**nB_1 / ( KB_1**nB_1 + A_2**nB_1 ) ) * N_1 * C 
 
-	dA_2 = ( - D * A_2 ) + kA_2 * N_1 * C
-
 	dA_1 = ( - D * A_1 ) + kA_1 * N_1 * C
+
+	dA_2 = ( - D * A_2 ) + kA_2 * N_1 * C
 
 	dV_1 = ( - D * V_1 ) +  kV_max_1  * ( kV_1**nV_1  / ( kV_1**nV_1  + A_1**nV_1 ) ) * N_1 * C 
 

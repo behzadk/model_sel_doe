@@ -11,7 +11,6 @@ class DistanceFunctions {
 		std::vector<double> extract_species_to_fit(std::vector<state_type>&, int, int);
 		long double calculate_final_gradient(std::vector<double>&);
 		std::vector<double> get_signal_gradient(std::vector<double> &);
-		void find_signal_peaks_and_troughs(std::vector<double>&, std::vector<int>&, std::vector<int>&);
 		double standard_deviation(std::vector<double>&);
 		bool has_negative_species(std::vector<state_type>&);
 		
@@ -21,6 +20,8 @@ class DistanceFunctions {
 		std::vector<double> arange(int, int, float);
 
 		double get_period_frequency(std::vector<double>&, const float);
+		void find_signal_peaks_and_troughs(std::vector<double>&, std::vector<int>&, std::vector<int>&);
+		std::vector<double> get_amplitudes(std::vector<double>&, std::vector<int>&, std::vector<int>&);
 
 		double get_sum_stdev(std::vector<state_type>&, int, int);
 		long double get_sum_grad(std::vector<state_type>&, int);

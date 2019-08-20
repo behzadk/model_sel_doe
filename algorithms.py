@@ -41,7 +41,13 @@ class Rejection:
 
         # self.epsilon = [100, 10, 1e4]
         # self.epsilon = [0.01, 0.001, 1e-5]
-        self.epsilon = [0.01, 0.001, 1e-3]
+
+        if self.distance_function_mode == 0:
+            self.epsilon = [0.01, 0.001, 1e-3]
+
+        elif self.distance_function_mode ==1:
+            self.epsilon = [2, 1e3, 200]
+
 
         # Init model space
         self.model_space = ModelSpace(model_list)
@@ -444,7 +450,8 @@ class Rejection:
             # self.write_all_particle_state_lists(folder_name, population_number, batch_num, init_states, model_refs)
 
             self.plot_all_particles(folder_name, 0, batch_num, init_states, model_refs)
-            # self.plot_accepted_particles(folder_name, 0, batch_num, batch_part_judgements, init_states, model_refs)
+            self.plot_accepted_particles(folder_name, 0, batch_num, batch_part_judgements, init_states, model_refs)
+            
             accepted_particles_count += sum(batch_part_judgements)
             total_sims += len(model_refs)
 

@@ -67,41 +67,52 @@ double DistanceFunctions::get_period_frequency(std::vector<double>& signal, cons
 {
 	int n_samples = signal.size();
 
-  	kiss_fftr_cfg cfg;
-    size_t x;
+
 
   	kiss_fft_scalar signal_scalar[n_samples];
 	for (int i = 0; i < n_samples; i++) {
 		signal_scalar[i] = signal[i];
 	}
-	
+
+
   	kiss_fft_cpx out[(n_samples /2) + 1];
+    double period;
+
+  	kiss_fftr_cfg cfg;
+
+  	if ((cfg = kiss_fftr_alloc(n_samples, 0/*is_inverse_fft*/, NULL, NULL)) != NULL) 
+  	{
+	    size_t x;
+
+	    kiss_fftr(cfg, signal_scalar, out);
+	    free(cfg);
 
 
-    kiss_fftr(cfg, signal_scalar, out);
-    free(cfg);
+	    double max_real_part = pow((out[1].r + out[1].i), 2);
 
-    double max_real_part = pow((out[1].r + out[1].i), 2);
-   	int max_arg = 1;
-    for (x = 2; x < (n_samples/2 ) + 1; x++)
-    {
-    	double mag  = pow((out[x].r + out[x].i), 2);
-    	if (mag > max_real_part) {
-    		if ( isinf(mag)) {
-    			continue;
-    		}
-    		else {
-	    		max_real_part = mag;
-			   	max_arg = x;
+	   	int max_arg = 1;
+	    for (x = 2; x < (n_samples/2 ) + 1; x++)
+	    {
+	    	double mag  = pow((out[x].r + out[x].i), 2);
+	    	if (mag > max_real_part) {
+	    		if ( isinf(mag)) {
+	    			continue;
+	    		}
+	    		else {
+		    		max_real_part = mag;
+				   	max_arg = x;
+		    	}
 	    	}
-    	}
-    }
+	    }
 
-    double freq_bins[n_samples];
-    fft_freq(freq_bins, n_samples, dt);
+	    double freq_bins[n_samples];
 
-   	double max_freq = 2 * freq_bins[max_arg];
-   	double period = 1/max_freq;
+	    fft_freq(freq_bins, n_samples, dt);
+
+	   	double max_freq = 2 * freq_bins[max_arg];
+	   	period = 1/max_freq;
+
+   	}
 
     return period;
 }
@@ -219,10 +230,7 @@ void DistanceFunctions::find_signal_peaks_and_troughs(std::vector<double>& signa
 	double current_gradient;
 	double previous_gradient;
 	
-	std::cout << signal_gradient.size() << std::endl;
-
 	for (int i = 1; i < signal_gradient.size(); i++) {
-		std::cout << signal_gradient[i] << std::endl;
 		// Set current and previous gradients
 		current_gradient = signal_gradient[i];
 		previous_gradient = signal_gradient[i-1];
@@ -233,15 +241,38 @@ void DistanceFunctions::find_signal_peaks_and_troughs(std::vector<double>& signa
 		*/
 		if (current_gradient < 0 && previous_gradient > 0) {
 			peak_idx.push_back(i);
-			std::cout << "peak" << i << std::endl;
 		} else if (current_gradient > 0 && previous_gradient < 0) {
-			std::cout << "trough" << i << std::endl;
-
 			trough_idx.push_back(i);
 		} else {
 			continue;
 		}
 	}
+}
+
+/*! \brief Returns a vector of amplitudes, calculated from a given signal and indexes for the peaks and troughs.
+ *        
+ *	Calculates standard deviation of a signal. Be careful of sizes of numbers, might hit upper limits
+ *	for some systems, possibly I should scale down the signal first?
+ */	
+std::vector<double> DistanceFunctions::get_amplitudes(std::vector<double>& signal, std::vector<int>& peak_idx, std::vector<int>& trough_idx) 
+{
+	int num_peaks = peak_idx.size();
+	int num_troughs = trough_idx.size();
+
+	int max_iterations = min(num_peaks, num_troughs);
+
+	std::vector<double> amplitudes;
+
+	for (int i = 0; i < max_iterations; i++)
+	{	
+		int peak_i = peak_idx[i];
+		int trough_i = trough_idx[i];
+
+		double amp = abs(signal[peak_i] - signal[trough_i]);
+		amplitudes.push_back(amp);
+	}
+
+	return amplitudes;
 }
 
 /*! \brief Calculates standard deviation of a signal.
@@ -363,9 +394,8 @@ std::vector<std::vector<double>> DistanceFunctions::osc_dist(std::vector<state_t
 		return sim_distances;
 	}
 
-
 	int from_time_index = 900;
-	std::cout << "Oscillatory distances" << std::endl;
+	int amplitude_threshold = 1e3;
 
 	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
 		std::vector<double> signal = extract_species_to_fit(state_vec, *it, from_time_index);
@@ -375,7 +405,37 @@ std::vector<std::vector<double>> DistanceFunctions::osc_dist(std::vector<state_t
 		std::vector<int> trough_indexes;
 
 		find_signal_peaks_and_troughs(signal_gradient, peak_indexes, trough_indexes);
+		
 		double signal_period_freq = get_period_frequency(signal, dt);
+
+		std::vector<double> singal_amplitudes = get_amplitudes(signal, peak_indexes, trough_indexes);
+
+		double threshold_amplitudes_count;
+		double final_amplitude;
+
+		// If no amplitudes, set threshold and final amplitude to zero
+		if (singal_amplitudes.size() == 0) {
+			threshold_amplitudes_count = 0;
+			final_amplitude = 0;
+		}
+		else {
+			double threshold_amplitudes_count = 0;
+
+			// Count threshold amplitudes
+			for (auto amp_it = singal_amplitudes.begin(); amp_it != singal_amplitudes.end(); amp_it++) {
+				if (*amp_it > amplitude_threshold) {
+					threshold_amplitudes_count = threshold_amplitudes_count + 1;
+				}
+			}
+
+			// Set final amplitude
+			double final_amplitude = singal_amplitudes[singal_amplitudes.size() - 1];
+		}
+
+
+		std::vector<double> signal_distances = {threshold_amplitudes_count, final_amplitude, signal_period_freq};
+
+		sim_distances.push_back(signal_distances);
 
 	}
 

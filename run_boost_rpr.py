@@ -631,13 +631,14 @@ def ABC_rejection():
         init_params = import_input_file(input_params)
         init_species = import_input_file(input_init_species)
         model_new = Model(i, init_params, init_species)
-        model_list.append(model_new)
+        if i == 125:
+            model_list.append(model_new)
 
 
     # Run ABC_rejecction algorithm
     # rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1, 10, fit_species, 3, output_folder)
 
-    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 25, fit_species, 0, 3, output_folder)
+    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 8, fit_species, 1, 3, output_folder)
     rejection_alg.run_rejection()
     print("")
 
