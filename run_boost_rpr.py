@@ -610,7 +610,6 @@ def ABC_rejection():
 
         fit_species = [0, 1]
 
-
     else:
         print("Please specify routine... exiting ")
         exit()
@@ -638,7 +637,7 @@ def ABC_rejection():
     # Run ABC_rejecction algorithm
     # rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1, 10, fit_species, 3, output_folder)
 
-    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 25, fit_species, 1, 3, output_folder)
+    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 25, fit_species, 0, 3, output_folder)
     rejection_alg.run_rejection()
     print("")
 
@@ -865,7 +864,6 @@ def simulate_and_plot():
     # Load models from input files
     model_list = []
     for i in range(0, int((len(os.listdir(input_folder)) / 2))):
-        print(i)
         input_init_species = input_folder + "species_" + str(i) + ".csv"
         input_params = input_folder + "params_" + str(i) + ".csv"
 
@@ -881,14 +879,19 @@ def simulate_and_plot():
 
 
         if i == 125:
+            posterior_path = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/output/spock_manu_stable_test/Population_0/model_sim_params/model_125_all_params"
+            init_species, init_params = alg_utils.reload_experiment_from_posterior(posterior_path, init_species, init_params, sim_idx=0, batch_num=7)
+
+            for p in init_params:
+                print(p)
             model_new = Model(i, init_params, init_species)
-            model_list = [model_new]
+            model_list.append(model_new)
 
-    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 12, fit_species, 0, 3, output_folder)
-    rejection_alg.run_rejection()
-    print("")
 
-    exit()
+    # rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 12, fit_species, 0, 3, output_folder)
+    # rejection_alg.run_rejection()
+    # print("")
+
     simple_sim = algorithms.SimpleSimulation(t_0, t_end, dt,
                                              model_list, batch_size=1, num_batches=1, fit_species=fit_species,
                                              distance_function_mode=1, out_dir=output_folder + 'model_osc_test' + '/')
@@ -900,9 +903,9 @@ if __name__ == "__main__":
     # for i in range(50):
     #     steady_state_test(i)
     # ABCSMC()
-    simulate_and_plot()
+    # simulate_and_plot()
     # resample_and_plot_posterior()
-    # ABC_rejection()
+    ABC_rejection()
     # eig_classification_test()
     # repressilator_test()
     # exit()

@@ -876,7 +876,7 @@ class SimpleSimulation():
             print("Simulating particles...")
             self.pop_obj.simulate_particles()
 
-            self.pop_obj.calculate_particle_distances(self.distance_function_mode)
+            # self.pop_obj.calculate_particle_distances(self.distance_function_mode)
 
             print("plotting simulations... ")
             self.plot_all_particles(self.out_dir, batch_num, init_states, model_refs)

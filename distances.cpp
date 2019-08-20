@@ -7,7 +7,164 @@
 #include <algorithm>
 #include <numeric>
 
+extern "C" {
+	#include "kissfft/kiss_fft.h"
+	#include "kissfft/kiss_fftr.h"
+}
+
 DistanceFunctions::DistanceFunctions() {
+}
+
+std::vector<double> DistanceFunctions::arange(int start, int stop, float step) {
+    std::vector<double> values;
+
+    for (double value = start; value < stop; value += step) {
+        values.push_back(value);
+    }
+
+    return values;
+}
+
+
+/*! \brief Return the Discrete Fourier Transform sample frequencies.
+ *         
+ *
+ *  
+ *	See np.fft.fftfreq
+ *	
+ */
+void DistanceFunctions::fft_freq(double * results, int n, float step_size) {
+    float val = 1.0 / (n * step_size);
+    // double results[n];
+
+    int N;
+    if (n % 2 == 0) {
+	    N = (n) / 2 - 1 + 1;
+    }
+    else {
+	    N = (n-1)/2 + 1;
+    }
+
+    std::vector<double> p1 = arange(0, N, 1);
+    
+    for (int i=0; i <= N; i++) {
+	    results[i] = p1[i] * val;
+    }
+
+    std::vector<double> p2 = arange(-N, 0, 1);
+	for (int i=0; i < p2.size(); i++) {
+	    results[N+i] = p2[i] * val;
+    }
+}
+
+/*! \brief Returns the period frequency of a signal
+ *         
+ *
+ *  
+ *	
+ */
+double DistanceFunctions::get_period_frequency(std::vector<double>& signal, const float dt)
+{
+	int n_samples = signal.size();
+
+  	kiss_fftr_cfg cfg;
+    size_t x;
+
+  	kiss_fft_scalar signal_scalar[n_samples];
+	for (int i = 0; i < n_samples; i++) {
+		signal_scalar[i] = signal[i];
+	}
+	
+  	kiss_fft_cpx out[(n_samples /2) + 1];
+
+
+    kiss_fftr(cfg, signal_scalar, out);
+    free(cfg);
+
+    double max_real_part = pow((out[1].r + out[1].i), 2);
+   	int max_arg = 1;
+    for (x = 2; x < (n_samples/2 ) + 1; x++)
+    {
+    	double mag  = pow((out[x].r + out[x].i), 2);
+    	if (mag > max_real_part) {
+    		if ( isinf(mag)) {
+    			continue;
+    		}
+    		else {
+	    		max_real_part = mag;
+			   	max_arg = x;
+	    	}
+    	}
+    }
+
+    double freq_bins[n_samples];
+    fft_freq(freq_bins, n_samples, dt);
+
+   	double max_freq = 2 * freq_bins[max_arg];
+   	double period = 1/max_freq;
+
+    return period;
+}
+
+void DistanceFunctions::test_fft(float f, int amp, int t_end, float step_size) {
+	std::cout << "starting fft... " << std::endl;
+	// Make sine wave
+
+	std::vector<double> time_vec = arange(0, t_end, step_size);
+	int n_samples = time_vec.size();
+
+  	kiss_fft_scalar sin_wav[n_samples];
+  	kiss_fft_cpx out[(n_samples /2) + 1];
+
+
+	for (int i = 0; i < time_vec.size(); i++) {
+        double y = amp * cos(M_PI * f * time_vec[i]);
+		sin_wav[i] = y;
+	}
+
+  	kiss_fftr_cfg cfg;
+  	if ((cfg = kiss_fftr_alloc(n_samples, 0/*is_inverse_fft*/, NULL, NULL)) != NULL)
+  	{
+	    size_t x;
+
+	    kiss_fftr(cfg, sin_wav, out);
+	    free(cfg);
+
+	    double max_real_part = pow((out[1].r + out[1].i), 2); 
+	   	int max_arg = 1;
+	    for (x = 2; x < (n_samples/2 ) + 1; x++)
+	    {
+
+	    	double mag  = pow((out[x].r + out[x].i), 2);
+	    	if (mag > max_real_part) {
+	    		if ( isinf(mag)) {
+	    			continue;
+	    		}
+	    		else {
+		    		max_real_part = mag;
+    			   	max_arg = x;
+		    	}
+
+	    	}
+	    }
+
+	    double freq_bins[n_samples];
+	    fft_freq(freq_bins, n_samples, step_size);
+	    std::cout << n_samples << std::endl;
+	    std::cout << "" << std::endl;
+
+	    std::cout << "max real parts = "<< max_real_part << std::endl;
+	    std::cout << "max arg = " << max_arg << std::endl;
+
+	   	double max_freq = 2 * freq_bins[max_arg];
+	   	double period = 1/max_freq;
+   	    std::cout << "fre_bin  = "<<  freq_bins[max_arg] << std::endl;
+   	    std::cout << "freq  = "<<  max_freq << std::endl;
+   	    std::cout << "period  = "<<  period << std::endl;
+
+	    std::cout << "" << std::endl;
+
+	}
 
 }
 
@@ -191,14 +348,21 @@ boost::python::list DistanceFunctions::get_all_species_grads(std::vector<state_t
  *	Distances: Number of peaks, final peak amplitude and period frequency.
  *	
  */	
-std::vector<std::vector<double>> DistanceFunctions::osc_dist(std::vector<state_type>& state_vec, std::vector<int> species_to_fit, bool integration_failed) {
+std::vector<std::vector<double>> DistanceFunctions::osc_dist(std::vector<state_type>& state_vec, std::vector<int> species_to_fit, bool integration_failed, const float dt) {
 	std::vector<std::vector<double>> sim_distances;
 
 	double max_dist = std::numeric_limits<double>::max();
 
 	std::vector<double> max_distances = {max_dist, max_dist, max_dist};
 
-	double threshold_value = 0;
+	// If integration has failed, return all distances as maximum
+	if (integration_failed) {
+		for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
+			sim_distances.push_back(max_distances);
+		}
+		return sim_distances;
+	}
+
 
 	int from_time_index = 900;
 	std::cout << "Oscillatory distances" << std::endl;
@@ -211,6 +375,8 @@ std::vector<std::vector<double>> DistanceFunctions::osc_dist(std::vector<state_t
 		std::vector<int> trough_indexes;
 
 		find_signal_peaks_and_troughs(signal_gradient, peak_indexes, trough_indexes);
+		double signal_period_freq = get_period_frequency(signal, dt);
+
 	}
 
 	return sim_distances;
@@ -228,6 +394,15 @@ std::vector<std::vector<double>> DistanceFunctions::stable_dist(std::vector<stat
 	double max_dist = std::numeric_limits<double>::max();
 
 	std::vector<double> max_distances = {max_dist, max_dist, max_dist};
+
+	if (integration_failed) {
+		for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
+			sim_distances.push_back(max_distances);
+		}
+
+		return sim_distances;
+	}
+
 
 	int from_time_index = 900;
 	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {

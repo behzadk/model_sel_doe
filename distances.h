@@ -3,6 +3,7 @@
 #define __DISTANCE_H_INCLUDED__
 #include "particle_sim_opemp.h"
 
+
 class DistanceFunctions {
 	
 	public:
@@ -14,11 +15,18 @@ class DistanceFunctions {
 		double standard_deviation(std::vector<double>&);
 		bool has_negative_species(std::vector<state_type>&);
 		
+		void test_fft(float, int, int, float);
+		void fft_freq(double[], int, float);
+
+		std::vector<double> arange(int, int, float);
+
+		double get_period_frequency(std::vector<double>&, const float);
+
 		double get_sum_stdev(std::vector<state_type>&, int, int);
 		long double get_sum_grad(std::vector<state_type>&, int);
 		boost::python::list get_all_species_grads(std::vector<state_type>&, int);
 		std::vector<std::vector<double>> stable_dist(std::vector<state_type>&, std::vector<int>, bool);
-		std::vector<std::vector<double>> osc_dist(std::vector<state_type>&, std::vector<int>, bool);
+		std::vector<std::vector<double>> osc_dist(std::vector<state_type>&, std::vector<int>, bool, const float dt);
 
 };
 

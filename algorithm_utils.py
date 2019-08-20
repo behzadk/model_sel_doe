@@ -1,9 +1,20 @@
 import numpy as np
+import pandas as pd
 
-def reload_experiment_from_posterior(posterior_path):
-    pass
+def reload_experiment_from_posterior(posterior_path, init_species, init_params, sim_idx, batch_num):
+    df = pd.read_csv(posterior_path)
+    df = df.loc[df['sim_idx'] == sim_idx]
+    df = df.loc[df['batch_num'] == batch_num]
+    df = df.iloc[0]
+    print(df)
+    for param, _ in init_params.items():
+        init_params[param] = [df[param], df[param]]
+
+    for species, _ in init_species.items():
+        init_params[species] = [df[species], df[species]]
 
 
+    return init_species, init_params
 
 ##
 # Generates particles consisting of a initial state and parameter sample from a list of models.
