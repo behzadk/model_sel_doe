@@ -94,7 +94,8 @@ class Model:
     def sample_particle(self):
         sim_params = []
 
-        for idx, id in enumerate(sorted(self._params_prior)):
+        for idx, id in enumerate(sorted(self._params_prior, key=str.lower)):
+            # print(id)
             if self._param_has_kde[idx]:
                 new_params = self._param_kdes[idx].resample(1)
 
@@ -127,8 +128,14 @@ class Model:
             else:
                 lwr_bound = self._init_species_prior[s][0]
                 upr_bound = self._init_species_prior[s][1]
-                species_val = np.random.uniform(lwr_bound, upr_bound)
-                init_species.append(species_val)
+
+                if abs(np.log10(lwr_bound+1) - np.log10(upr_bound+1)) > 7:
+                    species_val = np.exp(np.random.uniform(np.log(lwr_bound+1), np.log(upr_bound+1)))
+                    init_species.append(species_val)
+
+                else:
+                    species_val = np.random.uniform(lwr_bound, upr_bound)
+                    init_species.append(species_val)
 
         return init_species
 

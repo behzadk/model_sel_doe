@@ -129,7 +129,7 @@ void Population::calculate_particle_distances(int distance_function_mode)
         }
 
         else if (distance_function_mode == 1) {
-            _particle_vector[i].set_distance_vector(dist.osc_dist( _particle_vector[i].get_state_vec(), fit_species, _particle_vector[i].integration_failed));
+            _particle_vector[i].set_distance_vector(dist.osc_dist( _particle_vector[i].get_state_vec(), fit_species, _particle_vector[i].integration_failed,  _dt));
         }
 
         else {
@@ -338,8 +338,15 @@ boost::python::list Population::get_particle_grads(int particle_ref)
     return _particle_vector[particle_ref].get_all_grads();
 }
 
+void test_fft(float f, int amp, int t_end, float step_size) 
+{
+    DistanceFunctions dist = DistanceFunctions();
+    dist.test_fft(f, amp, t_end, step_size);
+}
+
 BOOST_PYTHON_MODULE(population_modules)
 {
+    boost::python::def("test_fft", test_fft, boost::python::args("f", "amp", "t_end", "step_size"));
 	class_<PopDistances>("pop_dist_vec")
 		.def(boost::python::vector_indexing_suite<PopDistances>());
 

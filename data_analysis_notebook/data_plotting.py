@@ -42,15 +42,16 @@ def plot_acceptance_rate_distribution(model_space_report_df, output_path, hide_x
         ax.set(xticklabels=[])
         ax.set(xlabel='')
         ax.legend().remove()    
+    
+    else:
+        ax.set(xticklabels=model_space_report_df['model_idx'])
+        ax.set(xlabel='Model')
+        ax.legend()
 
     if show_mean:
         ax.axhline(mean, ls='--', label='Mean', linewidth=1.0)
         ax.legend()
 
-    else:
-        ax.set(xticklabels=model_space_report_df['model_idx'])
-        ax.set(xlabel='Model')
-        ax.legend()
 
 
     ax.set(ylabel='Model posterior probability')

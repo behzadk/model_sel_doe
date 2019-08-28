@@ -18,6 +18,9 @@ class Population {
 		void simulate_particles();
 		void calculate_particle_distances(int);
 		void accumulate_distances();
+
+		void test_fft(float, int, int, float);
+		
 		std::vector< ublas_vec_t > unpack_parameters_to_ublas(boost::python::list);
 
 		PopDistances get_population_distances() {return _all_distances;};
