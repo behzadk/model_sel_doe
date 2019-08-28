@@ -12,7 +12,7 @@ export LD_LIBRARY_PATH
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/kissfft
 export LD_LIBRARY_PATH
 
-g++ -std=c++11 -g -shared -o population_modules.so -Wall -fPIC -fopenmp \
+g++ -std=c++11 -g -w -shared -o population_modules.so -Wall -fPIC -fopenmp \
 particle_sim_opemp.cpp $inputs_folder/model.cpp distances.cpp population.cpp $kissfft_folder/kiss_fft.c $kissfft_folder/kiss_fftr.c \
 -lboost_system -lboost_python-py36 -lgsl -lgslcblas -lm \
 -lpython3.6m -I/usr/include/python3.6m/ \

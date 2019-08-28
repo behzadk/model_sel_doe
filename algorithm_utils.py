@@ -37,33 +37,61 @@ def generate_particles(models_list):
 
 
 ##
-# Compares the distances of each spiecies of each particle to the epsilons in the distance
+# Compares the distances of each species of each particle to the epsilons in the distance
 # array.
 #
 # Returns a list of bools True - accept particle, False - reject particle
 ##
-def check_distances(particle_distances, epsilon_array):
+def check_distances_stable(particle_distances, epsilon_array):
     particle_judgements = []
 
     for part_distance in particle_distances:
         particle_accept = True
 
-        if np.isnan(part_distance).any():
-            particle_accept = False
-            continue
+        for species_distances in part_distance:
+            if np.isnan(species_distances).any() or any(p > 1e300 for p in species_distances):
+                particle_accept = False
+                
+            for epsilon_idx, dist in enumerate(species_distances):
+                if epsilon_idx <= 1 and dist > epsilon_array[epsilon_idx]:
+                    particle_accept = False
 
-        else:
-            for species in part_distance:
-                for epsilon_idx, dist in enumerate(species):
-                    if epsilon_idx <=1 and dist >= epsilon_array[epsilon_idx]:
-                        particle_accept = False
-
-                    elif epsilon_idx == 2 and dist <=epsilon_array[epsilon_idx]:
-                        particle_accept = False
+                elif epsilon_idx == 2 and dist < epsilon_array[epsilon_idx]:
+                    particle_accept = False
 
         particle_judgements.append(particle_accept)
 
     return particle_judgements
+
+def check_distances_osc(particle_distances, epsilon_array):
+    particle_judgements = []
+    for part_distance in particle_distances:
+        particle_accept = True
+
+        for species_distances in part_distance:
+            # Check if any of the distances for the fitted species are infinite or overflow
+            if np.isnan(species_distances).any() or any(p > 1e300 for p in species_distances):
+                particle_accept = False
+
+            for epsilon_idx, dist in enumerate(species_distances):
+                # threshold_amplitudes_count, 
+                if epsilon_idx == 0 and dist < epsilon_array[epsilon_idx]:
+                    particle_accept = False
+
+
+                # final_amplitude
+                elif epsilon_idx == 1 and dist < epsilon_array[epsilon_idx]:
+                    particle_accept = False
+
+                # signal_period_freq
+                elif epsilon_idx == 2 and dist > epsilon_array[epsilon_idx]:
+                    particle_accept = False
+
+        particle_judgements.append(particle_accept)
+        # print(particle_judgements)
+
+    return particle_judgements
+
 
 
 def fsolve_conversion(y, pop_obj, particle_ref, n_species):

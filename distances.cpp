@@ -95,7 +95,7 @@ double DistanceFunctions::get_period_frequency(std::vector<double>& signal, cons
 	    {
 	    	double mag  = pow((out[x].r + out[x].i), 2);
 	    	if (mag > max_real_part) {
-	    		if ( isinf(mag)) {
+	    		if ( std::isinf(mag)) {
 	    			continue;
 	    		}
 	    		else {
@@ -148,7 +148,7 @@ void DistanceFunctions::test_fft(float f, int amp, int t_end, float step_size) {
 
 	    	double mag  = pow((out[x].r + out[x].i), 2);
 	    	if (mag > max_real_part) {
-	    		if ( isinf(mag)) {
+	    		if ( std::isinf(mag)) {
 	    			continue;
 	    		}
 	    		else {
@@ -394,8 +394,10 @@ std::vector<std::vector<double>> DistanceFunctions::osc_dist(std::vector<state_t
 		return sim_distances;
 	}
 
-	int from_time_index = 900;
-	int amplitude_threshold = 1e3;
+	// int from_time_index = 900;
+	int from_time_index = 50;
+
+	int amplitude_threshold = 0;
 
 	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
 		std::vector<double> signal = extract_species_to_fit(state_vec, *it, from_time_index);
@@ -419,7 +421,7 @@ std::vector<std::vector<double>> DistanceFunctions::osc_dist(std::vector<state_t
 			final_amplitude = 0;
 		}
 		else {
-			double threshold_amplitudes_count = 0;
+			threshold_amplitudes_count = 0;
 
 			// Count threshold amplitudes
 			for (auto amp_it = singal_amplitudes.begin(); amp_it != singal_amplitudes.end(); amp_it++) {
@@ -429,9 +431,8 @@ std::vector<std::vector<double>> DistanceFunctions::osc_dist(std::vector<state_t
 			}
 
 			// Set final amplitude
-			double final_amplitude = singal_amplitudes[singal_amplitudes.size() - 1];
+			final_amplitude = singal_amplitudes[singal_amplitudes.size() - 1];
 		}
-
 
 		std::vector<double> signal_distances = {threshold_amplitudes_count, final_amplitude, signal_period_freq};
 

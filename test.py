@@ -26,7 +26,7 @@ def get_fft(x):
     return fourier[maxa]
 
 
-def main():
+def fft_main():
     print("Starting test")
     angle = 0.0
     t_end = 5000
@@ -84,5 +84,42 @@ def main():
     plt.show()
 
 
+def linear_repression_model():
+    B = np.linspace(1e-10, 100, 5)
+    V = np.linspace(1e-10, 100, 5)
+    K = 10
+
+
+    for v in V:
+        signal = []
+
+        for b in B:
+            # signal.append(b*K)
+            print(((b +v)/v))
+            signal.append((b +v)/v)
+
+
+
+        plt.plot(B, signal)
+    plt.show()
+
+def test_this():
+    mu_max_1 = 2
+    K_mu_glu = 5
+
+    y = [3, 2, 9, 3, 1, 4, 7]
+
+    x = 1.0/2.0*y[6]*y[2]*mu_max_1/(K_mu_glu + y[2]);
+
+    I_1 = y[6]
+    S_glu = y[2]
+
+    z = I_1  * ( ( mu_max_1 * S_glu / ( K_mu_glu + S_glu ) ) )  / 2 
+
+    print(x)
+    print(z)
+
 if __name__ == "__main__":
-    main()
+    test_this()
+    # linear_repression_model()
+    # main()

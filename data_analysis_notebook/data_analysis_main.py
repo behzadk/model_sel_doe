@@ -307,7 +307,6 @@ def generate_posterior_distributions(data_dir, priors_dir, output_dir):
         # translated_names = data_utils.translate_param_names(param_names)
         # model_posterior_df.rename(columns=dict(zip(model_posterior_df.columns[3:], translated_names)), inplace=True)
         param_names = model_posterior_df.columns[3:]
-
         free_params = []
 
         # Extract parameter columns that are not constants
@@ -453,10 +452,16 @@ def main():
 
 
     ## Three species
-    if 1:
+    if 0:
         experiment_name = "three_species_stable_15"
         inputs_dir = wd + "input_files_three_species_0/"
         R_script = "plot-motifs-three.R"
+
+    ## Spock Manuscript
+    if 1:
+        experiment_name = "spock_manu_stable_0"
+        inputs_dir = wd + "input_files_two_species_spock_manu_0/"
+        # R_script = "plot-motifs-three.R"
 
 
     adj_mat_dir = inputs_dir + "adj_matricies/"
@@ -469,18 +474,18 @@ def main():
 
     compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir)
     write_model_order(data_dir, output_dir)
-    subprocess.call(['Rscript', R_script, adj_mat_dir, data_dir+"analysis/", output_dir])
-    exit()
-    generate_acceptance_rate_distribution(data_dir, output_dir, drop_unnacepted=True, hide_x_ticks=True, show_mean=True)
-    generate_acceptance_probability_distribution(data_dir, output_dir, drop_unnacepted=True)
+    # subprocess.call(['Rscript', R_script, adj_mat_dir, data_dir+"analysis/", output_dir])
+    # exit()
+    generate_acceptance_rate_distribution(data_dir, output_dir, drop_unnacepted=False, hide_x_ticks=False, show_mean=True)
+    generate_acceptance_probability_distribution(data_dir, output_dir, drop_unnacepted=False)
     
     # # # Generate KS value files
     KS_data_dir = data_dir + "KS_data/"
     data_utils.make_folder(KS_data_dir)
     # generate_posterior_distributions(data_dir, priors_dir, output_dir)
     split_by_num_parts(data_dir, adj_mat_dir, output_dir)
-    exit()
-    # posterior_analysis.generate_posterior_KS_csv(data_dir, priors_dir, KS_data_dir)
+
+    posterior_analysis.generate_posterior_KS_csv(data_dir, priors_dir, KS_data_dir)
 
     generate_critical_parameter_bar_plot(data_dir, KS_data_dir, output_dir, 3)
 
