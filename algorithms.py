@@ -42,9 +42,10 @@ class Rejection:
         # self.epsilon = [100, 10, 1e4]
         # self.epsilon = [0.01, 0.001, 1e-5]
 
-        C = 10000000000.0
+        C = 1e12
         if self.distance_function_mode == 0:
-            self.epsilon = [1e3, 1e300, 1e9]
+            # Final gradient, stdev, final number
+            self.epsilon = [1e3/C, 0.001, 0.0001]
 
         elif self.distance_function_mode ==1:
             self.epsilon = [2, 1e3/C, 300/C]
@@ -917,24 +918,24 @@ class SimpleSimulation():
             # print("Simulating particles...")
             self.pop_obj.simulate_particles()
 
-            self.pop_obj.calculate_particle_distances(self.distance_function_mode)
-            # print("got distances")
+            # self.pop_obj.calculate_particle_distances(self.distance_function_mode)
+            # # print("got distances")
 
-            self.pop_obj.accumulate_distances()
-            batch_distances = self.pop_obj.get_flattened_distances_list()
-            batch_distances = np.reshape(batch_distances, (self.batch_size, len(self.fit_species), self.n_distances))
+            # self.pop_obj.accumulate_distances()
+            # batch_distances = self.pop_obj.get_flattened_distances_list()
+            # batch_distances = np.reshape(batch_distances, (self.batch_size, len(self.fit_species), self.n_distances))
 
-            # 4. Accept or reject particles
-            if self.distance_function_mode == 0:
-                batch_part_judgements = alg_utils.check_distances_stable(batch_distances, epsilon_array=self.epsilon)
-            elif self.distance_function_mode == 1:
-                batch_part_judgements = alg_utils.check_distances_osc(batch_distances, epsilon_array=self.epsilon)
+            # # 4. Accept or reject particles
+            # if self.distance_function_mode == 0:
+            #     batch_part_judgements = alg_utils.check_distances_stable(batch_distances, epsilon_array=self.epsilon)
+            # elif self.distance_function_mode == 1:
+            #     batch_part_judgements = alg_utils.check_distances_osc(batch_distances, epsilon_array=self.epsilon)
 
-            # Write data
-            # self.write_particle_params(sim_params_folder, batch_num, particle_models.tolist(),
-            #                            input_params, init_states, batch_part_judgements)
+            # # Write data
+            # # self.write_particle_params(sim_params_folder, batch_num, particle_models.tolist(),
+            # #                            input_params, init_states, batch_part_judgements)
 
-            print("Num osc: ", sum(batch_part_judgements))
+            # print("Num osc: ", sum(batch_part_judgements))
             # self.write_particle_distances(folder_name, model_refs, batch_num, particle_models.tolist(),
             #                               batch_part_judgements, batch_distances)
 

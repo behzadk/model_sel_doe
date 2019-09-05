@@ -20,22 +20,22 @@ sns.set_context("poster", font_scale=1.75)
 sns.set_style("white")
 
 import data_utils
+from colour import Color
+
 # import matplotlib.style as style
 
-def plot_acceptance_rate_distribution(model_space_report_df, output_path, hide_x_ticks=True, show_mean=True):
+def plot_acceptance_rate_distribution(model_space_report_df, output_path, hide_x_ticks=True, show_mean=True, show_bf_over_3=False):
 
     # Make plot!
     fig, ax = plt.subplots()
 
     ax.errorbar(model_space_report_df.index, 
                 model_space_report_df['acceptance_ratio'], 
-                yerr=model_space_report_df['stdev'], fmt=',', color='black', alpha=0.5,
+                yerr=model_space_report_df['stdev'], fmt=',', color='black', alpha=1,
                 label=None, elinewidth=0.5)
 
     sns.barplot(model_space_report_df.index, model_space_report_df.acceptance_ratio, 
-                     data=model_space_report_df, alpha=1, ax=ax, color=None)
-
-    mean = np.mean(model_space_report_df['acceptance_ratio'].values)
+                     data=model_space_report_df, alpha=0.9, ax=ax)
 
 
     if hide_x_ticks:
@@ -49,10 +49,14 @@ def plot_acceptance_rate_distribution(model_space_report_df, output_path, hide_x
         ax.legend()
 
     if show_mean:
+        mean = np.mean(model_space_report_df['acceptance_ratio'].values)
         ax.axhline(mean, ls='--', label='Mean', linewidth=1.0)
         ax.legend()
 
-
+    if show_bf_over_3:
+        bayes_factor_over_3 = np.max(model_space_report_df['acceptance_ratio'].values)/3
+        ax.axhline(bayes_factor_over_3, ls='--', label='$B_{12} = 3.0$', linewidth=5.0)
+        ax.legend()
 
     ax.set(ylabel='Model posterior probability')
     ax.set(xlim=(-0.5,None))
@@ -61,7 +65,7 @@ def plot_acceptance_rate_distribution(model_space_report_df, output_path, hide_x
     ax.spines["top"].set_visible(False)
     ax.spines["left"].set_alpha(0.5)
     ax.spines["bottom"].set_alpha(0.5)
-
+    fig.tight_layout()
     plt.savefig(output_path, dpi=500)
 
     print("\n")
@@ -98,5 +102,6 @@ def plot_acceptance_probability_distribution(model_space_report_df, output_path,
     ax.legend()
     ax.spines["left"].set_alpha(0.5)
     ax.spines["bottom"].set_alpha(0.5)
+    fig.tight_layout()
 
     plt.savefig(output_path, dpi=500)

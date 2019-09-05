@@ -6,6 +6,7 @@ import numpy as np
 import seaborn as sns
 sns.set()
 
+import scipy
 import os
 
 
@@ -15,6 +16,20 @@ def make_folder(folder_dir):
 
     except FileExistsError:
         pass
+
+
+def KL_divergence(sample_one, sample_two):
+    n_1 = len(sample_one)
+    n_2 = len(sample_two)
+
+    sample_one.sort()
+    sample_two.sort()
+
+    sample_one_cdf = [i*1 / n_1 for i in range(1, n_1+1)]
+    sample_two_cdf = [i*1 / n_2 for i in range(1, n_2+1)]
+
+    entropy = scipy.stats.entropy(sample_one_cdf, sample_two_cdf)
+    return entropy
 
 
 def kolmogorov_smirnov_test(sample_one, sample_two):
@@ -215,6 +230,7 @@ def make_KS_df(model_idx, model_posterior_df):
 
     for param in free_params:
         D_n = kolmogorov_smirnov_test(accepted_sims[param].values, model_posterior_df[param].values)
+
         KS_data_df[param] = D_n
 
     return KS_data_df
@@ -286,7 +302,7 @@ def generate_replicates_and_std(all_sims_df, model_space_report_df, num_replicat
     # Create replicate subset
     for rep_num in range(num_replicates):
         rep_subset_df = all_sims_df.loc[all_sims_df['replicate'] == rep_num]
-
+        total_accepted = len(rep_subset_df.loc[rep_subset_df['Accepted'] == True])
         print("Replicate: ", rep_num, " ",
               " Simulations: ", len(rep_subset_df.index))
 
@@ -302,7 +318,7 @@ def generate_replicates_and_std(all_sims_df, model_space_report_df, num_replicat
                 models_subset_df.loc[models_subset_df['Accepted'] == False].index)
 
             try:
-                acceptance_ratio = num_accepted / len(rep_subset_df)
+                acceptance_ratio = num_accepted / total_accepted
             except(ZeroDivisionError):
                 acceptance_ratio = 0
 

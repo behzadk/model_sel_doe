@@ -583,10 +583,8 @@ def ABC_rejection():
     t_end = 1000
     dt = 0.5
 
-    print(sys.argv[2])
-
     if int(sys.argv[2]) == 1:
-        input_folder = './input_files_two_species_0/input_files/'
+        input_folder = './input_files/input_files_two_species_0/input_files/'
         output_folder = './output/'
         experiment_name = 'two_species_stable_NUM/'
         experiment_number = str(sys.argv[1])
@@ -595,7 +593,7 @@ def ABC_rejection():
 
 
     elif int(sys.argv[2]) == 2:
-        input_folder = './input_files_three_species_0/input_files/'
+        input_folder = './input_files/input_files_three_species_0/input_files/'
         output_folder = './output/'
         experiment_name = 'three_species_stable_NUM/'
         experiment_number = str(sys.argv[1])
@@ -603,7 +601,7 @@ def ABC_rejection():
         fit_species = [0, 1, 2]
 
     elif int(sys.argv[2]) == 3:
-        input_folder = './input_files_two_species_spock_manu_0/input_files/'
+        input_folder = './input_files/input_files_two_species_spock_manu_0/input_files/'
         output_folder = './output/'
         experiment_name = 'spock_manu_stable_NUM/'
         experiment_number = str(sys.argv[1])
@@ -636,7 +634,7 @@ def ABC_rejection():
 
 
     # Run ABC_rejecction algorithm
-    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 288, fit_species=fit_species, distance_function_mode=0, n_distances=3, out_dir=output_folder)
+    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 64, fit_species=fit_species, distance_function_mode=0, n_distances=3, out_dir=output_folder)
     rejection_alg.run_rejection()
     print("")
     print("")
@@ -815,7 +813,7 @@ def simulate_and_plot():
     print(sys.argv[2])
 
     if int(sys.argv[2]) == 1:
-        input_folder = './input_files_two_species_0/input_files/'
+        input_folder = './input_files/input_files_two_species_0/input_files/'
         output_folder = './output/'
         experiment_name = 'two_species_stable_NUM/'
         experiment_number = str(sys.argv[1])
@@ -824,7 +822,7 @@ def simulate_and_plot():
 
 
     elif int(sys.argv[2]) == 2:
-        input_folder = './input_files_three_species_0/input_files/'
+        input_folder = './input_files/input_files_three_species_0/input_files/'
         output_folder = './output/'
         experiment_name = 'three_species_stable_NUM/'
         experiment_number = str(sys.argv[1])
@@ -832,7 +830,7 @@ def simulate_and_plot():
         fit_species = [0, 1, 2]
 
     elif int(sys.argv[2]) == 3:
-        input_folder = './input_files_two_species_spock_manu_1/input_files/'
+        input_folder = './input_files/input_files_two_species_spock_manu_1/input_files/'
         output_folder = './output/'
         experiment_name = 'spock_manu_stable_NUM/'
         experiment_number = str(sys.argv[1])
@@ -840,12 +838,12 @@ def simulate_and_plot():
         fit_species = [0, 1]
 
     elif int(sys.argv[2]) == 4:
-        input_folder = './input_files_one_species_0/input_files/'
+        input_folder = './input_files/input_files_one_species_0/input_files/'
         output_folder = './output/'
         experiment_name = 'one_species_stable_NUM/'
         experiment_number = str(sys.argv[1])
 
-        fit_species = [0, 2, 3]
+        fit_species = [0]
 
     else:
         print("Please specify routine... exiting ")
@@ -870,8 +868,6 @@ def simulate_and_plot():
         init_params = import_input_file(input_params)
         init_species = import_input_file(input_init_species)
 
-        if i != 23:
-            continue
         # init_species['I_1'] = [1e-12, 1e-12]
         # # init_species['S_glu'] = [4, 4]
 
@@ -884,31 +880,38 @@ def simulate_and_plot():
         # # if i != 2:
         # #     continue
         # # exit()
-        # init_params['D'] = [0.5, 2]
-        # print(init_params['S0_glu'])
+        # init_params['omega_max'] = [0, 0]
+        # init_params['D'] = [0.0, 0.0]
+        print(init_params)
+        for p in init_params:
+            print(p, init_params[p])
 
+        # init_params['K_mu_glu'] = [3.9e-5, 3.9e-5]
 
+        # init_params['S0_glu'] = [0.22, 0.22]
+        # init_params['mu_max_1'] = [1.0, 1.0]
+
+        # init_species['S_glu'] = [0.22, 0.22]
+        # init_species['N_1'] = [0.01, 0.01]
+        # init_params['g_1'] = [5e12, 5e12]
+        # init_params['C'] = [1e12, 1e12]
         # if i == 125:
         #     posterior_path = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/output/spock_manu_stable_test/Population_0/model_sim_params/model_125_all_params"
         #     init_species, init_params = alg_utils.reload_experiment_from_posterior(posterior_path, init_species, init_params, sim_idx=0, batch_num=7)
         model_new = Model(i, init_params, init_species)
-        model_list = [model_new]
-        init_params['mu_max_1'] = [1.0, 1.0]
-        init_params['mu_max_2'] = [1.5, 1.5]
-        init_params['kA_1'] = [1e-19, 1e-19]
-        init_params['D'] = [0.1, 0.1]
+        model_list.append(model_new)
 
 
         # rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 12, fit_species, 0, 3, output_folder)
         # rejection_alg.run_rejection()
         # print("")
 
-        simple_sim = algorithms.SimpleSimulation(t_0, t_end, dt,
-                                                 model_list, batch_size=10, num_batches=1, fit_species=fit_species,
-                                                 distance_function_mode=0, out_dir=output_folder + 'model_osc_test' + '/' + str(i))
-        simple_sim.simulate_and_plot()
-        print("")
-        print("")
+    simple_sim = algorithms.SimpleSimulation(t_0, t_end, dt,
+                                             model_list, batch_size=50, num_batches=1, fit_species=fit_species,
+                                             distance_function_mode=0, out_dir=output_folder)
+    simple_sim.simulate_and_plot()
+    print("")
+    print("")
 
 
 if __name__ == "__main__":

@@ -80,7 +80,6 @@ void Population::generate_particles()
 */
 void Population::simulate_particles()
 {
-
 	#pragma omp parallel for schedule(runtime)
 	for (int i=0; i < _n_sims; ++i) {
 		try { 
@@ -109,6 +108,7 @@ void Population::simulate_particles()
             _particle_vector[i].integration_error = error_string;
             _particle_vector[i].integration_failed = true;
         }
+
 	}
 }
 

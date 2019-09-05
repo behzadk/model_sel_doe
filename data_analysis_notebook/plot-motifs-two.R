@@ -41,7 +41,14 @@ for (m_num in model_nums) {
    model_num <- strsplit(file_name, "_")[[1]][2]
    model_titles <- rbind(model_titles, model_num)
 
-   x <- read.csv(f)[, 1:length(species_names)+1]
+   x <- read.csv(f)
+   x <- x[,-1]
+   x <- x[,-3]
+   x <- x[-3,]
+
+
+   # print(x)
+
    flat_list <- c()
    for (i in 1:nrow(x)) {
       flat_list <- c(flat_list, unlist(x[i,], use.names=F))
@@ -80,12 +87,12 @@ if(1){
 
    # u, v, w: 0, 1, 2
    elist <- rbind( 
-      c(1,1), c(2,1), c(3,1), c(4, 1), c(5, 1), c(6, 1),
+      c(1,1), c(2,1), c(3,1), c(4,1), c(5,1), c(6,1),
       c(1,2), c(2,2), c(3,2), c(4,2), c(5,2), c(6,2),
-      c(1,3), c(2,3), c(3,3), c(4,3) , c(5,3), c(6,3), 
-      c(1,4), c(2,4), c(3,4), c(4,4) , c(5,4), c(6,4),
-      c(1,5), c(2,5), c(3,5), c(4,5) , c(5,5), c(6,5),
-      c(1,6), c(2,6), c(3,6), c(4,6) , c(5,6), c(6,6)
+      c(1,3), c(2,3), c(3,3), c(4,3), c(5,3), c(6,3), 
+      c(1,4), c(2,4), c(3,4), c(4,4), c(5,4), c(6,4),
+      c(1,5), c(2,5), c(3,5), c(4,5), c(5,5), c(6,5),
+      c(1,6), c(2,6), c(3,6), c(4,6), c(5,6), c(6,6)
       )
 
 

@@ -24,8 +24,9 @@ import math
 from tqdm import tqdm
 import subprocess
 import data_plotting
+import networkx as nx
 
-def generate_acceptance_probability_distribution(data_dir, output_dir, drop_unnacepted=False, split_by_num_parts=False):
+def generate_acceptance_probability_distribution(data_dir, output_dir, hide_x_ticks=False, drop_unnacepted=False):
     print("Generating acceptance probability distribution... ")
 
     # Load model space report
@@ -48,28 +49,30 @@ def generate_acceptance_probability_distribution(data_dir, output_dir, drop_unna
     # Generate standard deviation
     data_utils.generate_replicates_and_std(distances_df, model_space_report_df, 3)
     output_path = output_dir + "model_acceptance_probability.pdf"
-    data_plotting.plot_acceptance_probability_distribution(model_space_report_df, output_path)
+
+    data_plotting.plot_acceptance_probability_distribution(model_space_report_df, output_path, hide_x_ticks)
 
     print("\n")
 
 
-def generate_acceptance_rate_distribution(data_dir, output_dir, drop_unnacepted=False, hide_x_ticks=False, show_mean=True):
+def generate_acceptance_rate_distribution(data_dir, output_dir, drop_unnacepted=False, hide_x_ticks=False, show_mean=True, show_bf_over_3=True):
     print("Generating acceptance rate distribution... ")
 
     # Load model space report 
     model_space_report_path = data_dir + "model_space_report.csv"
     model_space_report_df = pd.read_csv(model_space_report_path)
-
+    # print(model_space_report_df['acceptance_probability'])
+    print("Number of dead models: ", len(model_space_report_df[model_space_report_df['accepted_count'] == 0]))
     # Load distances.csv . Contains data on individal simulations
     distances_path = data_dir + "/distances.csv"
     distances_df = pd.read_csv(distances_path)
+    total_accepted = sum(model_space_report_df['accepted_count'].values)
 
     if drop_unnacepted:
         model_space_report_df.drop(model_space_report_df[model_space_report_df['accepted_count'] == 0].index, inplace=True)
 
     # Calculate acceptance ratio for each model
-    total_sims = sum(model_space_report_df['simulated_count'].values)
-    model_space_report_df['acceptance_ratio'] = model_space_report_df.apply(lambda row: row['accepted_count'] / total_sims, axis=1)
+    model_space_report_df['acceptance_ratio'] = model_space_report_df.apply(lambda row: row['accepted_count'] / total_accepted, axis=1)
 
     # Sort data frame in order of highest acceptance ratio to lowest
     model_space_report_df = model_space_report_df.sort_values(by='acceptance_ratio', ascending=False).reset_index(drop=True)
@@ -79,7 +82,7 @@ def generate_acceptance_rate_distribution(data_dir, output_dir, drop_unnacepted=
     data_utils.generate_replicates_and_std(distances_df, model_space_report_df, 3)
 
     output_path = output_dir + "model_posterior_probability.pdf"
-    data_plotting.plot_acceptance_rate_distribution(model_space_report_df, output_path, hide_x_ticks, show_mean)
+    data_plotting.plot_acceptance_rate_distribution(model_space_report_df, output_path, hide_x_ticks, show_mean, show_bf_over_3)
 
     print("\n")
 
@@ -168,8 +171,8 @@ def compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir, drop_unnacept
         print(num_parts)
         sub_model_space_df = model_space_report_df.loc[model_space_report_df['num_parts'] == num_parts]
 
-        total_sims = sum(sub_model_space_df['simulated_count'].values)
-        sub_model_space_df['acceptance_ratio'] = sub_model_space_df.apply(lambda row: row['accepted_count'] / total_sims, axis=1)
+        total_accepted = sum(sub_model_space_df['accepted_count'].values)
+        sub_model_space_df['acceptance_ratio'] = sub_model_space_df.apply(lambda row: row['accepted_count'] / total_accepted, axis=1)
 
         # Sort data frame in order of highest acceptance ratio to lowest
         sub_model_space_df = sub_model_space_df.sort_values(by='acceptance_ratio', ascending=False).reset_index(drop=True)
@@ -179,8 +182,8 @@ def compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir, drop_unnacept
 
     # Make subset of only the best models
     sub_model_space_df = model_space_report_df.loc[model_space_report_df['model_idx'].isin(best_model_idxs)]
-    total_sims = sum(sub_model_space_df['simulated_count'].values)
-    sub_model_space_df['acceptance_ratio'] = sub_model_space_df.apply(lambda row: row['accepted_count'] / total_sims, axis=1)
+    total_accepted = sum(sub_model_space_df['accepted_count'].values)
+    sub_model_space_df['acceptance_ratio'] = sub_model_space_df.apply(lambda row: row['accepted_count'] / total_accepted, axis=1)
 
     # Sort data frame in order of highest acceptance ratio to lowest
     sub_model_space_df = sub_model_space_df.sort_values(by='num_parts', ascending=True).reset_index(drop=True)
@@ -190,7 +193,7 @@ def compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir, drop_unnacept
     data_utils.generate_replicates_and_std(sub_distance_df, sub_model_space_df, 3)
 
     # Plot 
-    output_path = output_dir + "best_models_posterior_probability" + str(int(num_parts)) + "_parts.pdf"
+    output_path = output_dir + "best_models_posterior_probability" + "_parts.pdf"
     data_plotting.plot_acceptance_rate_distribution(sub_model_space_df, output_path, hide_x_ticks=False, show_mean=False)
 
     # Generate bayes factors
@@ -251,19 +254,24 @@ def generate_critical_parameter_bar_plot(data_dir, KS_data_dir, output_dir, num_
 
     fig, axes = plt.subplots(ncols=1)
     crit_params = [1]
-    
+
     for idx, col_num in enumerate(crit_params):
+        print(col_num)
         crit_param_col = 'crit_param_NUM'.replace('NUM', str(col_num))
         names = data_utils.translate_param_names(model_space_report_df[crit_param_col].value_counts().index)
         value_counts = model_space_report_df[crit_param_col].value_counts()
+
+        value_counts = value_counts[:num_params]
+        names = names[:num_params]
+        
         sns.barplot(value_counts, names, ax=axes)
         
         axes.spines["right"].set_visible(False)
         axes.spines["top"].set_visible(False)
         axes.set_title('Rank ' + str(col_num) + ' critical parameter')
-        axes.tick_params(labelsize=20)
+        axes.tick_params(labelsize=40)
         axes.set_xlabel('Count')
-        
+
     plt.tight_layout()
     plt.savefig(output_dir+'rank_one_params.pdf', dpi=500)
 
@@ -335,6 +343,7 @@ def generate_posterior_distributions(data_dir, priors_dir, output_dir):
         i = 0
         for param in free_params:
             D_n = data_utils.kolmogorov_smirnov_test(accepted_sims[param].values, model_posterior_df[param].values)
+            D_n = data_utils.entropy(accepted_sims[param].values, model_posterior_df[param].values)
 
             clip_max = max(model_posterior_df[param])
             clip_min = min(model_posterior_df[param])
@@ -403,7 +412,7 @@ def write_model_order(data_dir, output_dir):
     top_model = list(model_space_report_df['acceptance_ratio'].values)[0]
 
     # for i, j in zip(list(model_space_report_df['model_idx'].values), list(model_space_report_df['acceptance_ratio'].values)):
-    # 	print(i, top_model/j)
+    #   print(i, top_model/j)
 
     # exit()
 
@@ -441,24 +450,110 @@ def generate_solver_performace_report():
     eig_init_df_early_term = eig_init_df.loc[eig_init_df['integ_error'] == ('no_progress_error')]
     
 
+
+def select_k(spectrum, minimum_energy = 0.9):
+    running_total = 0.0
+    total = sum(spectrum)
+    if total == 0.0:
+        return len(spectrum)
+    for i in range(len(spectrum)):
+        running_total += spectrum[i]
+        if running_total / total >= minimum_energy:
+            return i + 1
+    return len(spectrum)
+
+
+def adjacency_matrix_ranking(data_dir, inputs_dir):
+    model_space_report_df = pd.read_csv(data_dir + "model_space_report.csv")
+    adj_mat_name_template = "model_#REF#_adj_mat.csv"
+    adj_matrix_path_template = inputs_dir + "adj_matricies/" + adj_mat_name_template
+    model_space_report_df.drop(model_space_report_df[model_space_report_df['accepted_count'] == 0].index, inplace=True)
+
+    models = model_space_report_df.model_idx.values
+
+    positive_loops = []
+    negative_loops = []
+
+
+    total_accepted = sum(model_space_report_df['accepted_count'].values)
+
+    # Calculate acceptance ratio for each model
+    model_space_report_df['acceptance_ratio'] = model_space_report_df.apply(lambda row: row['accepted_count'] / total_accepted, axis=1)
+
+    adj_mat_194 = adj_matrix_path_template.replace("#REF#", str(39))
+    adj_mat_194_df = pd.read_csv(adj_mat_194)
+    adj_mat_194_df.drop([adj_mat_194_df.columns[0]], axis=1, inplace=True)
+    
+    G_1 = nx.from_numpy_matrix(adj_mat_194_df.values)
+    laplacian1 = nx.spectrum.laplacian_spectrum(G_1)
+
+    posterior_probs = []
+    similarity = []
+
+    for m in models:
+        x = model_space_report_df.loc[model_space_report_df['model_idx'] == m ]['acceptance_ratio'].values[0]
+        posterior_probs.append(x)
+
+        adj_mat_path = adj_matrix_path_template.replace("#REF#", str(m))
+        adj_mat_df = pd.read_csv(adj_mat_path)
+        adj_mat_df.drop([adj_mat_df.columns[0]], axis=1, inplace=True)
+
+        G_2 = nx.from_numpy_matrix(adj_mat_df.values)
+
+        laplacian2 = nx.spectrum.laplacian_spectrum(G_2)
+
+        k1 = select_k(laplacian1)
+        k2 = select_k(laplacian2)
+        k = min(k1, k2)
+
+        similarity.append(sum((laplacian1[:k] - laplacian2[:k])**2))
+
+
+    sns.scatterplot(x=posterior_probs, y=similarity)
+    plt.show()
+    exit()
+    for m in models:
+        adj_mat_path = adj_matrix_path_template.replace("#REF#", str(m))
+        adj_mat_df = pd.read_csv(adj_mat_path)
+    
+
+        adj_mat_df.drop([adj_mat_df.columns[0]], axis=1, inplace=True)
+
+        col_names = adj_mat_df.columns
+        strain_indexes = [idx for idx, i in enumerate(col_names) if 'N_' in i]
+        adj_mat = adj_mat_df.values
+        G=nx.from_numpy_matrix(adj_mat)
+        pos = nx.circular_layout(G)
+        nx.draw_circular(G)
+        labels = {i : col_names[i] for i in G.nodes()}
+        
+    
+
+    # Remove column 0, which contains row names
+    # adj_mat = adj_mat[:, 1:]
+    n_species = np.shape(adj_mat)[0]
+
+    output = []
+
+
 def main():
     wd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
     
     ## Two species
     if 0:
-        experiment_name = "two_species_stable_12"
-        inputs_dir = wd + "input_files_two_species_0/"
+        experiment_name = "two_species_stable_0"
+        inputs_dir = wd + "/input_files/input_files_two_species_0/"
         R_script = "plot-motifs-two.R"
 
 
     ## Three species
-    if 0:
-        experiment_name = "three_species_stable_15"
-        inputs_dir = wd + "input_files_three_species_0/"
+    if 1:
+        experiment_name = "three_species_stable_0"
+        inputs_dir = wd + "/input_files/input_files_three_species_0/"
         R_script = "plot-motifs-three.R"
 
     ## Spock Manuscript
-    if 1:
+    if 0:
         experiment_name = "spock_manu_stable_0"
         inputs_dir = wd + "input_files_two_species_spock_manu_0/"
         # R_script = "plot-motifs-three.R"
@@ -469,25 +564,27 @@ def main():
     data_dir = wd + "output/" + experiment_name + "/Population_0/"
     output_dir = data_dir + "analysis/"
     priors_dir = inputs_dir + "input_files/"
+    KS_data_dir = data_dir + "KS_data/"
 
     data_utils.make_folder(output_dir)
+    data_utils.make_folder(KS_data_dir)
 
+    # adjacency_matrix_ranking(data_dir, inputs_dir)
+    # exit()
     compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir)
     write_model_order(data_dir, output_dir)
-    # subprocess.call(['Rscript', R_script, adj_mat_dir, data_dir+"analysis/", output_dir])
-    # exit()
-    generate_acceptance_rate_distribution(data_dir, output_dir, drop_unnacepted=False, hide_x_ticks=False, show_mean=True)
-    generate_acceptance_probability_distribution(data_dir, output_dir, drop_unnacepted=False)
-    
+
+    # generate_critical_parameter_bar_plot(data_dir, KS_data_dir, output_dir, 5)
+    subprocess.call(['Rscript', R_script, adj_mat_dir, data_dir+"analysis/", output_dir])
+    generate_acceptance_rate_distribution(data_dir, output_dir, drop_unnacepted=True, hide_x_ticks=True, show_mean=False, show_bf_over_3=True)
+    generate_acceptance_probability_distribution(data_dir, output_dir, hide_x_ticks=True, drop_unnacepted=True)
+    exit()
     # # # Generate KS value files
-    KS_data_dir = data_dir + "KS_data/"
-    data_utils.make_folder(KS_data_dir)
     # generate_posterior_distributions(data_dir, priors_dir, output_dir)
     split_by_num_parts(data_dir, adj_mat_dir, output_dir)
 
     posterior_analysis.generate_posterior_KS_csv(data_dir, priors_dir, KS_data_dir)
 
-    generate_critical_parameter_bar_plot(data_dir, KS_data_dir, output_dir, 3)
 
     generate_posterior_distributions(data_dir, priors_dir, output_dir)
     eigenvalues_init_path = data_dir + "/eigenvalues_do_fsolve_state.csv"
