@@ -634,8 +634,10 @@ def ABC_rejection():
 
 
     # Run ABC_rejecction algorithm
-    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 64, fit_species=fit_species, distance_function_mode=0, n_distances=3, out_dir=output_folder)
-    rejection_alg.run_rejection()
+    ABC_algs = algorithms.ABC(t_0, t_end, dt, model_list, 15, 20, fit_species=fit_species, distance_function_mode=0, n_distances=3, out_dir=output_folder)
+    ABC_algs.run_rejection()
+    # rejection_alg.run_rejection()
+
     print("")
     print("")
 
@@ -644,14 +646,44 @@ def ABCSMC():
     # Set time points
     t_0 = 0
     t_end = 1000
-    dt = 1
+    dt = 0.5
 
-    input_folder = './input_files_three_species/'
-    output_folder = './output/'
-    experiment_name = 'three_species_stable_ABSMC_NUM/'
-    experiment_number = str(0)
+    if int(sys.argv[2]) == 1:
+        input_folder = './input_files/input_files_two_species_0/input_files/'
+        output_folder = './output/'
+        experiment_name = 'two_species_stable_NUM/'
+        experiment_number = str(sys.argv[1])
+
+        fit_species = [0, 1]
+
+
+    elif int(sys.argv[2]) == 2:
+        input_folder = './input_files/input_files_three_species_0/input_files/'
+        output_folder = './output/'
+        experiment_name = 'three_species_stable_NUM/'
+        experiment_number = str(sys.argv[1])
+
+        fit_species = [0, 1, 2]
+
+    elif int(sys.argv[2]) == 3:
+        input_folder = './input_files/input_files_two_species_spock_manu_0/input_files/'
+        output_folder = './output/'
+        experiment_name = 'spock_manu_stable_NUM/'
+        experiment_number = str(sys.argv[1])
+
+        # fit_species = [0, 1]
+        fit_species = [0, 1]
+
+    else:
+        experiment_name = None
+        experiment_number = None
+        output_folder=None
+        fit_species = None
+        input_folder = None
+        print("Please specify routine... exiting ")
+        exit()
+
     experiment_folder = experiment_name.replace('NUM', experiment_number)
-
     output_folder = output_folder + experiment_folder
 
     try:
@@ -666,18 +698,14 @@ def ABCSMC():
         input_params = input_folder + "params_" + str(i) + ".csv"
         input_init_species = input_folder + "species_" + str(i) + ".csv"
         init_params = import_input_file(input_params)
-
         init_species = import_input_file(input_init_species)
         model_new = Model(i, init_params, init_species)
-        if i == 30:
-            model_list.append(model_new)
+        model_list.append(model_new)
 
     # Run ABC_rejecction algorithm
-    rejection_alg = algorithms.Rejection(t_0, t_end, dt, model_list, 1e6, 5000, 2, 3, output_folder)
-
-    parameters_to_optimise = ['D', 'N_x', 'N_c']
-    rejection_alg.run_paramter_optimisation(parameters_to_optimise)
-
+    ABC_algs = algorithms.ABC(t_0, t_end, dt, model_list=model_list, population_size=2000, n_sims_batch=32, 
+        fit_species=fit_species, distance_function_mode=0, n_distances=3, out_dir=output_folder)
+    ABC_algs.run_model_selection_ABC_SMC(alpha=0.5)
 
 def random_jacobian():
     # Set time points
@@ -917,10 +945,10 @@ def simulate_and_plot():
 if __name__ == "__main__":
     # for i in range(50):
     #     steady_state_test(i)
-    # ABCSMC()
+    ABCSMC()
     # simulate_and_plot()
     # resample_and_plot_posterior()
-    ABC_rejection()
+    # ABC_rejection()
     # eig_classification_test()
     # repressilator_test()
     # exit()

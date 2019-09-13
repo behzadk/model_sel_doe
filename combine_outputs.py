@@ -131,10 +131,10 @@ def combine_model_sim_params(exp_1_dir, exp_2_dir, start_batches, output_dir):
 
 def main():
     data_dir = "./output/"
-    exp_1_dir = data_dir + "three_species_stable_comb/Population_0/"
-    exp_2_dir = data_dir + "three_species_stable_4/Population_0/"
+    exp_1_dir = data_dir + "three_species_stable_0_comb/Population_0/"
+    exp_2_dir = data_dir + "three_species_stable_0d/Population_0/"
 
-    new_output_dir = data_dir + "three_species_stable_comb_2/Population_0/"
+    new_output_dir = data_dir + "three_species_stable_0_comb/Population_0/"
 
     try:
         os.makedirs(new_output_dir)

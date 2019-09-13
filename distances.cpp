@@ -478,7 +478,7 @@ std::vector<std::vector<double>> DistanceFunctions::stable_dist(std::vector<stat
 
 		double stdev = standard_deviation(signal);
 		double final_gradient = fabs(signal_gradient.end()[-1]);
-		double final_value = signal.end()[-1];
+		double final_value = 1/signal.end()[-1];
 
 		std::vector<double> signal_distances = {final_gradient, stdev, final_value};
 

@@ -26,6 +26,8 @@ import subprocess
 import data_plotting
 import networkx as nx
 
+import ml_analysis
+
 def generate_acceptance_probability_distribution(data_dir, output_dir, hide_x_ticks=False, drop_unnacepted=False):
     print("Generating acceptance probability distribution... ")
 
@@ -540,15 +542,15 @@ def main():
     wd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
     
     ## Two species
-    if 0:
+    if 1:
         experiment_name = "two_species_stable_0"
         inputs_dir = wd + "/input_files/input_files_two_species_0/"
         R_script = "plot-motifs-two.R"
 
 
     ## Three species
-    if 1:
-        experiment_name = "three_species_stable_0"
+    if 0:
+        experiment_name = "three_species_stable_0_comb"
         inputs_dir = wd + "/input_files/input_files_three_species_0/"
         R_script = "plot-motifs-three.R"
 
@@ -569,6 +571,11 @@ def main():
     data_utils.make_folder(output_dir)
     data_utils.make_folder(KS_data_dir)
 
+    ml_analysis.adj_mat_spectral_cluster(inputs_dir, data_dir, output_dir)
+    # ml_analysis.rdn_forest_test(inputs_dir, data_dir, output_dir)
+
+
+    exit()
     # adjacency_matrix_ranking(data_dir, inputs_dir)
     # exit()
     compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir)

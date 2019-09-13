@@ -24,7 +24,7 @@ def blockPrinting(func):
     return func_wrapper
 
 
-class Rejection:
+class ABC:
     def __init__(self, t_0, t_end, dt,
                  model_list, population_size, n_sims_batch,
                  fit_species, distance_function_mode, n_distances, out_dir):
@@ -45,7 +45,7 @@ class Rejection:
         C = 1e12
         if self.distance_function_mode == 0:
             # Final gradient, stdev, final number
-            self.epsilon = [1e3/C, 0.001, 0.0001]
+            self.epsilon = [1e3/C, 0.001, 1/0.0001]
 
         elif self.distance_function_mode ==1:
             self.epsilon = [2, 1e3/C, 300/C]
@@ -150,12 +150,12 @@ class Rejection:
 
                     wr.writerow(record_vals)
 
-    def write_particle_distances(self, out_dir, model_refs, batch_num, simulated_particles, judgement_array, distances):
+    def write_particle_distances(self, out_dir, model_refs, batch_num, population_num, judgement_array, distances):
         out_path = out_dir + "distances.csv"
 
         # If file doesn't exist, write header
         if not os.path.isfile(out_path):
-            col_header = ['sim_idx', 'batch_num', 'model_ref', 'Accepted']
+            col_header = ['sim_idx', 'batch_num', 'population_num', 'model_ref', 'Accepted']
             idx = 1
             for n in self.fit_species:
                 for d in self.epsilon:
@@ -171,7 +171,7 @@ class Rejection:
             wr = csv.writer(out_csv, quoting=csv.QUOTE_NONNUMERIC)
 
             for idx, m_ref in enumerate(model_refs):
-                row_vals = [idx, batch_num, m_ref, judgement_array[idx]]
+                row_vals = [idx, batch_num, m_ref, population_num, judgement_array[idx]]
 
                 for n_idx, n in enumerate(self.fit_species):
                     for d in distances[idx][n_idx]:
@@ -500,107 +500,6 @@ class Rejection:
             sys.stdout.flush()
             batch_num += 1
 
-    def find_eigensystems(self):
-        population_number = 0
-
-        folder_name = self.out_dir + "Population_" + str(population_number) + "/"
-
-        try:
-            os.mkdir(folder_name)
-        except FileExistsError:
-            pass
-
-        sim_params_folder = folder_name + 'model_sim_params/'
-        try:
-            os.mkdir(sim_params_folder)
-        except FileExistsError:
-            pass
-
-        try:
-            os.mkdir(folder_name + 'simulation_plots')
-        except FileExistsError:
-            pass
-
-        accepted_particles_count = 0
-        total_sims = 0
-        batch_num = 0
-
-        plot_states = []
-        while accepted_particles_count < self.population_size:
-            # 1. Sample from model space
-            particle_models = self.model_space.sample_model_space(self.n_sims_batch)  # Model objects in this simulation
-
-            # 2. Sample particles for each model
-            init_states, input_params, model_refs = alg_utils.generate_particles(particle_models)          # Extract input parameters and model references
-
-            # 3. Simulate population
-            self.pop_obj = population_modules.Population(self.n_sims_batch, self.t_0, self.t_end,
-                                                         self.dt, init_states, input_params, model_refs, self.fit_species)
-            self.pop_obj.generate_particles()
-
-            # Iterate init states, accepting all negative systems
-            acc_init_states = []
-            acc_input_params = []
-            acc_model_refs = []
-            acc_particle_models = []
-            for sim_idx, m_ref in enumerate(model_refs):
-                n_species = len(init_states[sim_idx])
-
-                root = fsolve(alg_utils.fsolve_conversion, init_states[sim_idx], fprime=alg_utils.fsolve_jac_conversion,
-                              args=(self.pop_obj, sim_idx, n_species), full_output=True)
-
-                steady_state = root[0]
-
-                ier = root[2]
-                fsolve_error = ier
-
-                steady_state = steady_state.tolist()
-                steady_state = root[0]
-
-                ier = root[2]
-                fsolve_error = ier
-
-                steady_state = steady_state.tolist()
-
-                if not all(i > 0 for i in steady_state):
-                    continue
-
-                jac = self.pop_obj.get_particle_jacobian(steady_state, sim_idx)
-
-                jac = np.reshape(jac, (n_species, n_species))
-
-                try:
-                    eigenvalues = np.linalg.eigvals(jac)
-
-                except(np.linalg.LinAlgError) as e:
-                    eigenvalues = [np.nan for i in range(n_species)]
-
-                eigenvalues = [[i.real, i.imag] for i in eigenvalues]
-
-                real_parts = [i[0] for i in eigenvalues]
-                imag_parts = [i[1] for i in eigenvalues]
-
-                all_neg_real_parts = all(i < 0 for i in real_parts)
-                only_real_parts = all(i == 0.0 for i in imag_parts)
-
-                if all_neg_real_parts and only_real_parts:
-                    plot_states.append(steady_state)
-                    acc_input_params.append(input_params[sim_idx])
-                    acc_model_refs.append(model_refs[sim_idx])
-                    acc_particle_models.append(particle_models.tolist()[sim_idx])
-
-            total_sims += 1
-            print(total_sims)
-            if total_sims > 1:
-                break
-
-        plot_states = np.array(plot_states)
-        print(np.shape(plot_states))
-        plt.scatter(plot_states[:, 0], plot_states[:, 1], s=0.8)
-
-        plt.xscale('log')
-        plt.yscale('log')
-        plt.show()
 
     def run_paramter_optimisation(self, parameters_to_optimise):
         population_number = 0
@@ -683,151 +582,152 @@ class Rejection:
             # self.model_space.update_model_population_sample_data(particle_models.tolist(), batch_part_judgements)
             # self.model_space.model_space_report(folder_name, batch_num)
 
-    def run_random_jacobian(self):
+
+    def run_model_selection_ABC_SMC(self, alpha=0.1):
+        abs_tol = 1e-20
+        rel_tol = 1e-12
+
+        final_epsilon = self.epsilon
+        current_epsilon = [1e250 for i in self.epsilon]
+
+        finished = False
+
         population_number = 0
 
-        folder_name = self.out_dir + "Population_" + str(population_number) + "/"
 
-        try:
-            os.mkdir(folder_name)
-        except FileExistsError:
-            pass
+        while not finished:
+            folder_name = self.out_dir + "Population_" + str(population_number) + "/"
 
-        sim_params_folder = folder_name + 'model_sim_params/'
-        try:
-            os.mkdir(sim_params_folder)
-        except FileExistsError:
-            pass
+            try:
+                os.mkdir(folder_name)
+            except FileExistsError:
+                pass
 
-        try:
-            os.mkdir(folder_name + 'simulation_plots')
-        except FileExistsError:
-            pass
+            sim_params_folder = folder_name + 'model_sim_params/'
+            try:
+                os.mkdir(sim_params_folder)
+            except FileExistsError:
+                pass
 
-        try:
-            os.mkdir(folder_name + 'simulation_states')
+            try:
+                os.mkdir(folder_name + 'simulation_plots')
+            except FileExistsError:
+                pass
 
-        except FileExistsError:
-            pass
+            try:
+                os.mkdir(folder_name + 'simulation_states')
 
-        accepted_particles_count = 0
-        total_sims = 0
-        batch_num = 0
+            except FileExistsError:
+                pass
 
-        while accepted_particles_count < self.population_size:
 
-            # 1. Sample from model space
-            particle_models = self.model_space.sample_model_space(self.n_sims_batch)  # Model objects in this simulation
+            if current_epsilon == final_epsilon:
+                print("Running final epsilon")
+                finished = True
 
-            # 2. Sample particles for each model
-            init_states, input_params, model_refs = alg_utils.generate_particles(particle_models)          # Extract input parameters and model references
+            # Reset for new population
+            accepted_particle_distances = []
+            accepted_particles_count = 0
 
-            # 3. Simulate population
-            self.pop_obj = population_modules.Population(self.n_sims_batch, self.t_0, self.t_end,
-                                                         self.dt, init_states, input_params, model_refs)
-            self.pop_obj.generate_particles()
-            self.pop_obj.simulate_particles()
-            self.plot_all_particles(folder_name, 0, batch_num, init_states, model_refs)
+            population_model_refs = []
+            population_judgements = []
 
-            # Iterate init states, accepting all negative systems
-            acc_init_states = []
-            acc_input_params = []
-            acc_model_refs = []
-            acc_particle_models = []
-            for sim_idx, m_ref in enumerate(model_refs):
-                n_species = len(init_states[sim_idx])
+            total_sims = 0
+            batch_num = 0
 
-                root = fsolve(alg_utils.fsolve_conversion, init_states[sim_idx], fprime=alg_utils.fsolve_jac_conversion,
-                              args=(self.pop_obj, sim_idx, n_species), full_output=True)
+            while accepted_particles_count < self.population_size:
+                # 1. Sample from model space
+                particle_models = self.model_space.sample_model_space(self.n_sims_batch)  # Model objects in this simulation
 
-                steady_state = root[0]
+                # 2. Sample particles for each model
+                init_states, input_params, model_refs = alg_utils.generate_particles(
+                    particle_models)  # Extract input parameters and model references
 
-                ier = root[2]
-                fsolve_error = ier
+                # 3. Simulate population
+                # print("init pop")
+                self.pop_obj = population_modules.Population(self.n_sims_batch, self.t_0, self.t_end,
+                                                             self.dt, init_states, input_params, model_refs,
+                                                             self.fit_species, abs_tol, rel_tol)
+                # print("gen particles")
+                self.pop_obj.generate_particles()
+                # print("sim particles")
 
-                steady_state = steady_state.tolist()
+                self.pop_obj.simulate_particles()
 
-                if not all(i > 0 for i in steady_state):
-                    continue
+                # 3. Calculate distances for population
+                # print("calculating distances")
+                self.pop_obj.calculate_particle_distances(self.distance_function_mode)
+                # print("got distances")
 
-                jac = self.pop_obj.get_particle_jacobian(steady_state, sim_idx)
+                self.pop_obj.accumulate_distances()
+                batch_distances = self.pop_obj.get_flattened_distances_list()
+                batch_distances = np.reshape(batch_distances, (self.n_sims_batch, len(self.fit_species), self.n_distances))
 
-                jac = np.reshape(jac, (n_species, n_species))
+                # 4. Accept or reject particles
+                if self.distance_function_mode == 0:
+                    batch_part_judgements = alg_utils.check_distances_stable(batch_distances, epsilon_array=current_epsilon)
+                elif self.distance_function_mode == 1:
+                    batch_part_judgements = alg_utils.check_distances_osc(batch_distances, epsilon_array=current_epsilon)
+                else:
+                    batch_part_judgements = None
+                    print("Invalid distance function set, quitting... ")
+                    exit()
 
-                try:
-                    eigenvalues = np.linalg.eigvals(jac)
+                accepted_particle_distances += [part_d for part_d, judgement in zip(batch_distances, batch_part_judgements)
+                                                if judgement]
 
-                except(np.linalg.LinAlgError) as e:
-                    eigenvalues = [np.nan for i in range(n_species)]
+                # Write data
+                self.write_particle_params(sim_params_folder, batch_num, particle_models.tolist(),
+                                           input_params, init_states, batch_part_judgements)
 
-                eigenvalues = [[i.real, i.imag] for i in eigenvalues]
+                self.write_particle_distances(folder_name, model_refs, batch_num, population_number,
+                                              batch_part_judgements, batch_distances)
 
-                real_parts = [i[0] for i in eigenvalues]
-                imag_parts = [i[1] for i in eigenvalues]
+                self.write_eigenvalues(folder_name, model_refs, batch_num, particle_models.tolist(), do_fsolve=True)
+                # self.write_all_particle_state_lists(folder_name, population_number, batch_num, init_states, model_refs)
 
-                all_neg_real_parts = all(i < 0 for i in real_parts)
-                only_real_parts = all(i == 0.0 for i in imag_parts)
+                # self.plot_all_particles(folder_name, 0, batch_num, init_states, model_refs)
+                self.plot_accepted_particles(folder_name, 0, batch_num, batch_part_judgements, init_states, model_refs)
 
-                if all_neg_real_parts and only_real_parts:
-                    acc_init_states.append(steady_state)
-                    acc_input_params.append(input_params[sim_idx])
-                    acc_model_refs.append(model_refs[sim_idx])
-                    acc_particle_models.append(particle_models.tolist()[sim_idx])
+                accepted_particles_count += sum(batch_part_judgements)
+                total_sims += len(model_refs)
 
-            if len(acc_init_states) == 0:
-                continue
+                population_model_refs += model_refs
+                population_judgements += batch_part_judgements
 
-            n_sims_batch = len(acc_init_states)
+                print("Population: ", population_number, "Accepted particles: ", accepted_particles_count,
+                      "Total simulations: ", total_sims)
+                
 
-            # Simulate all systems that pass the eigenstability test
-            succ_init_states = []
-            succ_input_params = []
-            succ_model_refs = []
-            succ_particle_models = []
+                negative_count = 0
+                no_prog_count = 0
 
-            self.pop_obj = population_modules.Population(n_sims_batch, 0, 100,
-                                                         self.dt, acc_init_states, acc_input_params, acc_model_refs)
-            self.pop_obj.generate_particles()
-            self.pop_obj.simulate_particles()
+                for sim_idx, m_ref in enumerate(model_refs):
+                    error_msg = self.pop_obj.get_particle_integration_error(sim_idx)
+                    if error_msg == 'negative_species':
+                        negative_count += 1
 
-            for sim_idx, m_ref in enumerate(acc_model_refs):
-                n_species = len(init_states[sim_idx])
-                final_state = self.pop_obj.get_particle_final_species_values(sim_idx)
+                    elif error_msg == 'no_progress_error':
+                        no_prog_count += 1
 
-                if not all(i > 0 for i in final_state):
-                    continue
+                # print("Negative ratio: ", negative_count / len(model_refs))
+                # print("no prog ratio: ", no_prog_count / len(model_refs))
+                # print("")
+                sys.stdout.flush()
+                batch_num += 1
 
-                jac = self.pop_obj.get_particle_jacobian(final_state, sim_idx)
-
-                jac = np.reshape(jac, (n_species, n_species))
-
-                try:
-                    eigenvalues = np.linalg.eigvals(jac)
-
-                except(np.linalg.LinAlgError) as e:
-                    eigenvalues = [np.nan for i in range(n_species)]
-
-                eigenvalues = [[i.real, i.imag] for i in eigenvalues]
-
-                real_parts = [i[0] for i in eigenvalues]
-                imag_parts = [i[1] for i in eigenvalues]
-
-                all_neg_real_parts = all(i < 0 for i in real_parts)
-                only_real_parts = all(i == 0.0 for i in imag_parts)
-
-            self.plot_all_particles(folder_name, 1, batch_num, acc_init_states, acc_model_refs)
-            # self.write_eigenvalues(folder_name, model_refs, batch_num, particle_models.tolist(), end_state=True)
-            # self.write_eigenvalues(folder_name, model_refs, batch_num, particle_models.tolist(), init_state=True)
-
-            total_sims += len(model_refs)
-            integ_errors = self.pop_obj.get_all_particle_integration_errors()
-
-            print("Population: ", population_number, "Accepted particles: ", accepted_particles_count, "Total simulations: ", total_sims)
-            # self.model_space.update_model_population_sample_data(acc_particle_models, batch_part_judgements)
+            self.model_space.update_population_sample_data(population_model_refs, population_judgements)
+            self.model_space.update_model_sample_probabilities()
             self.model_space.model_space_report(folder_name, batch_num)
 
-            sys.stdout.flush()
-            batch_num += 1
+            current_epsilon = alg_utils.update_epsilon(current_epsilon, final_epsilon,
+                                                       accepted_particle_distances, alpha)
+
+            print("Current epsilon: ", current_epsilon)
+            print("Starting new population... ")
+            print("")
+            population_number += 1
+
 
     def run_ABC_SMC(self):
         pass

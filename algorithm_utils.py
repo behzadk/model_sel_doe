@@ -53,10 +53,7 @@ def check_distances_stable(particle_distances, epsilon_array):
                 particle_accept = False
                 
             for epsilon_idx, dist in enumerate(species_distances):
-                if epsilon_idx <= 1 and dist > epsilon_array[epsilon_idx]:
-                    particle_accept = False
-
-                elif epsilon_idx == 2 and dist < epsilon_array[epsilon_idx]:
+                if dist > epsilon_array[epsilon_idx]:
                     particle_accept = False
 
         particle_judgements.append(particle_accept)
@@ -93,6 +90,31 @@ def check_distances_osc(particle_distances, epsilon_array):
     return particle_judgements
 
 
+def update_epsilon(current_epsilon, final_epsilon, accepted_particle_distances, alpha):
+    n_epsilon = len(final_epsilon)
+
+    n_keep = int(alpha * len(accepted_particle_distances))
+    new_epsilon = [0 for x in range(n_epsilon)]
+
+    # Iterate species in each accepted simulation
+    for e_idx in range(n_epsilon):
+
+        # List of distances for this particular epsilon
+        epsilon_accepted_distances = []
+
+        # Iterate particles, keeping the largest distance in the species list
+        for part_dists in accepted_particle_distances:
+            epsilon_accepted_distances.append(max(part_dists[:, e_idx]))
+
+        epsilon_accepted_distances.sort()
+        epsilon_accepted_distances = epsilon_accepted_distances[:n_keep]
+        new_epsilon[e_idx] = epsilon_accepted_distances[-1]
+
+    for e_idx, new_e in enumerate(new_epsilon):
+        if new_e < final_epsilon[e_idx]:
+            new_epsilon[e_idx] = final_epsilon[e_idx]
+
+    return new_epsilon
 
 def fsolve_conversion(y, pop_obj, particle_ref, n_species):
     if type(y) == np.ndarray:

@@ -205,15 +205,15 @@ class ModelSpace:
     # Appends a new entry for the counts of times sampled and times accepted in a population
     # Each time this is called
     ##
-    def update_model_population_sample_data(self, simulated_particles, judgement_array):
+    def update_population_sample_data(self, simulated_particle_refs, judgement_array):
         unique_models = self._model_list
 
         for m in unique_models:
             sampled_count = 0
             accepted_count = 0
 
-            for idx, particle in enumerate(simulated_particles):
-                if particle is m:
+            for idx, particle_ref in enumerate(simulated_particle_refs):
+                if particle_ref is m._model_ref:
                     sampled_count += 1
 
                     if judgement_array[idx]:
@@ -227,11 +227,22 @@ class ModelSpace:
     #   P = #Accepted / #Sampled
     ##
     def update_model_sample_probabilities(self):
-        sum_accepted = sum(m.population_accepted_count[-1] for m in self._model_list)
 
-        for m in self._model_list:
-            num_accepted = m.population_accepted_count[-1]
-            m._sample_probability = num_accepted / sum_accepted
+        dead_models_count = 0
+        for m_i in self._model_list:
+            if m_i.population_accepted_count[-1] == 0:
+                dead_models_count += 1
+
+        live_models = len(self._model_list) - dead_models_count
+        for m_i in self._model_list:
+            if m_i.population_accepted_count[-1] == 0:
+                m_i._sample_probability = 0
+
+            else:
+                m_i._sample_probability = 1/live_models
+
+
+
 
     ##
     # Samples model space based on???
@@ -251,10 +262,10 @@ class ModelSpace:
 
     def model_space_report(self, output_dir, batch_num):
         file_path = output_dir + 'model_space_report.csv'
-        column_names = ['model_idx', 'accepted_count', 'simulated_count']
+        column_names = ['model_idx', 'accepted_count', 'simulated_count', 'sample_probability']
         models_data = []
         for m in self._model_list:
-            models_data.append([m.get_model_ref(), sum(m.population_accepted_count), sum(m.population_sample_count)])
+            models_data.append([m.get_model_ref(), m.population_accepted_count[-1], m.population_sample_count[-1], m._sample_probability])
 
         new_df = pd.DataFrame(data=models_data, columns=column_names)
         new_df.to_csv(file_path)
