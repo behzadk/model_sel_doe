@@ -4,6 +4,7 @@ import csv
 import pandas as pd
 import os
 
+
 class Model:
     ##
     # Each model object possesses all the information needed to simulate the model.
@@ -22,8 +23,8 @@ class Model:
         self._param_has_kde = [False for i in range(self._n_params)]
         self._init_species_has_kde = [False for i in range(len(self._init_species_prior))]
 
-
-        self._sample_probability = 1
+        self._prev_sample_probability = None
+        self._current_sample_probability = 1
 
         # Model data. Number of times this model was sampled in each population and number of times it was accepted
         self.population_sample_count = []
@@ -222,24 +223,57 @@ class ModelSpace:
             m.population_sample_count.append(sampled_count)
             m.population_accepted_count.append(accepted_count)
 
-    ##
-    #   Updates the model weights based upon the acceptance rate of the model in the most recent population:
-    #   P = #Accepted / #Sampled
-    ##
-    def update_model_sample_probabilities(self):
 
-        dead_models_count = 0
-        for m_i in self._model_list:
-            if m_i.population_accepted_count[-1] == 0:
-                dead_models_count += 1
+    def update_weights_naive(self, sigma=0.5):
 
-        live_models = len(self._model_list) - dead_models_count
-        for m_i in self._model_list:
-            if m_i.population_accepted_count[-1] == 0:
-                m_i._sample_probability = 0
+        unique_models = self._model_list
 
-            else:
-                m_i._sample_probability = 1/live_models
+        for m in unique_models:
+            m._prev_sample_probability = m._current_sample_probability
+            m._current_sample_probability = 0
+
+        for m_i in unique_models:
+            if m_i.population_sample_count[-1] == 0:
+                m_i._current_sample_probability = 0
+                continue
+
+            bm = m_i.population_accepted_count[-1] /  m_i.population_sample_count[-1]
+
+            denom_m = 0
+
+            for m_j in unique_models:
+                if m_i == m_j:
+                    denom_m += m_j._prev_sample_probability
+
+                for particle in range(len(m_j.population_sample_count)):
+                    denom_m += m_j._prev_sample_probability * np.random.normal(1, sigma)
+
+            m_i._current_sample_probability = bm * denom_m
+
+        # Normalise weights
+        sum_weights = sum([m._current_sample_probability for m in unique_models])
+        for m in unique_models:
+            m._current_sample_probability = m._current_sample_probability/sum_weights
+            # print(m['current_weight'])
+
+
+    # ##
+    # #   Updates the model weights based upon the acceptance rate of the model in the most recent population:
+    # #   P = #Accepted / #Sampled
+    # ##
+    # def update_model_sample_probabilities(self):
+    #     dead_models_count = 0
+    #     for m_i in self._model_list:
+    #         if m_i.population_accepted_count[-1] == 0:
+    #             dead_models_count += 1
+
+    #     live_models = len(self._model_list) - dead_models_count
+    #     for m_i in self._model_list:
+    #         if m_i.population_accepted_count[-1] == 0:
+    #             m_i._sample_probability = 0
+
+    #         else:
+    #             m_i._sample_probability = 1/live_models
 
 
 
@@ -249,13 +283,12 @@ class ModelSpace:
     # Returns a list of models to be simulated
     ##
     def sample_model_space(self, n_sims):
-        model_probabilities = [m._sample_probability for m in self._model_list] # Extract model sample probabilities
+        model_probabilities = [m._current_sample_probability for m in self._model_list] # Extract model sample probabilities
 
         # model probabilities greater than 1 at start first population, therefore we sample uniformally
         if sum(model_probabilities) > 1:
             model_probabilities = None
 
-        print(model_probabilities)
         sampled_models = np.random.choice(self._model_list, n_sims, p=model_probabilities)
 
         return sampled_models
@@ -265,7 +298,7 @@ class ModelSpace:
         column_names = ['model_idx', 'accepted_count', 'simulated_count', 'sample_probability']
         models_data = []
         for m in self._model_list:
-            models_data.append([m.get_model_ref(), m.population_accepted_count[-1], m.population_sample_count[-1], m._sample_probability])
+            models_data.append([m.get_model_ref(), m.population_accepted_count[-1], m.population_sample_count[-1], m._current_sample_probability])
 
         new_df = pd.DataFrame(data=models_data, columns=column_names)
         new_df.to_csv(file_path)

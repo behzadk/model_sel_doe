@@ -179,8 +179,100 @@ def alt_distance():
     print(counts_df)
 
 
+def model_sample_example():
+    model_1 = {}
+    model_2 = {}
+    model_3 = {}
+
+    models = [model_1, model_2, model_3]
+
+    true_probability = [0.8, 0.5, 0.1]
+
+
+    def update_weights(all_models, sigma=0.7):
+        for m in all_models:
+            m['prev_weight'] = m['current_weight']
+            m['current_weight'] = 0
+
+        for m_i in all_models:
+            if m_i['pop_n_sims'] == 0:
+                m_i['current_weight'] = 0
+                continue
+
+            bm = m_i['pop_n_accepted'] / m_i['pop_n_sims']
+
+            denom_m = 0
+
+            for m_j in all_models:
+                if m_i == m_j:
+                    denom_m += m_j['prev_weight']
+
+                for particle in range(m_j['pop_n_sims']):
+                    denom_m += m_j['prev_weight'] * np.random.normal(1, 0.5)
+
+            m_i['current_weight'] = bm * denom_m
+
+        # Normalise weights
+        sum_weights = sum([m['current_weight'] for m in all_models])
+        for m in all_models:
+            m['current_weight'] = m['current_weight']/sum_weights
+            # print(m['current_weight'])
+
+        return all_models
+
+
+
+    for idx, m in enumerate(models):
+        m['idx'] = idx
+        m['true_prob'] = true_probability[idx]
+        m['current_weight'] = 1/len(models)
+        m['prev_weight'] = None
+        m['pop_n_sims'] = 0
+        m['pop_n_accepted'] = 0
+
+    n_pop = 1000
+
+    population_num = 0
+    while population_num < 1000:
+        print(population_num)
+        weights = [m['current_weight'] for m in models]
+        population_accepted = 0
+
+
+        # Simulate models for first t = 1
+        while population_accepted < n_pop:
+            m = np.random.choice(models, p=weights)
+            m['pop_n_sims'] += 1
+
+            # If accepted
+            if np.random.uniform(0, 1) < m['true_prob']:
+                m['pop_n_accepted'] += 1
+                population_accepted += 1
+
+        # Calculate new weights
+        models = update_weights(models)
+
+        # Reset population
+        for m in models:
+            if m['pop_n_sims'] == 0:
+                print(m['idx'], 0)
+
+            else:
+                print(m['idx'], m['current_weight'])
+
+            m['pop_n_sims'] = 0
+            m['pop_n_accepted'] = 0
+
+        print("")
+        population_num += 1
+
+
+
+
+
 if __name__ == "__main__":
-    alt_distance()
+    model_sample_example()
+    # alt_distance()
     # test_this()
     # linear_repression_model()
     # main()

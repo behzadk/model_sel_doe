@@ -16,7 +16,12 @@ from scipy import spatial
 import scipy
 from matplotlib.backends.backend_pdf import PdfPages
 from sklearn.cluster import KMeans
+from sklearn.cluster import OPTICS
+from sklearn.cluster import SpectralClustering
 
+from scipy.cluster.hierarchy import dendrogram, linkage
+
+# import sklearn
 
 def find_nearest_neighbours_alt(current_model_idx, all_states, tree, visited_indexes):
     neighbour_distances, neighbour_indexes = tree.query(all_states[current_model_idx], k=10)
@@ -40,7 +45,7 @@ def get_degree_matrix(adj_mat):
     degree_mat = np.zeros(np.shape(adj_mat))
 
     for x in range(np.shape(adj_mat)[0]):
-        degree_mat[x, x] = sum(map(abs, adj_mat[:, x]))
+        degree_mat[x, x] = sum(map(abs, adj_mat[:, x])) + sum(map(abs, adj_mat[x,]))
 
     return degree_mat
 
@@ -118,17 +123,32 @@ def adj_mat_random_walk(inputs_dir, data_dir, output_dir):
 
 def convert_adj_mat(adj_df):
 
-    for i, row in adj_df.iterrows():
-        if row['A_1'] == -1:
-            adj_df.at[i, 'A_1'] = 0.1
-
-        if row['A_2'] == -1:
-            adj_df.at[i, 'A_2'] = 0.1
+    adj_df = adj_d
+    # for i, row in adj_df.iterrows():
+    #     if row['A_1'] == -1:
+    #         adj_df.at[i, 'A_1'] = 2
+    #     if row['A_2'] == -1:
+    #         adj_df.at[i, 'A_2'] = 2
 
         # if row['A_3'] == -1:
         #     adj_df.at[i, 'A_3'] = 2
 
     return adj_df
+
+def norm_signed_laplacian(adj_mat, deg_mat):
+    norm_lap = np.zeros(np.shape(adj_mat))
+
+    for u, _ in enumerate(range(np.shape(norm_lap)[0])):
+        for v, _ in enumerate(range(np.shape(norm_lap)[0])):
+            if u == v and sum(deg_mat[:, v]) != 0:
+                norm_lap[u][v] = 1
+
+            else:
+                norm_lap[u][v] = -adj_mat[u][v] * np.sqrt(sum(deg_mat[:, u]) * sum(deg_mat[:, v]))
+
+
+    return norm_lap
+
 
 
 def adj_mat_spectral_cluster(inputs_dir, data_dir, output_dir):
@@ -142,7 +162,6 @@ def adj_mat_spectral_cluster(inputs_dir, data_dir, output_dir):
 
     # Calculate acceptance ratio for each model
     model_space_report_df['acceptance_ratio'] = model_space_report_df.apply(lambda row: row['accepted_count'] / total_accepted, axis=1)
-
 
     models_list = []
     for model_idx in model_space_report_df['model_idx'].values:
@@ -163,7 +182,9 @@ def adj_mat_spectral_cluster(inputs_dir, data_dir, output_dir):
         # if has_negative:
         #     continue
 
-        model_adj_mat = abs(adj_mat_df.values)
+        model_adj_mat = (adj_mat_df.values)
+        # model_adj_mat = model_adj_mat + 1
+        model_adj_mat = abs(model_adj_mat)
         degree_mat = get_degree_matrix(model_adj_mat)
 
         identity_mat = np.identity(np.shape(degree_mat)[0])
@@ -174,7 +195,12 @@ def adj_mat_spectral_cluster(inputs_dir, data_dir, output_dir):
         second_term = np.power(degree_mat, -0.5)
         second_term[second_term == np.inf] = 1
         third_term = model_adj_mat * second_term
+        
         norm_laplacian = first_term - second_term * third_term
+        # print(norm_laplacian)
+
+        # norm_laplacian = norm_signed_laplacian(model_adj_mat, degree_mat)
+        # print(norm_laplacian)
 
         eig_vals, eig_vecs = np.linalg.eig(model_adj_mat)
 
@@ -184,6 +210,7 @@ def adj_mat_spectral_cluster(inputs_dir, data_dir, output_dir):
         
         eig_vec_order = np.argsort(eig_vals)
 
+        # print(eig_vals)
         second_lowest_eig_val_arg = np.argsort(eig_vals)
 
         for e_idx in second_lowest_eig_val_arg:
@@ -232,7 +259,6 @@ def adj_mat_spectral_cluster(inputs_dir, data_dir, output_dir):
 
     colours = []
 
-
     models_list = sorted(models_list, key=lambda m: m['posterior_prob'], reverse=True)
 
     eigen_gaps = []
@@ -243,35 +269,55 @@ def adj_mat_spectral_cluster(inputs_dir, data_dir, output_dir):
         eigen_gaps.append(model_eig_gaps)
 
 
-    X = [m['eig_vals'][0:6] for m in models_list]
-    X = eigen_gaps
-    X_clean = []
-    kmeans = KMeans(n_clusters=3, n_init=1000, max_iter=500, tol=1e-15).fit(X)
+    eigen_vecs = []
+    for m in models_list:
+        model_eig_vecs = []
+        for idx, e_vec in enumerate(m['eig_vecs'][1:]):
+            for val in e_vec:
+                model_eig_vecs.append(val)
+
+        eigen_vecs.append(model_eig_vecs)
+    X = [m['eig_vals'][0:4] for m in models_list]
+
+
+    kmeans = KMeans(n_clusters=3, n_init=1000, max_iter=500, tol=1e-25).fit(X)
+
+    # clust = OPTICS(min_samples=10, xi=.09, min_cluster_size=0.2).fit(X)
 
     data_labels = kmeans.labels_
-    print(kmeans.inertia_)
+    cluster_0_sores = []
+    cluster_1_scores = []
+    cluster_2_scores = []
+
+    clust_0 = []
+    clust_1 = []
+    clust_2 = []
 
     for idx, model in enumerate(models_list):
         eig_vals = np.sort(model['eig_vals'])
 
         if data_labels[idx] == 0:
-            colour = 'blue'
+            cluster_0_scores.append(model['posterior_prob'])
+            model['colour'] = 'blue'
+            clust_0.append(model)
+            colour = 'pink'
 
         elif data_labels[idx] == 1:
+            cluster_1_scores.append(model['posterior_prob'])
+            model['colour'] = 'green'
+
+            clust_1.append(model)
+
             colour = 'green'
 
         elif data_labels[idx] == 2:
+            cluster_2_scores.append(model['posterior_prob'])
+            model['colour'] = 'red'
+
+            clust_2.append(model)
+
             colour = 'red'
 
-        elif data_labels[idx] == 3:
-            colour = 'red'
-
-        elif data_labels[idx] == 4:
-            colour = 'pink'
-
-
-        elif data_labels[idx] == 5:
-            colour = 'green'
 
 
         # if eig_vals[5] > 0.1:
@@ -285,19 +331,111 @@ def adj_mat_spectral_cluster(inputs_dir, data_dir, output_dir):
 
         colours.append(colour)
 
-    out_path = output_dir + "clustered_posterior_prob.pdf"
 
+    models_list = sorted(models_list, key=lambda m: colours[m['model_idx']], reverse=True)
+
+    print(np.shape(clust_0))
+    print(np.shape(clust_1))
+    print(np.shape(clust_2))
+
+
+    out_path = output_dir + "clustered_posterior_prob_split.pdf"
+
+    count = 0
     with PdfPages(out_path) as pdf:
+        for idx, model in enumerate(clust_0):
+            plt.bar(count, model['posterior_prob'], color=model['colour'])
+            count += 1
 
+        for idx, model in enumerate(clust_1):
+            plt.bar(count, model['posterior_prob'], color=model['colour'])
+            count += 1
 
-        for idx, model in enumerate(models_list):
-            plt.scatter(idx, model['posterior_prob'], color=[colours[idx]], s=10)
+        for idx, model in enumerate(clust_2):
+            plt.bar(count, model['posterior_prob'], color=model['colour'])
+            count += 1
+
+        plt.ylabel('Model likelihood')
+        plt.xlabel('Model')
+        plt.ylim(-0.001)
+        plt.tight_layout()
+
         pdf.savefig()
-        pdf.close()
+    plt.close()
+
+    models_list = sorted(models_list, key=lambda m: m['posterior_prob'], reverse=True)
+    out_path = output_dir + "clustered_posterior_prob_sorted.pdf"
+    count = 0
+    with PdfPages(out_path) as pdf:
+        for idx, model in enumerate(models_list):
+            plt.bar(count, model['posterior_prob'], color=model['colour'])
+            count +=1
+        plt.ylabel('Model likelihood')
+        plt.xlabel('Model')
+        plt.tight_layout()
+        pdf.savefig()
+
 
     plt.close()
 
 
+
+def hierarchical_cluster(inputs_dir, data_dir, output_dir):
+    model_space_report_path = data_dir + "model_space_report.csv"
+    adj_mat_name_template = "model_#REF#_adj_mat.csv"
+    adj_matrix_path_template = inputs_dir + "adj_matricies/" + adj_mat_name_template
+
+
+    model_space_report_df = pd.read_csv(model_space_report_path)
+    total_accepted = sum(model_space_report_df['accepted_count'].values)
+
+    # model_space_report_df.drop(model_space_report_df[model_space_report_df['accepted_count'] == 0].index, inplace=True)
+
+    # Calculate acceptance ratio for each model
+    model_space_report_df['acceptance_ratio'] = model_space_report_df.apply(lambda row: row['accepted_count'] / total_accepted, axis=1)
+
+    species_names = [ 'N_1', 'N_2', 'S_glu', 'B_1', 'B_2', 'A_1', 'A_2']
+    from_too_features_list = ['model_idx', 'posterior_probability']
+    
+    for s_1 in species_names:
+        for s_2 in species_names:
+            from_too_features_list.append(s_2 + '_' + s_1)
+    
+    # Generate features data frame
+    flat_features_df = pd.DataFrame(columns=from_too_features_list)
+    for model_idx in model_space_report_df['model_idx'].values:
+        adj_mat_path = adj_matrix_path_template.replace("#REF#", str(model_idx))
+        adj_mat_df = pd.read_csv(adj_mat_path)
+        adj_mat_df.drop([adj_mat_df.columns[0]], axis=1, inplace=True)
+
+        model_posterior_prob = model_space_report_df.loc[model_space_report_df['model_idx'] == model_idx]['acceptance_ratio'].values[0]
+
+        model_features = [model_idx, model_posterior_prob]
+        model_features = model_features + list(adj_mat_df.values.ravel())
+        flat_features_df.loc[model_idx] = model_features
+
+    X = flat_features_df.loc[:, ~flat_features_df.columns.isin(['model_idx', 'posterior_probability'])].values
+    y = flat_features_df[['model_idx', 'posterior_probability']]
+
+    linked = linkage(X, 'single', optimal_ordering=True)
+    labels = y['model_idx'].values
+
+    print(np.shape(linkage))
+    print(np.shape(labels))
+
+    plt.figure(figsize=(10, 7))
+    d = dendrogram(linked,
+                orientation='top',
+                labels=labels,
+                distance_sort='descending',
+                show_leaf_counts=True)
+    plt.show()
+    print(d)
+    print(np.shape(linked))
+    exit()
+    y['cluster'] = linked[:, 3]
+    print(np.shape(linked))
+    print(y)
 
 def rdn_forest_test(inputs_dir, data_dir, output_dir):
     model_space_report_path = data_dir + "model_space_report.csv"

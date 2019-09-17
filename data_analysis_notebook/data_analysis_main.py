@@ -571,8 +571,9 @@ def main():
     data_utils.make_folder(output_dir)
     data_utils.make_folder(KS_data_dir)
 
-    ml_analysis.adj_mat_spectral_cluster(inputs_dir, data_dir, output_dir)
+    # ml_analysis.adj_mat_spectral_cluster(inputs_dir, data_dir, output_dir)
     # ml_analysis.rdn_forest_test(inputs_dir, data_dir, output_dir)
+    ml_analysis.hierarchical_cluster(inputs_dir, data_dir, output_dir)
 
 
     exit()

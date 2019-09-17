@@ -275,6 +275,19 @@ class ABC:
 
                 wr.writerow(row_vals)
 
+    def write_epsilon(self, out_dir, epsilon):
+        out_path = out_dir + "epsilon.txt"
+
+        if not os.path.isfile(out_path):
+            col_header = ['e_' + str(idx) for idx, _ in enumerate(epsilon)]
+            
+            with open(out_path, 'a') as out_csv:
+                wr = csv.writer(out_csv)
+                wr.writerow(col_header)
+                wr.writerow(epsilon)
+
+
+
     def write_eigenvalues(self, out_dir, model_refs, batch_num, simulated_particles,
                           end_state=False, init_state=False, do_fsolve=False):
         if end_state == True:
@@ -676,6 +689,8 @@ class ABC:
                 accepted_particle_distances += [part_d for part_d, judgement in zip(batch_distances, batch_part_judgements)
                                                 if judgement]
 
+                self.write_epsilon(folder_name, current_epsilon)
+
                 # Write data
                 self.write_particle_params(sim_params_folder, batch_num, particle_models.tolist(),
                                            input_params, init_states, batch_part_judgements)
@@ -717,11 +732,12 @@ class ABC:
                 batch_num += 1
 
             self.model_space.update_population_sample_data(population_model_refs, population_judgements)
-            self.model_space.update_model_sample_probabilities()
+            self.model_space.update_weights_naive()
             self.model_space.model_space_report(folder_name, batch_num)
 
             current_epsilon = alg_utils.update_epsilon(current_epsilon, final_epsilon,
                                                        accepted_particle_distances, alpha)
+
 
             print("Current epsilon: ", current_epsilon)
             print("Starting new population... ")
