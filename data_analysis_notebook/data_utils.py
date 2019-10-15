@@ -216,11 +216,12 @@ def get_num_parts(adj_mat_df):
 
 
 def make_KS_df(model_idx, model_posterior_df):
-    model_posterior_df, free_params = normalise_parameters(model_posterior_df)
     accepted_sims = model_posterior_df.loc[model_posterior_df['Accepted'] == True]
 
     if len(accepted_sims) <= 1:
         return None
+        
+    model_posterior_df, free_params = normalise_parameters(model_posterior_df)
 
     D_crit = 1.36 * math.sqrt(1 / len(accepted_sims) + 1 / len(model_posterior_df))
 
@@ -231,6 +232,45 @@ def make_KS_df(model_idx, model_posterior_df):
     for param in free_params:
         D_n = kolmogorov_smirnov_test(accepted_sims[param].values, model_posterior_df[param].values)
 
+        KS_data_df[param] = D_n
+
+    return KS_data_df
+
+
+def make_KS_df_alt(model_idx, model_posterior_df, model_prior_df):
+    accepted_sims = model_posterior_df.loc[model_posterior_df['Accepted'] == True]
+
+    if len(accepted_sims) <= 1:
+        return None
+        
+    # model_posterior_df, free_params = normalise_parameters(model_posterior_df)
+    # model_prior_df, free_params = normalise_parameters(model_prior_df)
+
+    accepted_sims = model_posterior_df.loc[model_posterior_df['Accepted'] == True]
+
+    D_crit = 1.36 * math.sqrt(1 / len(accepted_sims) + 1 / len(model_prior_df))
+
+    KS_data_df = pd.DataFrame(columns=['model_idx', 'D_crit'])
+    KS_data_df['model_idx'] = [model_idx]
+    KS_data_df['D_crit'] = [D_crit]
+
+    param_names = model_posterior_df.columns[3:]
+
+    for param in param_names:
+
+        if param == "particle_weight":
+            continue
+
+        min_val = min(model_posterior_df[param].values)
+        max_val = max(accepted_sims[param].values)
+
+        if min_val == max_val:
+            continue
+        # print(accepted_sims[param].values)
+        # print(model_posterior_df[param].values)
+        # exit()
+
+        D_n = kolmogorov_smirnov_test(accepted_sims[param].values, model_posterior_df[param].values)
         KS_data_df[param] = D_n
 
     return KS_data_df
@@ -252,6 +292,28 @@ def make_num_parts(model_space_report_df, adj_matrix_path_template):
         all_microcin_num_parts.append(num_microcin_parts)
 
     return all_num_parts, all_AHL_num_parts, all_microcin_num_parts
+
+
+def make_num_parts_alt(model_space_report_df, adj_matrix_path_template):
+    models = model_space_report_df.model_idx.values
+    adj_mat_sum = []
+
+    for m in models:
+        adj_mat_path = adj_matrix_path_template.replace("#REF#", str(m))
+
+        adj_mat_df = pd.read_csv(adj_mat_path)
+        adj_mat_df.drop([adj_mat_df.columns[0]], axis=1, inplace=True)
+
+        col_names = adj_mat_df.columns
+
+        strain_indexes = [idx for idx, i in enumerate(col_names) if 'N_' in i]
+        AHL_indexes = [idx for idx, i in enumerate(col_names) if 'A_' in i]
+        microcin_indexes = [idx for idx, i in enumerate(col_names) if 'B_' in i]
+
+        adj_mat_sum.append(np.sum(np.abs(adj_mat_df.values)))
+
+
+    return adj_mat_sum
 
 
 def make_feedback_loop_counts(data_dir, input_files_dir):

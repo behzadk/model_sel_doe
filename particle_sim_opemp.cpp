@@ -529,41 +529,41 @@ int Particle::determinant_sign(const boost::numeric::ublas::permutation_matrix<s
     return pm_sign;
 }
 
-double Particle::get_determinant() {
-    int n_species = state_init.size();
+// double Particle::get_determinant() {
+//     int n_species = state_init.size();
     
-    ublas_vec_t y(n_species);
-    for (int i=0; i < n_species; i++) {
-        y(i) = state_vec.back()[i];
-        std::cout << (y(i)) << std::endl;
-    }
+//     ublas_vec_t y(n_species);
+//     for (int i=0; i < n_species; i++) {
+//         y(i) = state_vec.back()[i];
+//         std::cout << (y(i)) << std::endl;
+//     }
     
-    // Init matrix n_species x n_species
-    ublas_mat_t J (n_species, n_species);
+//     // Init matrix n_species x n_species
+//     ublas_mat_t J (n_species, n_species);
 
-    // Not sure why this is necessary
-    ublas_vec_t dfdt(n_species);
+//     // Not sure why this is necessary
+//     ublas_vec_t dfdt(n_species);
 
-    // Dummy values
-    const double t = 0;
+//     // Dummy values
+//     const double t = 0;
 
-    // Fill jacobian matrix
-    m.run_jac(y, J, t, dfdt, part_params, model_ref);
+//     // Fill jacobian matrix
+//     m.run_jac(y, J, t, dfdt, part_params, model_ref);
 
-    boost::numeric::ublas::permutation_matrix<std::size_t> pm(J.size1());
-    long double det = 1.0;
-    if( boost::numeric::ublas::lu_factorize(J, pm) ) {
-        det = 0.0;
-    } else {
-        for(int i = 0; i < J.size1(); i++){
-            det *= J(i,i); // multiply by elements on diagonal
-        }
+//     boost::numeric::ublas::permutation_matrix<std::size_t> pm(J.size1());
+//     long double det = 1.0;
+//     if( boost::numeric::ublas::lu_factorize(J, pm) ) {
+//         det = 0.0;
+//     } else {
+//         for(int i = 0; i < J.size1(); i++){
+//             det *= J(i,i); // multiply by elements on diagonal
+//         }
 
-        det = det * determinant_sign( pm );
-    }
+//         det = det * determinant_sign( pm );
+//     }
 
-    return det;
-}
+//     return det;
+// }
 
 boost::python::list Particle::get_final_species_values()
 {
@@ -580,33 +580,33 @@ boost::python::list Particle::get_final_species_values()
 }
 
 
-void Particle::laplace_expansion()
-{
-    int n_species = state_init.size();
+// void Particle::laplace_expansion()
+// {
+//     int n_species = state_init.size();
     
-    ublas_vec_t y(n_species);
-    for (int i=0; i < n_species; i++) {
-        y(i) = state_vec.back()[i];
-    }
+//     ublas_vec_t y(n_species);
+//     for (int i=0; i < n_species; i++) {
+//         y(i) = state_vec.back()[i];
+//     }
     
-    // Init matrix n_species x n_species
-    ublas_mat_t J (n_species, n_species);
+//     // Init matrix n_species x n_species
+//     ublas_mat_t J (n_species, n_species);
 
-    // Not sure why this is necessary
-    ublas_vec_t dfdt(n_species);
+//     // Not sure why this is necessary
+//     ublas_vec_t dfdt(n_species);
 
-    // Dummy values
-    const double t = 0;
+//     // Dummy values
+//     const double t = 0;
 
-    // Fill jacobian matrix
-    m.run_jac(y, J, t, dfdt, part_params, model_ref);
+//     // Fill jacobian matrix
+//     m.run_jac(y, J, t, dfdt, part_params, model_ref);
 
 
-    int i, j;
+//     int i, j;
 
-    long double sol = 0;
-    // Iterate columns
-}
+//     long double sol = 0;
+//     // Iterate columns
+// }
 
 double Particle::get_sum_stdev(int from_time_point)
 {
@@ -616,14 +616,14 @@ double Particle::get_sum_stdev(int from_time_point)
     return dist.get_sum_stdev(state_vec, n_species, from_time_point);
 }
 
-long double Particle::get_sum_grad()
-{
-    DistanceFunctions dist = DistanceFunctions();
+// long double Particle::get_sum_grad()
+// {
+//     DistanceFunctions dist = DistanceFunctions();
 
-    int n_species = state_init.size();
-    return dist.get_sum_grad(state_vec, n_species);
+//     int n_species = state_init.size();
+//     return dist.get_sum_grad(state_vec, n_species);
 
-}
+// }
 
 boost::python::list Particle::get_all_grads()
 {

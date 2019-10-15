@@ -465,7 +465,9 @@ std::vector<std::vector<double>> DistanceFunctions::stable_dist(std::vector<stat
 	}
 
 
-	int from_time_index = 900;
+	// int from_time_index = 1500;
+	int from_time_index = 500;
+
 	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
 		std::vector<double> signal = extract_species_to_fit(state_vec, *it, from_time_index);
 	}

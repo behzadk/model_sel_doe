@@ -27,6 +27,37 @@ import data_plotting
 import networkx as nx
 
 import ml_analysis
+import os
+from glob import glob
+
+def generate_marginal_probability_distribution(data_dir, output_dir, hide_x_ticks=False, drop_unnacepted=False):
+    print("Generating marginal probability distribution... ")
+
+    # Load model space report
+    model_space_report_path = data_dir + "model_space_report.csv"
+    model_space_report_df = pd.read_csv(model_space_report_path)
+
+    # Load distances.csv . Contains data on individal simulations
+    distances_path = data_dir + "/distances.csv"
+    distances_df = pd.read_csv(distances_path)
+
+    if drop_unnacepted:
+        model_space_report_df.drop(model_space_report_df[model_space_report_df['accepted_count'] == 0].index, inplace=True)
+    
+    # Calculate acceptance ratio for each model
+
+    # Sort data frame in order of highest acceptance ratio to lowest
+    model_space_report_df = model_space_report_df.sort_values(by='model_marginal', ascending=False).reset_index(drop=True)
+
+    # Generate standard deviation
+    # data_utils.generate_replicates_and_std(distances_df, model_space_report_df, 3)
+    output_path = output_dir + "model_marginal_probability.pdf"
+
+    data_plotting.plot_model_marginal_distribution(model_space_report_df, output_path, hide_x_ticks)
+
+    print("\n")
+
+
 
 def generate_acceptance_probability_distribution(data_dir, output_dir, hide_x_ticks=False, drop_unnacepted=False):
     print("Generating acceptance probability distribution... ")
@@ -345,7 +376,7 @@ def generate_posterior_distributions(data_dir, priors_dir, output_dir):
         i = 0
         for param in free_params:
             D_n = data_utils.kolmogorov_smirnov_test(accepted_sims[param].values, model_posterior_df[param].values)
-            D_n = data_utils.entropy(accepted_sims[param].values, model_posterior_df[param].values)
+            # D_n = data_utils.entropy(accepted_sims[param].values, model_posterior_df[param].values)
 
             clip_max = max(model_posterior_df[param])
             clip_min = min(model_posterior_df[param])
@@ -401,7 +432,7 @@ def write_model_order(data_dir, output_dir):
     model_space_report_path = data_dir + "model_space_report.csv"
     model_space_report_df = pd.read_csv(model_space_report_path)
 
-    # Load distances.csv . Contains data on individal simulations
+    # Load distances.csv . Contains data on individual simulations
     distances_path = data_dir + "/distances.csv"
     distances_df = pd.read_csv(distances_path)
 
@@ -538,6 +569,77 @@ def adjacency_matrix_ranking(data_dir, inputs_dir):
     output = []
 
 
+def ABC_SMC_analysis():
+    wd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
+    
+    ## Two species
+    if 0:
+        experiment_name = "two_species_stable_0"
+        inputs_dir = wd + "/input_files/input_files_two_species_0/"
+        R_script = "plot-motifs-two.R"
+
+    ## Two species SMC
+    if 0:
+        experiment_name = "two_species_stable_0_SMC_"
+        inputs_dir = wd + "/input_files/input_files_two_species_0/"
+        R_script = "plot-motifs-two.R"
+
+    ## Two species SMC
+    if 1:
+        experiment_name = "three_species_stable_0_SMC"
+        inputs_dir = wd + "/input_files/input_files_two_species_0/"
+        R_script = "plot-motifs-two.R"
+
+    ## Three species
+    if 0:
+        experiment_name = "three_species_stable_0_comb"
+        inputs_dir = wd + "/input_files/input_files_three_species_0/"
+        R_script = "plot-motifs-three.R"
+
+    ## Spock Manuscript
+    if 0:
+        experiment_name = "spock_manu_stable_0"
+        inputs_dir = wd + "input_files_two_species_spock_manu_0/"
+        # R_script = "plot-motifs-three.R"
+
+    adj_mat_dir = inputs_dir + "adj_matricies/"
+
+    exp_repeat_dirs = glob(wd + "output/" + experiment_name + "*/")
+    final_pop_dirs = []
+
+    for rep in exp_repeat_dirs:
+        sub_dirs = glob(rep + "*/")
+        pop_dirs = [f for f in sub_dirs if "Population" in f.split('/')[-2]]
+        pop_dirs = sorted(pop_dirs, key=lambda a: a[-2])
+        final_pop_dirs.append(pop_dirs[-1])
+        print(pop_dirs[-1])
+
+    exit()
+    final_pop_dir = pop_dirs[-1]
+
+    for pop_dir in pop_dirs:
+        output_dir = pop_dir + "analysis/"
+        priors_dir = inputs_dir + "input_files/"
+        KS_data_dir = pop_dir + "KS_data/"
+
+        data_utils.make_folder(output_dir)
+        data_utils.make_folder(KS_data_dir)
+
+        # compare_top_models_by_parts(pop_dir, adj_mat_dir, output_dir)
+        write_model_order(pop_dir, output_dir)
+        subprocess.call(['Rscript', R_script, adj_mat_dir, pop_dir+"analysis/", output_dir])
+        generate_marginal_probability_distribution(pop_dir, output_dir, hide_x_ticks=True, drop_unnacepted=True)
+
+        # split_by_num_parts(pop_dir, adj_mat_dir, output_dir)
+
+    priors_dir = inputs_dir + "input_files/"
+    KS_data_dir = final_pop_dir + "KS_data/"
+    posterior_analysis.generate_posterior_KS_csv(final_pop_dir, priors_dir, KS_data_dir)
+
+
+    generate_posterior_distributions(final_pop_dir, priors_dir, output_dir)
+
+
 def main():
     wd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
     
@@ -573,10 +675,10 @@ def main():
 
     # ml_analysis.adj_mat_spectral_cluster(inputs_dir, data_dir, output_dir)
     # ml_analysis.rdn_forest_test(inputs_dir, data_dir, output_dir)
-    ml_analysis.hierarchical_cluster(inputs_dir, data_dir, output_dir)
+    # ml_analysis.hierarchical_cluster(inputs_dir, data_dir, output_dir)
 
 
-    exit()
+    # exit()
     # adjacency_matrix_ranking(data_dir, inputs_dir)
     # exit()
     compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir)
@@ -599,4 +701,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    ABC_SMC_analysis()

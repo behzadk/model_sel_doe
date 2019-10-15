@@ -36,11 +36,11 @@ class Population {
 
 		boost::python::list py_model_func(boost::python::list, int);
 		double get_particle_sum_stdev(int, int);
-		long double get_particle_sum_grad(int);
+		// long double get_particle_sum_grad(int);
 		boost::python::list get_particle_grads(int);
 
-		double get_particle_det(int);
-		void get_particle_laplace_expansion(int);
+		// double get_particle_det(int);
+		// void get_particle_laplace_expansion(int);
 
 		bool check_integration_failure(int);
 		std::string get_particle_integration_error(int);

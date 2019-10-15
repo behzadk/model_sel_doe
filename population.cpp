@@ -7,6 +7,7 @@
 #include <boost/python/args.hpp>
 #include <boost/python/numpy/ndarray.hpp>
 #include <omp.h>
+#include <openacc.h>
 #include <boost/numeric/odeint/external/openmp/openmp.hpp>
 #include "particle_sim_opemp.h"
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
@@ -80,8 +81,14 @@ void Population::generate_particles()
 */
 void Population::simulate_particles()
 {
-	#pragma omp parallel for schedule(runtime)
+
+    acc_device_t dev = acc_get_device_type();
+    int num = acc_get_num_devices(dev);
+    std::cout << num << std::endl;
+
+    #pragma omp parallel for schedule(runtime)
 	for (int i=0; i < _n_sims; ++i) {
+
 		try { 
             _particle_vector[i].simulate_particle_rosenbrock(_time_array, _abs_tol, _rel_tol, fit_species);
 
@@ -279,15 +286,15 @@ boost::python::list Population::get_particle_final_species_values(int particle_r
     return(_particle_vector[particle_ref].get_final_species_values());
 }
 
-double Population::get_particle_det(int particle_ref)
-{
-    return(_particle_vector[particle_ref].get_determinant());
-}
+// double Population::get_particle_det(int particle_ref)
+// {
+//     return(_particle_vector[particle_ref].get_determinant());
+// }
 
-void Population::get_particle_laplace_expansion(int particle_ref)
-{
-    return(_particle_vector[particle_ref].laplace_expansion());
-}
+// void Population::get_particle_laplace_expansion(int particle_ref)
+// {
+//     return(_particle_vector[particle_ref].laplace_expansion());
+// }
 
 
 bool Population::check_integration_failure(int particle_ref) 
@@ -328,10 +335,10 @@ double Population::get_particle_sum_stdev(int particle_ref, int from_time_point)
     return _particle_vector[particle_ref].get_sum_stdev(from_time_point);
 }
 
-long double Population::get_particle_sum_grad(int particle_ref)
-{
-    return _particle_vector[particle_ref].get_sum_grad();
-}
+// long double Population::get_particle_sum_grad(int particle_ref)
+// {
+//     return _particle_vector[particle_ref].get_sum_grad();
+// }
 
 boost::python::list Population::get_particle_grads(int particle_ref)
 {
@@ -367,13 +374,13 @@ BOOST_PYTHON_MODULE(population_modules)
         .def("get_particle_trace", &Population::get_particle_trace)
         .def("get_particle_init_state_jacobian", &Population::get_particle_init_state_jacobian)
         .def("get_particle_end_state_jacobian", &Population::get_particle_end_state_jacobian)
-        .def("get_particle_det", &Population::get_particle_det)
-        .def("get_particle_laplace_expansion", &Population::get_particle_laplace_expansion)
+        // .def("get_particle_det", &Population::get_particle_det)
+        // .def("get_particle_laplace_expansion", &Population::get_particle_laplace_expansion)
         .def("py_model_func", &Population::py_model_func)
         .def("get_particle_final_species_values", &Population::get_particle_final_species_values)
         .def("get_particle_jacobian", &Population::get_particle_jacobian)
         .def("get_particle_sum_stdev", &Population::get_particle_sum_stdev)
-        .def("get_particle_sum_grad", &Population::get_particle_sum_grad)
+        // .def("get_particle_sum_grad", &Population::get_particle_sum_grad)
         .def("get_particle_grads", &Population::get_particle_grads)
         ;
 }

@@ -76,15 +76,15 @@ class Particle
 
 		boost::python::list get_final_species_values();
 		double get_sum_stdev(int);
-		long double get_sum_grad();
+		// long double get_sum_grad();
 		boost::python::list get_all_grads();
 
 
 		boost::python::list py_model_func(boost::python::list);
 
 		int determinant_sign(const boost::numeric::ublas::permutation_matrix<std::size_t>&);
-		double get_determinant();
-		void laplace_expansion();
+		// double get_determinant();
+		// void laplace_expansion();
 
 		double get_trace();
 		

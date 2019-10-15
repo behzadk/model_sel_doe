@@ -142,3 +142,40 @@ def make_posterior_kdes(model, posterior_df, init_params, init_species):
     for species_key, _ in init_species.items():
         posterior_values = posterior_df[species_key].values
         model.alt_generate_params_kde(posterior_values, species_key)
+
+
+def get_pdf_uniform(lower_bound, upper_bound, x):
+    if (x > upper_bound) or (x < lower_bound):
+        return 0.0
+
+    else:
+        return 1 / (upper_bound - lower_bound)
+
+
+def get_parameter_kernel_pdf(params, params0, kernel, non_constant_idxs):
+    prob = 1
+    for idx in non_constant_idxs:
+        kern = get_pdf_uniform(params0[idx] + kernel[idx][0], params0[idx] + kernel[idx][1], params[idx])
+
+        # print("Idx", idx, "  Kern: ", kern)
+        # print("Lower: ", params0[idx] + kernel[idx][0])
+        # print("Upper: ", params0[idx] + kernel[idx][1])
+        # print(kernel[idx])
+        # print(params0[idx])
+        # print(params[idx])
+        # print("")
+        prob = prob * kern
+
+    return prob
+
+def rescale_parameters(input_params, init_states, particle_models):
+    for particle_params, particle_init_state, model in zip(input_params, init_states, particle_models):
+        for idx, id in enumerate(sorted(model._params_prior, key=str.lower)):
+            if model._params_prior[id][2] == "log":
+                particle_params[idx] = np.exp(particle_params[idx])
+        
+        for idx, id in enumerate(model._init_species_prior):
+            if model._init_species_prior[id][2] == "log":
+                particle_init_state[idx] = np.exp(particle_init_state[idx])
+
+

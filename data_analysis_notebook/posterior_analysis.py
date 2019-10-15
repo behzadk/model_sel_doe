@@ -83,6 +83,29 @@ def generate_posterior_KS_csv(data_dir, priors_dir, output_dir):
 
     print("\n")
 
+def generate_posterior_KS_csv_ABCSMC(final_pop_dir, first_pop_dir, priors_dir, output_dir):
+    print("Generating posterior KS csv files ...")
+    first_posterior_dir = first_pop_dir + "model_sim_params/"
+    final_posterior_dir = final_pop_dir + "model_sim_params/"
+
+    final_pop_ordered_posterior_paths, _, _ = generate_file_paths(final_posterior_dir, priors_dir)
+    first_pop_ordered_posterior_paths, _, _ = generate_file_paths(first_posterior_dir, priors_dir)
+
+    out_path = output_dir + "model_NUM_KS.csv"
+
+    for model_idx, (f_1, f_2) in enumerate(tqdm(zip(final_pop_ordered_posterior_paths, first_pop_ordered_posterior_paths))):
+        model_posterior_df = pd.read_csv(f_1, sep=',')
+        model_prior_df = pd.read_csv(f_2, sep=',')
+
+        KS_df = data_utils.make_KS_df_alt(model_idx, model_posterior_df, model_prior_df)
+        if KS_df is None:
+            continue
+
+        KS_df.to_csv(out_path.replace('NUM', str(model_idx)))
+
+    print("\n")
+
+
 
 def main():
     # Two species

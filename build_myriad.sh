@@ -5,7 +5,7 @@ venv=$cpp_dir'venv/cpp_py/bin/activate'
 inputs_folder=./input_files/input_files_two_species_spock_manu_0/
 inputs_folder=./input_files/input_files_two_species_spock_manu_1/
 inputs_folder=./input_files/input_files_three_species_0/
-# inputs_folder=./input_files/input_files_two_species_0/
+inputs_folder=./input_files/input_files_two_species_0/
 
 module unload compilers
 module load compilers/gnu/4.9.2

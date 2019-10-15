@@ -17,11 +17,12 @@ def plot_simulation(out_pdf, sim_idx, model_ref, state, time_points, plot_specie
 
     fig = plt.figure()
     for i in plot_species_idx:
-        plt.plot(time_points, state[:, i])
+        plt.plot(time_points, state[:, i], label=str(i))
         # print("max: ", np.max(state[:, i]))
         # print("min: ", np.min(state[:, i]))
 
     plt.yscale('log')
+    plt.legend()
     # plt.ylim(1, 1e12)
     plt.title(plt_title)
     out_pdf.savefig()

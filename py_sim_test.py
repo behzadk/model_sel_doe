@@ -141,6 +141,36 @@ def model_93(y, t, part_params):
 
     return [y0, y1, y2, y3, y4, y5, y6]
 
+def model_one_species(y, t, part_params):
+
+    D = part_params[ 0 ]
+    g_1 = part_params[ 1 ]
+    K_mu_glu = part_params[ 2 ]
+    k_omega_T_1T = part_params[ 3 ]
+    k_TV_ann = part_params[ 4 ]
+    kT_max_1T = part_params[ 5 ]
+    kV_max_1T = part_params[ 6 ]
+    mu_max_1 = part_params[ 7 ]
+    S0_glu = part_params[ 8 ]
+
+
+    N_1 = y[0]
+    S_glu = y[1]
+    V_1T = y[2]
+    T_1T = y[3]
+
+    print( ( k_omega_T_1T /( k_omega_T_1T + T_1T ) ))
+    dN_1 = ( - D * N_1 ) + N_1  * ( mu_max_1 * S_glu / ( K_mu_glu + S_glu ) ) * ( k_omega_T_1T /( k_omega_T_1T + T_1T ) )
+
+    dS_glu = ( D * ( S0_glu - S_glu ) ) - ( mu_max_1 * S_glu / ( K_mu_glu + S_glu ) ) * N_1 / g_1 
+
+    dV_1T =   +  kV_max_1T  - ( V_1T  * ( ( mu_max_1 * S_glu / ( K_mu_glu + S_glu ) ) )  / 2 )  - ( k_TV_ann * T_1T * V_1T )
+
+    dT_1T =   +  kT_max_1T  - ( T_1T  * ( ( mu_max_1 * S_glu / ( K_mu_glu + S_glu ) ) / 2 ) ) - ( k_TV_ann * T_1T * V_1T )
+
+    return [dN_1, dS_glu, dV_1T, dT_1T]
+
+
 def funcM5(y, t, part_params):
     D = part_params[0]
     KB_mccB = part_params[1]
@@ -285,5 +315,88 @@ def run_model_93():
     print("negative simulations: ", negative_count)
     pdf.close()
 
+
+def run_one_species():
+    # Set time points
+    t_0 = 0
+    t_end = 1
+    dt = 0.01
+    
+    input_folder = './input_files/input_files_one_species_0/input_files/'
+    output_folder = './output/test_sims/'
+
+    plot_species = [0, 1]
+
+    try:
+        os.mkdir(output_folder)
+        
+    except FileExistsError:
+        pass
+
+    # Load models from input files
+    model_list = []
+    for i in range(int((len(os.listdir(input_folder))/2))):
+        input_params = input_folder + "params_" + str(i) + ".csv"
+        input_init_species = input_folder + "species_" + str(i) + ".csv"
+
+        if i != 0:
+            continue
+
+        init_params = run_boost_rpr.import_input_file(input_params)
+        init_species = run_boost_rpr.import_input_file(input_init_species)
+
+        set_K_omega_T = 1e-10
+
+        init_params['k_omega_T_1T'] = [set_K_omega_T, set_K_omega_T]
+
+        for idx, param in enumerate(sorted(init_params, key=str.lower)):
+            print(param, "=", "part_params[",idx,"]")
+        print(init_params)
+
+
+        model_new = Model(i, init_params, init_species)
+        model_list.append(model_new)
+
+    model_space = ModelSpace(model_list)
+    batch_size = 25
+
+    particle_models = model_space.sample_model_space(batch_size)
+    init_states, input_params, model_refs = alg_utils.generate_particles(particle_models)
+
+    t = np.arange(t_0, t_end, dt)
+    
+    output_folder = './output/test_sims/'
+    out_path = output_folder + "batch_" + "batch_" + str(0) + "_plots.pdf"
+    # Make new pdf
+    pdf = PdfPages(out_path)
+
+    negative_count = 0
+    sol_scaled = odeint(model_one_species, init_states[0], t, args=(input_params[0],))
+
+    plt.plot(t, sol_scaled[:, 0])
+    plt.show()
+    exit()
+    plotting.plot_simulation(pdf, idx, 93, sol, t, [0, 1])
+    plotting.plot_simulation(pdf, idx_scaled, 93, sol_scaled, t, [0, 1])
+
+    for idx in range(batch_size):
+        sol_scaled = odeint(model_93_scaled, init_states[idx], t, args=(input_params[idx],), atol=1e-30, rtol=1e-30)
+
+        sol = odeint(model_93, init_states[idx], t, args=(input_params[idx],))
+
+        print(sol_scaled[:, 0])
+        # if np.min(sol) < 0 or np.isnan(sol).any():
+        #     negative_count += 1
+        #     print(np.min(sol))
+
+        # plt.plot(t, sol[:, 0])
+        # plt.plot(t, sol[:, 1])
+        # plt.plot(t, sol_scaled[:, 0])
+        # plt.plot(t, sol_scaled[:, 1])
+
+        # Make new pdf
+        idx_scaled = str(idx) + "_scaled"
+
+
 if __name__ == "__main__":
-    run_model_93()
+    run_one_species()
