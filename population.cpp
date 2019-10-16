@@ -7,7 +7,6 @@
 #include <boost/python/args.hpp>
 #include <boost/python/numpy/ndarray.hpp>
 #include <omp.h>
-#include <openacc.h>
 #include <boost/numeric/odeint/external/openmp/openmp.hpp>
 #include "particle_sim_opemp.h"
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
@@ -82,9 +81,6 @@ void Population::generate_particles()
 void Population::simulate_particles()
 {
 
-    acc_device_t dev = acc_get_device_type();
-    int num = acc_get_num_devices(dev);
-    std::cout << num << std::endl;
 
     #pragma omp parallel for schedule(runtime)
 	for (int i=0; i < _n_sims; ++i) {

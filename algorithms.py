@@ -675,7 +675,9 @@ class ABC:
 
                 # self.plot_all_particles(folder_name, 0, batch_num, init_states, model_refs)
                 print("Plotting particles")
-                # self.plot_accepted_particles(folder_name, 0, batch_num, batch_part_judgements, init_states, model_refs)
+                if self.final_epsilon:
+                    
+                    self.plot_accepted_particles(folder_name, 0, batch_num, batch_part_judgements, init_states, model_refs)
                 print("Doing the rest")
 
                 self.population_accepted_count += sum(batch_part_judgements)

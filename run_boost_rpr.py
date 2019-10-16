@@ -233,7 +233,7 @@ def ABCSMC():
 
         print(fit_species)
         # Run ABC_rejecction algorithm
-        ABC_algs = algorithms.ABC(t_0, t_end, dt, model_list=model_list, population_size=20000, n_sims_batch=200,
+        ABC_algs = algorithms.ABC(t_0, t_end, dt, model_list=model_list, population_size=500, n_sims_batch=180,
             fit_species=fit_species, distance_function_mode=0, n_distances=3, out_dir=exp_output_folder)
 
     ABC_algs.run_model_selection_ABC_SMC(alpha=0.1)
