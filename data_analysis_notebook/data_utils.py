@@ -8,7 +8,8 @@ sns.set()
 
 import scipy
 import os
-
+import symmetry_analysis
+from itertools import combinations
 
 def make_folder(folder_dir):
     try:
@@ -96,7 +97,7 @@ def normalise_parameters(model_posterior_df):
     return model_posterior_df, free_params
 
 
-def recur_get_connected_nodes(adj_mat, path_length, path_sign, visited_nodes, from_idx, target_idx, loop_found, path_log, output):
+def recur_get_connected_nodes(adj_mat, path_length, path_sign, visited_paths, from_idx, target_idx, loop_found, path_log, output, path_log_list):
     n_species = np.shape(adj_mat)[0]
     neighbours = [i for i in range(n_species) if adj_mat[i, from_idx] != 0]
 
@@ -104,19 +105,78 @@ def recur_get_connected_nodes(adj_mat, path_length, path_sign, visited_nodes, fr
         return 0
 
     if from_idx is target_idx:
+        print("path log: \t", path_log, "current sign: \t", path_sign)
         loop_found = True
+        path_log_list.append(path_log)
+        # path_log.clear()
+        # path_log.append(from_idx)
+        # path_sign = 1
         output.append([path_sign, path_length])
         return 0
 
     for n in neighbours:
-        if n not in visited_nodes:
-            path_log.append(n)
-            visited_nodes.append(n)
-            path_length += 1
-            path_sign = path_sign * adj_mat[n, from_idx]
-            recur_get_connected_nodes(adj_mat, path_length, path_sign, visited_nodes, n, target_idx, loop_found, path_log, output)
+        if [n, from_idx] not in visited_paths:
+            branched_loop_found = False
+            branch_visited_nodes = visited_paths.copy()
+            branch_path_length = path_length + 1
+            branch_path_sign = path_sign * adj_mat[n, from_idx]
+            branch_path_log = path_log.copy()
+            branch_path_log.append(n * path_sign)
 
-    return output
+            # if n != target_idx:
+            branch_visited_nodes.append([n, from_idx])
+
+            recur_get_connected_nodes(adj_mat, branch_path_length, branch_path_sign, branch_visited_nodes, n, target_idx, branched_loop_found, branch_path_log, output, path_log_list)
+
+    return path_log_list
+
+
+def get_two_strain_symmetric_adj_mats(model_idxs, adj_mat_dir):
+    adj_matrix_path_template = adj_mat_dir + "model_#REF#_adj_mat.csv"
+    
+    symmetrical_col = []
+
+    for m_idx in model_idxs:
+        adj_mat_path = adj_matrix_path_template.replace("#REF#", str(m_idx))
+        adj_mat_df = pd.read_csv(adj_mat_path, index_col=0)
+        adj_mat_df = adj_mat_df.drop("S_glu", axis=1).drop("S_glu", axis=0)
+        new_adj_mat = symmetry_analysis.rearrange_matrix_two_strain(adj_mat_df)
+        symmetrical = symmetry_analysis.check_matrix_symmetrical(new_adj_mat)
+
+        symmetrical_col.append(symmetrical)
+
+    return symmetrical_col
+
+
+def get_n_strain_symmetric_adj_mats(model_idxs, adj_mat_dir):
+    adj_matrix_path_template = adj_mat_dir + "model_#REF#_adj_mat.csv"
+    
+    symmetrical_col = []
+
+    for m_idx in model_idxs:
+        adj_mat_path = adj_matrix_path_template.replace("#REF#", str(m_idx))
+        adj_mat_df = pd.read_csv(adj_mat_path, index_col=0)
+        adj_mat_df = adj_mat_df.drop("S_glu", axis=1).drop("S_glu", axis=0)
+
+        strain_col = [col for col in adj_mat_df if col.startswith('N_')]
+        # strain_pairs = [x for x in combinations(strain_col, 2)]
+
+        symmerical = True
+        for strain_pair in combinations(strain_col, 2):
+            tmp_adj_mat = adj_mat_df.copy(deep=True)
+            # print(strain_pair)
+            for x in strain_col:
+                if x not in strain_pair:
+                    tmp_adj_mat = tmp_adj_mat.drop(x, axis=1).drop(x, axis=0)
+
+            new_adj_mat = symmetry_analysis.rearrange_matrix_three_strain(tmp_adj_mat)
+            symmetrical = symmetry_analysis.check_matrix_symmetrical(new_adj_mat)
+            print(symmetrical)
+            if symmetrical is False:
+                break
+
+        if symmetrical:
+            print(adj_mat_path)
 
 
 def translate_param_names(param_names):
@@ -148,12 +208,52 @@ def translate_param_names(param_names):
 
     return translated_param_names
 
+# Get model idxs that both produce a species and are influenced by the species directly 
+def get_self_regulators(model_idxs, target_species_list, adj_mat_dir):
+    # Get all species beginning with N
+    adj_matrix_path_template = adj_mat_dir + "model_#REF#_adj_mat.csv"
+
+    self_reg_loops = []
+
+    for m_idx in model_idxs:
+        self_reg_loop_count = 0
+        adj_mat_path = adj_matrix_path_template.replace("#REF#", str(m_idx))
+        adj_mat_df = pd.read_csv(adj_mat_path, index_col=0)
+        get_feedback_loops(adj_mat_df)
+        # Get columns beginning with N_
+        strain_col = [col for col in adj_mat_df if col.startswith('N_')]
+
+        for strain in strain_col:
+            for col in adj_mat_df.columns:
+                if adj_mat_df[strain][col] == 1 and adj_mat_df[col][strain] == -1:
+                    self_reg_loop_count += 1
+
+        self_reg_loops.append(self_reg_loop_count)
+
+    return self_reg_loops
+
+def get_adj_mat_distances(ref_model_idx, model_idxs, adj_mat_dir):
+    adj_matrix_path_template = adj_mat_dir + "model_#REF#_adj_mat.csv"
+
+    ref_adj_mat = pd.read_csv(adj_matrix_path_template.replace("#REF#", str(ref_model_idx)), index_col=0).as_matrix()
+    mat_distances_list = []
+
+    for m_idx in model_idxs:
+        candidate_adj_mat_path = adj_matrix_path_template.replace("#REF#", str(m_idx))
+        candidate_adj_mat_df = pd.read_csv(candidate_adj_mat_path, index_col=0)
+
+        candidate_adj_mat = candidate_adj_mat_df.as_matrix()
+        distance = np.sum(abs(candidate_adj_mat - ref_adj_mat))
+        mat_distances_list.append(distance)
+
+    return mat_distances_list
+
 
 # Counts feedback existing between all.
 def get_feedback_loops(adj_mat_df):
     # Drop row names column
-    adj_mat_df.drop([adj_mat_df.columns[0]], axis=1, inplace=True)
-
+    adj_mat_df = adj_mat_df.drop("S_glu", axis=1).drop("S_glu", axis=0)
+    print(adj_mat_df)
     col_names = adj_mat_df.columns
     strain_indexes = [idx for idx, i in enumerate(col_names) if 'N_' in i]
     adj_mat = adj_mat_df.values
@@ -161,10 +261,10 @@ def get_feedback_loops(adj_mat_df):
     # Remove column 0, which contains row names
     # adj_mat = adj_mat[:, 1:]
     n_species = np.shape(adj_mat)[0]
-
+    path_log_list = []
     output = []
-    for strain_idx in strain_indexes:
 
+    for strain_idx in strain_indexes:
         for row_idx in range(n_species):
 
             # Find strain to species interaction
@@ -176,13 +276,29 @@ def get_feedback_loops(adj_mat_df):
                 from_idx = row_idx
                 path_log = [strain_idx, row_idx]
                 path_sign = adj_mat[row_idx, strain_idx]
-                strain_feedback_loops = recur_get_connected_nodes(adj_mat, path_length, path_sign, [row_idx], from_idx, strain_idx, False, path_log, [])
-
+                strain_feedback_loops = []
+                recur_get_connected_nodes(adj_mat, path_length, path_sign, [strain_idx, row_idx], from_idx, strain_idx, False, path_log, strain_feedback_loops, path_log_list)
+                
+                print(strain_feedback_loops)
                 for l in strain_feedback_loops:
+                    l.append(strain_idx)
                     output.append(l)
 
-    return output
+    return output, path_log_list
 
+def get_num_interactions(model_idxs, adj_mat_dir):
+    adj_matrix_path_template = adj_mat_dir + "model_#REF#_adj_mat.csv"
+
+    sum_interactions = []
+    for m_idx in model_idxs:
+        adj_mat_path = adj_matrix_path_template.replace("#REF#", str(m_idx))
+        adj_mat_df = pd.read_csv(adj_mat_path, index_col=0)
+
+        adj_mat = adj_mat_df.as_matrix()
+        adj_mat = (adj_mat)
+        sum_interactions.append(np.sum(adj_mat))
+
+    return sum_interactions
 
 def get_num_parts(adj_mat_df):
     # Drop row names column
@@ -328,6 +444,9 @@ def make_feedback_loop_counts(data_dir, input_files_dir):
     for m in models:
         adj_mat_path = adj_matrix_path_template.replace("#REF#", str(m))
         adj_mat_df = pd.read_csv(adj_mat_path)
+        if m != 33:
+            continue
+
         feedback_loops = get_feedback_loops(adj_mat_df)
         positive_count = 0
         negative_count = 0
@@ -349,6 +468,52 @@ def make_feedback_loop_counts(data_dir, input_files_dir):
         negative_loops.append(negative_count)
 
     return positive_loops, negative_loops
+
+
+def make_strain_feedback_loop_balance(model_idxs, adj_mat_dir):
+    adj_matrix_path_template = adj_mat_dir + "model_#REF#_adj_mat.csv"
+
+    loop_balances = []
+    sum_positive = []
+    sum_negative = []
+    model_path_log_lists = []
+    for m_idx in model_idxs:
+
+        total_pos = 0
+        total_neg = 0
+
+        strain_0_loops = []
+        strain_1_loops = []
+
+        self_reg_loop_count = 0
+        adj_mat_path = adj_matrix_path_template.replace("#REF#", str(m_idx))
+        adj_mat_df = pd.read_csv(adj_mat_path, index_col=0)
+
+
+        model_path_log_lists
+        loops_out, paths_log_out = get_feedback_loops(adj_mat_df)
+        model_path_log_lists.append(paths_log_out)
+        for loop in loops_out:
+            if loop[0] == 1:
+                total_pos += 1
+
+            if loop[0] == -1:
+                total_neg += 1
+
+            if loop[2] == 0:
+                strain_0_loops.append(loop)
+
+            else:
+                strain_1_loops.append(loop)
+
+        strain_0_bal = sum([l[0] for l in strain_0_loops])
+        strain_1_bal = sum([l[0] for l in strain_1_loops])
+
+        loop_balances.append(abs(strain_0_bal - strain_1_bal))
+        sum_positive.append(total_pos)
+        sum_negative.append(total_neg)
+
+    return loop_balances, sum_positive, sum_negative, model_path_log_lists
 
 
 def generate_replicates_and_std(all_sims_df, model_space_report_df, num_replicates):
@@ -596,7 +761,6 @@ def all_zero_eigs(df):
     real_part_cols = [x for x in eign_cols if 'real' in x]
 
     eig_df = df[real_part_cols]
-    print(eig_df.columns)
     all_zero = []
 
     for row in eig_df.values:
@@ -754,6 +918,12 @@ def main():
 
 if __name__ == "__main__":
     adj_mat_dir = "/home/behzad/Documents/barnes_lab/sympy_consortium_framework/output/two_species_no_symm/adj_matricies/model_0_adj_mat.csv"
-    adj_mat_df = pd.read_csv(adj_mat_dir)
-    o = get_feedback_loops(adj_mat_df)
-    print(o)
+    adj_mat_dir = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/input_files/input_files_two_species_0/adj_matricies/"
+    adj_mat_dir = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/input_files/input_files_three_species_0/adj_matricies/"
+    model_idxs = range(510, 512)
+    target_species_list = ['B_1', 'B_2']
+    # get_adj_mat_distances(42, model_idxs, adj_mat_dir)
+    get_n_strain_symmetric_adj_mats(model_idxs, adj_mat_dir)
+    # get_symmetric_adj_mats(model_idxs, adj_mat_dir)
+    # get_num_interactions(model_idxs, adj_mat_dir)
+    # get_self_regulators(model_idxs, target_species_list, adj_mat_dir)

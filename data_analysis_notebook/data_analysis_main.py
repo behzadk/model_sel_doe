@@ -80,7 +80,7 @@ def generate_acceptance_probability_distribution(data_dir, output_dir, hide_x_ti
     model_space_report_df = model_space_report_df.sort_values(by='acceptance_probability', ascending=False).reset_index(drop=True)
 
     # Generate standard deviation
-    data_utils.generate_replicates_and_std(distances_df, model_space_report_df, 3)
+    data_utils.generate_replicates_and_std(distances_df, model_space_report_df, 5)
     output_path = output_dir + "model_acceptance_probability.pdf"
 
     data_plotting.plot_acceptance_probability_distribution(model_space_report_df, output_path, hide_x_ticks)
@@ -662,6 +662,12 @@ def main():
         inputs_dir = wd + "input_files_two_species_spock_manu_0/"
         # R_script = "plot-motifs-three.R"
 
+    ## two auxo
+    if 1:
+        experiment_name = "two_species_auxo_stable_rej_0/unchunked0/"
+        inputs_dir = wd + "/input_files/input_files_two_species_auxos_0/"
+        # R_script = "plot-motifs-three.R"
+
 
     adj_mat_dir = inputs_dir + "adj_matricies/"
 
@@ -685,8 +691,9 @@ def main():
     write_model_order(data_dir, output_dir)
 
     # generate_critical_parameter_bar_plot(data_dir, KS_data_dir, output_dir, 5)
-    subprocess.call(['Rscript', R_script, adj_mat_dir, data_dir+"analysis/", output_dir])
-    generate_acceptance_rate_distribution(data_dir, output_dir, drop_unnacepted=True, hide_x_ticks=True, show_mean=False, show_bf_over_3=True)
+    # subprocess.call(['Rscript', R_script, adj_mat_dir, data_dir+"analysis/", output_dir])
+    generate_acceptance_rate_distribution(data_dir, output_dir, drop_unnacepted=False, hide_x_ticks=True, show_mean=False, show_bf_over_3=True)
+    exit()
     generate_acceptance_probability_distribution(data_dir, output_dir, hide_x_ticks=True, drop_unnacepted=True)
     exit()
     # # # Generate KS value files
@@ -701,4 +708,6 @@ def main():
 
 
 if __name__ == "__main__":
+    main()
+    exit()
     ABC_SMC_analysis()

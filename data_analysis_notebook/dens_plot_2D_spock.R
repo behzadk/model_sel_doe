@@ -5,7 +5,7 @@ library(sm)
 library(gridExtra)
 library(gtable)
 options(error=traceback)
-
+library(ggisoband)
 
 theme0 <- function(...) theme( legend.position = "none",
 	                               panel.background = element_blank(),
@@ -25,8 +25,8 @@ theme0 <- function(...) theme( legend.position = "none",
 
 theme_left_dens <- function(...) theme( legend.position = "none",
                                panel.background = element_blank(),
-                               #panel.grid.major = element_blank(),
-                               panel.grid.minor = element_blank(),
+                               # panel.grid.major = element_blank(),
+                               # panel.grid.minor = element_blank(),
                                panel.spacing = unit(1,"null"),
                                axis.ticks = element_blank(),
                                axis.text.x = element_blank(),
@@ -42,28 +42,30 @@ theme_left_dens <- function(...) theme( legend.position = "none",
 
 theme_top_dens <- function(...) theme( legend.position = "none",
                                	panel.background = element_blank(),
-                               	#panel.grid.major = element_blank(),
-                               	panel.grid.minor = element_blank(),
+                               	# panel.grid.major = element_blank(),
+                               	# panel.grid.minor = element_blank(),
                                	panel.margin = unit(0,"null"),
-                               	axis.ticks = element_blank(),
+                               	# axis.ticks = element_blank(),
                                	axis.text.x = element_blank(),
                                	axis.text.y = element_blank(),
 								axis.title.x = element_blank(),
                                	axis.title.y = element_blank(),
                                	axis.ticks.length = unit(0,"null"),
                                	axis.ticks.margin = unit(0,"null"),
-                               	axis.line = element_blank(),
+                               	# axis.line = element_blank(),
                                	panel.border=element_rect(color=NA),
                                	# plot.margin = unit(c(0, 0.4, 0.4, 0.4),"lines"),
+						    	legend.background = element_rect(fill = "transparent"), 
+    							legend.box.background = element_rect(fill = "transparent"), # get rid of legend panel bg
                                ...)
 
 theme_1D_plot <- function(...) theme( legend.position = "none",
                                	panel.background = element_blank(),
-                               	#panel.grid.major = element_blank(),
-                               	# panel.grid.minor = element_blank(),
+                               	panel.grid.major = element_blank(),
+                               	panel.grid.minor = element_blank(),
                                	panel.margin = unit(0,"null"),
                                	axis.ticks = element_blank(),
-                               	# axis.text.x = element_blank(),
+                               	axis.text.x = element_blank(),
                                	axis.text.y = element_blank(),
 								# axis.title.x = element_blank(),
                                	axis.title.y = element_blank(),
@@ -78,7 +80,7 @@ theme_1D_plot <- function(...) theme( legend.position = "none",
 
 theme_contour <- function(...) theme( legend.position = "none",
                                	panel.background = element_rect(fill = "transparent",colour = NA),
-                               	#panel.grid.major = element_blank(),
+                               	panel.grid.major = element_blank(),
                                	panel.grid.minor = element_blank(),
                                	panel.spacing = unit(0,"null"),
                                	axis.ticks = element_blank(),
@@ -198,10 +200,29 @@ make_contour_plot <-function(x_data, y_data, x_lims, y_lims, weights_data, true_
     	y_trans_scale <- "log10"
     }
 
+	if (identical("log10", x_trans_scale)) {
+		x_data <- log(x_data)
+		x_lims <- log(x_lims)
+	}
+
+	if (identical("log10", y_trans_scale)) {
+		y_data <- log(y_data)
+		y_lims <- log(y_lims)
+	}
+
+	# Force expansion of grid by adding data with lims with weight zero
+	x_data <- c(x_data, x_lims[1])
+	x_data <- c(x_data, x_lims[2])
+	y_data <- c(y_data, y_lims[1])
+	y_data <- c(y_data, y_lims[2])
+	weights_data <- c(weights_data, c(0, 0, 0, 0))
+
 	dens <- sm.density( cbind(x_data, y_data), weights=weights_data, display="none", nbins=0)
+
 	x1 = dens$eval.points[,1]
 	y1 = dens$eval.points[,2]
 	z1 = dens$estimate
+
 
 	# Generate coordinates corresponding to z grid
 	dens_df <- convert_to_grid(x1, y1)
@@ -213,16 +234,21 @@ make_contour_plot <-function(x_data, y_data, x_lims, y_lims, weights_data, true_
 	dens_df$true_val_y <- c(rep(true_val_y, length(y1)))
 
 
-
-	pCont_geom <- ggplot(data=dens_df) + 
-	# geom_contour(aes(x=x1, y=y1, z=z1, colour="red")) +
-    stat_contour( data = dens_df, geom="polygon",
-                  aes( x = x1, y = y1, z = z1, fill = ..level.. ) ) +
+	pCont_geom <- ggplot(data=dens_df, aes(x=x1, y=y1, z = z1)) +
+	geom_isobands(aes(fill = stat(zmin)), color = NA) +
+  	scale_color_viridis_c() +
+	# geom_contour(aes(x=x1, y=y1, z=z1)) +
+	scale_x_continuous(name="x", expand = c(0,0)) + 
+	scale_y_continuous(position="right", expand = c(0,0)) +
+	coord_cartesian(expand = FALSE) +
+   #    stat_contour(geom="polygon", aes(fill=..level..)) +
+	# coord_cartesian(xlim=c(min(dens_df$x1),max(dens_df$x1)),
+ #                ylim=c(min(dens_df$y1),max(dens_df$y1))) +
 	# geom_point(aes(x=true_val_x, y=true_val_y, colour="blue")) + 
-	scale_x_continuous(name="x", limits = x_lims, expand = c(0,0), trans=x_trans_scale) + 
-	scale_y_continuous(position="right", limits=y_lims, expand = c(0,0), trans=y_trans_scale) + 
-	theme_bw() + 
+
+	# theme_bw() + 
 	theme_contour()
+  	# theme(panel.background=element_rect(fill="#132B43"))  # color background
 
 
 	return(pCont_geom)
@@ -282,14 +308,16 @@ make_top_plot <- function(x_data, x_lims, weights_data) {
 	trans_scale <- "identity"
 
     if ((x_lims[1] < 1e-4 && x_lims[1] != 0) || (x_lims[1] > 1e4)){
-    	trans_scale <- "log10"
+    	# trans_scale <- "log10"
+    	x_data <- log(x_data)
+    	x_lims <- log(x_lims)
     }
 
 	plot_df <- data.frame(x_data, weights_data)
 	colnames(plot_df) <- c("x", "w")
 	pTop <- ggplot(data=plot_df) +
   	geom_density(aes(x= x, weight=w, colour = 'red')) +
-  	scale_x_continuous(name = 'log10(GFP)', limits=x_lims, expand = c(0,0), trans=trans_scale) + 
+  	scale_x_continuous(name = 'log10(GFP)', limits=x_lims, expand = c(0,0)) +
   	scale_y_continuous(position="right", expand = c(0,0)) + 
   	theme_bw() + theme_top_dens()
   	return(pTop)
@@ -334,6 +362,8 @@ make_left_plot <- function(x_data, x_lims, weights_data) {
 
     if ((x_lims[1] < 1e-4 && x_lims[1] != 0) || (x_lims[1] > 1e4)){
     	trans_scale <- "log10"
+    	x_data <- log(x_data)
+    	x_lims <- log(x_lims)
     }
 
 
@@ -341,8 +371,9 @@ make_left_plot <- function(x_data, x_lims, weights_data) {
 	colnames(plot_df) <- c("x", "w")
 
 	pLeft <- ggplot(data=plot_df) +
-  	geom_density(aes(x= x, weight=w, colour = 'red')) +
-  	scale_x_continuous(name = 'log10(GFP)', position="top", limits = x_lims, expand = c(0,0), trans=trans_scale)  + 
+  	geom_density(aes(x=x, weight=w, colour = 'red')) +
+  	scale_x_continuous(name = 'log10(GFP)', limits=x_lims, expand = c(0,0)) +
+  	scale_y_continuous(position="right", expand = c(0,0)) + 
   	coord_flip() + 
   	scale_y_reverse() + 
   	theme_bw() + theme_left_dens()
@@ -455,6 +486,8 @@ plot_dens_2d_two_pop <- function(param_data_1, param_data_2, weights_data_1, wei
 	# against each other
 
 	if ( dim(param_data_1)[2] != dim(param_data_2)[2] ) {
+		print("bad params")
+		print(param_data_1)
 		print("param_data_1 and param_data_2 are not the same dimensions")
 		quit()
 	}
@@ -543,7 +576,6 @@ plot_1d_one_pop <- function(param_data, weights_data, cut, param_limits, output_
 
 	# remove the cut parameters
 	pars <- pars[ !(pars %in% cut) ]
-
 	nParams <- length(pars)
 	nCols <-  length(pars)
 	nRows <- length(pars)
@@ -571,7 +603,7 @@ get_fixed_parameter_columns <- function(data_df) {
 	idx  = 1
 	for(i in names(data_df)){
 		x = length(unique(data_df[, i]))
-		if (x <= 1) {
+		if (x <= 4) {
 			fixed_param_list <- c(fixed_param_list, idx)
 		}
 
@@ -647,8 +679,8 @@ make_param_lims <- function(params_data_df) {
 
 
 args <- commandArgs(trailingOnly = TRUE)
-params_output_path <- args[1]
-param_inputs_path <- args[2]
+params_posterior_path <- args[1]
+param_priors_inputs_path <- args[2]
 species_inputs_path <- args[3]
 model_idx <- args[4]
 output_dir <- args[5]
@@ -663,31 +695,29 @@ output_dir <- args[5]
 
 
 # data_path <- paste(data_dir, "model_99_all_params", sep="")
-data_df <- read.csv(params_output_path)
+data_df <- read.csv(params_posterior_path)
 
-param_lims <- make_param_lims_from_input(data_df[, 5:ncol(data_df)], param_inputs_path, species_inputs_path)
+param_lims <- make_param_lims_from_input(data_df[, 6:ncol(data_df)], param_priors_inputs_path, species_inputs_path)
 # quit()
 # param_lims <- make_param_lims(output_params_df, data_df[, 5:ncol(data_df)])
 df_list <- split(data_df, f= data_df$Accepted)
-
 rejected_df <- df_list[[1]]
 accepted_df <- df_list[[2]]
-
 
 weights <- accepted_df$particle_weight
 if(all(is.na(weights))) {
 	weights <- rep(1, length(weights))
 }
 
-accepted_df <- accepted_df[, 5:ncol(accepted_df)]
-rejected_df <- rejected_df[, 5:ncol(rejected_df)]
+accepted_df <- accepted_df[, 6:ncol(accepted_df)]
+rejected_df <- rejected_df[, 6:ncol(rejected_df)]
 
 fixed_params = get_fixed_parameter_columns(accepted_df)
+print(fixed_params)
 to_cut <- fixed_params
-
-# keep_columns <- c("D", "mu_max_1", "mu_max_2", "N_1", "N_2")
-# remove_columns <- setdiff(names(accepted_df), keep_columns)
-remove_columns <- c()
+keep_columns <- c("kB_max_2", "kB_max_1", "mu_max_1", "mu_max_2", "N_1", "N_2")
+remove_columns <- setdiff(names(accepted_df), keep_columns)
+# remove_columns <- c()
 idx <- 1
 for (name in names(accepted_df)) {
 	if (name %in% remove_columns) {
@@ -695,7 +725,6 @@ for (name in names(accepted_df)) {
 	}
 	idx <- idx + 1
 }
-
 
 dummy_true_val_vector <- rep(0.8,  dim(accepted_df)[2])
 
@@ -711,5 +740,3 @@ output_name <- paste(name_prefix, "_2D_dens.pdf", sep="")
 output_path <-  paste(output_dir, output_name, sep="")
 
 plot_dens_2d_one_pop(accepted_df, weights, to_cut, param_lims, output_path, dummy_true_val_vector)
-
-quit()

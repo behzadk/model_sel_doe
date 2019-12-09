@@ -20,8 +20,111 @@ from sklearn.cluster import OPTICS
 from sklearn.cluster import SpectralClustering
 
 from scipy.cluster.hierarchy import dendrogram, linkage
-
+import data_utils
+import data_analysis_ABCSMC
 # import sklearn
+import seaborn as sns
+from sklearn.cluster import AgglomerativeClustering
+
+if 1:
+    wd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
+    experiment_name = "two_species_stable_0_SMC"
+    inputs_dir = wd + "/input_files/input_files_two_species_0/"
+    R_script = "plot-motifs-two.R"
+
+
+def k_means_test():
+    combined_analysis_output_dir = wd + "output/" + experiment_name + "/experiment_analysis/"
+    data_utils.make_folder(combined_analysis_output_dir)
+    adj_mat_dir = inputs_dir + "adj_matricies/"
+
+    exp_dir = wd + "output/" + experiment_name + "/"
+    clean_exp_repeat_dirs = []
+    final_pop_dirs = []
+    first_pop_dirs = []
+    finished_exp_final_population_dirs = data_analysis_ABCSMC.find_finished_experiments(exp_dir)
+    model_space_report_list = []
+   
+
+
+    for data_dir in finished_exp_final_population_dirs:
+        # Load model space report
+        model_space_report_path = data_dir + "model_space_report.csv"
+        model_space_report_df = pd.read_csv(model_space_report_path, index_col=0)
+        model_space_report_list.append(model_space_report_df)
+    
+    model_space_report_df = data_analysis_ABCSMC.merge_model_space_report_df_list(model_space_report_list)
+    data_analysis_ABCSMC.generate_model_space_statistics(model_space_report_df, "model_marginal")
+    model_space_report_df = model_space_report_df.sort_values(by='model_marginal_mean', ascending=False).reset_index(drop=True)
+
+    model_idxs = model_space_report_df['model_idx'].values
+
+    strain_loop_bal, sum_pos_loops, sum_neg_loops, paths_log_out = data_utils.make_strain_feedback_loop_balance(model_idxs, adj_mat_dir)
+
+    model_space_report_df['symmetrical'] = [4 if x == True else 0 for x in  data_utils.get_two_strain_symmetric_adj_mats(model_idxs, adj_mat_dir)]
+    symm_models = model_space_report_df.loc[model_space_report_df['symmetrical'] == 4]['model_idx'].values
+    symm_models = [symm_models[0]]
+
+    sym_col_names = []
+    for m in symm_models:
+        col_name = str(m) + "_dist"
+        sym_col_names.append(col_name)
+        model_space_report_df[col_name] = data_utils.get_adj_mat_distances(m, model_idxs, adj_mat_dir)
+    
+    min_symm_neighbour = []
+    min_dist_val = []
+    for m_idx in model_idxs:
+        min_symm_vals = model_space_report_df.loc[model_space_report_df['model_idx'] == m_idx][sym_col_names].values[0]
+        min_symm_neighbour.append(int(sym_col_names[np.argmin(min_symm_vals)].split('_')[0]))
+        min_dist_val.append(min(model_space_report_df.loc[model_space_report_df['model_idx'] == m_idx][sym_col_names].values[0]))
+
+    model_space_report_df['min_symm_neighbour'] = min_symm_neighbour
+    model_space_report_df['min_symm_dist'] = min_dist_val
+
+    unique_interaction_paths = []
+
+    for p in paths_log_out:
+        for sub_p in p:
+            if sub_p not in unique_interaction_paths:
+                print(sub_p)
+                if len(sub_p) > 0:
+                    unique_interaction_paths.append(sub_p)
+
+    model_endcoded_path_possessions = []
+    for idx, m_idx in enumerate(model_idxs):
+        model_paths = paths_log_out[idx]
+        encoded_paths = [0 for x in range(len(unique_interaction_paths))]
+        for p_idx, unqe_p in enumerate(unique_interaction_paths):
+            if unqe_p in model_paths:
+                encoded_paths[p_idx] = 1
+        model_endcoded_path_possessions.append(encoded_paths)
+
+    stacked_encoded_paths = np.column_stack(model_endcoded_path_possessions)
+    print(np.shape(stacked_encoded_paths))
+
+    unqe_p_cols = ["path_" + str(x) for x in range(len(unique_interaction_paths))]
+
+    # linked = linkage(X, 'single', optimal_ordering=True)
+    # labels = y['model_idx'].values
+
+    # print(np.shape(linkage))
+    # print(np.shape(labels))
+
+    # plt.figure(figsize=(10, 7))
+    # d = dendrogram(linked,
+    #             orientation='top',
+    #             labels=labels,
+    #             distance_sort='descending',
+    #             show_leaf_counts=True)
+    X = stacked_encoded_paths.T
+    X_label = model_space_report_df['model_marginal_mean'].values
+    cluster = AgglomerativeClustering(n_clusters=7, affinity='euclidean', linkage='ward')
+    cluster.fit_predict(X)
+
+    sns.scatterplot(min_dist_val, X_label, hue=min_symm_neighbour, 
+                palette=sns.color_palette("Set1", n_colors=len(symm_models)))
+    plt.show()
+
 
 def find_nearest_neighbours_alt(current_model_idx, all_states, tree, visited_indexes):
     neighbour_distances, neighbour_indexes = tree.query(all_states[current_model_idx], k=10)
@@ -489,4 +592,5 @@ def rdn_forest_test(inputs_dir, data_dir, output_dir):
     print(flat_features_predict_df)
 
 if __name__ == "__main__":
+    k_means_test()
     print("hello world")

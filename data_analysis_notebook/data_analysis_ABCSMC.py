@@ -10,10 +10,10 @@ from matplotlib import rcParams
 
 plt.rcParams['figure.figsize'] = [15, 10]
 
-font = {'size'   : 50, }
-axes = {'labelsize': 'large', 'titlesize': 'large'}
+font = {'size'   : 30, }
+axes = {'labelsize': 'medium', 'titlesize': 'medium'}
 
-sns.set_context("poster")
+sns.set_context("talk")
 sns.set_style("white")
 mpl.rc('font', **font)
 mpl.rc('axes', **axes)
@@ -35,13 +35,13 @@ import networkx as nx
 import ml_analysis
 import os
 from glob import glob
+from pathlib import Path
 
 
 def merge_model_space_report_df_list(df_list):
     merge_func = lambda x, y, suff: pd.merge(x, y, on='model_idx', suffixes=suff)
     for i in range(1, len(df_list)):
         df_list[0] = merge_func(df_list[0], df_list[i], [str("_" + str(i-1)), str("_" + str(i))])
-        print(list(df_list[0]))
     model_space_report_df = df_list[0]
 
     return model_space_report_df
@@ -56,7 +56,7 @@ def generate_model_space_statistics(df, target_column_name):
     model_means = []
     for idx, row in df.iterrows():
         model_stds.append(np.std(row[target_cols].values))
-        model_means.append(np.median(row[target_cols].values))
+        model_means.append(np.mean(row[target_cols].values))
 
     df[target_column_name + "_std"] = model_stds
     df[target_column_name + "_mean"] = model_means
@@ -71,13 +71,18 @@ def generate_marginal_probability_distribution(pop_dir_list, output_dir, hide_x_
         # Load model space report
         model_space_report_path = data_dir + "model_space_report.csv"
         model_space_report_df = pd.read_csv(model_space_report_path, index_col=0)
+        model_space_report_df.drop(model_space_report_df.filter(regex="Unname"),axis=1, inplace=True)
+        model_space_report_df = model_space_report_df.sort_values(by='model_idx', ascending=False).reset_index(drop=True)
+        print(model_space_report_df.columns)
         model_space_report_list.append(model_space_report_df)
 
     model_space_report_df = merge_model_space_report_df_list(model_space_report_list)
+    print(model_space_report_df.columns)
     generate_model_space_statistics(model_space_report_df, "model_marginal")
-    
     if drop_unnacepted:
         model_space_report_df.drop(model_space_report_df[model_space_report_df['model_marginal_mean'] == 0].index, inplace=True)
+        model_space_report_df.drop(model_space_report_df[model_space_report_df['model_marginal_mean'] < 0.0005].index, inplace=True)
+
 
     model_space_report_df = model_space_report_df.sort_values(by='model_marginal_mean', ascending=False).reset_index(drop=True)
 
@@ -107,7 +112,7 @@ def generate_marginal_probability_distribution(pop_dir_list, output_dir, hide_x_
 
     if show_median:
         median = np.median(model_space_report_df['model_marginal_mean'].values)
-        ax.axhline(median, ls='--', label='Median', linewidth=1.0)
+        ax.axhline(median, ls='--', label='median', linewidth=1.0)
         ax.legend()
 
 
@@ -145,25 +150,28 @@ def get_total_simulations(rep_dirs):
     return total_sims
 
 def plot_all_model_param_distributions(pop_dir, inputs_dir, figure_output_dir):
-    model_space_report_path = pop_dir + "model_space_report.csv"
+    data_utils.make_folder(figure_output_dir)
+    model_space_report_path = pop_dir + "combined_model_space_report.csv"
     model_space_report_df = pd.read_csv(model_space_report_path, index_col=0)
     # generate_model_space_statistics(model_space_report_df, "model_marginal")
-    
-    model_space_report_df.drop(model_space_report_df[model_space_report_df['accepted_count'] == 0].index, inplace=True)
+    print(list(model_space_report_df))
 
-    for model_idx in model_space_report_df['model_idx']:
-        top_ten_models = [95, 145, 43, 101, 149, 49, 93, 99, 164, 92]
+    model_space_report_df.drop(model_space_report_df[model_space_report_df['model_marginal_mean'] == 0].index, inplace=True)
+
+    for model_idx in model_space_report_df['model_idx'].values:
+        top_ten_models = [33]
+
         if model_idx not in top_ten_models:
             continue
 
-        model_output_parameter_path = pop_dir + "model_sim_params/" + "model_" + str(model_idx) + "_all_params"
+        model_output_parameter_path = pop_dir + "combined_model_params/" + "model_" + str(model_idx) + "_all_params"
         model_input_parameter_path = inputs_dir + "input_files/params_" + str(model_idx) + ".csv"
         model_input_species_path = inputs_dir + "input_files/species_" + str(model_idx) + ".csv"
 
         R_script = "dens_plot_2D_spock.R"
-        subprocess.call(['Rscript', R_script, model_output_parameter_path, model_input_parameter_path, model_input_species_path, str(model_idx), figure_output_dir])
+        R_script = "dens_plot_2D_true_val.R"
 
-    exit()
+        subprocess.call(['Rscript', R_script, model_output_parameter_path, model_input_parameter_path, model_input_species_path, str(model_idx), figure_output_dir])
 
 def population_analysis(pop_dir, inputs_dir):
     analysis_dir = pop_dir + "analysis/"
@@ -186,12 +194,13 @@ def compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir, drop_unnacept
 
     adj_matrix_path_template = adj_mat_dir + "model_#REF#_adj_mat.csv"
     all_num_parts, all_AHL_num_parts, all_microcin_num_parts = data_utils.make_num_parts(model_space_report_df, adj_matrix_path_template)
-
+    
+    # all_num_parts = data_utils.make_num_parts_alt(model_space_report_df, adj_matrix_path_template)
+    
     model_space_report_df['num_parts'] = all_num_parts
 
     unique_num_parts = model_space_report_df['num_parts'].unique()
     unique_num_parts.sort()
-
     best_model_idxs = []
 
     # Get best model for each part class
@@ -225,8 +234,8 @@ def compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir, drop_unnacept
     if hide_x_ticks:
         ax.set(xticklabels=[])
         ax.set(xlabel='')
-        ax.legend().remove()    
-    
+        ax.legend().remove()
+
     else:
         ax.set(xticklabels=sub_model_space_df['model_idx'])
         ax.set(xlabel='Model')
@@ -258,10 +267,6 @@ def compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir, drop_unnacept
 
 
 
-
-
-
-
     # Generate bayes factors
     model_posterior_probs = [sub_model_space_df.loc[sub_model_space_df['model_idx']==idx]['model_marginal_mean'].values[0] for idx in best_model_idxs]
     bayes_factor_mat = np.zeros([len(model_posterior_probs), len(model_posterior_probs)])
@@ -279,6 +284,117 @@ def compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir, drop_unnacept
     print(bayes_factor_mat)
 
 
+def ammensal_vs_cooperative_systems(pop_dir_list, output_dir, adj_mat_dir, hide_x_ticks=True, drop_unnacepted=True, show_median=True):
+    show_median = True
+
+    model_space_report_list = []
+    num_pops = len(pop_dir_list)
+
+    for data_dir in pop_dir_list:
+        # Load model space report
+        model_space_report_path = data_dir + "model_space_report.csv"
+        model_space_report_df = pd.read_csv(model_space_report_path, index_col=0)
+        model_space_report_list.append(model_space_report_df)
+
+    model_space_report_df = merge_model_space_report_df_list(model_space_report_list)
+    generate_model_space_statistics(model_space_report_df, "model_marginal")
+
+    adj_matrix_path_template = adj_mat_dir + "model_#REF#_adj_mat.csv"
+    sys_category = []
+    sys_category_dummy = []
+    for idx in model_space_report_df['model_idx'].values:
+        adj_mat = pd.read_csv(adj_matrix_path_template.replace("#REF#", str(idx)))
+        total_coop = sum(adj_mat['S_aa1']) + sum(adj_mat['S_aa2'])
+        total_amen = abs(sum(adj_mat['B_1'])) + abs(sum(adj_mat['B_2']))
+
+        print(adj_mat)
+        print(list(adj_mat.columns).index('B_1'))
+        N_1_idx = list(adj_mat.columns).index('N_1') - 1
+        N_2_idx = list(adj_mat.columns).index('N_2') - 1
+        S_aa1_idx =  list(adj_mat.columns).index('S_aa1') - 1
+        S_aa2_idx =  list(adj_mat.columns).index('S_aa2') - 1
+        B_1_idx = list(adj_mat.columns).index('B_1') - 1
+        B_2_idx = list(adj_mat.columns).index('B_2') - 1
+
+        adj_mat = adj_mat.drop(adj_mat.columns[0], axis=1).as_matrix()
+
+        ammensal = False
+        self_regulation = False
+        cross_feed = False
+
+        print(adj_mat[:, N_1_idx][B_1_idx:B_2_idx+1])
+        exit()
+
+        if total_coop > 0 and total_amen > 0:
+            sys_category.append('Both')
+            sys_category_dummy.append(1)
+
+        elif total_coop > 0:
+            sys_category.append('Cooperative only')
+            sys_category_dummy.append(2)
+
+        elif total_amen > 0:
+            sys_category.append('Ammensal only')
+            sys_category_dummy.append(3)
+
+
+    model_space_report_df['sys_cat'] = sys_category
+    model_space_report_df['sys_category_dummy'] = sys_category_dummy
+
+    if drop_unnacepted:
+        model_space_report_df.drop(model_space_report_df[model_space_report_df['model_marginal_mean'] == 0].index, inplace=True)
+
+    model_space_report_df = model_space_report_df.sort_values(by='model_marginal_mean', ascending=False).reset_index(drop=True)
+
+    output_path = output_dir + "coop_amen_model_marginal_probability.pdf"
+
+    norm = plt.Normalize(min(model_space_report_df.sys_category_dummy.values), max(model_space_report_df.sys_category_dummy.values))
+    cmap = plt.get_cmap("magma")
+
+    fig, ax = plt.subplots()
+    if num_pops > 1:
+        ax.errorbar(model_space_report_df.index, 
+                    model_space_report_df['model_marginal_mean'], 
+                    yerr=model_space_report_df['model_marginal_std'], fmt=',', color='black', alpha=1,
+                    label=None, elinewidth=0.5)
+
+    ax.bar(model_space_report_df.index, model_space_report_df.model_marginal_mean, color=cmap(norm(model_space_report_df.sys_category_dummy.values)), 
+        data=model_space_report_df, alpha=0.9)
+
+    ax.unicode_minus = True
+    if hide_x_ticks:
+        ax.set(xticklabels=[])
+        ax.set(xlabel='')
+        ax.legend().remove()    
+    
+    else:
+        ax.set(xticklabels=model_space_report_df['model_idx'])
+        ax.set(xlabel='Model')
+        ax.legend()
+
+    if show_median:
+        median = np.median(model_space_report_df['model_marginal_mean'].values)
+        ax.axhline(median, ls='--', label='median', linewidth=1.0)
+        ax.legend()
+
+
+    ax.set(ylabel='Model marginal probability')
+    ax.set(xlim=(-0.5,None))
+    ax.set(ylim=(-0))
+    ax.spines["right"].set_visible(False)
+    ax.spines["top"].set_visible(False)
+    ax.spines["left"].set_alpha(0.5)
+    ax.spines["bottom"].set_alpha(0.5)
+    fig.tight_layout()
+    plt.savefig(output_path, dpi=500)
+
+    output_path = output_dir + "model_marginal_probability_log_scale.eps"
+    ax.set(yscale="log")
+    ax.set(ylim=(None, None))
+    plt.savefig(output_path, dpi=500)
+
+    print(output_path)
+    print("\n")
 
 def split_by_num_parts(data_dir, adj_mat_dir, output_dir, drop_unnacepted=False):
     hide_x_ticks = False
@@ -361,6 +477,136 @@ def split_by_num_parts(data_dir, adj_mat_dir, output_dir, drop_unnacepted=False)
 
 
         print("\n")
+
+def self_regulation_bar_plot(pop_dir_list, adj_mat_dir, output_dir, hide_x_ticks=True, drop_unnacepted=False, show_median=False):
+    model_space_report_list = []
+    num_pops = len(pop_dir_list)
+
+    for data_dir in pop_dir_list:
+        # Load model space report
+        model_space_report_path = data_dir + "model_space_report.csv"
+        model_space_report_df = pd.read_csv(model_space_report_path, index_col=0)
+        model_space_report_list.append(model_space_report_df)
+
+
+    model_space_report_df = merge_model_space_report_df_list(model_space_report_list)
+    generate_model_space_statistics(model_space_report_df, "model_marginal")
+    
+    # total_accepted = sum(model_space_report_df['accepted_count'].values)
+    # new_model_marginals = [x/total_accepted for x in model_space_report_df['accepted_count'].values]
+    # model_space_report_df['model_marginal_mean'] = new_model_marginals
+
+    if drop_unnacepted:
+        model_space_report_df.drop(model_space_report_df[model_space_report_df['model_marginal_mean'] == 0.0].index, inplace=True)
+
+    print(len(model_space_report_df))
+    model_space_report_df = model_space_report_df.sort_values(by='model_marginal_mean', ascending=False).reset_index(drop=True)
+    output_path = output_dir + "model_marginal_probability_self_reg.pdf"
+
+    model_idxs = model_space_report_df['model_idx'].values
+
+
+
+    target_species_list = []
+    # model_space_report_df['self_reg_loops'] = data_utils.get_self_regulators(model_idxs, target_species_list, adj_mat_dir)
+    strain_loop_bal, sum_pos_loops, sum_neg_loops = data_utils.make_strain_feedback_loop_balance(model_idxs, adj_mat_dir)
+    model_space_report_df['strain_loop_bal'] = strain_loop_bal
+    model_space_report_df['sum_pos_loops'] = sum_pos_loops
+    model_space_report_df['sum_neg_loops'] = sum_neg_loops
+
+    model_space_report_df['mat_distance'] = data_utils.get_adj_mat_distances(model_idxs[0], model_idxs, adj_mat_dir)
+    model_space_report_df['sum_interactions'] = data_utils.get_num_interactions(model_idxs, adj_mat_dir)
+
+    model_space_report_df['symmetrical'] = [4 if x == True else 0 for x in  data_utils.get_two_strain_symmetric_adj_mats(model_idxs, adj_mat_dir)]
+    symm_models = model_space_report_df.loc[model_space_report_df['symmetrical'] == 4]['model_idx'].values
+
+
+    sym_col_names = []
+    for m in symm_models:
+        col_name = str(m) + "_dist"
+        sym_col_names.append(col_name)
+        model_space_report_df[col_name] = data_utils.get_adj_mat_distances(m, model_idxs, adj_mat_dir)
+    
+    min_symm_neighbour = []
+    min_dist_val = []
+    for m_idx in model_idxs:
+        min_symm_vals = model_space_report_df.loc[model_space_report_df['model_idx'] == m_idx][sym_col_names].values[0]
+        min_symm_neighbour.append(int(sym_col_names[np.argmin(min_symm_vals)].split('_')[0]))
+        min_dist_val.append(min(model_space_report_df.loc[model_space_report_df['model_idx'] == m_idx][sym_col_names].values[0]))
+
+    model_space_report_df['min_symm_neighbour'] = min_symm_neighbour
+    model_space_report_df['min_symm_dist'] = min_dist_val
+    # model_space_report_df.drop(model_space_report_df[model_space_report_df['143_dist'] > model_space_report_df['min_symm_dist']].index, inplace=True)
+    # model_space_report_df.drop(model_space_report_df[model_space_report_df['143_dist'] > model_space_report_df['min_symm_dist']].index, inplace=True)
+
+    adjusted_vals = []
+    for idx, row in model_space_report_df.iterrows():
+        if row['224_dist'] > row['min_symm_dist']:
+            adjusted_vals.append(0)
+
+        else:
+            adjusted_vals.append(row['model_marginal_mean'])
+    model_space_report_df['model_marginal_mean'] = adjusted_vals
+    print(model_space_report_df)
+    # if drop_unnacepted:
+    # model_space_report_df.drop(model_space_report_df[model_space_report_df['symmetrical'] == False].index, inplace=True)
+    # model_idxs = model_space_report_df['model_idx'].values
+    # model_space_report_df = model_space_report_df.sort_values(by='model_marginal_mean', ascending=False).reset_index(drop=True)
+    model_space_report_df.to_csv(output_dir + "dists_test.csv")
+
+    fig, ax = plt.subplots()
+
+    print(model_space_report_df)
+    if num_pops > 1:
+        pass
+        # ax.errorbar(model_space_report_df.index, 
+        #             model_space_report_df['model_marginal_mean'], 
+        #             yerr=model_space_report_df['model_marginal_std'], fmt=',', color='black', alpha=1,
+        #             label=None, elinewidth=0.5)
+
+    sns.barplot(model_space_report_df.index, model_space_report_df.model_marginal_mean, 
+                     data=model_space_report_df, alpha=0.9, ax=ax)
+    ax.unicode_minus = True
+
+    if hide_x_ticks:
+        ax.set(xticklabels=[])
+        ax.set(xlabel='')
+        ax.legend().remove()    
+    
+    else:
+        ax.set(xticklabels=model_space_report_df['model_idx'])
+        ax.set(xlabel='Model')
+        ax.legend()
+
+    if show_median:
+        median = np.median(model_space_report_df['model_marginal_mean'].values)
+        ax.axhline(median, ls='--', label='median', linewidth=1.0)
+        ax.legend()
+
+
+    ax2 = ax.twinx()
+    ax2.set(ylim=(0, 5))
+    # sns.scatterplot(x=model_space_report_df.index, y=model_space_report_df['194_dist'].values, ax=ax2)
+
+    ax.set(ylabel='Model marginal probability')
+    ax.set(xlim=(-0.5,None))
+    ax.set(ylim=(-0))
+    ax.spines["right"].set_visible(False)
+    ax.spines["top"].set_visible(False)
+    ax.spines["left"].set_alpha(0.5)
+    ax.spines["bottom"].set_alpha(0.5)
+
+
+    fig.tight_layout()
+    plt.savefig(output_path, dpi=500)
+
+    output_path = output_dir + "model_marginal_probability_self_reg_log_scale.eps"
+    ax.set(yscale="log")
+    ax.set(ylim=(None, None))
+    plt.savefig(output_path, dpi=500)
+
+    print(output_path)
+    print("\n")
 
 
 def generate_critical_parameter_bar_plot(data_dir, KS_data_dir, output_dir, num_params):
@@ -448,12 +694,14 @@ def write_model_order(pop_dir_list, output_dir):
 
 def write_combined_model_space_report(pop_dir_list, output_dir):
     output_path = output_dir + "combined_model_space_report.csv"
-
     model_space_report_list = []
     for data_dir in pop_dir_list:
         # Load model space report
         model_space_report_path = data_dir + "model_space_report.csv"
         model_space_report_df = pd.read_csv(model_space_report_path, index_col=0)
+        model_space_report_df.drop(model_space_report_df.filter(regex="Unname"),axis=1, inplace=True)
+        model_space_report_df = model_space_report_df.sort_values(by='model_idx', ascending=False).reset_index(drop=True)
+        print(model_space_report_df.columns)
         model_space_report_list.append(model_space_report_df)
 
     model_space_report_df = merge_model_space_report_df_list(model_space_report_list)
@@ -462,13 +710,22 @@ def write_combined_model_space_report(pop_dir_list, output_dir):
     model_space_report_df = model_space_report_df.sort_values(by='model_marginal_mean', ascending=False).reset_index(drop=True)
     model_space_report_df.to_csv(output_path)
 
-def write_experiment_summary(population_size, n_repeats, exp_repeat_dirs, inputs_dir, output_dir):
+def write_experiment_summary(population_size, n_repeats, final_pop_dirs, inputs_dir, output_dir):
     # Number of repeats
     # Number of models
     # Population size
     # Total number of simulations
 
-    total_sims = get_total_simulations(exp_repeat_dirs)
+    exp_rep_dirs = []
+
+    for d in final_pop_dirs:
+        split_dir = d.split('/')
+
+        # Take step back in directory
+        exp_rep_dirs.append("/".join(split_dir[0:-2]) + "/")
+
+
+    total_sims = get_total_simulations(exp_rep_dirs)
 
     model_space_report_df = pd.read_csv(output_dir + "combined_model_space_report.csv")
     n_models = len(model_space_report_df['model_idx'].values)
@@ -483,21 +740,121 @@ def write_experiment_summary(population_size, n_repeats, exp_repeat_dirs, inputs
     file.close()
 
 
+def find_finished_experiments(data_dir):
+    repeats_exp_dirs = list(glob(data_dir + "**/"))
+    
+    final_pop_dirs = []
+
+
+    for exp_dir in repeats_exp_dirs:
+        sub_dirs = glob(exp_dir + "*/")
+        pop_dirs = [f for f in sub_dirs if "Population" in f.split('/')[-2]]
+
+        if len(pop_dirs) == 0:
+            continue
+        pop_dirs = sorted(pop_dirs, key=lambda a: a[-2])
+
+        final_pop_dirs.append(pop_dirs[-1])
+
+    finished_pop_dirs = []
+    for pop in final_pop_dirs:
+        model_space_report = Path(pop + "model_space_report.csv")
+        if model_space_report.is_file():
+            finished_pop_dirs.append(pop)
+
+        else:
+            print(pop)
+
+
+    return finished_pop_dirs
+
+def find_latest_pop_dirs(data_dir):
+    repeats_exp_dirs = list(glob(data_dir + "**/"))
+    final_pop_dirs = []
+
+
+    for exp_dir in repeats_exp_dirs:
+        sub_dirs = glob(exp_dir + "*/")
+        pop_dirs = [f for f in sub_dirs if "Population" in f.split('/')[-2]]
+
+        if len(pop_dirs) == 0:
+            continue
+        pop_dirs = sorted(pop_dirs, key=lambda a: a[-2])
+
+        final_pop_dirs.append(pop_dirs[-1])
+    return final_pop_dirs
+
+
+
+def combine_model_params(pop_dirs, output_dir):
+    data_utils.make_folder(output_dir + "combined_model_params")
+
+    # Get all model numbers
+    model_space_report_df = pd.read_csv(output_dir + "combined_model_space_report.csv")
+    model_idxs = model_space_report_df['model_idx'].values
+    model_idxs = sorted(model_idxs)
+    model_params_template = "model_#IDX#_all_params"
+
+    for idx in model_idxs:
+        first_instance = True
+        master_df = None
+        model_params_file_name = model_params_template.replace('#IDX#', str(idx))
+
+        for pop in pop_dirs:
+            model_params_file_path = pop + "model_sim_params/" + model_params_file_name
+
+            try:
+                model_params_df = pd.read_csv(model_params_file_path)
+
+                if first_instance:
+                    master_df = model_params_df
+                    first_instance = False
+
+                else:
+                    master_df = pd.concat([master_df, model_params_df])
+
+            except(FileNotFoundError):
+                continue
+
+        print("Saving model params idx: ", idx)
+
+        # Normalise particle weights
+        if len(master_df) > 1:
+            max_weight = max(master_df['particle_weight'].values)
+            min_weight = min(master_df['particle_weight'].values)
+
+            if max_weight != min_weight:
+                min_max_scale = lambda x: (x - min_weight) / (max_weight - min_weight)
+                new_weights = [min_max_scale(x) for x in master_df['particle_weight'].values]
+                master_df['particle_weight'] = new_weights
+
+
+        master_df.to_csv(output_dir + "combined_model_params/" + model_params_file_name)
 
 
 
 def ABC_SMC_analysis():
-    wd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
-    
+    wd_ssd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
+    wd_data = "/media/behzad/DATA/experiments_data/BK_manu_data/"
+    wd = wd_data
+
+    posterior_plot_R_script = "dens_plot_2D_true_val.R"
+
     ## Two species
-    if 0:
+    if 1:
         experiment_name = "two_species_stable_0"
         inputs_dir = wd + "/input_files/input_files_two_species_0/"
         R_script = "plot-motifs-two.R"
 
     ## Two species SMC
-    if 0:
+    if 1:
         experiment_name = "two_species_stable_0_SMC"
+        inputs_dir = wd + "/input_files/input_files_two_species_0/"
+        R_script = "plot-motifs-two.R"
+
+    ## Two species SMC
+    if 1:
+        experiment_name = "two_species_stable_3_SMC"
         inputs_dir = wd + "/input_files/input_files_two_species_0/"
         R_script = "plot-motifs-two.R"
 
@@ -507,6 +864,12 @@ def ABC_SMC_analysis():
         inputs_dir = wd + "/input_files/input_files_two_species_0/"
         R_script = "plot-motifs-two.R"
 
+    ## Two species SMC
+    if 0:
+        experiment_name = "three_species_stable_2_SMC_array_a"
+        inputs_dir = wd + "/input_files/input_files_three_species_0/"
+        R_script = "plot-motifs-three.R"
+
     ## Three species
     if 0:
         experiment_name = "three_species_stable_0_comb"
@@ -514,45 +877,66 @@ def ABC_SMC_analysis():
         R_script = "plot-motifs-three.R"
 
     ## Spock Manuscript
-    if 1:
+    if 0:
         experiment_name = "spock_manu_stable_0_SMC"
         inputs_dir = wd + "input_files/input_files_two_species_spock_manu_1/"
         R_script = "plot-motifs-spock.R"
 
     ## Spock Manuscript
-    if 1:
+    if 0:
         experiment_name = "spock_manu_stable_1_SMC"
         inputs_dir = wd + "input_files/input_files_two_species_spock_manu_1/"
         R_script = "plot-motifs-spock.R"
 
+    ## Spock Manuscript
+    if 0:
+        experiment_name = "spock_manu_stable_3_SMC"
+        inputs_dir = wd + "input_files/input_files_two_species_spock_manu_2/"
+        R_script = "plot-motifs-spock.R"
 
+    ## Spock Manuscript
+    if 1:
+        experiment_name = "spock_manu_stable_2_rej_alt_dist"
+        inputs_dir = wd + "input_files/input_files_two_species_spock_manu_2/"
+        R_script = "plot-motifs-spock.R"
+
+
+    ## BK manu
+    if 0:
+        experiment_name = "three_species_stable_SMC_2"
+        inputs_dir = wd + "input_files/input_files_three_species_0/"
+        R_script = "plot-motifs-three.R"
+
+    ## BK manu
+    if 1:
+        experiment_name = "two_species_stable_rej_1"
+        inputs_dir = wd_ssd + "input_files/input_files_two_species_0/"
+        R_script = "plot-motifs-two.R"
+
+    ## BK manu
+    if 1:
+        experiment_name = "three_species_stable_rej_1"
+        inputs_dir = wd_ssd + "input_files/input_files_three_species_0/"
+        R_script = "plot-motifs-three.R"
+
+    wd = wd_data
     combined_analysis_output_dir = wd + "output/" + experiment_name + "/experiment_analysis/"
     data_utils.make_folder(combined_analysis_output_dir)
     adj_mat_dir = inputs_dir + "adj_matricies/"
 
-    exp_repeat_dirs = glob(wd + "output/" + experiment_name + "/" + "*/")
+    exp_dir = wd + "output/" + experiment_name + "/"
     clean_exp_repeat_dirs = []
     final_pop_dirs = []
     first_pop_dirs = []
-
-    n_repeats = 0
-    for rep in exp_repeat_dirs:
-        sub_dirs = glob(rep + "*/")
-        pop_dirs = [f for f in sub_dirs if "Population" in f.split('/')[-2]]
-        pop_dirs = sorted(pop_dirs, key=lambda a: a[-2])
-
-        for pop in pop_dirs:
-            # population_analysis(pop, inputs_dir)
-            pass
-
-        try:
-            first_pop_dirs.append(pop_dirs[0])
-            final_pop_dirs.append(pop_dirs[-1])
-            clean_exp_repeat_dirs.append(rep)
-            n_repeats += 1
-
-        except IndexError:
-            continue
+    
+    finished_exp_final_population_dirs = find_finished_experiments(exp_dir)
+    final_pop_dirs = find_latest_pop_dirs(exp_dir)
+    print(final_pop_dirs)
+    # finished_exp_final_population_dirs = final_pop_dirs
+    n_repeats = len(final_pop_dirs)
+    print(finished_exp_final_population_dirs)
+    write_combined_model_space_report(finished_exp_final_population_dirs, combined_analysis_output_dir)
+    # plot_all_model_param_distributions(combined_analysis_output_dir, inputs_dir, combined_analysis_output_dir + "dist_plots/")
 
     for idx, pop_dir in enumerate(final_pop_dirs):
         analysis_dir = pop_dir + "analysis/"
@@ -566,18 +950,22 @@ def ABC_SMC_analysis():
         data_utils.make_folder(KS_data_dir)
         # posterior_analysis.generate_posterior_KS_csv_ABCSMC(final_pop_dir=pop_dir, first_pop_dir=first_pop_dirs[idx], 
         #     priors_dir=inputs_dir, output_dir=KS_data_dir)
-        
-        plot_all_model_param_distributions(pop_dir, inputs_dir, param_dists_dir)
 
 
     # Use final population data for analysis
-    write_combined_model_space_report(final_pop_dirs, combined_analysis_output_dir)
-    generate_marginal_probability_distribution(final_pop_dirs, combined_analysis_output_dir, hide_x_ticks=True, drop_unnacepted=True)
-    # compare_top_models_by_sparts(combined_analysis_output_dir, adj_mat_dir, combined_analysis_output_dir, drop_unnacepted=False)
+    # ammensal_vs_cooperative_systems(finished_exp_final_population_dirs, combined_analysis_output_dir, adj_mat_dir, hide_x_ticks=True, drop_unnacepted=True)
+    write_experiment_summary("dk", n_repeats, finished_exp_final_population_dirs, inputs_dir, combined_analysis_output_dir)
+
+    compare_top_models_by_parts(combined_analysis_output_dir, adj_mat_dir, combined_analysis_output_dir, drop_unnacepted=False)
+    generate_marginal_probability_distribution(finished_exp_final_population_dirs, combined_analysis_output_dir, hide_x_ticks=True, drop_unnacepted=True, show_median=False)
     split_by_num_parts(combined_analysis_output_dir, adj_mat_dir, combined_analysis_output_dir, drop_unnacepted=True)
-    write_model_order(final_pop_dirs, combined_analysis_output_dir)
-    write_experiment_summary(2500, n_repeats, exp_repeat_dirs, inputs_dir, combined_analysis_output_dir)
-    # subprocess.call(['Rscript', R_script, adj_mat_dir, combined_analysis_output_dir, combined_analysis_output_dir])
+    write_model_order(finished_exp_final_population_dirs, combined_analysis_output_dir)
+    subprocess.call(['Rscript', R_script, adj_mat_dir, combined_analysis_output_dir, combined_analysis_output_dir])
+    plot_all_model_param_distributions(combined_analysis_output_dir, inputs_dir, combined_analysis_output_dir + "dist_plots/")
+
+    combine_model_params(finished_exp_final_population_dirs, combined_analysis_output_dir)
+    combined_model_space_report_df = pd.read_csv(combined_analysis_output_dir + "combined_model_space_report.csv")
+    model_idxs = combined_model_space_report_df['model_idx'].values
 
 
 if __name__ == "__main__":

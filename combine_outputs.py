@@ -45,17 +45,17 @@ def combine_distances(exp_1_dir, exp_2_dir, output_dir):
     exp_1_df = pd.read_csv(exp_1_dir + 'distances.csv')
     exp_2_df = pd.read_csv(exp_2_dir + 'distances.csv')
 
+
     start_batches = exp_1_df.iloc[-1]['batch_num'] + 1
 
     print("changing batch numbers for exp 2")
     exp_2_df['batch_num'] = exp_2_df['batch_num'].apply(lambda x: x + start_batches)
 
     print("Concatenating dataframes")
-    concat_df = pd.concat([exp_1_df, exp_2_df],ignore_index=True)
+    concat_df = pd.concat([exp_1_df, exp_2_df], ignore_index=True)
 
     print("Saving distances.csv")
-    concat_df.to_csv(output_dir + 'distances.csv')
-
+    concat_df.to_csv(output_dir + 'distances.csv', index=False)
     print("Combine distances finished")
     print("")
 
@@ -81,7 +81,7 @@ def combine_eigenvalues(exp_1_dir, exp_2_dir, output_dir):
     print("Combine eigenvalues finished")
     print("")
 
-def combine_model_sim_params(exp_1_dir, exp_2_dir, start_batches, output_dir):
+def combine_model_sim_params(exp_1_dir, exp_2_dir, output_dir):
     output_dir = output_dir + "model_sim_params/"
     try:
         os.mkdir(output_dir)
@@ -91,8 +91,8 @@ def combine_model_sim_params(exp_1_dir, exp_2_dir, start_batches, output_dir):
     exp_1_params_dir = exp_1_dir + "model_sim_params/"
     exp_2_params_dir = exp_2_dir + "model_sim_params/"
 
-    exp_1_params_path = [file_path for file_path in glob.iglob(exp_1_params_dir + "*_all_params")]
-    exp_2_params_path = [file_path for file_path in glob.iglob(exp_2_params_dir + "*_all_params")]
+    exp_1_params_path = [file_path for file_path in glob.iglob(exp_1_params_dir + "*_all_params") if "population" not in file_path]
+    exp_2_params_path = [file_path for file_path in glob.iglob(exp_2_params_dir + "*_all_params") if "population" not in file_path]
 
     if len(exp_1_params_path) != len(exp_2_params_path):
         print("model sims missing")
@@ -104,10 +104,30 @@ def combine_model_sim_params(exp_1_dir, exp_2_dir, start_batches, output_dir):
     exp_1_ordered_paths = [0 for f in range(num_models)]
     exp_2_ordered_paths = [0 for f in range(num_models)]
 
-    for (f1, f2) in zip(exp_1_params_path, exp_2_params_path):
-        model_num = int(os.path.basename(f1).split('_')[1])
-        exp_1_ordered_paths[model_num] = f1
-        exp_2_ordered_paths[model_num] = f2
+    idx = 0
+    for f1 in exp_1_params_path:
+        f1_base_name = os.path.basename(f1)
+        match = False
+        for f2 in exp_2_params_path:
+            f2_base_name = os.path.basename(f2)
+
+            if f1_base_name == f2_base_name:
+                model_num = int(os.path.basename(f1).split('_')[1])
+
+                exp_1_ordered_paths[model_num] = f1
+                exp_2_ordered_paths[model_num] = f2
+                idx += 1
+                break
+
+
+
+    # for (f1, f2) in zip(exp_1_params_path, exp_2_params_path):
+    #     print(f1)
+    #     print(f2)
+    #     print("")
+    #     model_num = int(os.path.basename(f1).split('_')[1])
+    #     exp_1_ordered_paths[model_num] = f1
+    #     exp_2_ordered_paths[model_num] = f2
 
     count = 0
     for (exp_1_f, exp_2_f) in zip(exp_1_ordered_paths, exp_2_ordered_paths):
@@ -121,9 +141,16 @@ def combine_model_sim_params(exp_1_dir, exp_2_dir, start_batches, output_dir):
 
         exp_1_df = pd.read_csv(exp_1_f)
         exp_2_df = pd.read_csv(exp_2_f)
+
+        outfile_name = os.path.basename(exp_1_f)
+
+        if len(exp_2_df) == 0 :
+            exp_1_df.to_csv(output_dir + outfile_name, index=False)
+            continue
+
+        start_batches = max(exp_2_df['batch_num'].values) + 1
         exp_2_df['batch_num'] = exp_2_df['batch_num'].apply(lambda x: x + start_batches)
         concat_df = pd.concat([exp_1_df, exp_2_df], ignore_index=True)
-        outfile_name = os.path.basename(exp_1_f)
         concat_df.to_csv(output_dir + outfile_name, index=False)
         count += 1
 
@@ -146,9 +173,8 @@ def main():
     start_batches = exp_1_df.iloc[-1]['batch_num'] + 1
     del exp_1_df
 
-
     combine_model_space_reports(exp_1_dir, exp_2_dir, new_output_dir)
-    combine_model_sim_params(exp_1_dir, exp_2_dir, start_batches, new_output_dir)
+    combine_model_sim_params(exp_1_dir, exp_2_dir, new_output_dir)
     combine_eigenvalues(exp_1_dir, exp_2_dir, new_output_dir)
     combine_distances(exp_1_dir, exp_2_dir, new_output_dir)
 

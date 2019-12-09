@@ -26,7 +26,6 @@ model_nums <- as.list(read.table(ordred_model_txt_path))[[1]]
 a_table <- read.csv(files[1])
 species_names <- names(a_table[, 2:ncol(a_table)])
 species_names <- c(expression(N[1]), expression(N[2]), expression(B[1]), expression(B[2]), expression(A[1]), expression(A[2]))
-
 model_titles <- c("")
 model_titles <- rbind(model_titles, "FC")
 
@@ -45,6 +44,8 @@ for (m_num in model_nums) {
    x <- x[,-1]
    x <- x[,-3]
    x <- x[-3,]
+
+   print(x)
 
 
    # print(x)
