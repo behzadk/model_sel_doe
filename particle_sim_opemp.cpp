@@ -17,11 +17,6 @@ using namespace boost::python;
 #include <boost/numeric/ublas/io.hpp>
 #include <boost/numeric/ublas/lu.hpp>
 
-// #include <gsl/gsl_math.h>
-// #include <gsl/gsl_eigen.h>
-
-#include <eigen3/Eigen/Dense>
-
 using namespace std;
 using namespace boost::numeric::odeint;
 
@@ -181,83 +176,6 @@ boost::python::list Particle::py_model_func(boost::python::list input_y)
     }
 
     return output;
-}
-
-
-/*
-*   Not working
-*
-*
-*/
-boost::python::list Particle::get_eigenvalues_eigen()
-{   
-    // matrix dimensions defined by the number of species
-    int n_species = state_init.size();
-
-    // Set y vector as final state of simulation
-    ublas_vec_t y(n_species);
-    for (int i=0; i < n_species; i++) {
-        y(i) = state_vec.back()[i];
-    }
-    
-    // Init matrix n_species x n_species
-    ublas_mat_t J (n_species, n_species);
-
-    // Not sure why this is necessary
-    ublas_vec_t dfdt(n_species);
-
-    // Dummy values
-    const double t = 0;
-
-    // Fill jacobian matrix
-    m.run_jac(y, J, t, dfdt, part_params, model_ref);
-
-    // Transfer jacobian from ublas matrix to eigen matrix
-    Eigen::MatrixXd mat(n_species, n_species);
-    for (int i = 0; i < n_species; i++) {
-        for (int j = 0; j < n_species; j++) {
-            double val = J(i, j);
-            mat(i, j) = val;
-        }
-    }
-
-    std::cout << "" << std::endl;
-
-
-    Eigen::EigenSolver<Eigen::MatrixXd> eig_solver;
-    std::cout << "Eigen determinant: " << mat.determinant() << std::endl;
-    std::cout << "Eigen trace: " << mat.trace() << std::endl;
-    std::cout << "Max iterations: " << eig_solver.getMaxIterations() <<std::endl;
-    
-
-    Eigen::VectorXcd eivals = mat.eigenvalues();
-    std::cout << eivals << std::endl;
-
-    eig_solver.compute(mat);
-
-    // Extract eigenvalues
-    boost::python::list output;
-    complex<double> eval;
-    for(int i = 0; i < n_species; i++)
-    {
-        boost::python::list eigenval;
-
-        eval = eig_solver.eigenvalues().col(0)[i];
-
-        double real_part = eval.real();
-        double imag_part = eval.imag();
-
-        std::cout << real_part << std::endl;
-        eigenval.append(real_part);
-        eigenval.append(imag_part);
-
-        output.append(eigenval);
-    }
-
-    std::cout << "Eigneolver info: " << eig_solver.info() << std::endl;
-
-    return output;
-
 }
 
 

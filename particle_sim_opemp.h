@@ -69,7 +69,6 @@ class Particle
 		std::vector<state_type>& get_state_vec();
 		boost::python::list get_state_pylist();
 		boost::python::list get_eigenvalues();
-		boost::python::list get_eigenvalues_eigen();
 		boost::python::list get_end_state_jacobian();
 		boost::python::list get_init_state_jacobian();
 		boost::python::list get_jacobian(boost::python::list);

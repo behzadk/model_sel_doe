@@ -650,12 +650,13 @@ class ABC:
                                                  (self.n_sims_batch, len(self.fit_species), self.n_distances))
 
                     # 4. Accept or reject particles
-                    if self.distance_function_mode == 0:
-                        batch_part_judgements = alg_utils.check_distances_stable(batch_distances,
+                    if self.distance_function_mode != 1:
+                        batch_part_judgements = alg_utils.check_distances_generic(batch_distances,
                                                                                  epsilon_array=self.current_epsilon)
                     elif self.distance_function_mode == 1:
                         batch_part_judgements = alg_utils.check_distances_osc(batch_distances,
                                                                               epsilon_array=self.current_epsilon)
+
                     else:
                         batch_part_judgements = None
                         print("Invalid distance function set, quitting... ")

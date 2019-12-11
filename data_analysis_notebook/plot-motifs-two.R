@@ -37,8 +37,6 @@ idx <- 1
 for (m_num in model_nums) {
    f <- paste(adjacency_mat_dir, sub("#NUM#",toString(m_num), file_name_template), sep="")
    file_name <- basename(f)
-   model_num <- strsplit(file_name, "_")[[1]][2]
-   model_titles <- rbind(model_titles, model_num)
 
    x <- read.csv(f)
    x <- x[,-1]
@@ -54,7 +52,12 @@ for (m_num in model_nums) {
    for (i in 1:nrow(x)) {
       flat_list <- c(flat_list, unlist(x[i,], use.names=F))
    }
-   concat_df <- rbind(concat_df, flat_list)
+
+   if (len(flat_list) == 49) {
+      concat_df <- rbind(concat_df, flat_list)
+      model_num <- strsplit(file_name, "_")[[1]][2]
+      model_titles <- rbind(model_titles, model_num)
+   }
 }
 
 # print(concat_df)

@@ -91,8 +91,8 @@ def combine_model_sim_params(exp_1_dir, exp_2_dir, output_dir):
     exp_1_params_dir = exp_1_dir + "model_sim_params/"
     exp_2_params_dir = exp_2_dir + "model_sim_params/"
 
-    exp_1_params_path = [file_path for file_path in glob.iglob(exp_1_params_dir + "*_all_params") if "population" not in file_path]
-    exp_2_params_path = [file_path for file_path in glob.iglob(exp_2_params_dir + "*_all_params") if "population" not in file_path]
+    exp_1_params_path = [file_path for file_path in glob.iglob(exp_1_params_dir + "*_all_params") if "population" in file_path]
+    exp_2_params_path = [file_path for file_path in glob.iglob(exp_2_params_dir + "*_all_params") if "population" in file_path]
 
     if len(exp_1_params_path) != len(exp_2_params_path):
         print("model sims missing")
@@ -148,8 +148,8 @@ def combine_model_sim_params(exp_1_dir, exp_2_dir, output_dir):
             exp_1_df.to_csv(output_dir + outfile_name, index=False)
             continue
 
-        start_batches = max(exp_2_df['batch_num'].values) + 1
-        exp_2_df['batch_num'] = exp_2_df['batch_num'].apply(lambda x: x + start_batches)
+        # start_batches = max(exp_2_df['batch_num'].values) + 1
+        # exp_2_df['batch_num'] = exp_2_df['batch_num'].apply(lambda x: x + start_batches)
         concat_df = pd.concat([exp_1_df, exp_2_df], ignore_index=True)
         concat_df.to_csv(output_dir + outfile_name, index=False)
         count += 1

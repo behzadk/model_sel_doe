@@ -465,8 +465,8 @@ std::vector<std::vector<double>> DistanceFunctions::stable_dist(std::vector<stat
 	}
 
 
-	// int from_time_index = 1500;
-	int from_time_index = 500;
+	auto sim_size = state_vec.size();
+	int from_time_index = floor(sim_size - (sim_size * 0.1));
 
 	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
 		std::vector<double> signal = extract_species_to_fit(state_vec, *it, from_time_index);
@@ -484,6 +484,44 @@ std::vector<std::vector<double>> DistanceFunctions::stable_dist(std::vector<stat
 
 		std::vector<double> signal_distances = {final_gradient, stdev, final_value};
 
+		sim_distances.push_back(signal_distances);
+	}
+
+	return sim_distances;
+
+}
+
+
+/*! \brief Calculates distances for survival objective. Returns vector of distances for each species.
+ *        
+ */	
+std::vector<std::vector<double>> DistanceFunctions::survival_dist(std::vector<state_type>& state_vec, std::vector<int> species_to_fit, bool integration_failed) {
+	std::vector<std::vector<double>> sim_distances;
+
+	double max_dist = std::numeric_limits<double>::max();
+
+	std::vector<double> max_distances = {max_dist};
+
+	if (integration_failed) {
+		for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
+			sim_distances.push_back(max_distances);
+		}
+
+		return sim_distances;
+	}
+
+	auto sim_size = state_vec.size();
+	int from_time_index = floor(sim_size - (sim_size * 0.1));
+
+	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
+		std::vector<double> signal = extract_species_to_fit(state_vec, *it, from_time_index);
+	}
+
+	// Iterate through all species to fit. Extract data.
+	for (auto it = species_to_fit.begin(); it != species_to_fit.end(); it++) {
+		std::vector<double> signal = extract_species_to_fit(state_vec, *it, from_time_index);
+		double final_value = 1/signal.end()[-1];
+		std::vector<double> signal_distances = {final_value};
 		sim_distances.push_back(signal_distances);
 	}
 

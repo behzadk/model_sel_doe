@@ -28,7 +28,7 @@ class Population {
 		boost::python::list get_flattened_distances_list();
 		boost::python::list get_timepoints_list();
 		boost::python::list get_particle_state_list(int);
-		boost::python::list get_particle_eigenvalues(int);
+		// boost::python::list get_particle_eigenvalues(int);
 		boost::python::list get_particle_init_state_jacobian(int);
 		boost::python::list get_particle_end_state_jacobian(int);
 		boost::python::list get_particle_final_species_values(int);

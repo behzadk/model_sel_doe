@@ -836,7 +836,7 @@ def combine_model_params(pop_dirs, output_dir):
 def ABC_SMC_analysis():
     wd_ssd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
     wd_data = "/media/behzad/DATA/experiments_data/BK_manu_data/"
-    wd = wd_data
+    wd = wd_ssd
 
     posterior_plot_R_script = "dens_plot_2D_true_val.R"
 
@@ -900,6 +900,18 @@ def ABC_SMC_analysis():
         inputs_dir = wd + "input_files/input_files_two_species_spock_manu_2/"
         R_script = "plot-motifs-spock.R"
 
+    ## Spock Manuscript
+    if 1:
+        experiment_name = "spock_manu_surv_SMC_1"
+        inputs_dir = wd + "input_files/input_files_two_species_spock_manu_2/"
+        R_script = "plot-motifs-spock.R"
+
+
+    ## Spock Manuscript
+    if 1:
+        experiment_name = "spock_manu_stable_SMC_3"
+        inputs_dir = wd + "input_files/input_files_two_species_spock_manu_2/"
+        R_script = "plot-motifs-spock.R"
 
     ## BK manu
     if 0:
@@ -908,18 +920,18 @@ def ABC_SMC_analysis():
         R_script = "plot-motifs-three.R"
 
     ## BK manu
-    if 1:
+    if 0:
         experiment_name = "two_species_stable_rej_1"
         inputs_dir = wd_ssd + "input_files/input_files_two_species_0/"
         R_script = "plot-motifs-two.R"
 
     ## BK manu
-    if 1:
+    if 0:
         experiment_name = "three_species_stable_rej_1"
         inputs_dir = wd_ssd + "input_files/input_files_three_species_0/"
         R_script = "plot-motifs-three.R"
 
-    wd = wd_data
+    # wd = wd_ssd
     combined_analysis_output_dir = wd + "output/" + experiment_name + "/experiment_analysis/"
     data_utils.make_folder(combined_analysis_output_dir)
     adj_mat_dir = inputs_dir + "adj_matricies/"
@@ -931,6 +943,8 @@ def ABC_SMC_analysis():
     
     finished_exp_final_population_dirs = find_finished_experiments(exp_dir)
     final_pop_dirs = find_latest_pop_dirs(exp_dir)
+    subprocess.call(['Rscript', R_script, adj_mat_dir, combined_analysis_output_dir, combined_analysis_output_dir])
+    exit()
     print(final_pop_dirs)
     # finished_exp_final_population_dirs = final_pop_dirs
     n_repeats = len(final_pop_dirs)
@@ -955,14 +969,12 @@ def ABC_SMC_analysis():
     # Use final population data for analysis
     # ammensal_vs_cooperative_systems(finished_exp_final_population_dirs, combined_analysis_output_dir, adj_mat_dir, hide_x_ticks=True, drop_unnacepted=True)
     write_experiment_summary("dk", n_repeats, finished_exp_final_population_dirs, inputs_dir, combined_analysis_output_dir)
-
     compare_top_models_by_parts(combined_analysis_output_dir, adj_mat_dir, combined_analysis_output_dir, drop_unnacepted=False)
     generate_marginal_probability_distribution(finished_exp_final_population_dirs, combined_analysis_output_dir, hide_x_ticks=True, drop_unnacepted=True, show_median=False)
     split_by_num_parts(combined_analysis_output_dir, adj_mat_dir, combined_analysis_output_dir, drop_unnacepted=True)
     write_model_order(finished_exp_final_population_dirs, combined_analysis_output_dir)
     subprocess.call(['Rscript', R_script, adj_mat_dir, combined_analysis_output_dir, combined_analysis_output_dir])
     plot_all_model_param_distributions(combined_analysis_output_dir, inputs_dir, combined_analysis_output_dir + "dist_plots/")
-
     combine_model_params(finished_exp_final_population_dirs, combined_analysis_output_dir)
     combined_model_space_report_df = pd.read_csv(combined_analysis_output_dir + "combined_model_space_report.csv")
     model_idxs = combined_model_space_report_df['model_idx'].values

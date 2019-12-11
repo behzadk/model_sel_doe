@@ -135,6 +135,10 @@ void Population::calculate_particle_distances(int distance_function_mode)
             _particle_vector[i].set_distance_vector(dist.osc_dist( _particle_vector[i].get_state_vec(), fit_species, _particle_vector[i].integration_failed,  _dt));
         }
 
+        else if (distance_function_mode == 2) {
+            _particle_vector[i].set_distance_vector(dist.survival_dist( _particle_vector[i].get_state_vec(), fit_species, _particle_vector[i].integration_failed));
+        }
+
         else {
             throw std::invalid_argument( "Invalid distance function mode. 0: Stable steady state objective. 1: Oscillatory objective" );        
         }
@@ -251,10 +255,10 @@ boost::python::list Population::get_timepoints_list() {
 	return tp_list;
 }
 
-boost::python::list Population::get_particle_eigenvalues(int particle_ref)
-{
-    return(_particle_vector[particle_ref].get_eigenvalues_eigen());
-}
+// boost::python::list Population::get_particle_eigenvalues(int particle_ref)
+// {
+//     return(_particle_vector[particle_ref].get_eigenvalues_eigen());
+// }
 
 double Population::get_particle_trace(int particle_ref)
 {
@@ -366,7 +370,7 @@ BOOST_PYTHON_MODULE(population_modules)
         .def("check_integration_failure", &Population::check_integration_failure)
         .def("get_particle_integration_error", &Population::get_particle_integration_error)
         .def("get_all_particle_integration_errors", &Population::get_all_particle_integration_errors)
-        .def("get_particle_eigenvalues", &Population::get_particle_eigenvalues)
+        // .def("get_particle_eigenvalues", &Population::get_particle_eigenvalues)
         .def("get_particle_trace", &Population::get_particle_trace)
         .def("get_particle_init_state_jacobian", &Population::get_particle_init_state_jacobian)
         .def("get_particle_end_state_jacobian", &Population::get_particle_end_state_jacobian)

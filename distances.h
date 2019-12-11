@@ -28,6 +28,7 @@ class DistanceFunctions {
 		boost::python::list get_all_species_grads(std::vector<state_type>&, int);
 		std::vector<std::vector<double>> stable_dist(std::vector<state_type>&, std::vector<int>, bool);
 		std::vector<std::vector<double>> osc_dist(std::vector<state_type>&, std::vector<int>, bool, const float dt);
+		std::vector<std::vector<double>> survival_dist(std::vector<state_type>&, std::vector<int>, bool);
 
 };
 

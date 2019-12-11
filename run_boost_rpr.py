@@ -29,7 +29,7 @@ import tarfile
 # Set time points
 t_0 = 0
 # t_end = 1000
-t_end = 500
+t_end = 1500
 dt = 0.5
 
 restart = True
@@ -39,9 +39,11 @@ if int(sys.argv[2]) == 1:
     output_folder = './output/'
     experiment_name = 'two_species_stable_NUM/'
     experiment_number = str(sys.argv[1])
+    distance_function_mode = 2
 
     C = 1e12
     final_epsilon = [1e3 / C, 0.001, 1 / 0.001]
+
     fit_species = [0, 1]
 
 elif int(sys.argv[2]) == 2:
@@ -55,14 +57,6 @@ elif int(sys.argv[2]) == 2:
 
     fit_species = [0, 1, 2]
 
-elif int(sys.argv[2]) == 3:
-    input_folder = './input_files/input_files_two_species_spock_manu_2/input_files/'
-    output_folder = './output/'
-    experiment_name = 'spock_manu_stable_NUM/'
-    experiment_number = str(sys.argv[1])
-    final_epsilon = [500, 25000, 1 / 1e10]
-    fit_species = [0, 1]
-    # fit_species = [0, 1, 5, 6, 7]
 
 elif int(sys.argv[2]) == 4:
     input_folder = './input_files/input_files_one_species_0/input_files/'
@@ -109,6 +103,26 @@ elif int(sys.argv[2]) == 7:
     experiment_number = str(sys.argv[1])
 
     fit_species = [0]
+
+
+elif int(sys.argv[2]) == 8:
+    input_folder = './input_files/input_files_two_species_spock_manu_2/input_files/'
+    output_folder = './output/'
+    experiment_name = 'spock_manu_stable_NUM/'
+    experiment_number = str(sys.argv[1])
+    final_epsilon = [500, 25000, 1 / 1e9]
+    fit_species = [0, 1]
+    distance_function_mode = 0
+    # fit_species = [0, 1, 5, 6, 7]
+
+elif int(sys.argv[2]) == 9:
+    input_folder = './input_files/input_files_two_species_spock_manu_2/input_files/'
+    output_folder = './output/'
+    experiment_name = 'spock_manu_survive_NUM/'
+    experiment_number = str(sys.argv[1])
+    final_epsilon = [1 / 1e9]
+    fit_species = [0, 1]
+    distance_function_mode = 2
 
 else:
     experiment_name = None
@@ -335,10 +349,10 @@ def ABCSMC():
             model_list.append(model_new)
 
         # Run ABC_rejection algorithm
-        ABC_algs = algorithms.ABC(t_0, t_end, dt, model_list=model_list, population_size=50, n_sims_batch=10,
-            fit_species=fit_species, final_epsilon=final_epsilon, distance_function_mode=0, n_distances=3, out_dir=exp_output_folder)
+        ABC_algs = algorithms.ABC(t_0, t_end, dt, model_list=model_list, population_size=500, n_sims_batch=100,
+            fit_species=fit_species, final_epsilon=final_epsilon, 
+            distance_function_mode=distance_function_mode, n_distances=len(final_epsilon), out_dir=exp_output_folder)
 
-    # ABC_algs.current_epsilon = ABC_algs.final_epsilon
     ABC_algs.run_model_selection_ABC_SMC(alpha=0.3)
     alg_utils.make_tarfile(exp_output_folder[0:-1] + "_pop_" + str(ABC_algs.population_number) + ".tar.gz", exp_output_folder)
 
@@ -479,8 +493,8 @@ def simulate_and_plot():
 if __name__ == "__main__":
     # for i in range(50):
     #     steady_state_test(i)
-    ABCSMC_run_tests()
-    exit()
+    # ABCSMC_run_tests()
+    # exit()
     # ABCSMC_run_gerlaud_test()
     ABCSMC()
     # ABC_rejection()

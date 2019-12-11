@@ -7,7 +7,6 @@ import combine_outputs
 import tarfile
 import shutil
 import sys
-from tqdm import tqdm
 
 def make_tarfile(output_filename, source_dir):
     with tarfile.open(output_filename, "w:gz") as tar:
@@ -54,7 +53,7 @@ def generate_particles(models_list):
 #
 # Returns a list of bools True - accept particle, False - reject particle
 ##
-def check_distances_stable(particle_distances, epsilon_array):
+def check_distances_generic(particle_distances, epsilon_array):
     particle_judgements = []
 
     for part_distance in particle_distances:
@@ -100,6 +99,25 @@ def check_distances_osc(particle_distances, epsilon_array):
         # print(particle_judgements)
 
     return particle_judgements
+
+def check_distances_survival(particle_distances, epsilon_array):
+    particle_judgements = []
+
+    for part_distance in particle_distances:
+        particle_accept = True
+
+        for species_distances in part_distance:
+            if np.isnan(species_distances).any() or any(p > 1e300 for p in species_distances):
+                particle_accept = False
+                
+            for epsilon_idx, dist in enumerate(species_distances):
+                if dist > epsilon_array[epsilon_idx]:
+                    particle_accept = False
+
+        particle_judgements.append(particle_accept)
+
+    return particle_judgements
+
 
 
 def update_epsilon(current_epsilon, final_epsilon, accepted_particle_distances, alpha):
@@ -212,7 +230,7 @@ def rescale_parameters(input_params, init_states, particle_models):
 
 def find_latest_population_pickle(exp_folder):
     sub_dirs = glob.glob(exp_folder + "**/")
-    population_dirs = [f for f in sub_dirs if "Population_0" in f]
+    population_dirs = [f for f in sub_dirs if "Population_2" in f]
     if len(population_dirs) == 0:
         return None
 
@@ -245,6 +263,8 @@ def combine_population_pickles():
     data_dir = '/media/behzad/DATA/experiments_data/BK_manu_data/two_species_stable_rej_1/'
     # data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_manu_stable_2_SMC_rej/'
     data_dir = '/media/behzad/DATA/experiments_data/BK_manu_data/three_species_stable_rej_1/'
+    data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_manu_surv_SMC_1/'
+    data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_manu_stable_SMC_3/'
 
     # data_dir = './output/two_species_stable_4_SMC/'
 
@@ -268,9 +288,6 @@ def combine_population_pickles():
     split_pickle_paths = np.array_split(pickle_path_list, 4)
 
     for chunk_idx, chunk in enumerate(split_pickle_paths):
-        if chunk_idx != 0:
-        	exit()
-
         print("Doing chunk: ", chunk_idx)
         pickle_path_list = chunk
 
@@ -298,7 +315,7 @@ def combine_population_pickles():
             print("loading up judgements, model_refs, accepted_particles, population_accepted_count and population_total_simulations")
             
             idx = 0
-            for p_path in tqdm(pickle_path_list):
+            for p_path in (pickle_path_list):
                 print(idx)
                 try:
                     with open(p_path, 'rb') as p_handle:
@@ -322,7 +339,7 @@ def combine_population_pickles():
                         master_alg.population_accepted_count += p.population_accepted_count
                         master_alg.population_total_simulations += p.population_total_simulations
 
-                        # combine_outputs.combine_model_sim_params(chunk_out_dir, p_dir, chunk_out_dir)
+                        combine_outputs.combine_model_sim_params(chunk_out_dir, p_dir, chunk_out_dir)
                         combine_outputs.combine_distances(chunk_out_dir, p_dir, chunk_out_dir)
 
                 except EOFError:
