@@ -25,154 +25,28 @@ import pandas as pd
 import pickle
 
 import tarfile
+import yaml
+import argparse
+
 
 # Set time points
-t_0 = 0
-# t_end = 1000
-t_end = 1500
-dt = 0.5
 
-restart = True
+with open("experiment_config_spock_survival.yaml", 'r') as yaml_file:
+    experiment_config = yaml.load(yaml_file, Loader=yaml.FullLoader)
+    experiment_config['final_epsilon'] = [float(x) for x in experiment_config['final_epsilon']]
 
-if int(sys.argv[2]) == 1:
-    input_folder = './input_files/input_files_two_species_0/input_files/'
-    output_folder = './output/'
-    experiment_name = 'two_species_stable_NUM/'
-    experiment_number = str(sys.argv[1])
-    distance_function_mode = 2
+# Unpack config file
+input_folder = experiment_config['inputs_folder']
+output_folder = experiment_config['output_folder']
+experiment_name = experiment_config['experiment_name']
 
-    C = 1e12
-    final_epsilon = [1e3 / C, 0.001, 1 / 0.001]
+t_0 = experiment_config['t_0']
+t_end = experiment_config['t_end']
+dt = experiment_config['dt']
 
-    fit_species = [0, 1]
-
-elif int(sys.argv[2]) == 2:
-    input_folder = './input_files/input_files_three_species_0/input_files/'
-    output_folder = './output/'
-    experiment_name = 'three_species_stable_NUM/'
-    experiment_number = str(sys.argv[1])
-    C = 1e12
-
-    final_epsilon = [1e3 / C, 0.001, 1 / 0.001]
-
-    fit_species = [0, 1, 2]
-
-
-elif int(sys.argv[2]) == 4:
-    input_folder = './input_files/input_files_one_species_0/input_files/'
-    output_folder = './output/'
-    experiment_name = 'one_species_stable_NUM/'
-    experiment_number = str(sys.argv[1])
-
-    fit_species = [0]
-
-elif int(sys.argv[2]) == 5:
-    input_folder = './input_files/input_files_two_species_auxos_0/input_files/'
-    output_folder = './output/'
-    experiment_name = 'two_species_auxo_stable_NUM/'
-    experiment_number = str(sys.argv[1])
-
-    C = 1e12
-    final_epsilon = [1e3 / C, 0.001, 1 / 0.001]
-
-    fit_species = [0, 1]
-
-elif int(sys.argv[2]) == 5:
-    input_folder = './input_files/input_files_two_species_auxos_0/input_files/'
-    output_folder = './output/'
-    experiment_name = 'two_species_auxo_stable_NUM/'
-    experiment_number = str(sys.argv[1])
-
-    C = 1e12
-    final_epsilon = [1e3 / C, 0.001, 1 / 0.001]
-    fit_species = [0, 1]
-
-elif int(sys.argv[2]) == 6:
-    input_folder = './input_files/input_files_test/input_files/'
-    output_folder = './output/'
-    experiment_name = 'weights_test/'
-    experiment_number = str(sys.argv[1])
-    final_epsilon = [3000]
-
-elif int(sys.argv[2]) == 7:
-    input_folder = './input_files/input_files_gerlaud_test/input_files/'
-    output_folder = './output/'
-    experiment_name = 'weights_test/'
-    final_epsilon = [1, 1]
-
-    experiment_number = str(sys.argv[1])
-
-    fit_species = [0]
-
-
-elif int(sys.argv[2]) == 8:
-    input_folder = './input_files/input_files_two_species_spock_manu_2/input_files/'
-    output_folder = './output/'
-    experiment_name = 'spock_manu_stable_NUM/'
-    experiment_number = str(sys.argv[1])
-    final_epsilon = [500, 25000, 1 / 1e9]
-    fit_species = [0, 1]
-    distance_function_mode = 0
-    # fit_species = [0, 1, 5, 6, 7]
-
-elif int(sys.argv[2]) == 9:
-    input_folder = './input_files/input_files_two_species_spock_manu_2/input_files/'
-    output_folder = './output/'
-    experiment_name = 'spock_manu_survive_NUM/'
-    experiment_number = str(sys.argv[1])
-    final_epsilon = [1 / 1e9]
-    fit_species = [0, 1]
-    distance_function_mode = 2
-
-else:
-    experiment_name = None
-    experiment_number = None
-    output_folder=None
-    fit_species = None
-    input_folder = None
-    print("Please specify routine... exiting ")
-    exit()
-
-def extract_parameters_from_xml(input_file):
-    tree = ET.parse(input_file)
-    root = tree.getroot()
-
-    params = root.iter('parameters')
-    init_species = root.iter('initial')
-    input_params_dict_list = []
-    input_init_species_dict_list = []
-
-    for idx, child in enumerate(params):
-        new_dict = {}
-        for c in child:
-            text = c.text.split()
-            if text[0] == "uniform":
-                new_dict[c.tag] = (float(text[1]), float(text[2]))
-
-            elif text[0] == "constant":
-                new_dict[c.tag] = (float(text[1]), float(text[1]))
-
-            else:
-                print("unknown input type")
-
-        input_params_dict_list.append(new_dict)
-
-    for idx, child in enumerate(init_species):
-        new_dict = {}
-        for c in child:
-            text = c.text.split()
-            if text[0] == "uniform":
-                new_dict[c.tag] = (float(text[1]), float(text[2]))
-
-            elif text[0] == "constant":
-                new_dict[c.tag] = (float(text[1]), float(text[1]))
-
-            else:
-                print("unknown input type")
-
-        input_init_species_dict_list.append(new_dict)
-
-    return input_params_dict_list, input_init_species_dict_list
+distance_function_mode = experiment_config['distance_function_mode']
+run_rejection = experiment_config['run_rejection']
+run_SMC = experiment_config['run_SMC']
 
 
 def import_input_file(input_path):
@@ -184,43 +58,6 @@ def import_input_file(input_path):
 
     return data_dict
 
-
-
-def ABC_rejection():
-    # Set time points
-    t_0 = 0
-    t_end = 1000
-    dt = 0.5
-
-
-    experiment_folder = experiment_name.replace('NUM', experiment_number)
-    exp_output_folder = output_folder + experiment_folder
-    try:
-        os.mkdir(exp_output_folder)
-
-    except FileExistsError:
-        pass
-
-    # Load models from input files
-    model_list = []
-    for i in range(int((len(os.listdir(input_folder)) / 2))):
-        input_params = input_folder + "params_" + str(i) + ".csv"
-        input_init_species = input_folder + "species_" + str(i) + ".csv"
-        init_params = import_input_file(input_params)
-        init_species = import_input_file(input_init_species)
-        model_new = Model(i, init_params, init_species)
-        model_list.append(model_new)
-
-
-    # Run ABC_rejecction algorithm
-    ABC_algs = algorithms.ABC(t_0, t_end, dt, model_list, population_size=1e10, n_sims_batch=150, fit_species=fit_species, 
-        final_epsilon=final_epsilon, distance_function_mode=0, n_distances=3, out_dir=exp_output_folder)
-    ABC_algs.run_rejection()
-
-    # rejection_alg.run_rejection()
-
-    print("")
-    print("")
 
 def ABCSMC_run_tests():
     experiment_folder = experiment_name.replace('NUM', str(experiment_number))
@@ -256,44 +93,6 @@ def ABCSMC_run_tests():
 
     ABC_algs.run_model_selection_ABC_SMC(alpha=0.5, run_test=1)
     alg_utils.make_tarfile(exp_output_folder[0:-1] + "_pop_" + str(ABC_algs.population_number) + ".tar.gz", exp_output_folder)
-
-def ABCSMC_run_gerlaud_test():
-    experiment_folder = experiment_name.replace('NUM', str(experiment_number))
-    exp_output_folder = output_folder + experiment_folder
-
-    latest_pickle_path = alg_utils.find_latest_population_pickle(exp_output_folder)
-    print(latest_pickle_path)
-    ABC_algs = None
-    
-    try:
-        os.mkdir(exp_output_folder)
-
-    except FileExistsError:
-        pass
-
-
-    # Load models from input files
-    model_list = []
-    for i in range(int((len(os.listdir(input_folder)) / 2))):
-        input_params = input_folder + "params_" + str(i) + ".csv"
-        input_init_species = input_folder + "species_" + str(i) + ".csv"
-        init_params = import_input_file(input_params)
-        init_species = import_input_file(input_init_species)
-
-        model_new = Model(i, init_params, init_species)
-        if i != 1:
-            print(i)
-            continue
-        model_list.append(model_new)
-
-    fit_species = [0]
-    # Run ABC_rejection algorithm
-    ABC_algs = algorithms.ABC(t_0, t_end, dt, model_list=model_list, population_size=1000, n_sims_batch=1000, final_epsilon=final_epsilon,
-        fit_species=fit_species, distance_function_mode=0, n_distances=2, out_dir=exp_output_folder)
-
-    ABC_algs.run_model_selection_ABC_SMC(alpha=0.5, run_test=2)
-    alg_utils.make_tarfile(exp_output_folder[0:-1] + "_pop_" + str(ABC_algs.population_number) + ".tar.gz", exp_output_folder)
-
 
 def ABCSMC():
     experiment_folder = experiment_name.replace('NUM', str(experiment_number))
@@ -352,6 +151,9 @@ def ABCSMC():
         ABC_algs = algorithms.ABC(t_0, t_end, dt, model_list=model_list, population_size=500, n_sims_batch=100,
             fit_species=fit_species, final_epsilon=final_epsilon, 
             distance_function_mode=distance_function_mode, n_distances=len(final_epsilon), out_dir=exp_output_folder)
+
+    if run_rejection == "Y":
+        ABC_algs.current_epsilon = final_epsilon
 
     ABC_algs.run_model_selection_ABC_SMC(alpha=0.3)
     alg_utils.make_tarfile(exp_output_folder[0:-1] + "_pop_" + str(ABC_algs.population_number) + ".tar.gz", exp_output_folder)

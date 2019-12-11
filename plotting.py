@@ -38,8 +38,8 @@ def plot_simulation(out_pdf, sim_idx, model_ref, state, time_points, plot_specie
         # print("max: ", np.max(state[:, i]))
         # print("min: ", np.min(state[:, i]))
         
-    plt.axhline(0.001, ls='--')
-    plt.ylim(10**-4, 10**1.5)
+    # plt.axhline(0.001, ls='--')
+    # plt.ylim(10**-4, 10**1.5)
     plt.yscale('log')
     plt.legend()
     plt.title(plt_title)
