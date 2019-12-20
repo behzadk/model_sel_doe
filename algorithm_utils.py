@@ -230,14 +230,16 @@ def rescale_parameters(input_params, init_states, particle_models):
 
 def find_latest_population_pickle(exp_folder):
     sub_dirs = glob.glob(exp_folder + "**/")
-    population_dirs = [f for f in sub_dirs if "Population_2" in f]
+    population_dirs = [f for f in sub_dirs if "Population" in f]
+    
     if len(population_dirs) == 0:
         return None
 
     # Get folder name
     population_names = [f.split('/')[-2] for f in population_dirs]
 
-    population_dirs = [x for y, x in sorted(zip(population_names, population_dirs), key=lambda y: int(y[0][-1]), reverse=False)]
+    population_dirs = [x for y, x in sorted(zip(population_names, population_dirs), key=lambda y: int(y[0][-1]), reverse=True)]
+
     # Return top population dir
     for f in population_dirs:
         for idx in range(len(population_names)):
@@ -265,12 +267,15 @@ def combine_population_pickles():
     data_dir = '/media/behzad/DATA/experiments_data/BK_manu_data/three_species_stable_rej_1/'
     data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_manu_surv_SMC_1/'
     data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_manu_stable_SMC_3/'
+    data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_manu_stable_3_P2/'
+    data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_manu_surv_SMC_2/'
+
+    # data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_manu_surv_SMC_1/'
+    # data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_limited_stable_SMC/'
 
     # data_dir = './output/two_species_stable_4_SMC/'
 
     exp_dirs = glob.glob(data_dir + "**/")
-    print(exp_dirs)
-
     population_pickles_list = []
 
     pickle_path_list = []
@@ -285,7 +290,10 @@ def combine_population_pickles():
             pickle_path_list.append(pickle_path)
 
     pickle_path_list = pickle_path_list
-    split_pickle_paths = np.array_split(pickle_path_list, 4)
+    print(pickle_path_list)
+    split_pickle_paths = np.array_split(pickle_path_list, 3)
+    print(len(pickle_path_list))
+    print(np.shape(split_pickle_paths))
 
     for chunk_idx, chunk in enumerate(split_pickle_paths):
         print("Doing chunk: ", chunk_idx)

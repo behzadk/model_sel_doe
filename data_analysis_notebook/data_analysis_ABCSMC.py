@@ -81,7 +81,7 @@ def generate_marginal_probability_distribution(pop_dir_list, output_dir, hide_x_
     generate_model_space_statistics(model_space_report_df, "model_marginal")
     if drop_unnacepted:
         model_space_report_df.drop(model_space_report_df[model_space_report_df['model_marginal_mean'] == 0].index, inplace=True)
-        model_space_report_df.drop(model_space_report_df[model_space_report_df['model_marginal_mean'] < 0.0005].index, inplace=True)
+        # model_space_report_df.drop(model_space_report_df[model_space_report_df['model_marginal_mean'] < 0.0005].index, inplace=True)
 
 
     model_space_report_df = model_space_report_df.sort_values(by='model_marginal_mean', ascending=False).reset_index(drop=True)
@@ -159,17 +159,17 @@ def plot_all_model_param_distributions(pop_dir, inputs_dir, figure_output_dir):
     model_space_report_df.drop(model_space_report_df[model_space_report_df['model_marginal_mean'] == 0].index, inplace=True)
 
     for model_idx in model_space_report_df['model_idx'].values:
-        top_ten_models = [33]
+        top_ten_models = [79, 65, 129, 130, 131]
 
         if model_idx not in top_ten_models:
             continue
 
-        model_output_parameter_path = pop_dir + "combined_model_params/" + "model_" + str(model_idx) + "_all_params"
+        model_output_parameter_path = pop_dir + "combined_model_params/" + "model_" + str(model_idx) + "_population_all_params"
         model_input_parameter_path = inputs_dir + "input_files/params_" + str(model_idx) + ".csv"
         model_input_species_path = inputs_dir + "input_files/species_" + str(model_idx) + ".csv"
 
-        R_script = "dens_plot_2D_spock.R"
         R_script = "dens_plot_2D_true_val.R"
+        R_script = "dens_plot_2D_spock.R"
 
         subprocess.call(['Rscript', R_script, model_output_parameter_path, model_input_parameter_path, model_input_species_path, str(model_idx), figure_output_dir])
 
@@ -184,10 +184,84 @@ def population_analysis(pop_dir, inputs_dir):
     data_utils.make_folder(param_dists_dir)
     plot_all_model_param_distributions(pop_dir, inputs_dir, param_dists_dir)
 
-
-def compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir, drop_unnacepted=False):
+def spock_vs_others(data_dir, adj_mat_dir, output_dir, drop_unnacepted=False, show_median=False):
     hide_x_ticks = False
-    show_median = True
+
+    model_space_report_path = data_dir + "combined_model_space_report.csv"
+    model_space_report_df = pd.read_csv(model_space_report_path)
+        
+    model_idxs = [79, 65, 129, 130, 131]
+    model_labels = ['Spock_v1', 'Spock_v2', 'Balagadde', 'Scott', 'Mccardell']
+
+    # Make subset of only the best models
+
+    sub_model_space_df = model_space_report_df.loc[model_space_report_df['model_idx'].isin(model_idxs)]
+    sub_model_space_df = sub_model_space_df.sort_values(by='model_marginal_mean', ascending=False).reset_index(drop=True)
+
+    ordered_labels = []
+    for x in sub_model_space_df['model_idx'].values:
+        for y, label in zip(model_idxs, model_labels):
+            if y == x:
+                ordered_labels.append(label)
+
+    print(ordered_labels)
+    sub_model_space_df['names'] = ordered_labels
+
+    # Sort data frame in order of highest acceptance ratio to lowest
+
+    # Plot 
+    output_path = output_dir + "spock_vs_others.pdf"
+    
+    fig, ax = plt.subplots()
+
+    ax.errorbar(sub_model_space_df.index, 
+                sub_model_space_df['model_marginal_mean'], 
+                yerr=sub_model_space_df['model_marginal_std'], fmt=',', color='black', alpha=1,
+                label=None, elinewidth=0.5)
+
+    sns.barplot(x='names', y='model_marginal_mean', 
+                     data=sub_model_space_df, alpha=0.9, ax=ax)
+    ax.unicode_minus = True
+
+    if hide_x_ticks:
+        ax.set(xticklabels=[])
+        ax.set(xlabel='')
+        ax.legend().remove()
+
+    else:
+        ax.set(xticklabels=sub_model_space_df['names'])
+        ax.set(xlabel='Model')
+        ax.legend()
+
+    if show_median:
+        median = np.median(sub_model_space_df['model_marginal_mean'].values)
+        ax.axhline(median, ls='--', label='Median', linewidth=1.0)
+        ax.legend()
+
+
+    ax.set(ylabel='Model marginal probability')
+    ax.set(xlim=(-0.5,None))
+    ax.set(ylim=(-0))
+    ax.spines["right"].set_visible(False)
+    ax.spines["top"].set_visible(False)
+    ax.spines["left"].set_alpha(0.5)
+    ax.spines["bottom"].set_alpha(0.5)
+    fig.tight_layout()
+    plt.savefig(output_path, dpi=500)
+
+    # output_path = output_dir + "model_marginal_probability_log_scale.eps"
+    # ax.set(yscale="log")
+    # ax.set(ylim=(None, None))
+    # plt.savefig(output_path, dpi=500)
+
+    print(output_path)
+    print("\n")
+    exit()
+
+
+
+def compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir, drop_unnacepted=False, show_median=False):
+    hide_x_ticks = False
 
     model_space_report_path = data_dir + "combined_model_space_report.csv"
     model_space_report_df = pd.read_csv(model_space_report_path)
@@ -405,9 +479,9 @@ def split_by_num_parts(data_dir, adj_mat_dir, output_dir, drop_unnacepted=False)
 
     adj_matrix_path_template = adj_mat_dir + "model_#REF#_adj_mat.csv"
     # all_num_parts, all_AHL_num_parts, all_microcin_num_parts = data_utils.make_num_parts(model_space_report_df, adj_matrix_path_template)
-    sum_adj_mat = data_utils.make_num_parts_alt(model_space_report_df, adj_matrix_path_template)
+    all_num_parts, all_AHL_num_parts, all_microcin_num_parts = data_utils.make_num_parts(model_space_report_df, adj_matrix_path_template)
 
-    model_space_report_df['num_parts'] = sum_adj_mat
+    model_space_report_df['num_parts'] = all_num_parts
 
     unique_num_parts = model_space_report_df['num_parts'].unique()
 
@@ -784,8 +858,6 @@ def find_latest_pop_dirs(data_dir):
         final_pop_dirs.append(pop_dirs[-1])
     return final_pop_dirs
 
-
-
 def combine_model_params(pop_dirs, output_dir):
     data_utils.make_folder(output_dir + "combined_model_params")
 
@@ -793,7 +865,7 @@ def combine_model_params(pop_dirs, output_dir):
     model_space_report_df = pd.read_csv(output_dir + "combined_model_space_report.csv")
     model_idxs = model_space_report_df['model_idx'].values
     model_idxs = sorted(model_idxs)
-    model_params_template = "model_#IDX#_all_params"
+    model_params_template = "model_#IDX#_population_all_params"
 
     for idx in model_idxs:
         first_instance = True
@@ -908,8 +980,15 @@ def ABC_SMC_analysis():
 
 
     ## Spock Manuscript
+    if 0:
+        experiment_name = "spock_manu_surv_SMC_2"
+        inputs_dir = wd + "input_files/input_files_two_species_spock_manu_2/"
+        R_script = "plot-motifs-spock.R"
+
+
+    ## Spock Manuscript
     if 1:
-        experiment_name = "spock_manu_stable_SMC_3"
+        experiment_name = "spock_manu_stable_SMC_p2"
         inputs_dir = wd + "input_files/input_files_two_species_spock_manu_2/"
         R_script = "plot-motifs-spock.R"
 
@@ -931,6 +1010,12 @@ def ABC_SMC_analysis():
         inputs_dir = wd_ssd + "input_files/input_files_three_species_0/"
         R_script = "plot-motifs-three.R"
 
+    ## Spock Manuscript
+    if 0:
+        experiment_name = "spock_limited_stable_SMC"
+        inputs_dir = wd_ssd + "input_files/input_files_two_species_spock_manu_2/"
+        R_script = "plot-motifs-spock.R"
+
     # wd = wd_ssd
     combined_analysis_output_dir = wd + "output/" + experiment_name + "/experiment_analysis/"
     data_utils.make_folder(combined_analysis_output_dir)
@@ -943,13 +1028,16 @@ def ABC_SMC_analysis():
     
     finished_exp_final_population_dirs = find_finished_experiments(exp_dir)
     final_pop_dirs = find_latest_pop_dirs(exp_dir)
-    subprocess.call(['Rscript', R_script, adj_mat_dir, combined_analysis_output_dir, combined_analysis_output_dir])
-    exit()
+    final_pop_dirs.pop(2)
     print(final_pop_dirs)
+
     # finished_exp_final_population_dirs = final_pop_dirs
     n_repeats = len(final_pop_dirs)
     print(finished_exp_final_population_dirs)
     write_combined_model_space_report(finished_exp_final_population_dirs, combined_analysis_output_dir)
+    combine_model_params(finished_exp_final_population_dirs, combined_analysis_output_dir)
+    plot_all_model_param_distributions(combined_analysis_output_dir, inputs_dir, combined_analysis_output_dir + "dist_plots/")
+    spock_vs_others(combined_analysis_output_dir, adj_mat_dir, combined_analysis_output_dir, drop_unnacepted=False, show_median=False)
     # plot_all_model_param_distributions(combined_analysis_output_dir, inputs_dir, combined_analysis_output_dir + "dist_plots/")
 
     for idx, pop_dir in enumerate(final_pop_dirs):
@@ -969,13 +1057,12 @@ def ABC_SMC_analysis():
     # Use final population data for analysis
     # ammensal_vs_cooperative_systems(finished_exp_final_population_dirs, combined_analysis_output_dir, adj_mat_dir, hide_x_ticks=True, drop_unnacepted=True)
     write_experiment_summary("dk", n_repeats, finished_exp_final_population_dirs, inputs_dir, combined_analysis_output_dir)
-    compare_top_models_by_parts(combined_analysis_output_dir, adj_mat_dir, combined_analysis_output_dir, drop_unnacepted=False)
+    compare_top_models_by_parts(combined_analysis_output_dir, adj_mat_dir, combined_analysis_output_dir, drop_unnacepted=False, show_median=False)
     generate_marginal_probability_distribution(finished_exp_final_population_dirs, combined_analysis_output_dir, hide_x_ticks=True, drop_unnacepted=True, show_median=False)
     split_by_num_parts(combined_analysis_output_dir, adj_mat_dir, combined_analysis_output_dir, drop_unnacepted=True)
     write_model_order(finished_exp_final_population_dirs, combined_analysis_output_dir)
     subprocess.call(['Rscript', R_script, adj_mat_dir, combined_analysis_output_dir, combined_analysis_output_dir])
-    plot_all_model_param_distributions(combined_analysis_output_dir, inputs_dir, combined_analysis_output_dir + "dist_plots/")
-    combine_model_params(finished_exp_final_population_dirs, combined_analysis_output_dir)
+
     combined_model_space_report_df = pd.read_csv(combined_analysis_output_dir + "combined_model_space_report.csv")
     model_idxs = combined_model_space_report_df['model_idx'].values
 

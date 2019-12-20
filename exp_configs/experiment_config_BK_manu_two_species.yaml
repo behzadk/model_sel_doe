@@ -16,6 +16,10 @@ fit_species:
   - 0
   - 1
 
+
+population_size: 500
+n_sims_batch: 100
+
 ## Distance options
 # 0: stable steady state
 # 1: oscillations

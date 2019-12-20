@@ -700,17 +700,22 @@ data_df <- read.csv(params_posterior_path)
 param_lims <- make_param_lims_from_input(data_df[, 6:ncol(data_df)], param_priors_inputs_path, species_inputs_path)
 # quit()
 # param_lims <- make_param_lims(output_params_df, data_df[, 5:ncol(data_df)])
-df_list <- split(data_df, f= data_df$Accepted)
-rejected_df <- df_list[[1]]
-accepted_df <- df_list[[2]]
+
+
+# df_list <- split(data_df, f= data_df$Accepted)
+# rejected_df <- df_list[[1]]
+# accepted_df <- df_list[[2]]
+
+# accepted_df <- accepted_df[, 6:ncol(accepted_df)]
+# rejected_df <- rejected_df[, 6:ncol(rejected_df)]
 
 weights <- accepted_df$particle_weight
 if(all(is.na(weights))) {
 	weights <- rep(1, length(weights))
 }
 
-accepted_df <- accepted_df[, 6:ncol(accepted_df)]
-rejected_df <- rejected_df[, 6:ncol(rejected_df)]
+accepted_df <- data_df[, 6:ncol(data_df)]
+print(columns(accepted_df))
 
 fixed_params = get_fixed_parameter_columns(accepted_df)
 

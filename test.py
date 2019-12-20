@@ -398,7 +398,30 @@ def histogram_comparison():
     area = sum(np.diff(bins)*values)
     print(area)
 
+
+def norm_test():
+    omega_max = 10
+    B_2 = 0.00001
+    n_omega = 2
+    k_omega_B_2 = 0.001
+    
+
+    x = (  omega_max * (B_2)**n_omega / ( k_omega_B_2**n_omega + (B_2)**n_omega )  )
+
+    print(x)
+
+
+    C_extra = 0.0001
+    B_2 = B_2/C_extra
+    x = (  omega_max * (C_extra * B_2)**n_omega / ( k_omega_B_2**n_omega + (C_extra * B_2)**n_omega )  )
+    print(x)
+
+
+
+
 if __name__ == "__main__":
+    norm_test()
+    exit()
     histogram_comparison()
     exit()
     growth_test()

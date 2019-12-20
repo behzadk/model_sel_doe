@@ -53,7 +53,7 @@ struct simulation_observer
         bool negative_species = false;
 
         for (auto it = m_fit_species.begin(); it != m_fit_species.end(); it++) {
-            if(x(*it) < 1e-100) {
+            if(x(*it) < 1e-25) {
                 species_decayed = true;
             }
         }

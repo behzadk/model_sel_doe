@@ -91,6 +91,7 @@ def combine_model_sim_params(exp_1_dir, exp_2_dir, output_dir):
     exp_1_params_dir = exp_1_dir + "model_sim_params/"
     exp_2_params_dir = exp_2_dir + "model_sim_params/"
 
+
     exp_1_params_path = [file_path for file_path in glob.iglob(exp_1_params_dir + "*_all_params") if "population" in file_path]
     exp_2_params_path = [file_path for file_path in glob.iglob(exp_2_params_dir + "*_all_params") if "population" in file_path]
 
@@ -104,18 +105,20 @@ def combine_model_sim_params(exp_1_dir, exp_2_dir, output_dir):
     exp_1_ordered_paths = [0 for f in range(num_models)]
     exp_2_ordered_paths = [0 for f in range(num_models)]
 
-    idx = 0
-    for f1 in exp_1_params_path:
+    
+    for idx, f1 in enumerate(exp_1_params_path):
         f1_base_name = os.path.basename(f1)
+        f1_model_num = int(os.path.basename(f1).split('_')[1])
         match = False
         for f2 in exp_2_params_path:
             f2_base_name = os.path.basename(f2)
+            f2_model_num = int(os.path.basename(f2).split('_')[1])
 
-            if f1_base_name == f2_base_name:
+            if f1_model_num == f2_model_num:
                 model_num = int(os.path.basename(f1).split('_')[1])
 
-                exp_1_ordered_paths[model_num] = f1
-                exp_2_ordered_paths[model_num] = f2
+                exp_1_ordered_paths[idx] = f1
+                exp_2_ordered_paths[idx] = f2
                 idx += 1
                 break
 

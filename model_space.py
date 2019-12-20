@@ -678,9 +678,6 @@ class ModelSpace:
             particle.init_state_aux_info = init_state_aux_info
 
 
-
-
-
     def model_space_report(self, output_dir, batch_num, use_sum=False):
         file_path = output_dir + 'model_space_report.csv'
         column_names = ['model_idx', 'accepted_count', 'simulated_count', 'model_marginal']

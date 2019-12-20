@@ -28,10 +28,19 @@ import tarfile
 import yaml
 import argparse
 
+from shutil import copy
 
 # Set time points
+parser = argparse.ArgumentParser()
+parser.add_argument('--config', type=str)
+parser.add_argument('--exp_suffix', type=int)
 
-with open("experiment_config_spock_survival.yaml", 'r') as yaml_file:
+args = parser.parse_args()
+
+config_yaml_path = args.config
+exp_num = args.exp_suffix
+
+with open(config_yaml_path, 'r') as yaml_file:
     experiment_config = yaml.load(yaml_file, Loader=yaml.FullLoader)
     experiment_config['final_epsilon'] = [float(x) for x in experiment_config['final_epsilon']]
 
@@ -43,6 +52,11 @@ experiment_name = experiment_config['experiment_name']
 t_0 = experiment_config['t_0']
 t_end = experiment_config['t_end']
 dt = experiment_config['dt']
+fit_species = experiment_config['fit_species']
+final_epsilon = experiment_config['final_epsilon']
+
+population_size = experiment_config['population_size']
+n_sims_batch = experiment_config['n_sims_batch']
 
 distance_function_mode = experiment_config['distance_function_mode']
 run_rejection = experiment_config['run_rejection']
@@ -61,7 +75,7 @@ def import_input_file(input_path):
 
 def ABCSMC_run_tests():
     experiment_folder = experiment_name.replace('NUM', str(experiment_number))
-    exp_output_folder = output_folder + experiment_folder
+    exp_output_folder = output_folder + experiment_folder + '/'
 
     latest_pickle_path = alg_utils.find_latest_population_pickle(exp_output_folder)
     print(latest_pickle_path)
@@ -94,9 +108,11 @@ def ABCSMC_run_tests():
     ABC_algs.run_model_selection_ABC_SMC(alpha=0.5, run_test=1)
     alg_utils.make_tarfile(exp_output_folder[0:-1] + "_pop_" + str(ABC_algs.population_number) + ".tar.gz", exp_output_folder)
 
+
 def ABCSMC():
-    experiment_folder = experiment_name.replace('NUM', str(experiment_number))
-    exp_output_folder = output_folder + experiment_folder
+    experiment_folder = experiment_name + '_' + str(exp_num)
+    exp_output_folder = output_folder + experiment_folder + '/'
+    print(exp_output_folder)
 
     latest_pickle_path = alg_utils.find_latest_population_pickle(exp_output_folder)
     print(latest_pickle_path)
@@ -108,54 +124,34 @@ def ABCSMC():
     except FileExistsError:
         pass
 
+    # Load models from input files
+    model_list = []
+    for i in range(int((len(os.listdir(input_folder)) / 2))):
+        input_params = input_folder + "params_" + str(i) + ".csv"
+        input_init_species = input_folder + "species_" + str(i) + ".csv"
+        init_params = import_input_file(input_params)
+        init_species = import_input_file(input_init_species)
 
-    if 0:
-        master_pickle_path = output_folder + "master_pickle_pop_0checkpoint.pickle"
-        with open(master_pickle_path, 'rb') as handle:
-            ABC_algs = pickle.load(handle)
-            ABC_algs.out_dir = exp_output_folder
-            ABC_algs.population_size = 250
+        model_new = Model(i, init_params, init_species)
 
+        # keep_models = [119, 79, 65, 62, 43, 129, 130, 131]
 
-    # ## reload previous population
-    # elif latest_pickle_path:
-    #     print("loading latest checkpoint... ")
-    #     with open(latest_pickle_path, 'rb') as handle:
-    #         ABC_algs = pickle.load(handle)
-    #     # ABC_algs.run_model_selection_ABC_SMC(alpha=0.3)
+        # if i in keep_models:
+        model_list.append(model_new)
 
-    # Otherwise start new
-    else:
-        try:
-            os.mkdir(exp_output_folder)
-
-        except FileExistsError:
-            pass
-
-        # Load models from input files
-        model_list = []
-        for i in range(int((len(os.listdir(input_folder)) / 2))):
-            input_params = input_folder + "params_" + str(i) + ".csv"
-            input_init_species = input_folder + "species_" + str(i) + ".csv"
-            init_params = import_input_file(input_params)
-            init_species = import_input_file(input_init_species)
-
-            model_new = Model(i, init_params, init_species)
-
-            # if i!= 3307 and i != 521 and i != 677 and i != 511:
-            #     continue
-
-            model_list.append(model_new)
-
-        # Run ABC_rejection algorithm
-        ABC_algs = algorithms.ABC(t_0, t_end, dt, model_list=model_list, population_size=500, n_sims_batch=100,
-            fit_species=fit_species, final_epsilon=final_epsilon, 
-            distance_function_mode=distance_function_mode, n_distances=len(final_epsilon), out_dir=exp_output_folder)
+        
+    # Run ABC_rejection algorithm
+    ABC_algs = algorithms.ABC(t_0, t_end, dt, model_list=model_list, population_size=population_size, n_sims_batch=n_sims_batch,
+        fit_species=fit_species, final_epsilon=final_epsilon, 
+        distance_function_mode=distance_function_mode, n_distances=len(final_epsilon), out_dir=exp_output_folder)
 
     if run_rejection == "Y":
         ABC_algs.current_epsilon = final_epsilon
 
     ABC_algs.run_model_selection_ABC_SMC(alpha=0.3)
+
+    copy(config_yaml_path, exp_output_folder)
+
     alg_utils.make_tarfile(exp_output_folder[0:-1] + "_pop_" + str(ABC_algs.population_number) + ".tar.gz", exp_output_folder)
 
 
@@ -230,7 +226,8 @@ def resample_and_plot_posterior():
         alg_utils.make_posterior_kdes(model_new, posterior_df, init_params, init_species)
 
         # model_new.alt_generate_params_kde()
-        model_list.append(model_new)
+
+        # model_list.append(model_new)
 
         # simple_sim = algorithms.SimpleSimulation(t_0, t_end, dt,
         #                                          model_list, batch_size=10, num_batches=1, fit_species=fit_species,

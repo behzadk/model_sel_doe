@@ -6,6 +6,8 @@ library(gridExtra)
 library(gtable)
 options(error=traceback)
 library(ggisoband)
+library(viridis)
+library(scales)
 
 theme0 <- function(...) theme( legend.position = "none",
 	                               panel.background = element_blank(),
@@ -201,12 +203,10 @@ make_contour_plot <-function(x_data, y_data, x_lims, y_lims, weights_data, true_
     }
 
 	if (identical("log10", x_trans_scale)) {
-		x_data <- log(x_data)
 		x_lims <- log(x_lims)
 	}
 
 	if (identical("log10", y_trans_scale)) {
-		y_data <- log(y_data)
 		y_lims <- log(y_lims)
 	}
 
@@ -215,41 +215,34 @@ make_contour_plot <-function(x_data, y_data, x_lims, y_lims, weights_data, true_
 	x_data <- c(x_data, x_lims[2])
 	y_data <- c(y_data, y_lims[1])
 	y_data <- c(y_data, y_lims[2])
-	weights_data <- c(weights_data, c(0, 0, 0, 0))
-
+	weights_data <- c(weights_data)
 	dens <- sm.density( cbind(x_data, y_data), weights=weights_data, display="none", nbins=0)
 
 	x1 = dens$eval.points[,1]
 	y1 = dens$eval.points[,2]
-	z1 = dens$estimate
+	# z1 = dens$estimate
 
 
 	# Generate coordinates corresponding to z grid
 	dens_df <- convert_to_grid(x1, y1)
 	colnames(dens_df) <- cbind("x1", "y1")
-	dens_df$z1 <- c(z1)
+	dens_df$z1 <- c(dens$estimate)
+	dens_df$z1 <- rescale(c(dens_df$z1), to=c(0, 10000))
 
+	# dens_df$z1 <- sapply(dens_df$z1, function(x) x*1000)
 	# Filling a column with same values so they can be passed in the same df
 	dens_df$true_val_x <- c(rep(true_val_x, length(x1)))
 	dens_df$true_val_y <- c(rep(true_val_y, length(y1)))
 
-
-	pCont_geom <- ggplot(data=dens_df, aes(x=x1, y=y1, z = z1)) +
-	geom_isobands(aes(fill = stat(zmin)), color = NA) +
-  	scale_color_viridis_c() +
-	# geom_contour(aes(x=x1, y=y1, z=z1)) +
+# "white","#aae7e6", "#507dbc", "#e87554", "#d14141"
+	pCont_geom <- ggplot(data=dens_df, aes(x=x1, y=y1, z=z1)) +
+	scale_fill_gradientn(colors=c("white", "#058989", "#ff9914", "#d14141"), values=scales::rescale(c(0, 10000))) 	
+  	pCont_geom <- pCont_geom +
+	geom_isobands(aes(z=z1, fill=stat((zmax^2+zmin^2)/2)), color = NA) +
 	scale_x_continuous(name="x", expand = c(0,0)) + 
 	scale_y_continuous(position="right", expand = c(0,0)) +
 	coord_cartesian(expand = FALSE) +
-   #    stat_contour(geom="polygon", aes(fill=..level..)) +
-	# coord_cartesian(xlim=c(min(dens_df$x1),max(dens_df$x1)),
- #                ylim=c(min(dens_df$y1),max(dens_df$y1))) +
-	# geom_point(aes(x=true_val_x, y=true_val_y, colour="blue")) + 
-
-	# theme_bw() + 
 	theme_contour()
-  	# theme(panel.background=element_rect(fill="#132B43"))  # color background
-
 
 	return(pCont_geom)
 }
@@ -308,15 +301,13 @@ make_top_plot <- function(x_data, x_lims, weights_data) {
 	trans_scale <- "identity"
 
     if ((x_lims[1] < 1e-4 && x_lims[1] != 0) || (x_lims[1] > 1e4)){
-    	# trans_scale <- "log10"
-    	x_data <- log(x_data)
     	x_lims <- log(x_lims)
     }
 
 	plot_df <- data.frame(x_data, weights_data)
 	colnames(plot_df) <- c("x", "w")
 	pTop <- ggplot(data=plot_df) +
-  	geom_density(aes(x= x, weight=w, colour = 'red')) +
+  	geom_density(aes(x= x, weight=w, colour = '#058989')) +
   	scale_x_continuous(name = 'log10(GFP)', limits=x_lims, expand = c(0,0)) +
   	scale_y_continuous(position="right", expand = c(0,0)) + 
   	theme_bw() + theme_top_dens()
@@ -329,16 +320,18 @@ make_1d_param_plot <- function(x_data, x_lims, weights_data, param_name) {
 
     if ((x_lims[1] < 1e-4 && x_lims[1] != 0) || (x_lims[1] > 1e4)){
     	trans_scale <- "log10"
+    	x_lims <- log(x_lims)
+    	print(typeof(x_data))
     }
-
 
 	plot_df <- data.frame(x_data, weights_data)
 	colnames(plot_df) <- c("x", "w")
 	pTop <- ggplot(data=plot_df) +
   	geom_density(aes(x= x, weight=w, colour = 'red')) +
-  	scale_x_continuous(name = param_name, limits=x_lims, expand = c(0,0), trans=trans_scale) + 
+  	scale_x_continuous(name = param_name, limits=x_lims, expand = c(0,0)) + 
   	scale_y_continuous(position="right", expand = c(0,0)) + 
   	theme_bw() + theme_1D_plot()
+  	print(x_lims)
   	return(pTop)
 }
 
@@ -362,7 +355,6 @@ make_left_plot <- function(x_data, x_lims, weights_data) {
 
     if ((x_lims[1] < 1e-4 && x_lims[1] != 0) || (x_lims[1] > 1e4)){
     	trans_scale <- "log10"
-    	x_data <- log(x_data)
     	x_lims <- log(x_lims)
     }
 
@@ -371,7 +363,7 @@ make_left_plot <- function(x_data, x_lims, weights_data) {
 	colnames(plot_df) <- c("x", "w")
 
 	pLeft <- ggplot(data=plot_df) +
-  	geom_density(aes(x=x, weight=w, colour = 'red')) +
+  	geom_density(aes(x=x, weight=w, colour = '#058989')) +
   	scale_x_continuous(name = 'log10(GFP)', limits=x_lims, expand = c(0,0)) +
   	scale_y_continuous(position="right", expand = c(0,0)) + 
   	coord_flip() + 
@@ -596,19 +588,18 @@ plot_1d_one_pop <- function(param_data, weights_data, cut, param_limits, output_
 	ggsave(output_name, pMar)
 }
 
-get_fixed_parameter_columns <- function(data_df) {
-
+get_fixed_parameter_columns <- function(param_lims) {
+	
 	fixed_param_list = c()
 
-	idx  = 1
-	for(i in names(data_df)){
-		x = length(unique(data_df[, i]))
-		if (x <= 4) {
-			fixed_param_list <- c(fixed_param_list, idx)
-		}
+	for(i in seq(from=1, to=dim(param_lims)[2], by=1)) {
+		diff = param_lims[2, i] - param_lims[1, i]
 
-		idx = idx + 1
+		if (diff == 0 ) {
+			fixed_param_list <- c(fixed_param_list, i)
+		}
 	}
+
 	return(fixed_param_list)
 }
 
@@ -676,15 +667,12 @@ make_param_lims <- function(params_data_df) {
 
 }
 
-
-
 args <- commandArgs(trailingOnly = TRUE)
 params_posterior_path <- args[1]
 param_priors_inputs_path <- args[2]
 species_inputs_path <- args[3]
 model_idx <- args[4]
 output_dir <- args[5]
-
 
 # wd <- "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
 # data_dir <- paste(wd, "output/spock_manu_stable_1_SMC/spock_manu_stable_1_SMC_a1/Population_2/model_sim_params/", sep="")
@@ -697,27 +685,31 @@ output_dir <- args[5]
 # data_path <- paste(data_dir, "model_99_all_params", sep="")
 data_df <- read.csv(params_posterior_path)
 
-param_lims <- make_param_lims_from_input(data_df[, 6:ncol(data_df)], param_priors_inputs_path, species_inputs_path)
+param_lims <- make_param_lims_from_input(data_df[, 4:ncol(data_df)], param_priors_inputs_path, species_inputs_path)
 # quit()
 # param_lims <- make_param_lims(output_params_df, data_df[, 5:ncol(data_df)])
-df_list <- split(data_df, f= data_df$Accepted)
-rejected_df <- df_list[[1]]
-accepted_df <- df_list[[2]]
 
-weights <- accepted_df$particle_weight
+# df_list <- split(data_df, f= data_df$Accepted)
+# rejected_df <- df_list[[1]]
+# accepted_df <- df_list[[2]]
+# accepted_df <- accepted_df[, 6:ncol(accepted_df)]
+# rejected_df <- rejected_df[, 6:ncol(rejected_df)]
+
+weights <- data_df$particle_weight
 if(all(is.na(weights))) {
 	weights <- rep(1, length(weights))
 }
 
-accepted_df <- accepted_df[, 6:ncol(accepted_df)]
-rejected_df <- rejected_df[, 6:ncol(rejected_df)]
+accepted_df <- data_df[, 4:ncol(data_df)]
 
-fixed_params = get_fixed_parameter_columns(accepted_df)
-print(fixed_params)
+fixed_params = get_fixed_parameter_columns(param_lims)
+
 to_cut <- fixed_params
-keep_columns <- c("kB_max_2", "kB_max_1", "mu_max_1", "mu_max_2", "N_1", "N_2")
-remove_columns <- setdiff(names(accepted_df), keep_columns)
-# remove_columns <- c()
+
+# keep_columns <- c("kB_max_2", "kB_max_1", "mu_max_1", "mu_max_2", "N_1", "N_2")
+# remove_columns <- setdiff(names(accepted_df), keep_columns)
+remove_columns <- c()
+
 idx <- 1
 for (name in names(accepted_df)) {
 	if (name %in% remove_columns) {

@@ -449,126 +449,11 @@ class ABC:
                 row_vals = [sim_idx, batch_num, m_ref, time_to_stab]
                 wr.writerow(row_vals)
 
-    def run_rejection(self):
-        population_number = 0
-
-        folder_name = self.out_dir + "Population_" + str(population_number) + "/"
-
-        try:
-            os.mkdir(folder_name)
-        except FileExistsError:
-            pass
-
-        sim_params_folder = folder_name + 'model_sim_params/'
-        try:
-            os.mkdir(sim_params_folder)
-        except FileExistsError:
-            pass
-
-        try:
-            os.mkdir(folder_name + 'simulation_plots')
-        except FileExistsError:
-            pass
-
-        try:
-            os.mkdir(folder_name + 'simulation_states')
-
-        except FileExistsError:
-            pass
-
-        accepted_particles_count = 0
-        total_sims = 0
-        batch_num = 0
-
-        abs_tol = 1e-20
-        rel_tol = 1e-12
-
-        while self.population_accepted_count < self.population_size:
-
-            # 1. Sample from model space
-            particle_models = self.model_space.sample_model_space(self.n_sims_batch)  # Model objects in this simulation
-
-            # 2. Sample particles for each model
-            init_states, input_params, model_refs = alg_utils.generate_particles(
-                particle_models)  # Extract input parameters and model references
-
-            alg_utils.rescale_parameters(input_params, init_states, particle_models)
-
-            # 3. Simulate population
-            # print("init pop")
-            self.pop_obj = population_modules.Population(self.n_sims_batch, self.t_0, self.t_end,
-                                                         self.dt, init_states, input_params, model_refs,
-                                                         self.fit_species, abs_tol, rel_tol)
-            # print("gen particles")
-            self.pop_obj.generate_particles()
-            # print("sim particles")
-
-            self.pop_obj.simulate_particles()
-
-            # 3. Calculate distances for population
-            # print("calculating distances")
-            self.pop_obj.calculate_particle_distances(self.distance_function_mode)
-            # print("got distances")
-
-            self.pop_obj.accumulate_distances()
-            batch_distances = self.pop_obj.get_flattened_distances_list()
-            batch_distances = np.reshape(batch_distances, (self.n_sims_batch, len(self.fit_species), self.n_distances))
-
-            # 4. Accept or reject particles
-            if self.distance_function_mode == 0:
-                batch_part_judgements = alg_utils.check_distances_stable(batch_distances, epsilon_array=self.final_epsilon)
-            elif self.distance_function_mode == 1:
-                batch_part_judgements = alg_utils.check_distances_osc(batch_distances, epsilon_array=self.final_epsilon)
-
-            dummy_weights = [1 for i in batch_part_judgements]
-            # Write data
-            self.write_particle_params(sim_params_folder, batch_num, particle_models.tolist(),
-                                       input_params, init_states, batch_part_judgements, dummy_weights)
-
-
-            self.write_particle_distances(folder_name, model_refs, batch_num, population_number, batch_part_judgements, batch_distances)
-
-            self.write_eigenvalues(folder_name, model_refs, batch_num, particle_models.tolist(), do_fsolve=True)
-            # self.write_all_particle_state_lists(folder_name, population_number, batch_num, init_states, model_refs)
-
-            # self.plot_all_particles(folder_name, 0, batch_num, init_states, model_refs)
-            self.plot_accepted_particles(folder_name, 0, batch_num, batch_part_judgements, init_states, model_refs)
-
-            self.population_accepted_count += sum(batch_part_judgements)
-            total_sims += len(model_refs)
-
-            print("Population: ", population_number, "Accepted particles: ", self.population_accepted_count,
-                  "Total simulations: ", total_sims)
-            self.model_space.update_population_sample_data(model_refs, batch_part_judgements)
-            self.model_space.model_space_report(folder_name, batch_num, use_sum=True)
-
-            negative_count = 0
-            no_prog_count = 0
-
-            for sim_idx, m_ref in enumerate(model_refs):
-                error_msg = self.pop_obj.get_particle_integration_error(sim_idx)
-                if error_msg == 'negative_species':
-                    negative_count += 1
-
-                elif error_msg == 'no_progress_error':
-                    no_prog_count += 1
-
-
-            sys.stdout.flush()
-            batch_num += 1
-
+    
 
     def run_model_selection_ABC_SMC(self, alpha=0.5, run_test=0):
-        abs_tol = 1e-20
+        abs_tol = 1e-10
         rel_tol = 1e-12
-        # abs_tol = 1e-5
-        # rel_tol = 1e-1
-
-        # final_epsilon = self.final
-        # current_epsilon = [1e250 for i in self.epsilon]
-        # population_number = 0
-
-        # finished = False
 
         while not self.finished:
             folder_name = self.out_dir + "Population_" + str(self.population_number) + "/"
@@ -605,7 +490,6 @@ class ABC:
 
             while self.population_accepted_count < self.population_size:
                 # 1. Sample from model space
-                # particle_models = self.model_space.sample_model_space(self.n_sims_batch)  # Model objects in this simulation
                 if self.population_number == 0:
                     particles = self.model_space.sample_particles_from_prior(self.n_sims_batch)
                     init_weights = 1/len(particles)
@@ -743,17 +627,14 @@ class ABC:
                 self.write_epsilon(folder_name, self.current_epsilon)
 
                 # Write data
-                self.write_particle_params(sim_params_folder, self.batch_num, particle_models,
-                                           input_params, init_states, batch_part_judgements, particle_weights)
+                # self.write_particle_params(sim_params_folder, self.batch_num, particle_models,
+                #                            input_params, init_states, batch_part_judgements, particle_weights)
 
                 self.write_particle_distances(folder_name, model_refs, self.batch_num, self.population_number,
                                               batch_part_judgements, batch_distances)
 
-                # self.write_eigenvalues(folder_name, model_refs, self.batch_num, particle_models, do_fsolve=True)
-                # self.write_all_particle_state_lists(folder_name, population_number, batch_num, init_states, model_refs)
 
                 # self.plot_all_particles(folder_name, 0, self.batch_num, init_states, model_refs)
-                # print("Plotting particles")
 
                 if run_test == 0:
                     if self.final_epsilon == self.current_epsilon:
@@ -770,30 +651,16 @@ class ABC:
                 print("Population: ", self.population_number, "Accepted particles: ", self.population_accepted_count,
                       "Total simulations: ", self.population_total_simulations)
 
-                # negative_count = 0
-                # no_prog_count = 0
-
-                # for sim_idx, m_ref in enumerate(model_refs):
-                #     error_msg = self.pop_obj.get_particle_integration_error(sim_idx)
-                #     if error_msg == 'negative_species':
-                #         negative_count += 1
-
-                #     elif error_msg == 'no_progress_error':
-                #         no_prog_count += 1
-
-                # delete population object after use
                 if not run_test:
                     del self.pop_obj
 
 
-                # print("Negative ratio: ", negative_count / len(model_refs))
-                # print("no prog ratio: ", no_prog_count / len(model_refs))
-                # print("")
                 sys.stdout.flush()
                 self.batch_num += 1
 
 
             self.save_object_pickle(folder_name)
+            self.population_accepted_particles = self.population_accepted_particles[: self.population_size]
             self.model_space.accepted_particles = self.population_accepted_particles
             self.model_space.update_population_sample_data(self.population_model_refs, self.population_judgements)
 
@@ -816,9 +683,6 @@ class ABC:
             self.model_space.count_dead_models()
             self.model_space.model_space_report(folder_name, self.batch_num, use_sum=False)
 
-            # print("\n\n")
-            # print("Current particle weights:")
-
             if self.current_epsilon != self.final_epsilon: 
                 self.current_epsilon = alg_utils.update_epsilon(self.current_epsilon, self.final_epsilon,
                                                            self.population_accepted_particle_distances, alpha)
@@ -826,6 +690,7 @@ class ABC:
                 print("Current epsilon: ", self.current_epsilon)
                 print("Starting new population... ")
                 print("")
+
                 self.population_number += 1
                 self.population_accepted_count = 0
                 self.population_total_simulations = 0
