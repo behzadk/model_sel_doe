@@ -1,4 +1,4 @@
-experiment_name: spock_survival_SMC
+experiment_name: spock_survival_SMC_4
 inputs_folder: './input_files/input_files_two_species_spock_manu_2/input_files/'
 output_folder: './output/'
 
@@ -12,6 +12,10 @@ final_epsilon:
 fit_species:
   - 0
   - 1
+
+population_size: 6000
+n_sims_batch: 200
+
 
 ## Distance options
 # 0: stable steady state

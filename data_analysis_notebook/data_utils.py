@@ -431,6 +431,32 @@ def make_num_parts_alt(model_space_report_df, adj_matrix_path_template):
 
     return adj_mat_sum
 
+def make_num_expressed_parts(model_space_report_df, adj_matrix_path_template):
+    models = model_space_report_df.model_idx.values
+    all_num_parts = []
+    all_AHL_num_parts = []
+    all_microcin_num_parts = []
+
+    for m in models:
+        adj_mat_path = adj_matrix_path_template.replace("#REF#", str(m))
+
+
+        adj_mat_df = pd.read_csv(adj_mat_path)
+        col_names = adj_mat_df.columns
+
+
+        strain_indexes = [idx for idx, i in enumerate(col_names) if 'N_' in i]
+
+        strain_expression = [adj_mat_df.values[:, x] for x in strain_indexes]
+        model_parts = np.sum(strain_expression)
+
+
+        print(model_parts)
+
+        all_num_parts.append(model_parts)
+
+    return all_num_parts
+
 
 def make_feedback_loop_counts(data_dir, input_files_dir):
     model_space_report_df = pd.read_csv(data_dir + "model_space_report.csv")

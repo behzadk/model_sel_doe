@@ -19,7 +19,7 @@ for (f in files) {
    model_nums <- cbind(model_nums, strtoi(model_num))
 }
 model_nums <- sort(model_nums)
-model_nums <- as.list(read.table(ordred_model_txt_path))[[1]][0:100]
+model_nums <- as.list(read.table(ordred_model_txt_path))[[1]]
 
 # Get species names
 a_table <- read.csv(files[1])

@@ -119,18 +119,46 @@ class Particle:
 
         elif use_component_normal:
             for idx, id in enumerate(sorted(self.prev_model._params_prior, key=str.lower)):
-                previous_param = self.prev_params[idx]
-                kernel = self.prev_model.param_kernels[idx]
+                prior_min = self.prev_model._params_prior[id][0]
+                prior_max = self.prev_model._params_prior[id][1]
+
+                if self.prev_model._params_prior[id][2] == "constant":
+                    perturbed_param = prior_max
+
+                else:
+                    param_illegal = True
+                    while param_illegal:
+                        previous_param = self.prev_params[idx]
+                        kernel = self.prev_model.param_kernels[idx]
+                        perturbed_param = np.random.normal(loc=previous_param, scale=np.sqrt(kernel))
+                        x = alg_utils.get_pdf_uniform(prior_min, prior_max, perturbed_param)
+                        
+                        if x > 0:
+                            param_illegal = False
                 
-                perturbed_param = np.random.normal(loc=previous_param,  scale=np.sqrt(kernel))
                 new_params.append(perturbed_param)
 
             for idx, id in enumerate(self.prev_model._init_species_prior):
-                previous_init_species = self.prev_init_state[idx]
-                kernel = self.prev_model.init_state_kernels[idx]
-                perturbed_param = np.random.normal(loc=previous_init_species, scale=np.sqrt(kernel))
-                new_init_state.append(previous_init_species)
+                prior_min = self.prev_model._init_species_prior[id][0]
+                prior_max = self.prev_model._init_species_prior[id][1]
 
+                if self.prev_model._init_species_prior[id][2] == "constant":
+                    perturbed_param = prior_max
+
+                else:
+                    param_illegal = True
+
+                    while param_illegal:
+                        previous_init_species = self.prev_init_state[idx]
+                        kernel = self.prev_model.init_state_kernels[idx]
+                        perturbed_param = np.random.normal(loc=previous_init_species, scale=np.sqrt(kernel))
+                        x = alg_utils.get_pdf_uniform(prior_min, prior_max, perturbed_param)
+
+                        if x > 0:
+                            param_illegal = False
+
+
+                new_init_state.append(perturbed_param)
 
         # Calculate liklihood
         prior_prob = 1
@@ -138,20 +166,27 @@ class Particle:
             prior_min = self.prev_model._params_prior[id][0]
             prior_max = self.prev_model._params_prior[id][1]
 
-            if prior_min == prior_max:
-                continue
+            if self.prev_model._params_prior[id][2] == "constant":
+                x = 1.0
 
+            else:
+                x = alg_utils.get_pdf_uniform(prior_min, prior_max, new_params[idx])
 
-            x = alg_utils.get_pdf_uniform(prior_min, prior_max, new_params[idx])
             prior_prob = prior_prob * x
-        
+
+        # print("")
         for idx, id in enumerate(self.prev_model._init_species_prior):
             prior_min = self.prev_model._init_species_prior[id][0]
             prior_max = self.prev_model._init_species_prior[id][1]
-            if prior_min == prior_max:
-                continue
 
-            x = alg_utils.get_pdf_uniform(prior_min, prior_max, new_init_state[idx])
+            if self.prev_model._init_species_prior[id][2] == "constant":
+                x = 1.0
+
+
+            else:
+                x = alg_utils.get_pdf_uniform(prior_min, prior_max, new_init_state[idx])
+
+
             prior_prob = prior_prob * x
 
 
@@ -204,8 +239,12 @@ class Model:
 
         for param_id in self._params_prior:
             param = self._params_prior[param_id]
+
+            if param[0] == param[1]:
+                self._params_prior[param_id].append('constant')
+
             # if abs(np.log10(param[0]) - np.log10(param[1])) > log_decimals:
-            if (param[0] < 1e-4 and param[0] != 0) or (param[0] > 1e4):
+            elif (param[0] < 1e-4 and param[0] != 0) or (param[0] > 1e4):
                 self._params_prior[param_id].append('log')
                 self._params_prior[param_id][0] = np.log(self._params_prior[param_id][0])
                 self._params_prior[param_id][1] = np.log(self._params_prior[param_id][1])
@@ -216,8 +255,11 @@ class Model:
         for species_id in self._init_species_prior:
             species = self._init_species_prior[species_id]
 
+            if species[0] == species[1]:
+                self._init_species_prior[species_id].append('constant')
+
             # if abs(np.log10(species[0]) - np.log10(species[1])) > log_decimals:
-            if (species[0] < 1e-4 and species[0] != 0) or (species[0] > 1e4):
+            elif (species[0] < 1e-4 and species[0] != 0) or (species[0] > 1e4):
                 self._init_species_prior[species_id].append('log')
                 self._init_species_prior[species_id][0] = np.log(self._init_species_prior[species_id][0])
                 self._init_species_prior[species_id][1] = np.log(self._init_species_prior[species_id][1])
@@ -243,7 +285,13 @@ class Model:
         use_prior = False
         use_uniform = False
         use_normal = True
-        
+
+
+        if np.shape(params)[0] == 1:
+            use_prior = True
+            use_uniform = False
+            use_normal = False
+
         if use_prior:
             params_prior = self._params_prior
             init_species_prior = self._init_species_prior
@@ -293,27 +341,20 @@ class Model:
                     self.init_state_kernels.append(scale)
 
         elif use_normal:
-            if np.shape(params)[0] == 1:
-                for p_idx in range(np.shape(params)[1]):
-                    self.param_kernels.append(1)
-
-                for s_idx in range(np.shape(init_states)[1]):
-                    self.init_state_kernels.append(1)
-
-            else:
-                for p_idx in range(np.shape(params)[1]):
-                    s2w = alg_utils.get_wt_var(params[:, p_idx], weights)
-                    self.param_kernels.append(s2w * 2)
-                    if np.isnan(s2w):
-                        print(s2w)
-                        print(weights)
-                        print(params[:, p_idx])
-                        exit()
+            for p_idx in range(np.shape(params)[1]):
+                s2w = alg_utils.get_wt_var(params[:, p_idx], weights)
+                self.param_kernels.append(s2w *2)
+                if np.isnan(s2w):
+                    print(s2w)
+                    print(weights)
+                    print(params[:, p_idx])
+                    exit()
 
 
-                for s_idx in range(np.shape(init_states)[1]):
-                    s2w = alg_utils.get_wt_var(init_states[:, s_idx], weights)
-                    self.init_state_kernels.append(s2w * 2)
+            for s_idx in range(np.shape(init_states)[1]):
+                s2w = alg_utils.get_wt_var(init_states[:, s_idx], weights)
+
+                self.init_state_kernels.append(s2w * 2)
 
 
     ##
@@ -413,11 +454,13 @@ class ModelSpace:
                 if len(accepted_params) >= 1:
                     m.generate_kernels(accepted_params, accepted_init_states, accepted_weights)
 
-            elif len(accepted_params) > 5:
+            elif len(accepted_params) >= 1:
                 m.generate_kernels(accepted_params, accepted_init_states, accepted_weights)
 
             else:
                 continue
+
+
 
     ##
     # Appends a new entry for the counts of times sampled and times accepted in a population
@@ -426,20 +469,41 @@ class ModelSpace:
     def update_population_sample_data(self, simulated_particle_refs, judgement_array):
         unique_models = self._model_list
 
+        sampled_count = [0 for i in range(len(unique_models))]
+        accepted_count = [0 for i in range(len(unique_models))]
+
+        for idx, particle_ref in enumerate(simulated_particle_refs):
+            sampled_count[particle_ref] = sampled_count[particle_ref] + 1
+
+            if judgement_array[idx]:
+                accepted_count[particle_ref] = accepted_count[particle_ref] + 1
+
+
         for m in unique_models:
-            sampled_count = 0
-            accepted_count = 0
+            m.population_sample_count.append(sampled_count[m._model_ref])
+            m.population_accepted_count.append(accepted_count[m._model_ref])
 
-            for idx, particle_ref in enumerate(simulated_particle_refs):
+    # ##
+    # # Appends a new entry for the counts of times sampled and times accepted in a population
+    # # Each time this is called
+    # ##
+    # def update_population_sample_data(self, simulated_particle_refs, judgement_array):
+    #     unique_models = self._model_list
 
-                if particle_ref == m._model_ref:
-                    sampled_count += 1
+    #     for m in unique_models:
+    #         sampled_count = 0
+    #         accepted_count = 0
 
-                    if judgement_array[idx]:
-                        accepted_count += 1
+    #         for idx, particle_ref in enumerate(simulated_particle_refs):
 
-            m.population_sample_count.append(sampled_count)
-            m.population_accepted_count.append(accepted_count)
+    #             if particle_ref == m._model_ref:
+    #                 sampled_count += 1
+
+    #                 if judgement_array[idx]:
+    #                     accepted_count += 1
+
+    #         m.population_sample_count.append(sampled_count)
+    #         m.population_accepted_count.append(accepted_count)
 
     def update_model_weights_naive(self, sigma=0.5):
 
@@ -529,7 +593,6 @@ class ModelSpace:
 
             this_model = particle.curr_model
 
-
             particle_prior_prob = 1
             for idx, id in enumerate(sorted(model_params_prior, key=str.lower)):
                 x = 1.0
@@ -602,11 +665,20 @@ class ModelSpace:
 
 
     def update_model_marginals(self):
+        new_model_weights = [0 for i in range(len(self._model_list))]
+
+        for particle in self.accepted_particles:
+            new_model_weights[particle.curr_model._model_ref] = new_model_weights[particle.curr_model._model_ref] + particle.curr_weight
+
+
         for m in self._model_list:
-            m.curr_margin = 0
-            for particle in self.accepted_particles:
-                if particle.curr_model._model_ref == m._model_ref:
-                    m.curr_margin += particle.curr_weight
+            m.curr_margin = new_model_weights[m._model_ref]
+
+        # for m in self._model_list:
+        #     m.curr_margin = 0
+        #     for particle in self.accepted_particles:
+        #         if particle.curr_model._model_ref == m._model_ref:
+        #             m.curr_margin += particle.curr_weight
 
 
     def normalize_particle_weights(self):

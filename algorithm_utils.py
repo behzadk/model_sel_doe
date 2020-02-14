@@ -193,7 +193,7 @@ def get_wt_var(x_list, weights_list):
     sum_w2 = sum([w**2 for w in weights_list])
     x_bar_wt = sum([(w * x) for (w, x) in zip(weights_list, x_list)]) / sum_w
     ret = sum([(w * (x - x_bar_wt) ** 2) for (w, x) in zip(weights_list, x_list)]) * sum_w / ( (sum_w**2) - sum_w2)
-
+    
     return ret
 
 
@@ -207,6 +207,7 @@ def get_parameter_kernel_pdf(params, params0, scale, non_constant_idxs, prior, a
         elif use_normal_kernel:
             mean = params0[idx]
             kern = get_pdf_gauss(mean, scale=np.sqrt(scale[idx]), x=params[idx])
+            
             if np.isnan(kern):
                 print(mean)
                 exit(0)
@@ -269,7 +270,12 @@ def combine_population_pickles():
     data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_manu_stable_SMC_3/'
     data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_manu_stable_3_P2/'
     data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_manu_surv_SMC_2/'
-
+    data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_manu_stable_SMC_4/'
+    data_dir = '/media/behzad/DATA/experiments_data/BK_manu_data/two_species_SMC_stable_4/'
+    data_dir = '/media/behzad/DATA/experiments_data/BK_manu_data/three_species_surv_rej_1/'
+    data_dir = '/media/behzad/DATA/experiments_data/BK_manu_data/three_species_no_sk_1/'
+    data_dir = '/media/behzad/DATA/experiments_data/BK_manu_data/three_species_stable_6_rej_0/'
+    data_dir = '/media/behzad/DATA/experiments_data/BK_manu_data/two_species_3_rej_0/'
     # data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_manu_surv_SMC_1/'
     # data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_limited_stable_SMC/'
 
@@ -289,9 +295,9 @@ def combine_population_pickles():
         if pickle_path:
             pickle_path_list.append(pickle_path)
 
-    pickle_path_list = pickle_path_list
-    print(pickle_path_list)
+    pickle_path_list = pickle_path_list[:9]
     split_pickle_paths = np.array_split(pickle_path_list, 3)
+
     print(len(pickle_path_list))
     print(np.shape(split_pickle_paths))
 
@@ -307,18 +313,18 @@ def combine_population_pickles():
             master_alg = pickle.load(handle)
             print("copying master alg object")
             shutil.copytree(master_dir, chunk_out_dir )
-            master_alg.model_space.accepted_particles = master_alg.population_accepted_particles
+            # master_alg.model_space.accepted_particles = master_alg.population_accepted_particles
 
-            master_alg.model_space.update_population_sample_data(master_alg.population_model_refs, master_alg.population_judgements)
+            # master_alg.model_space.update_population_sample_data(master_alg.population_model_refs, master_alg.population_judgements)
 
-            if master_alg.population_number == 0:
-                for p in master_alg.model_space.accepted_particles:
-                    p.curr_weight = 1
+            # if master_alg.population_number == 0:
+            #     for p in master_alg.model_space.accepted_particles:
+            #         p.curr_weight = 1
 
-            else:
-                master_alg.model_space.compute_particle_weights()
+            # else:
+            #     master_alg.model_space.compute_particle_weights()
 
-            master_alg.model_space.normalize_particle_weights()
+            # master_alg.model_space.normalize_particle_weights()
 
             print("loading up judgements, model_refs, accepted_particles, population_accepted_count and population_total_simulations")
             
@@ -330,24 +336,25 @@ def combine_population_pickles():
                         p_dir = "/".join(p_path.split('/')[:-1]) + "/"
                         p = pickle.load(p_handle)
                         total_acc += (len(p.population_accepted_particles))
-                        p.model_space.update_population_sample_data(p.population_model_refs, p.population_judgements)
-                        p.model_space.accepted_particles = p.population_accepted_particles
 
-                        if p.population_number == 0:
-                            for particle in p.model_space.accepted_particles:
-                                particle.curr_weight = 1
+                        # p.model_space.accepted_particles = p.population_accepted_particles
+                        # p.model_space.update_population_sample_data(p.population_model_refs, p.population_judgements)
 
-                        else:
-                            p.model_space.compute_particle_weights()
+                        # if p.population_number == 0:
+                        #     for particle in p.model_space.accepted_particles:
+                        #         particle.curr_weight = 1
 
-                        p.model_space.normalize_particle_weights()
+                        # else:
+                        #     p.model_space.compute_particle_weights()
+
+                        # p.model_space.normalize_particle_weights()
                         master_alg.population_judgements += p.population_judgements
                         master_alg.population_model_refs += p.population_model_refs
                         master_alg.population_accepted_particles += p.population_accepted_particles
                         master_alg.population_accepted_count += p.population_accepted_count
                         master_alg.population_total_simulations += p.population_total_simulations
 
-                        combine_outputs.combine_model_sim_params(chunk_out_dir, p_dir, chunk_out_dir)
+                        # combine_outputs.combine_model_sim_params(chunk_out_dir, p_dir, chunk_out_dir)
                         combine_outputs.combine_distances(chunk_out_dir, p_dir, chunk_out_dir)
 
                 except EOFError:
@@ -395,7 +402,6 @@ def combine_population_pickles():
             master_alg.model_space.prepare_next_population()
 
             print("generating model kernels")
-            master_alg.model_space.generate_model_kernels(master_alg.population_accepted_particles, master_alg.population_number)
 
             print("counting dead models")
             master_alg.model_space.count_dead_models()

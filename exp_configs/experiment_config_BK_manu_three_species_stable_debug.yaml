@@ -1,23 +1,25 @@
-experiment_name: spock_stable_SMC_4
-inputs_folder: './input_files/input_files_two_species_spock_manu_2/input_files/'
+experiment_name: BK_manu_three_species
+inputs_folder: './input_files/input_files_three_species_6/input_files/'
 output_folder: './output/'
 
 # Start time, end time, time interval
 t_0: 0
-t_end: 1500
+t_end: 10
 dt: 0.5
 
 final_epsilon: 
-  - 500
-  - 25000
   - 1e-9
+  - 0.001
+  - 1000
 
 fit_species:
   - 0
   - 1
+  - 2
 
-population_size: 6000
-n_sims_batch: 200
+
+population_size: 100
+n_sims_batch: 100
 
 ## Distance options
 # 0: stable steady state

@@ -25,6 +25,11 @@ import data_analysis_ABCSMC
 # import sklearn
 import seaborn as sns
 from sklearn.cluster import AgglomerativeClustering
+from sklearn.neural_network import MLPRegressor
+from sklearn.utils import shuffle
+from sklearn.model_selection import cross_val_score
+
+import motif_counting
 
 if 1:
     wd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
@@ -591,6 +596,135 @@ def rdn_forest_test(inputs_dir, data_dir, output_dir):
     flat_features_predict_df.sort_values(by='prediction', ascending=False, inplace=True)
     print(flat_features_predict_df)
 
+
+
+def sklearn_nn_train():
+
+    train_data_df= pd.read_csv('/media/behzad/DATA/experiments_data/BK_manu_data/output/two_species_3_rej_0/experiment_analysis/combined_model_space_report_with_motifs.csv')
+
+    test_data_df = pd.read_csv('/media/behzad/DATA/experiments_data/BK_manu_data/output/three_species_stable_6_rej_0/experiment_analysis/combined_model_space_report_with_motifs.csv')
+    
+
+    train_data_df.drop('direct_self_limiting_counts', inplace=True, axis=1)
+    train_data_df.drop('direct_competitive_counts', inplace=True, axis=1)
+    test_data_df.drop('direct_self_limiting_counts', inplace=True, axis=1)
+    test_data_df.drop('direct_competitive_counts', inplace=True, axis=1)
+
+    # train_data_df.drop('dependent_counts', inplace=True, axis=1)
+    # test_data_df.drop('dependent_counts', inplace=True, axis=1)
+
+    X_data_columns = [x for x in train_data_df.columns if 'counts' in x]
+    print(X_data_columns)
+
+    # test_data_df = train_data_df
+
+
+    Y_data = train_data_df['norm_marginal_means']
+
+
+    X = train_data_df[X_data_columns].values
+    y = Y_data.values
+    X_test = test_data_df[X_data_columns].values
+
+    y_test = test_data_df['norm_marginal_means'].values
+
+
+    n=3 # how many times to shuffle the training data
+    nhn_range=[8] # number of hidden neurons
+
+    new_array = []
+    X_noisy = np.copy(X)
+    y_noisy = np.copy(y)
+
+    for repeat_data in range(25):
+        X_new = np.copy(X)
+        X_new = X_new + np.random.normal(0, 0.8, 1)
+        X_noisy = np.concatenate( (X_noisy, X_new), axis=0 )
+
+        y_new = np.copy(y)
+        y_noisy = np.concatenate((y_noisy, y_new), axis=0)
+
+
+    print(np.shape(X))
+    print(np.shape(y))
+    print(np.shape(y_noisy))
+    print(np.shape(X_noisy))
+
+    score_dict = {}
+    for nhn in nhn_range:
+        print(nhn)
+        # mlp = MLPRegressor(hidden_layer_sizes=(10, 5, 2), activation='tanh', learning_rate_init=0.001,
+        #                    solver='sgd', shuffle=True, verbose=True, tol=1e-10, batch_size=500,
+        #                    max_iter=200000, momentum=0.5, early_stopping=False, n_iter_no_change = 100,
+        #                    validation_fraction=0.1)
+
+        mlp = MLPRegressor(hidden_layer_sizes=(10), activation='relu', learning_rate_init=0.01,
+                           solver='adam', shuffle=True, verbose=True, tol=1e-8, 
+                           max_iter=200000, momentum=0.9, early_stopping=False, n_iter_no_change = 1000,
+                           validation_fraction=0.1)
+
+
+        mlp.fit(X_noisy, y_noisy)
+        nhn_scores = []
+
+
+        pred_y = mlp.predict(X)
+        # pred_y = motif_counting.normalise_list(pred_y)
+
+        pred_y = pred_y
+        output = {
+        'model_idx': test_data_df['model_idx'].values,
+        'predictions': pred_y,
+        'norm_marginal_mean': y_test
+        }
+
+        plt.scatter(x=range(len(pred_y)), y=pred_y)
+        plt.scatter(x=range(len(pred_y)), y=y)
+
+        plt.show()
+
+        score_dict[nhn] = nhn_scores
+
+
+        pred_y = mlp.predict(X_test)
+        # pred_y = motif_counting.normalise_list(pred_y)
+
+        pred_y = motif_counting.normalise_list(pred_y)
+        output = {
+        'model_idx': test_data_df['model_idx'].values,
+        'predictions': pred_y,
+        'norm_marginal_mean': y_test
+        }
+
+        print(len(pred_y))
+        print(len(y_test))
+
+        plt.scatter(x=range(len(pred_y)), y=y_test)
+        plt.scatter(x=range(len(pred_y)), y=pred_y)
+
+        plt.show()
+
+        score_dict[nhn] = nhn_scores
+
+
+    scores_df = pd.DataFrame(score_dict)
+    scores_df.to_csv('scores_df_1.csv')
+
+
+    pred_y = mlp.predict(X_test)
+    pred_y = motif_counting.normalise_list(pred_y)
+
+    output = {
+    'model_idx': test_data_df['model_idx'].values,
+    'predictions': pred_y,
+    'norm_marginal_mean': y_test
+    }
+
+
+    df = pd.DataFrame(output)
+    df.to_csv('output.csv')
+    print(df)
 if __name__ == "__main__":
-    k_means_test()
+    sklearn_nn_train()
+    # k_means_test()
     print("hello world")

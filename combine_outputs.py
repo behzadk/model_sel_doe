@@ -44,6 +44,9 @@ def combine_distances(exp_1_dir, exp_2_dir, output_dir):
     print("Reading in dataframes")
     exp_1_df = pd.read_csv(exp_1_dir + 'distances.csv')
     exp_2_df = pd.read_csv(exp_2_dir + 'distances.csv')
+    
+    exp_1_df = exp_1_df.loc[exp_1_df['Accepted'] == True]
+    exp_2_df = exp_1_df.loc[exp_1_df['Accepted'] == True]
 
 
     start_batches = exp_1_df.iloc[-1]['batch_num'] + 1
@@ -149,6 +152,7 @@ def combine_model_sim_params(exp_1_dir, exp_2_dir, output_dir):
 
         if len(exp_2_df) == 0 :
             exp_1_df.to_csv(output_dir + outfile_name, index=False)
+            count += 1
             continue
 
         # start_batches = max(exp_2_df['batch_num'].values) + 1

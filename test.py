@@ -3,6 +3,7 @@ import numpy as np
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+from scipy.integrate import odeint
 
 step_size = 0.5
 
@@ -417,10 +418,268 @@ def norm_test():
     print(x)
 
 
+def non_dim_test():
+    x = 2
+    y = 5
+
+    dx = 3*x + 2*y - 10
+    dy = 2*x + y*y + 7
+
+    print(dx)
+    print(dy)
+
+    c = 0.1 # x norm val
+    k = 0.01 # y norm val
+
+    x = x/c
+    y = y/k
+
+    d_norm_x = 3*x*c + 2*y*k -10
+    d_norm_y = 2*x*c + (y*k)**2 + 7
+
+    print(d_norm_x)
+    print(d_norm_y)
+
+
+def non_dim_test_2():
+    D = 0.01
+    mu_max_1 = 0.5
+    S_glu = 4.0
+    K_mu_glu = 0.01
+    omega_max = 1.0
+    n_omega = 2
+    k_omega_B_1 = 0.01
+    kB_max_1 = 2
+
+    A_1 = 2
+    n_A_B_1 = 2
+    K_A_B_1 = 0.1
+
+    N_1 = 100
+    B_1 = 2
+
+    C_extra = 1
+    C_OD = 1
+    dN_1 = ( - D * N_1 ) + N_1  * ( mu_max_1 * S_glu / ( K_mu_glu + S_glu ) ) - (  omega_max * (B_1)**n_omega / ( k_omega_B_1**n_omega + (B_1)**n_omega )  )  * N_1 
+    dB_1 = ( - D * B_1 ) +  kB_max_1  * ( A_1**n_A_B_1 / ( K_A_B_1**n_A_B_1 + A_1**n_A_B_1 ) ) * N_1
+
+
+
+    N_0 = 100
+    B_0 = 1000
+    Nq = N_1 / N_0
+    Bq = B_1 / B_0
+
+
+    dNq = ( - D * Nq ) + Nq  * ( mu_max_1 * S_glu / ( K_mu_glu + S_glu ) ) - (  omega_max * (Bq*B_0)**n_omega / ( k_omega_B_1**n_omega + (Bq*B_0)**n_omega )  ) * Nq 
+    dBq = ( - D * Bq ) +  kB_max_1  * ( A_1**n_A_B_1 / ( K_A_B_1**n_A_B_1 + A_1**n_A_B_1 ) ) * Nq*N_0 / B_0
+
+
+    print("")
+    print(N_1 + dN_1)
+    print(B_1 + dB_1)
+
+    print((Nq + dNq) * N_0)
+    print((Bq + dBq) * B_0)
+
+
+
+def non_dim_test_3():
+    a = 2
+    b = 5
+    c = 10
+
+    x = 3
+
+
+    dx = a + b*x + c*x**2
+
+
+    x_0 = 100
+    q = x / x_0
+
+    dq = (a / x_0) + b * q + (c*x_0) * q**2
+
+    print(dx)
+    print(dq)
+
+    print(x + dx)
+    print((q + dq) * x_0)
+
+
+def non_dim_test_4():
+    D = 0.01
+    mu_max_1 = 2.0
+    mu_max_2 = 3.0
+    mu_max_3 = 2.5
+
+    K_mu_glu = 0.1
+    S0_glu = 4.0
+    g_1 = g_2 = g_3 = 100
+
+    omega_max = 1.0
+    n_omega = 2.0
+    k_omega_B_2 = k_omega_B_1 = k_omega_B_3 = 0.001
+    kB_max_1 = kB_max_2 = kB_max_3 = 1.2
+
+    K_A_B_2 = K_A_B_1 = K_A_B_3 = 0.1
+    n_A_B_2 = n_A_B_1 = n_A_B_3 = 2.0
+
+    kA_1 = kA_2 = kA_3 = 0.1
+
+
+
+
+    C_OD = 1
+    C_extra = 1
+
+    N_1 = 0.5 / C_OD
+    N_2 = 1.5 / C_OD
+    N_3 = 0.25 / C_OD
+
+
+    B_1 = 0.1 / C_extra
+    B_2 = 1 / C_extra
+    B_3 = 0.0001 / C_extra
+
+    A_1 = 0.1 / C_extra
+    A_2 = 0.2 / C_extra
+    A_3 = 0.4 / C_extra
+
+    S_glu = 3.0
+
+
+    dN_1 = ( - D * N_1 ) + N_1  * ( mu_max_1 * S_glu / ( K_mu_glu + S_glu ) ) - (  omega_max * (C_extra * B_3)**n_omega / ( k_omega_B_3**n_omega + (C_extra *  B_3)**n_omega )  )  * N_1 
+
+    dN_2 = ( - D * N_2 ) + N_2  * ( mu_max_2 * S_glu / ( K_mu_glu + S_glu ) ) - (  omega_max * (C_extra * B_1)**n_omega / ( k_omega_B_1**n_omega + (C_extra *  B_1)**n_omega )  )  * N_2 
+
+    dN_3 = ( - D * N_3 ) + N_3  * ( mu_max_3 * S_glu / ( K_mu_glu + S_glu ) ) - (  omega_max * (C_extra * B_1)**n_omega / ( k_omega_B_1**n_omega + (C_extra *  B_1)**n_omega )  )  * N_3 
+
+    dS_glu = ( D * ( S0_glu - S_glu ) ) - ( mu_max_1 * S_glu / ( K_mu_glu + S_glu ) ) * N_1 * C_OD / g_1  - ( mu_max_2 * S_glu / ( K_mu_glu + S_glu ) ) * N_2 * C_OD / g_2  - ( mu_max_3 * S_glu / ( K_mu_glu + S_glu ) ) * N_3 * C_OD / g_3 
+
+    dB_3 = ( - D * B_3 ) +  kB_max_3  * ( K_A_B_3**n_A_B_3 / ( K_A_B_3**n_A_B_3 + (C_extra * A_2)**n_A_B_3 ) ) * N_3 * C_OD / C_extra 
+
+    dB_1 = ( - D * B_1 ) +  kB_max_1  * ( (C_extra * A_1)**n_A_B_1 / ( K_A_B_1**n_A_B_1 + (C_extra * A_1)**n_A_B_1 ) ) * N_1 * C_OD / C_extra  +  kB_max_1  * ( K_A_B_1**n_A_B_1 / ( K_A_B_1**n_A_B_1 + (C_extra * A_1)**n_A_B_1 ) ) * N_2 * C_OD / C_extra 
+
+    dA_1 = ( - D * A_1 ) + kA_1 * N_1 * C_OD / C_extra + kA_1 * N_2 * C_OD / C_extra
+
+    dA_2 = ( - D * A_2 ) + kA_2 * N_3 * C_OD / C_extra
+
+
+    d_raw_list = [dN_1, dN_2, dN_3, dS_glu, dB_1, dB_3, dA_2, dA_1]
+
+
+    C_OD = 100
+    C_extra = 1000
+
+    N_1 = 0.5 / C_OD
+    N_2 = 1.5 / C_OD
+    N_3 = 0.25 / C_OD
+
+
+    B_1 = 0.1 / C_extra
+    B_2 = 1 / C_extra
+    B_3 = 0.0001 / C_extra
+
+    A_1 = 0.1 / C_extra
+    A_2 = 0.2 / C_extra
+    A_3 = 0.4 / C_extra
+
+    S_glu = 3.0
+
+
+    dN_1 = ( - D * N_1 ) + N_1  * ( mu_max_1 * S_glu / ( K_mu_glu + S_glu ) ) - (  omega_max * (C_extra * B_3)**n_omega / ( k_omega_B_3**n_omega + (C_extra *  B_3)**n_omega )  )  * N_1 
+
+    dN_2 = ( - D * N_2 ) + N_2  * ( mu_max_2 * S_glu / ( K_mu_glu + S_glu ) ) - (  omega_max * (C_extra * B_1)**n_omega / ( k_omega_B_1**n_omega + (C_extra *  B_1)**n_omega )  )  * N_2 
+
+    dN_3 = ( - D * N_3 ) + N_3  * ( mu_max_3 * S_glu / ( K_mu_glu + S_glu ) ) - (  omega_max * (C_extra * B_1)**n_omega / ( k_omega_B_1**n_omega + (C_extra *  B_1)**n_omega )  )  * N_3 
+
+    dS_glu = ( D * ( S0_glu - S_glu ) ) - ( mu_max_1 * S_glu / ( K_mu_glu + S_glu ) ) * N_1 * C_OD / g_1  - ( mu_max_2 * S_glu / ( K_mu_glu + S_glu ) ) * N_2 * C_OD / g_2  - ( mu_max_3 * S_glu / ( K_mu_glu + S_glu ) ) * N_3 * C_OD / g_3 
+
+    dB_3 = ( - D * B_3 ) +  kB_max_3  * ( K_A_B_3**n_A_B_3 / ( K_A_B_3**n_A_B_3 + (C_extra * A_2)**n_A_B_3 ) ) * N_3 * C_OD / C_extra 
+
+    dB_1 = ( - D * B_1 ) +  kB_max_1  * ( (C_extra * A_1)**n_A_B_1 / ( K_A_B_1**n_A_B_1 + (C_extra * A_1)**n_A_B_1 ) ) * N_1 * C_OD / C_extra  +  kB_max_1  * ( K_A_B_1**n_A_B_1 / ( K_A_B_1**n_A_B_1 + (C_extra * A_1)**n_A_B_1 ) ) * N_2 * C_OD / C_extra 
+
+    dA_1 = ( - D * A_1 ) + kA_1 * N_1 * C_OD / C_extra + kA_1 * N_2 * C_OD / C_extra
+
+    dA_2 = ( - D * A_2 ) + kA_2 * N_3 * C_OD / C_extra
+
+
+    d_non_dim = [dN_1*C_OD, dN_2*C_OD, dN_3*C_OD, dS_glu, dB_1*C_extra, dB_3*C_extra, dA_2*C_extra, dA_1*C_extra]
+
+    print(d_raw_list)
+    print(d_non_dim)
+
+
+
+def non_dim_odeint_test():
+    def non_dim_diff_eqs(y, t):
+
+        i = y[0]
+        j = y[1]
+
+        di = 3*i - 2*j - 10
+        dj = 2*i - j + 7
+
+        return [di, dj]
+
+    def diff_eqs_exp(y, t):
+
+        i = y[0]
+        j = y[1]
+
+        di = i + j
+        dj = j + i
+
+        return [di, dj]
+
+    def non_dim_diff_eqs_exp(y, t):
+
+        i = y[0]
+        j = y[1]
+
+        i_norm = 1000
+        j_norm = 100
+
+
+        di = i + j
+        dj = j + i
+
+        return [di, dj]
+
+
+    i_init = 1
+    j_init = 1
+
+    y_init = [i_init, j_init]
+
+    t = np.linspace(0, 1)
+
+    sol = odeint(diff_eqs_exp, y_init, t)
+
+    plt.plot(t, sol[:, 0])
+    plt.plot(t, sol[:, 1])
+    plt.show()
+
+
+    i_norm = 1000
+    j_norm = 100
+    i_init = 1/i_norm
+    j_init = 1/j_norm
+
+    y_init = [i_init, j_init]
+
+    t = np.linspace(0, 1)
+
+    sol = odeint(non_dim_diff_eqs_exp, y_init, t)
+
+    plt.plot(t, sol[:, 0]*i_norm)
+    plt.plot(t, sol[:, 1]*j_norm)
+    plt.show()
 
 
 if __name__ == "__main__":
-    norm_test()
+    non_dim_test_4()
     exit()
     histogram_comparison()
     exit()

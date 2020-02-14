@@ -136,6 +136,8 @@ get_name_idx <- function(string_ref=NULL, param_idx=NULL) {
 		"N_1", "N_2", "S_glu", "S_trp", "B", "A", "V", "I", "T"
 		)
 
+
+
 		# "kA_1", "K_omega", "n_omega", "S0", "gX", 
     	# "gC", "C0L", "KDL","nL","K1L",
     	# "K2L", "ymaxL", "K1T", "K2T", "ymaxT", 
@@ -706,8 +708,8 @@ fixed_params = get_fixed_parameter_columns(param_lims)
 
 to_cut <- fixed_params
 
-# keep_columns <- c("kB_max_2", "kB_max_1", "mu_max_1", "mu_max_2", "N_1", "N_2")
-# remove_columns <- setdiff(names(accepted_df), keep_columns)
+keep_columns <- c("D", "kA_1", "kA_2", "kA_3", "kB_max_1", "kB_max_2", "kB_max_3", "omega_max")
+remove_columns <- setdiff(names(accepted_df), keep_columns)
 remove_columns <- c()
 
 idx <- 1
@@ -718,6 +720,7 @@ for (name in names(accepted_df)) {
 	idx <- idx + 1
 }
 
+print(to_cut)
 dummy_true_val_vector <- rep(0.8,  dim(accepted_df)[2])
 
 # dim(accepted_df)
@@ -726,7 +729,7 @@ name_prefix <- paste("model_", toString(model_idx), sep="")
 output_name <- paste(name_prefix, "_1D_dens.pdf", sep="")
 output_path <-  paste(output_dir, output_name, sep="")
 
-# plot_1d_one_pop(accepted_df, weights, to_cut, param_lims, output_path, dummy_true_val_vector)
+plot_1d_one_pop(accepted_df, weights, to_cut, param_lims, output_path, dummy_true_val_vector)
 
 output_name <- paste(name_prefix, "_2D_dens.pdf", sep="")
 output_path <-  paste(output_dir, output_name, sep="")
