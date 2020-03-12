@@ -55,6 +55,12 @@ def kolmogorov_smirnov_test(sample_one, sample_two):
         v1 = sample_one[s_one_idx]
         v2 = sample_two[s_two_idx]
 
+        print(v1)
+        print(v2)
+        print(sample_one_cdf[s_one_idx])
+        print(sample_two_cdf[s_two_idx])
+        print("")
+
         diff = abs(sample_one_cdf[s_one_idx] - sample_two_cdf[s_two_idx])
         if diff > max_diff:
             max_diff = diff

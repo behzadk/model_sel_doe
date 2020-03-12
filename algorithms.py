@@ -32,13 +32,15 @@ def blockPrinting(func):
 
 
 class ABC:
-    def __init__(self, t_0, t_end, dt,
+    def __init__(self, t_0, t_end, dt, exp_num,
                  model_list, population_size, n_sims_batch,
                  fit_species, final_epsilon, distance_function_mode, n_distances, abs_tol, rel_tol, out_dir):
         self.t_0 = t_0
         self.t_end = t_end
         self.dt = dt
         self.model_list = model_list
+
+        self.exp_num = exp_num
 
         self.population_size = population_size
         self.population_accepted_count = 0
@@ -177,7 +179,7 @@ class ABC:
 
         # If file doesn't exist, write header
         if not os.path.isfile(out_path):
-            col_header = ['sim_idx', 'batch_num', 'population_num', 'model_ref', 'Accepted', 'integ_error']
+            col_header = ['sim_idx', 'batch_idx', 'population_num', 'exp_num', 'model_ref', 'Accepted', 'integ_error']
             idx = 1
             for n in self.fit_species:
                 for d in self.current_epsilon:
@@ -197,7 +199,7 @@ class ABC:
                     continue
 
                 error_msg = self.pop_obj.get_particle_integration_error(idx)
-                row_vals = [idx, batch_num, population_num, m_ref, judgement_array[idx], error_msg]
+                row_vals = [idx, batch_num, population_num, self.exp_num, m_ref, judgement_array[idx], error_msg]
 
 
                 for n_idx, n in enumerate(self.fit_species):
@@ -213,7 +215,7 @@ class ABC:
 
             # Add header if file does not yet exist
             if not os.path.isfile(out_path):
-                col_header = ['sim_idx', 'batch_num', 'Accepted', 'particle_weight'] + list(sorted(m._params_prior, key=str.lower)) + list(
+                col_header = ['sim_idx', 'batch_idx', 'Accepted', 'particle_weight'] + list(sorted(m._params_prior, key=str.lower)) + list(
                     m._init_species_prior)
                 with open(out_path, 'a') as out_csv:
                     wr = csv.writer(out_csv)
@@ -233,7 +235,7 @@ class ABC:
 
             # Add header if file does not yet exist
             if not os.path.isfile(out_path):
-                col_header = ['sim_idx', 'batch_idx', 'population_num', 'particle_weight'] + list(sorted(m._params_prior, key=str.lower)) + list(
+                col_header = ['sim_idx', 'batch_idx', 'population_num', 'exp_num', 'particle_weight'] + list(sorted(m._params_prior, key=str.lower)) + list(
                     m._init_species_prior)
                 with open(out_path, 'a') as out_csv:
                     wr = csv.writer(out_csv)
@@ -245,7 +247,7 @@ class ABC:
                 for idx, particle in enumerate(self.population_accepted_particles):
                     if m._model_ref is particle.curr_model._model_ref:
                         wr.writerow(
-                            [particle.sim_idx] + [particle.batch_idx] + [self.population_number] + [particle.curr_weight] + particle.curr_params + particle.curr_init_state)
+                            [particle.sim_idx] + [particle.batch_idx] + [self.population_number] + [self.exp_num] + [particle.curr_weight] + particle.curr_params + particle.curr_init_state)
 
 
     def write_particle_sum_stdevs(self, out_dir, model_refs, batch_num, simulated_particles, from_timepoint):
@@ -502,7 +504,9 @@ class ABC:
             self.batch_num = 0
 
             while self.population_accepted_count < self.population_size:
+                print("")
                 start_time = time.time()
+                start_time_sampling = time.time()
 
                 # 1. Sample from model space
                 if self.population_number == 0:
@@ -515,7 +519,6 @@ class ABC:
                         p.sim_idx = sim_idx
 
 
-
                 else:
                     print("Sampling new population")
                     # Sample and perturb particles from previous population
@@ -523,6 +526,9 @@ class ABC:
                     for sim_idx, p in enumerate(particles):
                         p.batch_idx = self.batch_num
                         p.sim_idx = sim_idx
+
+                end_time_sampling = time.time()
+                print("Particle sampling time elapsed: ", end_time_sampling - start_time_sampling)
 
                 init_states = [copy.deepcopy(p.curr_init_state) for p in particles]
                 input_params = [copy.deepcopy(p.curr_params) for p in particles]
@@ -533,23 +539,31 @@ class ABC:
 
                 alg_utils.rescale_parameters(input_params, init_states, particle_models)
 
+
                 if run_test==0:
                     self.pop_obj = population_modules.Population(self.n_sims_batch, self.t_0, self.t_end,
                                                                  self.dt, init_states, input_params, model_refs,
                                                                  self.fit_species, self.abs_tol, self.rel_tol)
-                    print("gen particles")
+            
+                    # print("gen particles")
                     self.pop_obj.generate_particles()
-                    print("sim particles")
+                    # print("sim particles")
+                    start_time_sim = time.time()
+                    
 
                     self.pop_obj.simulate_particles()
+                    end_time_sim = time.time()
 
+                    print("Particle simulation time elapsed: ", end_time_sim - start_time_sim)
+
+            
                     # 3. Calculate distances for population
-                    print("calculating distances")
+                    # print("calculating distances")
                     self.pop_obj.calculate_particle_distances(self.distance_function_mode)
-                    print("got distances")
+                    # print("got distances")
 
                     self.pop_obj.accumulate_distances()
-                    print("distances accumulated")
+                    # print("distances accumulated")
 
                     batch_distances = self.pop_obj.get_flattened_distances_list()
                     batch_distances = np.reshape(batch_distances,
@@ -568,7 +582,6 @@ class ABC:
                         print("Invalid distance function set, quitting... ")
                         exit()
 
-                    # batch_part_judgements = [True for i in range(len(batch_part_judgements))]
 
                 if run_test == 1:
                     print("Running test ")
@@ -650,7 +663,7 @@ class ABC:
 
                 self.population_accepted_particles = self.population_accepted_particles + accepted_particles
 
-                print("Writing data")
+                # print("Writing data")
                 self.write_epsilon(folder_name, self.current_epsilon)
 
                 # Write data
@@ -661,14 +674,19 @@ class ABC:
                 # self.plot_all_particles(folder_name, 0, self.batch_num, init_states, model_refs)
 
                 if run_test == 0:
+
+                    start_time_write_distance = time.time()
                     self.write_particle_distances(folder_name, model_refs, self.batch_num, self.population_number,
                               batch_part_judgements, batch_distances, only_accepted=True)
+                    print("here")
 
                     if self.final_epsilon == self.current_epsilon:
                     	pass
                         # self.plot_accepted_particles(folder_name, self.batch_num, self.batch_num, batch_part_judgements, init_states, model_refs)
-                        
-                print("Doing the rest")
+                    end_time_write_distance = time.time()
+                print("Write distance time elapsed: ", end_time_write_distance - start_time_write_distance)
+
+                # print("Doing the rest")
 
                 self.population_accepted_count += sum(batch_part_judgements)
                 self.population_total_simulations += len(model_refs)

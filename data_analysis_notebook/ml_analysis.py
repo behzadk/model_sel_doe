@@ -49,8 +49,6 @@ def k_means_test():
     first_pop_dirs = []
     finished_exp_final_population_dirs = data_analysis_ABCSMC.find_finished_experiments(exp_dir)
     model_space_report_list = []
-   
-
 
     for data_dir in finished_exp_final_population_dirs:
         # Load model space report

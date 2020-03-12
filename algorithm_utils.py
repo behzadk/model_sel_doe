@@ -276,6 +276,9 @@ def combine_population_pickles():
     data_dir = '/media/behzad/DATA/experiments_data/BK_manu_data/three_species_no_sk_1/'
     data_dir = '/media/behzad/DATA/experiments_data/BK_manu_data/three_species_stable_6_rej_0/'
     data_dir = '/media/behzad/DATA/experiments_data/BK_manu_data/two_species_3_rej_0/'
+    data_dir = '/media/behzad/DATA/experiments_data/BK_manu_data/three_species_6_stable_SMC_7/'
+    data_dir = '/media/behzad/DATA/experiments_data/BK_manu_data/three_species_6_stable_SMC_8/'
+
     # data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_manu_surv_SMC_1/'
     # data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_limited_stable_SMC/'
 
@@ -295,7 +298,7 @@ def combine_population_pickles():
         if pickle_path:
             pickle_path_list.append(pickle_path)
 
-    pickle_path_list = pickle_path_list[:9]
+    pickle_path_list = pickle_path_list[:24]
     split_pickle_paths = np.array_split(pickle_path_list, 3)
 
     print(len(pickle_path_list))
@@ -325,6 +328,7 @@ def combine_population_pickles():
             #     master_alg.model_space.compute_particle_weights()
 
             # master_alg.model_space.normalize_particle_weights()
+            # combine_outputs.combine_distances_individually(chunk_out_dir, chunk_out_dir)
 
             print("loading up judgements, model_refs, accepted_particles, population_accepted_count and population_total_simulations")
             
@@ -354,8 +358,8 @@ def combine_population_pickles():
                         master_alg.population_accepted_count += p.population_accepted_count
                         master_alg.population_total_simulations += p.population_total_simulations
 
-                        # combine_outputs.combine_model_sim_params(chunk_out_dir, p_dir, chunk_out_dir)
-                        combine_outputs.combine_distances(chunk_out_dir, p_dir, chunk_out_dir)
+                        combine_outputs.combine_model_sim_params(chunk_out_dir, p_dir, chunk_out_dir)
+                        # combine_outputs.combine_distances_individually(p_dir, chunk_out_dir)
 
                 except EOFError:
                     print("loading error")

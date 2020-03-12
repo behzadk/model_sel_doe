@@ -17,9 +17,11 @@ fit_species:
   - 1
   - 2
 
+abs_tol: 1e-15
+rel_tol: 1e-5
 
-population_size: 10000
-n_sims_batch: 1000
+population_size: 50000
+n_sims_batch: 5000
 
 ## Distance options
 # 0: stable steady state
@@ -28,5 +30,7 @@ n_sims_batch: 1000
 distance_function_mode: 0
 
 # Choose which algorithm to run
-run_rejection: Y
-run_SMC: N
+run_rejection: N
+run_SMC: Y
+
+alpha: 0.5

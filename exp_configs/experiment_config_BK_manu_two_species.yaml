@@ -20,7 +20,7 @@ abs_tol: 1e-15
 rel_tol: 1e-5
 
 
-population_size: 100
+population_size: 500
 n_sims_batch: 100
 
 ## Distance options

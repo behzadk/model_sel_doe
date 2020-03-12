@@ -6,8 +6,8 @@ inputs_folder=./input_files/input_files_two_species_spock_manu_2/
 # inputs_folder=./input_files/input_files_three_species_0/
 # inputs_folder=./input_files/input_files_pred_prey_prey_0/
 # inputs_folder=./input_files/input_files_three_species_3/
-# inputs_folder=./input_files/input_files_three_species_6/
-inputs_folder=./input_files/input_files_two_species_3/
+inputs_folder=./input_files/input_files_three_species_6/
+# inputs_folder=./input_files/input_files_two_species_3/
 
 # inputs_folder=./input_files/input_files_one_species_0/
 # inputs_folder=./input_files/input_files_two_species_auxos_0/

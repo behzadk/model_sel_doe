@@ -3,6 +3,7 @@ from scipy import stats
 import pandas as pd
 import algorithm_utils as alg_utils
 import copy
+import time
 
 log_decimals = 4
 
@@ -341,20 +342,28 @@ class Model:
                     self.init_state_kernels.append(scale)
 
         elif use_normal:
-            for p_idx in range(np.shape(params)[1]):
-                s2w = alg_utils.get_wt_var(params[:, p_idx], weights)
-                self.param_kernels.append(s2w *2)
-                if np.isnan(s2w):
-                    print(s2w)
-                    print(weights)
-                    print(params[:, p_idx])
-                    exit()
+            if np.shape(params)[0] == 1: 
+                for p_idx in range(np.shape(params)[1]):
+                    self.param_kernels.append(1)
+
+                for s_idx in range(np.shape(init_states)[1]):
+                    self.init_state_kernels.append(1)
+
+            else:
+                for p_idx in range(np.shape(params)[1]):
+                    s2w = alg_utils.get_wt_var(params[:, p_idx], weights)
+                    self.param_kernels.append(s2w *2)
+                    if np.isnan(s2w):
+                        print(s2w)
+                        print(weights)
+                        print(params[:, p_idx])
+                        exit()
 
 
-            for s_idx in range(np.shape(init_states)[1]):
-                s2w = alg_utils.get_wt_var(init_states[:, s_idx], weights)
+                for s_idx in range(np.shape(init_states)[1]):
+                    s2w = alg_utils.get_wt_var(init_states[:, s_idx], weights)
 
-                self.init_state_kernels.append(s2w * 2)
+                    self.init_state_kernels.append(s2w * 2)
 
 
     ##
@@ -469,8 +478,12 @@ class ModelSpace:
     def update_population_sample_data(self, simulated_particle_refs, judgement_array):
         unique_models = self._model_list
 
-        sampled_count = [0 for i in range(len(unique_models))]
-        accepted_count = [0 for i in range(len(unique_models))]
+        sampled_count = {}
+        accepted_count = {}
+        for m in unique_models:
+            sampled_count[m._model_ref] = 0
+            accepted_count[m._model_ref] = 0
+
 
         for idx, particle_ref in enumerate(simulated_particle_refs):
             sampled_count[particle_ref] = sampled_count[particle_ref] + 1
@@ -541,13 +554,17 @@ class ModelSpace:
     ##
     def sample_particles_from_previous_population(self, n_sims):
 
+
         # Sample model based on marginals
         model_marginals = [m.prev_margin for m in self._model_list]
+
 
         sampled_models = np.random.choice(self._model_list, n_sims, p=model_marginals)
         prev_models = sampled_models[:]
 
+
         all_alive_models = [m for m in self._model_list if m.prev_margin > 0]
+
 
         # Perturb models
         if self.dead_models_count > len(self._model_list) - 1:
@@ -560,12 +577,24 @@ class ModelSpace:
 
                     sampled_models[i] = perturbed_model
 
-        # Sample a particle from the previous population that has the corresponding model
-        sampled_particles = []
+
+        # Generate dictionary with key to each model ref
+        models_dict = {}
+        for i in self._model_refs_list:
+            models_dict[i] = []
+
+        # Add particles to model dict
+        for p in self.prev_accepted_particles:
+            models_dict[p.prev_model._model_ref] += [p]
+
+
+        sampled_particles = [0 for i in range(n_sims)]
         for i in range(n_sims):
-            this_model = sampled_models[i]
-            corresponding_particles = [p for p in self.prev_accepted_particles if p.prev_model == this_model]
-            sampled_particles.append(np.random.choice(corresponding_particles))
+            this_model = sampled_models[i]._model_ref
+            corresponding_particles = models_dict[this_model]
+            sampled_particles[i] = corresponding_particles[np.random.randint(0, len(corresponding_particles))]
+            # sampled_particles.append(np.random.choice(corresponding_particles))
+
 
         # Perturb particle parameters and init states
         perturbed_particles = []
@@ -640,7 +669,7 @@ class ModelSpace:
                     
                     kernel_init_state_pdf = alg_utils.get_parameter_kernel_pdf(particle_init_species,
                                                                                p_j.prev_init_state,
-                                                                               this_model.init_state_kernels, non_constant_idxs,  this_model._params_prior, p_j.init_state_aux_info, use_uniform_kernel=False, use_normal_kernel=True)
+                                                                               this_model.init_state_kernels, non_constant_idxs,  this_model._init_species_prior, p_j.init_state_aux_info, use_uniform_kernel=False, use_normal_kernel=True)
                     kernel_pdf = kernel_params_pdf * kernel_init_state_pdf
                     s_2 = s_2 + p_j.prev_weight * kernel_pdf
 
@@ -665,7 +694,10 @@ class ModelSpace:
 
 
     def update_model_marginals(self):
-        new_model_weights = [0 for i in range(len(self._model_list))]
+        new_model_weights = {}
+        for m in self._model_list:
+            new_model_weights[m._model_ref] = 0
+
 
         for particle in self.accepted_particles:
             new_model_weights[particle.curr_model._model_ref] = new_model_weights[particle.curr_model._model_ref] + particle.curr_weight
@@ -673,12 +705,6 @@ class ModelSpace:
 
         for m in self._model_list:
             m.curr_margin = new_model_weights[m._model_ref]
-
-        # for m in self._model_list:
-        #     m.curr_margin = 0
-        #     for particle in self.accepted_particles:
-        #         if particle.curr_model._model_ref == m._model_ref:
-        #             m.curr_margin += particle.curr_weight
 
 
     def normalize_particle_weights(self):

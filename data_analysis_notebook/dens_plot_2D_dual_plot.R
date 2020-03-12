@@ -192,7 +192,8 @@ convert_to_grid <- function(x, y) {
 	return(new_df)
 }
 
-make_contour_plot <-function(x_data, y_data, x_lims, y_lims, weights_data, true_val_x, true_val_y) {
+
+make_dual_contour_plot <-function(x1_data, y1_data, x2_data, y2_data, x_lims, y_lims, weights_data_1, weights_data_2) {
 	y_trans_scale <- "identity"
 	x_trans_scale <- "identity"
 
@@ -212,73 +213,36 @@ make_contour_plot <-function(x_data, y_data, x_lims, y_lims, weights_data, true_
 		y_lims <- log(y_lims)
 	}
 
-	# Force expansion of grid by adding data with lims with weight zero
-	x_data <- c(x_data, x_lims[1])
-	x_data <- c(x_data, x_lims[2])
-	y_data <- c(y_data, y_lims[1])
-	y_data <- c(y_data, y_lims[2])
-	weights_data <- c(weights_data)
-	dens <- sm.density( cbind(x_data, y_data), weights=weights_data, display="none", nbins=0)
 
-	x1 = dens$eval.points[,1]
-	y1 = dens$eval.points[,2]
-	# z1 = dens$estimate
-
-
-	# Generate coordinates corresponding to z grid
-	dens_df <- convert_to_grid(x1, y1)
-	colnames(dens_df) <- cbind("x1", "y1")
-	dens_df$z1 <- c(dens$estimate)
-	dens_df$z1 <- rescale(c(dens_df$z1), to=c(0, 10000))
-
-	# dens_df$z1 <- sapply(dens_df$z1, function(x) x*1000)
-	# Filling a column with same values so they can be passed in the same df
-	dens_df$true_val_x <- c(rep(true_val_x, length(x1)))
-	dens_df$true_val_y <- c(rep(true_val_y, length(y1)))
-
-# "white","#aae7e6", "#507dbc", "#e87554", "#d14141"
-	pCont_geom <- ggplot(data=dens_df, aes(x=x1, y=y1, z=z1)) +
-	scale_fill_gradientn(colors=c("white", "#058989", "#ff9914", "#d14141"), values=scales::rescale(c(0, 10000))) 	
-  	pCont_geom <- pCont_geom +
-	geom_isobands(aes(z=z1, fill=stat((zmax^2+zmin^2)/2)), color = NA) +
-	scale_x_continuous(name="x", expand = c(0,0)) + 
-	scale_y_continuous(position="right", expand = c(0,0)) +
-	coord_cartesian(expand = FALSE) +
-	theme_contour()
-
-	return(pCont_geom)
-}
-
-make_dual_contour_plot <-function(x1_data, y1_data, x2_data, y2_data, x_lims, y_lims, weights_data_1, weights_data_2) {
 	dens_1 <- sm.density( cbind(x1_data, y1_data), weights=weights_data_1, display="none", nbins=0 )
 	dens_2 <- sm.density( cbind(x2_data, y2_data), weights=weights_data_2, display="none", nbins=0 )
 
 	# Extract data from sm.density functions
 	x1 = dens_1$eval.points[,1]
 	y1 = dens_1$eval.points[,2]
-	z1 = dens_1$estimate
 
 	x2 = dens_2$eval.points[,1]
 	y2 = dens_2$eval.points[,2]
-	z2 = dens_2$estimate
+
 
 	# Generate grid coordinates and df for each parameter set
 	dens_1_df <- convert_to_grid(x1, y1)
-	colnames(dens_1_df) <- cbind("x1", "y1")
 
 	dens_2_df <- convert_to_grid(x2, y2)
-	colnames(dens_2_df) <- cbind("x2", "y2")
 
 	# Add z data to each parameter set
-	dens_1_df$z1 <- c(z1)
-	dens_2_df$z2 <- c(z2)
+	dens_1_df$z1 <- c(dens_1$estimate)
+	dens_2_df$z2 <- c(dens_2$estimate)
+
+	colnames(dens_1_df) <- cbind("x1", "y1", "z1")
+	colnames(dens_2_df) <- cbind("x2", "y2", "z2")
 
 	# Combine dataframes
 	dens_df_combined <- cbind(dens_1_df, dens_2_df)
 
 	pCont_geom <- ggplot(data=dens_df_combined) + 
-	geom_contour(aes(x=x1, y=y1, z=z1, colour="red"), bins=10) + 
-	geom_contour(aes(x=x2, y=y2, z=z2, colour="blue"), bins=10) + 
+	geom_contour(aes(x=x1, y=y1, z=z1, colour="blue"), bins=10) + 
+	geom_contour(aes(x=x2, y=y2, z=z2, colour='#058989'), bins=10) + 
 	scale_x_continuous(name="x", limits = x_lims, expand = c(0,0)) + 
 	scale_y_continuous(position="right", limits=y_lims, expand = c(0,0)) + 
 	theme_bw() + 
@@ -290,7 +254,6 @@ make_dual_contour_plot <-function(x1_data, y1_data, x2_data, y2_data, x_lims, y_
 
 make_annotation_plot <- function(annot_text) {
 	# plot_str <- paste(annot_text)
-	print(annot_text)
 	pAnnot <- ggplot() + 
   	annotate("text", x = 4, y = 25, size=1.5, label = paste(annot_text), parse=TRUE) + 
   	theme_bw() +
@@ -299,101 +262,49 @@ make_annotation_plot <- function(annot_text) {
 	return(pAnnot)
 }
 
-make_top_plot <- function(x_data, x_lims, weights_data) {
-	trans_scale <- "identity"
-
-    if ((x_lims[1] < 1e-4 && x_lims[1] != 0) || (x_lims[1] > 1e4)){
-    	x_lims <- log(x_lims)
-    }
-
-	plot_df <- data.frame(x_data, weights_data)
-	colnames(plot_df) <- c("x", "w")
-	pTop <- ggplot(data=plot_df) +
-  	geom_density(aes(x= x, weight=w, colour = '#058989')) +
-  	scale_x_continuous(name = 'log10(GFP)', limits=x_lims, expand = c(0,0)) +
-  	scale_y_continuous(position="right", expand = c(0,0)) + 
-  	theme_bw() + theme_top_dens()
-  	return(pTop)
-}
-
-make_1d_param_plot <- function(x_data, x_lims, weights_data, param_name) {
-
-	trans_scale <- "identity"
-
-    if ((x_lims[1] < 1e-4 && x_lims[1] != 0) || (x_lims[1] > 1e4)){
-    	trans_scale <- "log10"
-    	x_lims <- log(x_lims)
-    	print(typeof(x_data))
-    }
-
-	plot_df <- data.frame(x_data, weights_data)
-	colnames(plot_df) <- c("x", "w")
-	pTop <- ggplot(data=plot_df) +
-  	geom_density(aes(x= x, weight=w, colour = 'red')) +
-  	scale_x_continuous(name = param_name, limits=x_lims, expand = c(0,0)) + 
-  	scale_y_continuous(position="right", expand = c(0,0)) + 
-  	theme_bw() + theme_1D_plot()
-  	print(x_lims)
-  	return(pTop)
-}
 
 make_dual_top_plot <- function(x_data_1, x_data_2,  x_lims, weights_data_1, weights_data_2) {
-	plot_df <- data.frame(x_data_1, x_data_2, weights_data_1, weights_data_2)
-	colnames(plot_df) <- c("x1", "x2", "w1", "w2")
-    
-    print(x_lims)
+	x_1_df = data.frame(x_data_1, weights_data_1)
+	x_2_df = data.frame(x_data_2, weights_data_2)
+	colnames(x_1_df) <- c("x", "w")
+	colnames(x_2_df) <- c("x", "w")
+
     if ((x_lims[1] < 1e-4 && x_lims[1] != 0) || (x_lims[1] > 1e4)){
-    	trans_scale <- "log10"
     	x_lims <- log(x_lims)
     }
-    print(x_lims)
-    quit()
-	pTop <- ggplot(data=plot_df) +
-  	geom_density(aes(x= x1, weight=w1, colour = 'red')) +
-  	geom_density(aes(x= x2, weight=w2, colour = 'blue')) +
-  	scale_x_continuous(name = 'log10(GFP)', limits=x_lims, expand = c(0,0), trans='log10') + 
+
+	# plot_df <- data.frame(x_data_1, x_data_2, weights_data_1, weights_data_2)
+	# colnames(plot_df) <- c("x1", "x2", "w1", "w2")
+
+	pTop <- ggplot() +
+  	geom_density(aes(x= x_1_df$x, weight=x_1_df$w, y=..scaled.., colour = 'blue')) +
+  	geom_density(aes(x= x_2_df$x, weight=x_2_df$w, y=..scaled.., colour = '#058989')) +
+  	scale_x_continuous(name = 'log10(GFP)', limits=x_lims, expand = c(0,0)) +
   	scale_y_continuous(position="right", expand = c(0,0)) + 
   	theme_bw() + theme_top_dens()
   	return(pTop)
 }
 
 
-make_left_plot <- function(x_data, x_lims, weights_data) {
 
-	trans_scale <- "identity"
+make_dual_left_plot <- function(x_data_1, x_data_2, x_lims, weights_data_1, weights_data_2) {
+	x_1_df = data.frame(x_data_1, weights_data_1)
+	x_2_df = data.frame(x_data_2, weights_data_2)
+	colnames(x_1_df) <- c("x", "w")
+	colnames(x_2_df) <- c("x", "w")
 
     if ((x_lims[1] < 1e-4 && x_lims[1] != 0) || (x_lims[1] > 1e4)){
-    	trans_scale <- "log10"
     	x_lims <- log(x_lims)
     }
 
-
-	plot_df <- data.frame(x_data, weights_data)
-	colnames(plot_df) <- c("x", "w")
-
-	pLeft <- ggplot(data=plot_df) +
-  	geom_density(aes(x=x, weight=w, colour = '#058989')) +
+	pLeft <- ggplot() +
+  	geom_density(aes(x= x_1_df$x, weight=x_1_df$w, y=..scaled.., colour = 'blue')) +
+  	geom_density(aes(x= x_2_df$x, weight=x_2_df$w, y=..scaled.., colour = '#058989')) +
   	scale_x_continuous(name = 'log10(GFP)', limits=x_lims, expand = c(0,0)) +
   	scale_y_continuous(position="right", expand = c(0,0)) + 
-  	coord_flip() + 
+	coord_flip() + 
   	scale_y_reverse() + 
-  	theme_bw() + theme_left_dens()
-
-  	return(pLeft)
-}
-
-make_dual_left_plot <- function(x_data_1, x_data_2, x_lims, weights_data_1, weights_data_2) {
-	plot_df <- data.frame(x_data_1, x_data_2, weights_data_1, weights_data_2)
-	colnames(plot_df) <- c("x1", "x2", "w1", "w2")
-
-	pLeft <- ggplot(data=plot_df) +
-  	geom_density(aes(x= x1, weight=w1, colour = 'red')) +
-  	geom_density(aes(x= x2, weight=w2, colour = 'blue')) +
-  	scale_x_continuous(name = 'log10(GFP)', position="top", limits = x_lims, expand = c(0,0))  + 
-  	coord_flip() + 
-  	scale_y_reverse() + 
-  	theme_bw() + theme_left_dens()
-
+  	theme_bw() + theme_top_dens()
   	return(pLeft)
 }
 
@@ -401,86 +312,6 @@ make_empty_plot <- function() {
 	pEmpty <- ggplot() + geom_point(aes(1,1), colour = 'white') +  theme_empty()
 
   	return(pEmpty)
-}
-
-plot_dens_2d_one_pop <- function(param_data, weights_data, cut, param_limits, output_name, true_values_vector) {
-	# Plots densities and contours for one population on a grid with each par
-	# vs another
-
-	nptot <- dim(param_data)[2]
-	pars <- c(0:nptot)
-
-	# remove the cut parameters
-	pars <- pars[ !(pars %in% cut) ]
-	param_names <- names(accepted_df)
-
-	nParams <- length(pars)
-	nCols <-  length(pars)
-	nRows <- length(pars)
-
-	# Generate top plots
-	top_plots <- list()
-	left_plots <- list()
-
-	# Initiate empty plot list
-	plot_list <- list()
-	plot_list_index <- 1
-
-	row_idx <- 1
-
-	for (row in pars) {
-		col_idx <- 1
-		for (col in pars) {
-
-			# Set top left tile to empty
-			if ((row_idx == 1) & (col_idx ==1)) {
-				plot_list[[plot_list_index]] <- make_empty_plot()
-			}
-
-			# Set top row to top_dens plots
-			else if (row_idx == 1) {
-				plot_list[[plot_list_index]] <- make_top_plot(param_data[,col], param_limits[,col], weights_data)
-			}
-
-			else if (col_idx == 1) {
-				# Col == 1 we plot a left density
-				plot_list[[plot_list_index]] <- make_left_plot(param_data[,row], param_limits[,row], weights_data)
-			}
-
-			# Set middle row to param name
-			else if (col_idx == row_idx) {
-				# par_string <- get_name_idx(string_ref = names(param_data)[col])
-				plot_list[[plot_list_index]] <- make_annotation_plot(param_names[[col]])
-			}
-
-			# Plot contours for all other grid spaces
-			else {
-				plot_list[[plot_list_index]] <- make_contour_plot(param_data[,col], param_data[,row], param_limits[,col], param_limits[,row], weights_data, true_values_vector[col_idx -1], true_values_vector[row_idx - 1])
-			}
-
-			plot_list_index = plot_list_index + 1
-			col_idx = col_idx + 1
-		}
-
-		row_idx = row_idx + 1
-		col_idx <- 1
-	}
-
-	print(nCols)
-
-	# Set size of grid widths and heights
-	width_list <- as.list(rep(4, nCols))
-	height_list <- as.list(rep(4, nCols))
-	print(width_list)
-	print(height_list)
-
-	print("starting grid arrange")
-
-	pMar <- grid.arrange(grobs=plot_list, ncol=nCols, nrow=nRows, widths = width_list, heights = height_list)
-
-	#pMar <- do.call("grid.arrange", c(plot_list, ncol=nCols+1, nrow=nRows+1))
-	print(output_name)
-	ggsave(output_name, pMar, bg="transparent")
 }
 
 
@@ -501,6 +332,7 @@ plot_dens_2d_two_pop <- function(param_data_1, param_data_2, weights_data_1, wei
 
 	# remove the cut parameters
 	pars <- pars[ !(pars %in% cut) ]
+	# quit()
 
 	nCols = length(pars)
 	nRows = length(pars)
@@ -537,19 +369,26 @@ plot_dens_2d_two_pop <- function(param_data_1, param_data_2, weights_data_1, wei
 
 			# Set middle row to param name
 			else if (col_idx == row_idx) {
-				par_string <- get_name_idx(param_idx = col)
+				# plot_list[[plot_list_index]] <- make_empty_plot()
+				par_string <- names(param_data_1)[col]
+				# par_string <- get_name_idx(param_idx = col)
 				plot_list[[plot_list_index]] <- make_annotation_plot(par_string)
 			}
 
 			# Plot contours
-			else {				
-				plot_list[[plot_list_index]] <- make_dual_contour_plot(param_data_1[,col], param_data_1[,row],
-					param_data_2[,col], param_data_2[,row],
-					param_limits[,col], param_limits[,row], 
-					weights_data_1, weights_data_2)
+			else {
+				# plot_list[[plot_list_index]] <- make_empty_plot()
+
+				plot_list[[plot_list_index]] <- make_dual_contour_plot(param_data_1[,col], param_data_1[,row], 
+					param_data_2[,col], param_data_2[,row], param_limits[, col], param_lims[, row], weights_data_1, weights_data_2)
+
+				# 	param_data_2[,col], param_data_2[,row],
+				# 	param_limits[,col], param_limits[,row], 
+				# 	weights_data_1, weights_data_2)
 			}
 
 			plot_list_index = plot_list_index + 1
+			print(plot_list_index)
 			col_idx = col_idx + 1
 		}
 
@@ -559,10 +398,10 @@ plot_dens_2d_two_pop <- function(param_data_1, param_data_2, weights_data_1, wei
 	}
 
 
-	print("starting grid arrange")
-	print(length(plot_list))
+	# Set size of grid widths and heights
 	width_list <- as.list(rep(4, nCols))
 	height_list <- as.list(rep(4, nCols))
+
 	pMar <- grid.arrange(grobs=plot_list, ncol=nCols, nrow=nRows, widths = width_list, heights = height_list)
 
 	ggsave(output_name, pMar, bg="transparent")
@@ -623,6 +462,7 @@ make_param_lims_from_input <- function(output_params_df, input_params_file_path,
 	for(i in names(output_params_df)){
 		idx  = 1
 		for(j in input_params_df[[1]]) {
+
 			if(i == j) {
 
 				min_x = (input_params_df[[2]][idx])
@@ -636,7 +476,6 @@ make_param_lims_from_input <- function(output_params_df, input_params_file_path,
 	}
 
 	input_species_df <- read.table(input_species_file_path, sep=",")
-
 
 	# Iterate parameter names
 	for(i in names(output_params_df)){
@@ -679,43 +518,54 @@ make_param_lims <- function(params_data_df) {
 }
 
 args <- commandArgs(trailingOnly = TRUE)
-params_posterior_path <- args[1]
-param_priors_inputs_path <- args[2]
-species_inputs_path <- args[3]
-model_idx <- args[4]
-output_dir <- args[5]
-make_1d_plot <- args[6]
-make_2d_plot <- args[6]
+params_1_path <- args[1]
+params_2_path <- args[2]
+param_priors_inputs_path <- args[3]
+species_inputs_path <- args[4]
+model_idx <- args[5]
+output_name <- args[6]
 
-# wd <- "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
-# data_dir <- paste(wd, "output/spock_manu_stable_1_SMC/spock_manu_stable_1_SMC_a1/Population_2/model_sim_params/", sep="")
-# inputs_data_dir <- paste(wd, "input_files/input_files_two_species_spock_manu_1/input_files/", sep="")
+params_1_df <- read.csv(params_1_path)
+params_2_df <- read.csv(params_2_path)
 
-data_df <- read.csv(params_posterior_path)
+drop_cols <- c('sim_idx', 'population_num', 'pop_balance', 'X')
+params_1_df <- params_1_df[ , !(names(params_1_df) %in% drop_cols)]
+params_2_df <- params_2_df[ , !(names(params_2_df) %in% drop_cols)]
 
-param_lims <- make_param_lims_from_input(data_df[, 4:ncol(data_df)], param_priors_inputs_path, species_inputs_path)
 
-weights <- data_df$particle_weight
-if(all(is.na(weights))) {
-	weights <- rep(1, length(weights))
+
+
+weights_1 <- params_1_df$particle_weight
+
+if(all(is.na(weights_1))) {
+	weights_1 <- rep(1, length(weights_1))
 }
 
+weights_2 <- params_2_df$particle_weight
+if(all(is.na(weights_2))) {
+	weights_2 <- rep(1, length(weights_2))
+}
 
-# Remove unecessary columns
-accepted_df <- data_df[, 4:ncol(data_df)]
+drop_cols <- c('sim_idx', 'population_num', 'pop_balance', 'X', 'particle_weight', 'd3', 'd6', 'd9', 'exp_num', 'batch_idx', 'model_ref')
+
+params_1_df <- params_1_df[ , !(names(params_1_df) %in% drop_cols)]
+params_2_df <- params_2_df[ , !(names(params_2_df) %in% drop_cols)]
+
+
+param_lims <- make_param_lims_from_input(params_1_df, param_priors_inputs_path, species_inputs_path)
+# quit()
 fixed_params = get_fixed_parameter_columns(param_lims)
 
-# List of columns to be dropped
 to_cut <- fixed_params
+# to_cut <- c()
+keep_columns <- c("D", "kB_max_1", "kB_max_2", "kB_max_3")
+# keep_columns <- c()
 
-# Column heading to plot, or keep remove columns as empty
-# keep_columns <- c("D", "kA_1", "kA_2", "kA_3", "kB_max_1", "kB_max_2", "kB_max_3", "omega_max")
-# keep_columns <- c("D")
-# remove_columns <- setdiff(names(accepted_df), keep_columns)
-remove_columns <- c()
+remove_columns <- setdiff(names(params_1_df), keep_columns)
+# remove_columns <- c()
 
 idx <- 1
-for (name in names(accepted_df)) {
+for (name in names(params_1_df)) {
 	if (name %in% remove_columns) {
 		to_cut <- cbind(to_cut, idx)
 	}
@@ -723,17 +573,9 @@ for (name in names(accepted_df)) {
 }
 
 
-dummy_true_val_vector <- rep(0.8,  dim(accepted_df)[2])
+# print(to_cut)
+# print(length(param_lims))
+# print(length(params_1_df))
+# quit()
 
-name_prefix <- paste("model_", toString(model_idx), sep="")
-if (make_1d_plot) {
-	output_name <- paste(name_prefix, "_1D_dens.pdf", sep="")
-	output_path <-  paste(output_dir, output_name, sep="")
-	plot_1d_one_pop(accepted_df, weights, to_cut, param_lims, output_path, dummy_true_val_vector)
-}
-
-if (make_2d_plot){
-	output_name <- paste(name_prefix, "_2D_dens.pdf", sep="")
-	output_path <-  paste(output_dir, output_name, sep="")
-	plot_dens_2d_one_pop(accepted_df, weights, to_cut, param_lims, output_path, dummy_true_val_vector)
-}
+plot_dens_2d_two_pop(params_1_df, params_2_df, weights_1, weights_2, to_cut, param_lims, output_name)

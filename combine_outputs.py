@@ -48,11 +48,10 @@ def combine_distances(exp_1_dir, exp_2_dir, output_dir):
     exp_1_df = exp_1_df.loc[exp_1_df['Accepted'] == True]
     exp_2_df = exp_1_df.loc[exp_1_df['Accepted'] == True]
 
+    # start_batches = exp_1_df.iloc[-1]['batch_num'] + 1
 
-    start_batches = exp_1_df.iloc[-1]['batch_num'] + 1
-
-    print("changing batch numbers for exp 2")
-    exp_2_df['batch_num'] = exp_2_df['batch_num'].apply(lambda x: x + start_batches)
+    # print("changing batch numbers for exp 2")
+    # exp_2_df['batch_num'] = exp_2_df['batch_num'].apply(lambda x: x + start_batches)
 
     print("Concatenating dataframes")
     concat_df = pd.concat([exp_1_df, exp_2_df], ignore_index=True)
@@ -61,6 +60,40 @@ def combine_distances(exp_1_dir, exp_2_dir, output_dir):
     concat_df.to_csv(output_dir + 'distances.csv', index=False)
     print("Combine distances finished")
     print("")
+
+
+def combine_distances_individually(exp_1_dir, output_dir):
+    master_dir = output_dir + "model_sim_distances/"
+    try:
+        os.mkdir(master_dir)
+    except FileExistsError:
+        pass
+
+    model_distance_template_path = master_dir + "model_#IDX#_distances.csv"
+    # Read exp_1
+    exp_1_df = pd.read_csv(exp_1_dir + 'distances.csv')
+    model_idxs = exp_1_df['model_ref'].unique()
+
+    for idx in model_idxs:
+        model_data = exp_1_df.loc[exp_1_df['model_ref'] == idx]
+
+        master_data_path = model_distance_template_path.replace('#IDX#', str(idx))
+        
+        # Check if csv file exists
+        try:
+            master_model_data = pd.read_csv(master_data_path)
+
+        # Master data doesn't exist, so save current df
+        except FileNotFoundError:
+            model_data.to_csv(master_data_path, index=False)
+            continue
+
+        concat_df = pd.concat([master_model_data, model_data], ignore_index=True)
+        concat_df.to_csv(master_data_path, index=False)
+
+
+
+
 
 
 def combine_eigenvalues(exp_1_dir, exp_2_dir, output_dir):
@@ -124,16 +157,6 @@ def combine_model_sim_params(exp_1_dir, exp_2_dir, output_dir):
                 exp_2_ordered_paths[idx] = f2
                 idx += 1
                 break
-
-
-
-    # for (f1, f2) in zip(exp_1_params_path, exp_2_params_path):
-    #     print(f1)
-    #     print(f2)
-    #     print("")
-    #     model_num = int(os.path.basename(f1).split('_')[1])
-    #     exp_1_ordered_paths[model_num] = f1
-    #     exp_2_ordered_paths[model_num] = f2
 
     count = 0
     for (exp_1_f, exp_2_f) in zip(exp_1_ordered_paths, exp_2_ordered_paths):

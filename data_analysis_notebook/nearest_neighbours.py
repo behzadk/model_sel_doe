@@ -6,9 +6,8 @@ import seaborn as sns
 import matplotlib as mpl
 from matplotlib import rcParams
 
-plt.rcParams['figure.figsize'] = [12, 10]
 
-font = {'size'   : 30, }
+font = {'size'   : 15, }
 axes = {'labelsize': 'medium', 'titlesize': 'medium'}
 
 sns.set_context("talk")
@@ -64,6 +63,7 @@ def find_additive_nearest_neighbours(current_combo, all_combos, feature_idx, fea
     subset_all_combos = all_combos.loc[all_combos[feature_name] == current_feature_value + 1]
 
     for idx, row in subset_all_combos.iterrows():
+
         candidate = row.values
         if np.array_equal(candidate, current_combo):
             continue
@@ -88,7 +88,6 @@ def find_additive_nearest_neighbours(current_combo, all_combos, feature_idx, fea
 def get_motif_neighbours(output_dir):
     model_space_report_df = pd.read_csv(output_dir + "combined_model_space_report_with_motifs.csv")
     output_path = output_dir + "motif_comparison.pdf"
-    print(model_space_report_df.columns)
 
     motif_columns = ['permissive_counts', 'dependent_counts',
        'submissive_counts', 'hedonistic_counts',
@@ -108,6 +107,7 @@ def get_motif_neighbours(output_dir):
 
         # Iterate all systems
         for idx, row in model_space_report_df.iterrows():
+
             # Current model marginal
             current_marginal = row['norm_marginal_means']
 
@@ -118,8 +118,13 @@ def get_motif_neighbours(output_dir):
 
             n_additive_neighbours += len(neighbour_idxs) 
             neighbours_df = model_space_report_df[model_space_report_df.index.isin(neighbour_idxs)]
+            print("mdel_ref: ", row['model_idx'])
+            print("marginal mean: ", row['norm_marginal_means'])
+            print(neighbours_df)
+            print("")
 
-            feature_effects += [x - current_marginal for x in neighbours_df['norm_marginal_means'].values]
+            feature_effects += [x - current_marginal for x in neighbours_df['norm_marginal_means'].values] 
+        exit()
         feature_effects_dict[motif_columns[feature_idx]] = feature_effects
 
     motif_stdev = []
@@ -162,36 +167,30 @@ def get_motif_neighbours(output_dir):
     diverging_colours.pop(5)
     diverging_colours.pop(4)
 
-    output_path = output_dir + "motif_comparison_boxplot.pdf"
+    output_path = output_dir + "motif_comparison_boxplot_vert.pdf"
 
-    fig, ax = plt.subplots()
+    width_inches = 174 / 25.4
+    height_inches = 100 / 25.4
+    fig, ax = plt.subplots(figsize=(width_inches, height_inches))
 
     # sns.barplot(x='name', y='mean', 
     #                  data=analysis_df, alpha=0.9, ax=ax, palette=diverging_colours, vert=False)
 
     # analysis_df.plot("name", "mean", kind="barh", color=diverging_colours, ax=ax, title='', width=1)
-    sns.stripplot(x="all_data_points", y="name", data=all_data_df, ax=ax, size=4,
-        orient="h", palette=diverging_colours, zorder=10)
-    sns.boxplot(x="all_data_points", y="name", data=all_data_df, ax=ax, orient="h", palette=diverging_colours,
-        boxprops={'facecolor':'None'}, showfliers=False, linewidth=2, width=0.9)
+    
+    sns.stripplot(y="all_data_points", x="name", data=all_data_df, ax=ax, size=2,
+        orient="v", palette=diverging_colours, zorder=10)
+    sns.boxplot(y="all_data_points", x="name", data=all_data_df, ax=ax, orient="v", palette=diverging_colours,
+        boxprops={'facecolor':'None'}, showfliers=False, linewidth=2)
+    
     # whiskerprops={'linewidth':0, "zorder":0}, showcaps=False,
     # plt.scatter()
-    ax.set_xlabel('normalised marginal change')
-    # ax.set_xlabel('mean marginal probability change')
-    # ax.set_xticklabels('')
-    ax.set_yticklabels('')
     ax.set_ylabel('')
-    # ax.legend()
-    # handles, labels = ax.get_legend_handles_labels()
-    # print(labels)
-    # l = plt.legend(handles[0:8], labels[0:8], bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-    # ax.errorbar(motif_columns, 
-    #             analysis_df['mean'], 
-    #             yerr=analysis_df['stdev'], fmt=',', color='black', alpha=1,
-    #             label=None, elinewidth=0.5)
+    ax.set_xticklabels('')
+    ax.set_xlabel('')
 
-    # ax.set(xlim=(-0,None))
-    # ax.set(ylim=(-0))
+    ax.set(xlim=(None, None))
+    ax.set(ylim=(None, None))
 
     ax.spines["right"].set_visible(False)
     ax.spines["top"].set_visible(False)
@@ -199,16 +198,18 @@ def get_motif_neighbours(output_dir):
 
     ax.spines["bottom"].set_alpha(0.5)
     ax.spines["left"].set_alpha(0.5)
+    ax.margins(x=0)
+    ax.margins(y=0)
 
     ax.legend().remove()
 
     fig.tight_layout()
-    plt.savefig(output_path, dpi=500)
+    plt.savefig(output_path, dpi=500, bbox_inches='tight')
 
 
     output_path = output_dir + "motif_comparison_violin.pdf"
 
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(8.5, 5.11))
 
     # sns.barplot(x='name', y='mean', 
     #                  data=analysis_df, alpha=0.9, ax=ax, palette=diverging_colours, vert=False)
@@ -229,8 +230,8 @@ def get_motif_neighbours(output_dir):
     ax.set_xlabel('normalised marginal change')
     # ax.set_xlabel('mean marginal probability change')
     # ax.set_xticklabels('')
-    ax.set_yticklabels('')
-    ax.set_ylabel('')
+    ax.set_yticklabels([])
+    ax.set_ylabel([])
 
     # ax.errorbar(motif_columns, 
     #             analysis_df['mean'], 

@@ -62,6 +62,9 @@ distance_function_mode = experiment_config['distance_function_mode']
 run_rejection = experiment_config['run_rejection']
 run_SMC = experiment_config['run_SMC']
 
+alpha = experiment_config['alpha']
+
+
 abs_tol = float(experiment_config['abs_tol'])
 rel_tol = float(experiment_config['rel_tol'])
 
@@ -141,14 +144,14 @@ def ABCSMC():
 
         
     # Run ABC_rejection algorithm
-    ABC_algs = algorithms.ABC(t_0, t_end, dt, model_list=model_list, population_size=population_size, n_sims_batch=n_sims_batch,
+    ABC_algs = algorithms.ABC(t_0, t_end, dt, exp_num=exp_num, model_list=model_list, population_size=population_size, n_sims_batch=n_sims_batch,
         fit_species=fit_species, final_epsilon=final_epsilon, distance_function_mode=distance_function_mode, 
         n_distances=len(final_epsilon), abs_tol=abs_tol, rel_tol=rel_tol, out_dir=exp_output_folder)
 
     if run_rejection == "Y":
         ABC_algs.current_epsilon = final_epsilon
 
-    ABC_algs.run_model_selection_ABC_SMC(alpha=0.3, run_test=0)
+    ABC_algs.run_model_selection_ABC_SMC(alpha=alpha, run_test=0)
 
     copy(config_yaml_path, exp_output_folder)
 
