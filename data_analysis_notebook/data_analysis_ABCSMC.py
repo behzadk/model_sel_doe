@@ -1300,8 +1300,8 @@ def ABC_SMC_analysis():
     # print(finished_exp_final_population_dirs)
 
     # model_space_report_df = write_combined_model_space_report(finished_exp_final_population_dirs, combined_analysis_output_dir)
-    generate_marginal_probability_distribution(finished_exp_final_population_dirs, 
-        combined_analysis_output_dir, hide_x_ticks=True, show_median=False, show_BF=True, drop_eqless=0.000)
+    # generate_marginal_probability_distribution(finished_exp_final_population_dirs, 
+    #     combined_analysis_output_dir, hide_x_ticks=True, show_median=False, show_BF=True, drop_eqless=0.000)
 
     # NMF_analysis.nmf_motif_count_decomposition(combined_analysis_output_dir)
     NMF_analysis.nmf_decomposition(combined_analysis_output_dir, adj_mat_dir)

@@ -206,7 +206,6 @@ def get_motif_neighbours(output_dir):
     fig.tight_layout()
     plt.savefig(output_path, dpi=500, bbox_inches='tight')
 
-
     output_path = output_dir + "motif_comparison_violin.pdf"
 
     fig, ax = plt.subplots(figsize=(8.5, 5.11))
