@@ -27,8 +27,8 @@ theme0 <- function(...) theme( legend.position = "none",
 
 theme_left_dens <- function(...) theme( legend.position = "none",
                                panel.background = element_blank(),
-                               # panel.grid.major = element_blank(),
-                               # panel.grid.minor = element_blank(),
+                               panel.grid.major = element_blank(),
+                               panel.grid.minor = element_blank(),
                                panel.spacing = unit(1,"null"),
                                axis.ticks = element_blank(),
                                axis.text.x = element_blank(),
@@ -44,8 +44,8 @@ theme_left_dens <- function(...) theme( legend.position = "none",
 
 theme_top_dens <- function(...) theme( legend.position = "none",
                                	panel.background = element_blank(),
-                               	# panel.grid.major = element_blank(),
-                               	# panel.grid.minor = element_blank(),
+                               	panel.grid.minor = element_blank(),
+                               	panel.grid.major = element_blank(),
                                	panel.margin = unit(0,"null"),
                                	# axis.ticks = element_blank(),
                                	axis.text.x = element_blank(),
@@ -311,7 +311,7 @@ make_top_plot <- function(x_data, x_lims, weights_data) {
 	pTop <- ggplot(data=plot_df) +
   	geom_density(aes(x= x, weight=w, colour = '#058989')) +
   	scale_x_continuous(name = 'log10(GFP)', limits=x_lims, expand = c(0,0)) +
-  	scale_y_continuous(position="right", expand = c(0,0)) + 
+  	scale_y_continuous(position="right", expand = c(0,0), limits= c(0, NA)) + 
   	theme_bw() + theme_top_dens()
   	return(pTop)
 }
@@ -346,8 +346,7 @@ make_dual_top_plot <- function(x_data_1, x_data_2,  x_lims, weights_data_1, weig
     	trans_scale <- "log10"
     	x_lims <- log(x_lims)
     }
-    print(x_lims)
-    quit()
+
 	pTop <- ggplot(data=plot_df) +
   	geom_density(aes(x= x1, weight=w1, colour = 'red')) +
   	geom_density(aes(x= x2, weight=w2, colour = 'blue')) +
@@ -659,6 +658,42 @@ make_param_lims_from_input <- function(output_params_df, input_params_file_path,
 }
 
 
+make_correlation_csv <- function(accepted_df, weights, to_cut, output_path) {
+	nptot <- dim(accepted_df)[2]
+	pars <- c(0:nptot)
+
+	# remove the cut parameters
+	pars <- pars[ !(pars %in% to_cut) ]
+	param_names <- names(accepted_df)
+	param_names <- c()
+
+	for (i in pars) {
+		param_names <- c(param_names, names(accepted_df)[i])
+	}
+
+	nParams <- length(param_names)
+	nCols <-  length(param_names)
+	nRows <- length(param_names)
+
+	idx_i <- 1
+	idx_j <- 1
+
+	coeff_mat <- matrix(0L, nrow = nParams, ncol = nParams)
+	rownames(coeff_mat) <- param_names
+	colnames(coeff_mat) <- param_names
+
+
+	for (i in param_names) {
+		for (j in param_names){
+			x <- accepted_df[i]
+			y <- accepted_df[j]
+			corr_vals <- cor(x, y)
+			coeff_mat[[i, j]] <- corr_vals[1]
+		}
+	}
+	write.table(coeff_mat, file=output_path, sep=',')
+}
+
 
 
 make_param_lims <- function(params_data_df) {
@@ -685,7 +720,7 @@ species_inputs_path <- args[3]
 model_idx <- args[4]
 output_dir <- args[5]
 make_1d_plot <- args[6]
-make_2d_plot <- args[6]
+make_2d_plot <- args[7]
 
 # wd <- "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
 # data_dir <- paste(wd, "output/spock_manu_stable_1_SMC/spock_manu_stable_1_SMC_a1/Population_2/model_sim_params/", sep="")
@@ -693,8 +728,7 @@ make_2d_plot <- args[6]
 
 data_df <- read.csv(params_posterior_path)
 
-param_lims <- make_param_lims_from_input(data_df[, 4:ncol(data_df)], param_priors_inputs_path, species_inputs_path)
-
+param_lims <- make_param_lims_from_input(data_df[, 7:ncol(data_df)], param_priors_inputs_path, species_inputs_path)
 weights <- data_df$particle_weight
 if(all(is.na(weights))) {
 	weights <- rep(1, length(weights))
@@ -702,17 +736,17 @@ if(all(is.na(weights))) {
 
 
 # Remove unecessary columns
-accepted_df <- data_df[, 4:ncol(data_df)]
+accepted_df <- data_df[, 7:ncol(data_df)]
 fixed_params = get_fixed_parameter_columns(param_lims)
 
 # List of columns to be dropped
 to_cut <- fixed_params
 
 # Column heading to plot, or keep remove columns as empty
-# keep_columns <- c("D", "kA_1", "kA_2", "kA_3", "kB_max_1", "kB_max_2", "kB_max_3", "omega_max")
+keep_columns <- c("D", "mu_max_1", "mu_max_2", "mu_max_3", "kB_max_1", "kB_max_2", "kB_max_3")
 # keep_columns <- c("D")
-# remove_columns <- setdiff(names(accepted_df), keep_columns)
-remove_columns <- c()
+remove_columns <- setdiff(names(accepted_df), keep_columns)
+# remove_columns <- c()
 
 idx <- 1
 for (name in names(accepted_df)) {
@@ -725,7 +759,15 @@ for (name in names(accepted_df)) {
 
 dummy_true_val_vector <- rep(0.8,  dim(accepted_df)[2])
 
+
+
 name_prefix <- paste("model_", toString(model_idx), sep="")
+
+output_name <- paste(name_prefix, "_2D_corr_coeff.csv", sep="")
+output_path <-  paste(output_dir, output_name, sep="")
+make_correlation_csv(accepted_df, weights, to_cut, output_path)
+quit()
+
 if (make_1d_plot) {
 	output_name <- paste(name_prefix, "_1D_dens.pdf", sep="")
 	output_path <-  paste(output_dir, output_name, sep="")
@@ -736,4 +778,6 @@ if (make_2d_plot){
 	output_name <- paste(name_prefix, "_2D_dens.pdf", sep="")
 	output_path <-  paste(output_dir, output_name, sep="")
 	plot_dens_2d_one_pop(accepted_df, weights, to_cut, param_lims, output_path, dummy_true_val_vector)
+	
 }
+

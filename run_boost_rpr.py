@@ -3,7 +3,6 @@ from model_space import Model
 import xml.etree.ElementTree as ET
 import csv
 import os
-import population_modules
 from model_space import ModelSpace
 import algorithm_utils as alg_utils
 import numpy as np
@@ -43,6 +42,7 @@ exp_num = args.exp_suffix
 with open(config_yaml_path, 'r') as yaml_file:
     experiment_config = yaml.load(yaml_file, Loader=yaml.FullLoader)
     experiment_config['final_epsilon'] = [float(x) for x in experiment_config['final_epsilon']]
+    experiment_config['initial_epsilon'] = [float(x) for x in experiment_config['initial_epsilon']]
 
 # Unpack config file
 input_folder = experiment_config['inputs_folder']
@@ -54,6 +54,7 @@ t_end = experiment_config['t_end']
 dt = experiment_config['dt']
 fit_species = experiment_config['fit_species']
 final_epsilon = experiment_config['final_epsilon']
+initial_epsilon = experiment_config['initial_epsilon']
 
 population_size = experiment_config['population_size']
 n_sims_batch = experiment_config['n_sims_batch']
@@ -139,13 +140,12 @@ def ABCSMC():
         init_species = import_input_file(input_init_species)
 
         model_new = Model(i, init_params, init_species)
-
         model_list.append(model_new)
 
         
     # Run ABC_rejection algorithm
     ABC_algs = algorithms.ABC(t_0, t_end, dt, exp_num=exp_num, model_list=model_list, population_size=population_size, n_sims_batch=n_sims_batch,
-        fit_species=fit_species, final_epsilon=final_epsilon, distance_function_mode=distance_function_mode, 
+        fit_species=fit_species, initial_epsilon=initial_epsilon, final_epsilon=final_epsilon, distance_function_mode=distance_function_mode, 
         n_distances=len(final_epsilon), abs_tol=abs_tol, rel_tol=rel_tol, out_dir=exp_output_folder)
 
     if run_rejection == "Y":

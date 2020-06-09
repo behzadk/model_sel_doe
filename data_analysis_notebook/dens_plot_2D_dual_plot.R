@@ -213,6 +213,8 @@ make_dual_contour_plot <-function(x1_data, y1_data, x2_data, y2_data, x_lims, y_
 		y_lims <- log(y_lims)
 	}
 
+	print(x_trans_scale)
+
 
 	dens_1 <- sm.density( cbind(x1_data, y1_data), weights=weights_data_1, display="none", nbins=0 )
 	dens_2 <- sm.density( cbind(x2_data, y2_data), weights=weights_data_2, display="none", nbins=0 )
@@ -266,6 +268,7 @@ make_annotation_plot <- function(annot_text) {
 make_dual_top_plot <- function(x_data_1, x_data_2,  x_lims, weights_data_1, weights_data_2) {
 	x_1_df = data.frame(x_data_1, weights_data_1)
 	x_2_df = data.frame(x_data_2, weights_data_2)
+
 	colnames(x_1_df) <- c("x", "w")
 	colnames(x_2_df) <- c("x", "w")
 
@@ -533,8 +536,6 @@ params_1_df <- params_1_df[ , !(names(params_1_df) %in% drop_cols)]
 params_2_df <- params_2_df[ , !(names(params_2_df) %in% drop_cols)]
 
 
-
-
 weights_1 <- params_1_df$particle_weight
 
 if(all(is.na(weights_1))) {
@@ -571,7 +572,6 @@ for (name in names(params_1_df)) {
 	}
 	idx <- idx + 1
 }
-
 
 # print(to_cut)
 # print(length(param_lims))

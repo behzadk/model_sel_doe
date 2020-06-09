@@ -1,5 +1,5 @@
-experiment_name: BK_manu_three_species_6_SMC_9
-inputs_folder: './input_files/input_files_three_species_6/input_files/'
+experiment_name: BK_manu_two_species_5_SMC_0
+inputs_folder: './input_files/input_files_two_species_5/input_files/'
 output_folder: './output/'
 
 # Start time, end time, time interval
@@ -15,13 +15,15 @@ final_epsilon:
 fit_species:
   - 0
   - 1
-  - 2
 
 abs_tol: 1e-15
 rel_tol: 1e-5
 
-population_size: 60000
-n_sims_batch: 5000
+
+population_size: 10000
+n_sims_batch: 1000
+
+alpha: 0.5
 
 ## Distance options
 # 0: stable steady state
@@ -33,4 +35,3 @@ distance_function_mode: 0
 run_rejection: N
 run_SMC: Y
 
-alpha: 0.4

@@ -2,23 +2,14 @@ import numpy as np
 
 
 if __name__ == "__main__":
-    X = np.array([[1, 2, 3], [5, 2, 1]])
-    X_reg_match = np.array([[1, 1, 3], [5, 2, 1]])
+    X = np.array([[1, 2, 3], [5, 2, 1], [8, 3, 1], [5, 2, 1]])
 
-    X = X.reshape(1, -1)
-    X_reg_match = X_reg_match.reshape(1, -1)
+    match = [5, 2, 1]
 
-    X_mean = np.mean(X)
+
+    a = [x for x in a if x != [1,1]]
+
     
-    SS_err = np.sum((X - X_reg_match)**2)
-    SS_tot = np.sum((X - X_mean)**2)
-    
-    print(X - X_mean)
-
-    fuv = SS_err / SS_tot
-
-    print(fuv)
-
     # print(X.shape)
     # exit()
 

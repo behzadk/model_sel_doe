@@ -301,7 +301,7 @@ def get_num_interactions(model_idxs, adj_mat_dir):
         adj_mat_df = pd.read_csv(adj_mat_path, index_col=0)
 
         adj_mat = adj_mat_df.as_matrix()
-        adj_mat = (adj_mat)
+        adj_mat = abs(adj_mat)
         sum_interactions.append(np.sum(adj_mat))
 
     return sum_interactions
@@ -416,6 +416,44 @@ def make_num_parts(model_space_report_df, adj_matrix_path_template):
     return all_num_parts, all_AHL_num_parts, all_microcin_num_parts
 
 
+def make_num_species(model_space_report_df, adj_matrix_path_template):
+    models = model_space_report_df.model_idx.values
+    total_species = []
+
+    for m in models:
+        adj_mat_path = adj_matrix_path_template.replace("#REF#", str(m))
+
+        adj_mat_df = pd.read_csv(adj_mat_path)
+        adj_mat_df.drop([adj_mat_df.columns[0]], axis=1, inplace=True)
+
+        col_names = adj_mat_df.columns
+
+        strain_indexes = [idx for idx, i in enumerate(col_names) if 'N_' in i]
+        AHL_indexes = [idx for idx, i in enumerate(col_names) if 'A_' in i]
+        microcin_indexes = [idx for idx, i in enumerate(col_names) if 'B_' in i]
+
+        num_AHL = 0
+        num_microcin = 0
+
+        adj_mat_vals = adj_mat_df.values
+
+        for a in AHL_indexes:
+            for s in strain_indexes:
+                if adj_mat_vals[a, s] == 1:
+                    num_AHL += 1
+                    break
+
+        for m in microcin_indexes:
+            for s in strain_indexes:
+                if adj_mat_vals[m, s] == 1:
+                    num_microcin += 1
+                    break
+        
+        total_species.append(num_AHL + num_microcin)
+
+    return total_species
+
+
 def make_num_parts_alt(model_space_report_df, adj_matrix_path_template):
     models = model_space_report_df.model_idx.values
     adj_mat_sum = []
@@ -434,14 +472,16 @@ def make_num_parts_alt(model_space_report_df, adj_matrix_path_template):
 
         adj_mat_sum.append(np.sum(np.abs(adj_mat_df.values)))
 
-
     return adj_mat_sum
+
 
 def make_num_expressed_parts(model_space_report_df, adj_matrix_path_template):
     models = model_space_report_df.model_idx.values
     all_num_parts = []
     all_AHL_num_parts = []
     all_microcin_num_parts = []
+
+    min_x = 100
 
     for m in models:
         adj_mat_path = adj_matrix_path_template.replace("#REF#", str(m))
@@ -454,10 +494,10 @@ def make_num_expressed_parts(model_space_report_df, adj_matrix_path_template):
         strain_indexes = [idx for idx, i in enumerate(col_names) if 'N_' in i]
 
         strain_expression = [adj_mat_df.values[:, x] for x in strain_indexes]
+
+        strain_num_parts = [sum(x) for x in strain_expression]
+        min_x = min(min(strain_num_parts), min_x)
         model_parts = np.sum(strain_expression)
-
-
-        print(model_parts)
 
         all_num_parts.append(model_parts)
 

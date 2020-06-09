@@ -30,7 +30,6 @@ import math
 from tqdm import tqdm
 import subprocess
 import data_plotting
-import networkx as nx
 
 import ml_analysis
 import os
@@ -40,6 +39,7 @@ import motif_counting
 import nearest_neighbours
 import distance_analysis
 import NMF_analysis
+import system_summary
 
 def merge_model_space_report_df_list(df_list):
     merge_func = lambda x, y, suff: pd.merge(x, y, on='model_idx', suffixes=suff)
@@ -63,6 +63,70 @@ def generate_model_space_statistics(df, target_column_name):
 
     df[target_column_name + "_std"] = model_stds
     df[target_column_name + "_mean"] = model_means
+
+def generate_marginal_probability_boxplot(pop_dir_list, output_dir, hide_x_ticks=True, show_median=True, show_BF=False, drop_eqless=-1):
+    print("Generating marginal probability distribution... ")
+
+    model_space_report_list = []
+    num_pops = len(pop_dir_list)
+
+    model_space_report_path = pop_dir_list + "model_space_report_long.csv"
+    model_space_report_df = pd.read_csv(model_space_report_path, index_col=0)
+    model_space_report_df['model_marginal_median'] = np.nan
+
+    # Calculate median for each model
+    model_idxs = model_space_report_df['model_idx'].unique()
+    median_marginals = []
+    for m_idx in model_idxs:
+        sub_df = model_space_report_df.loc[model_space_report_df['model_idx'] == m_idx]
+        m_med_marg = np.median(sub_df['model_marginal'].values)
+        model_space_report_df.loc[(model_space_report_df['model_idx'] == m_idx), 'model_marginal_median'] = m_med_marg
+        median_marginals.append(m_med_marg)
+    
+
+    model_space_report_df.drop(model_space_report_df[model_space_report_df['model_marginal_median'] <= drop_eqless].index, inplace=True)
+
+
+    # Sort model indexes by median marginal descending order
+    median_marginals, model_idxs = [list(x) for x in zip(*sorted(zip(median_marginals, model_idxs), key=lambda pair: pair[0], reverse=True))]
+    unique_model_idxs = model_space_report_df['model_idx'].unique()
+    model_idxs = [x for x in model_idxs if x in unique_model_idxs]
+
+    width_inches = 95*4 / 25.4
+    height_inches = 51*4 / 25.4
+    fig, ax = plt.subplots(figsize=(width_inches, height_inches))
+    sns.boxplot(x='model_idx', y='model_marginal', order=model_idxs, data=model_space_report_df, ax=ax, dodge=False, showfliers=False)
+
+    ax.unicode_minus = True
+
+    if hide_x_ticks:
+        ax.set(xticklabels=[])
+        ax.set(xlabel='')
+        ax.legend().remove()    
+    
+    else:
+        ax.set(xticklabels=model_space_report_df['model_idx'])
+        ax.set(xlabel='Model')
+        ax.legend()
+
+
+    ax.set_ylabel('')
+    ax.set(xlim=(-0.5,None))
+    ax.set(ylim=(-0))
+    ax.spines["right"].set_visible(False)
+    ax.spines["top"].set_visible(False)
+    ax.spines["left"].set_alpha(0.5)
+    ax.spines["bottom"].set_alpha(0.5)
+    ax.tick_params(labelsize=15)
+    ax.margins(x=0)
+    ax.margins(y=0)
+    fig.tight_layout()
+    plt.show()
+    # model_space_report_df.drop(model_space_report_df.filter(regex="Unname"),axis=1, inplace=True)
+    # model_space_report_df = model_space_report_df.sort_values(by='model_idx', ascending=False).reset_index(drop=True)
+    # print(model_space_report_df.columns)
+    # model_space_report_list.append(model_space_report_df)
+
 
 def generate_marginal_probability_distribution(pop_dir_list, output_dir, hide_x_ticks=True, show_median=True, show_BF=False, drop_eqless=-1):
     print("Generating marginal probability distribution... ")
@@ -95,15 +159,20 @@ def generate_marginal_probability_distribution(pop_dir_list, output_dir, hide_x_
     height_inches = 51*4 / 25.4
     fig, ax = plt.subplots(figsize=(width_inches, height_inches))
 
+    bar_color = sns.xkcd_palette(["amber"])[0]
+    bar_color = "#333333"
 
-    sns.barplot(model_space_report_df.index, model_space_report_df.model_marginal_mean, 
-                     data=model_space_report_df, alpha=0.9, ax=ax, dodge=False) #, palette="BuGn_r"
+    sns.barplot(model_space_report_df.index, model_space_report_df.model_marginal_mean, linewidth=1.0,
+                     data=model_space_report_df, alpha=0.9, ax=ax, dodge=False, color=bar_color) #, palette="BuGn_r"
+    # sns.barplot(model_space_report_df.index, model_space_report_df.model_marginal_mean, scale=0.1, join=False, linewidth=1.0,
+    # data=model_space_report_df, alpha=0.9, ax=ax, dodge=False, color=bar_color) #, palette="BuGn_r"
+
     # ax.stackplot(model_space_report_df.index, model_space_report_df.model_marginal_mean)
     if num_pops > 1:
         ax.errorbar(model_space_report_df.index, 
                     model_space_report_df['model_marginal_mean'], 
-                    yerr=model_space_report_df['model_marginal_std'], fmt=',', color='black', alpha=1,
-                    label=None, elinewidth=0.01)
+                    yerr=model_space_report_df['model_marginal_std'], fmt='None', color='black', alpha=1,
+                    label=None, elinewidth=0.1)
 
     ax.unicode_minus = True
 
@@ -126,7 +195,6 @@ def generate_marginal_probability_distribution(pop_dir_list, output_dir, hide_x_
         BF = model_space_report_df.iloc[0]['model_marginal_mean'] / 3.0
         ax.axhline(BF, ls='--', label='Bayes\' Factor = 3.0', linewidth=1.0)
         ax.legend().remove()
-
 
     ax.set_ylabel('')
     ax.set(xlim=(-0.5,None))
@@ -175,8 +243,8 @@ def plot_all_model_param_distributions(pop_dir, inputs_dir, figure_output_dir):
     model_space_report_df.drop(model_space_report_df[model_space_report_df['model_marginal_mean'] == 0].index, inplace=True)
 
     for model_idx in model_space_report_df['model_idx'].values:
-        top_ten_models = [66, 13, 7] #, 3, 40, 4]
-        top_ten_models = [4128, 1374, 985, 872]
+        top_ten_models = [66, 48, 62] #, 3, 40, 4]
+        # top_ten_models = [4119, 4128, 3938, 4125]
 
         if model_idx not in top_ten_models:
             continue
@@ -188,7 +256,7 @@ def plot_all_model_param_distributions(pop_dir, inputs_dir, figure_output_dir):
         R_script = "dens_plot_2D_true_val.R"
         R_script = "dens_plot_2D_spock.R"
 
-        subprocess.call(['Rscript', R_script, model_output_parameter_path, model_input_parameter_path, model_input_species_path, str(model_idx), figure_output_dir, False])
+        subprocess.call(['Rscript', R_script, model_output_parameter_path, model_input_parameter_path, model_input_species_path, str(model_idx), figure_output_dir, 'TRUE', 'TRUE'])
 
 
 
@@ -278,21 +346,19 @@ def spock_vs_others(data_dir, adj_mat_dir, output_dir, drop_unnacepted=False, sh
     exit()
 
 
-
-def compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir, drop_unnacepted=False, show_median=False, hide_x_ticks=False):
+def compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir, drop_eqless=-1, show_median=False, hide_x_ticks=False):
     model_space_report_path = data_dir + "combined_model_space_report.csv"
     model_space_report_df = pd.read_csv(model_space_report_path)
 
-    if drop_unnacepted:
         # model_space_report_df.drop(model_space_report_df[model_space_report_df['model_marginal_mean'] == 0].index, inplace=True)
-        model_space_report_df.drop(model_space_report_df[model_space_report_df['model_marginal_mean'] == 0.0].index, inplace=True)
+    model_space_report_df.drop(model_space_report_df[model_space_report_df['model_marginal_mean'] <= drop_eqless].index, inplace=True)
 
 
     adj_matrix_path_template = adj_mat_dir + "model_#REF#_adj_mat.csv"
     all_num_parts = data_utils.make_num_expressed_parts(model_space_report_df, adj_matrix_path_template)
-    
+    # all_num_parts = data_utils.make_num_species(model_space_report_df, adj_matrix_path_template)
+
     # all_num_parts = data_utils.make_num_parts_alt(model_space_report_df, adj_matrix_path_template)
-    
     model_space_report_df['num_parts'] = all_num_parts
 
     unique_num_parts = model_space_report_df['num_parts'].unique()
@@ -315,6 +381,7 @@ def compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir, drop_unnacept
 
     # Plot 
     output_path = output_dir + "best_models_marginal_by_parts.pdf"
+
     
     width_inches = 95*4 / 25.4
     height_inches = 51*4 / 25.4
@@ -329,10 +396,13 @@ def compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir, drop_unnacept
     sub_model_space_df['model_idx'] = sub_model_space_df['model_idx'].astype('category')
     sub_model_space_df['index'] = sub_model_space_df.index
 
-    sns.barplot(x=sub_model_space_df.index, y='model_marginal_mean', 
+    bar_color = sns.xkcd_palette(["amber"])[0]
+
+    bar_color = "#333333"
+
+    sns.barplot(x=sub_model_space_df.index, y='model_marginal_mean', color=bar_color, linewidth=0,
                      data=sub_model_space_df, alpha=0.9, ax=ax)
     print(sub_model_space_df)
-    exit()
     ax.unicode_minus = True
 
     if hide_x_ticks:
@@ -342,7 +412,6 @@ def compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir, drop_unnacept
 
     else:
         print(hide_x_ticks)
-        exit()
         ax.set(xticklabels=sub_model_space_df['model_idx'])
         ax.set(xlabel='Model')
         ax.legend()
@@ -352,14 +421,13 @@ def compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir, drop_unnacept
         ax.axhline(median, ls='--', label='Median', linewidth=1.0)
         ax.legend()
 
-
     ax.set(ylabel='')
-    ax.set(yticklabels=[])
+    # ax.set(yticklabels=[])
     ax.set(xlim=(-0.5,None))
     ax.set(ylim=(-0))
     ax.spines["right"].set_visible(False)
     ax.spines["top"].set_visible(False)
-    ax.spines["left"].set_visible(False)
+    # ax.spines["left"].set_visible(False)
 
     ax.spines["left"].set_alpha(0.5)
     ax.spines["bottom"].set_alpha(0.5)
@@ -374,13 +442,15 @@ def compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir, drop_unnacept
     print(output_path)
     print("\n")
 
+    # best_model_idxs = [62, 48, 66]
     # Generate bayes factors
     model_posterior_probs = [sub_model_space_df.loc[sub_model_space_df['model_idx']==idx]['model_marginal_mean'].values[0] for idx in best_model_idxs]
     bayes_factor_mat = np.zeros([len(model_posterior_probs), len(model_posterior_probs)])
 
     B_ij = lambda p_m1, p_m2: p_m1/p_m2
     sig_func = lambda x: 1/ np.exp(-x)
-
+    print(best_model_idxs)
+    exit()
     for i in range(len(best_model_idxs)):
         for j in range(len(best_model_idxs)):
             p_m1 = model_posterior_probs[i]
@@ -389,6 +459,7 @@ def compare_top_models_by_parts(data_dir, adj_mat_dir, output_dir, drop_unnacept
             bayes_factor_mat[i, j] = (p_m1/p_m2) 
 
     print(bayes_factor_mat)
+    print(bayes_factor_mat[0, 1])
 
 
 def ammensal_vs_cooperative_systems(pop_dir_list, output_dir, adj_mat_dir, hide_x_ticks=True, drop_unnacepted=True, show_median=True):
@@ -841,6 +912,9 @@ def write_combined_model_space_with_motif_counts(pop_dir_list, output_dir, adj_m
        'defensive_counts', 'logistic_counts', 'opportunistic_counts',
        'exponential_counts']
 
+    motif_columns = ['SL1', 'SL2', 'SL3', 'SL4', 
+    'OL1', 'OL2', 'OL3', 'OL4']
+
     # model_space_report_df = motif_counting.count_direct_self_limiting(model_space_report_df, adj_mat_dir, window=window, normalise=normalise)
     model_space_report_df = motif_counting.count_permissive(model_space_report_df, adj_mat_dir, window=window, normalise=normalise)
     model_space_report_df = motif_counting.count_dependent(model_space_report_df, adj_mat_dir, window=window, normalise=normalise)
@@ -1086,8 +1160,11 @@ def combine_model_distances_individually(pop_dirs, output_dir):
 
 
 def ABC_SMC_analysis():
-    wd_ssd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
-    wd_data = "/media/behzad/DATA/experiments_data/BK_manu_data/"
+    # wd_ssd = "/home/behzad/Documents/barnes_lab/cplusplus_software/speed_test/repressilator/cpp/"
+    wd_ssd = "/Users/behzakarkaria/Documents/UCL/barnes_lab/PhD_project/research_code/model_sel_doe/"
+    # wd_data = "/media/behzad/DATA/experiments_data/BK_manu_data/"
+    wd_data = "/Volumes/Samsung_T5/BK_manu_data_backup/"
+
     wd = wd_ssd
 
     posterior_plot_R_script = "dens_plot_2D_true_val.R"
@@ -1257,6 +1334,21 @@ def ABC_SMC_analysis():
         pop_distance_columns = ['d3', 'd6']
 
     ## BK manu
+    if 1:
+        experiment_name = "two_species_5_SMC_0b"
+        inputs_dir = wd_ssd + "input_files/input_files_two_species_5/"
+        R_script = "plot-motifs-two.R"
+        pop_distance_columns = ['d3', 'd6']
+
+    ## BK manu
+    if 0:
+        experiment_name = "two_species_5_SMC_1"
+        inputs_dir = wd_ssd + "input_files/input_files_two_species_5/"
+        R_script = "plot-motifs-two.R"
+        pop_distance_columns = ['d3', 'd6']
+
+
+    ## BK manu
     if 0:
         wd = wd_ssd
         experiment_name = "BK_manu_two_species_1234567"
@@ -1273,16 +1365,34 @@ def ABC_SMC_analysis():
         pop_distance_columns = ['d3', 'd6', 'd9']
 
     ## BK manu
+    if 1:
+        # wd = wd
+        experiment_name = "three_species_7_SMC_5"
+        inputs_dir = wd_ssd + "input_files/input_files_three_species_7/"
+        R_script = "plot-motifs-three.R"
+        pop_distance_columns = ['d3', 'd6', 'd9']
+
+    ## BK manu
     if 0:
         # wd = wd
-        experiment_name = "three_species_stable_6_SMC_8"
-        inputs_dir = wd_ssd + "input_files/input_files_three_species_6/"
+        experiment_name = "three_species_7_SMC_model_4119"
+        inputs_dir = wd_ssd + "input_files/input_files_three_species_7/"
         R_script = "plot-motifs-three.R"
         pop_distance_columns = ['d3', 'd6', 'd9']
 
 
+    # ## BK manu
+    # if 1:
+    #     # wd = wd
+    #     experiment_name = "three_species_7_SMC_0"
+    #     inputs_dir = wd_ssd + "input_files/input_files_three_species_6/"
+    #     R_script = "plot-motifs-three.R"
+    #     pop_distance_columns = ['d3', 'd6', 'd9']
+
+
     # wd = wd_ssd
     combined_analysis_output_dir = wd + "output/" + experiment_name + "/experiment_analysis/"
+    print(combined_analysis_output_dir)
     data_utils.make_folder(combined_analysis_output_dir)
     adj_mat_dir = inputs_dir + "adj_matricies/"
 
@@ -1299,30 +1409,49 @@ def ABC_SMC_analysis():
     n_repeats = len(final_pop_dirs)
     # print(finished_exp_final_population_dirs)
 
-    # model_space_report_df = write_combined_model_space_report(finished_exp_final_population_dirs, combined_analysis_output_dir)
+    # generate_marginal_probability_boxplot(exp_dir, combined_analysis_output_dir, drop_eqless=0.001)
+
+
+    # model_space_report_df = write_combined_model_space_report(finished_exp_final_population_dirs, combined_analysis_output_dir) 
+    # model_space_report_df = write_combined_model_space_with_motif_counts(finished_exp_final_population_dirs, combined_analysis_output_dir, adj_mat_dir, window=0, normalise=False, plot=False)
     # generate_marginal_probability_distribution(finished_exp_final_population_dirs, 
-    #     combined_analysis_output_dir, hide_x_ticks=True, show_median=False, show_BF=True, drop_eqless=0.000)
+    #     combined_analysis_output_dir, hide_x_ticks=True, show_median=False, show_BF=False, drop_eqless=0.0005)
 
+    # exit()
+    
+    # generate_marginal_probability_distribution(finished_exp_final_population_dirs, 
+    #     combined_analysis_output_dir, hide_x_ticks=True, show_median=False, show_BF=False, drop_eqless=-0.0005)
+
+    # exit()
+
+    # combine_model_distances_individually(finished_exp_final_population_dirs, combined_analysis_output_dir)
+    # combine_model_params(finished_exp_final_population_dirs, combined_analysis_output_dir)
+    # plot_all_model_param_distributions(combined_analysis_output_dir, inputs_dir, combined_analysis_output_dir + "dist_plots/")
+    # exit()
+    # # distance_analysis.plot_steady_state_ratio(combined_analysis_output_dir, distance_columns=pop_distance_columns, figure_output_dir=combined_analysis_output_dir + "distance_ternary/")
+    compare_top_models_by_parts(combined_analysis_output_dir, adj_mat_dir, combined_analysis_output_dir, drop_eqless=-1.0, show_median=False, hide_x_ticks=True)
+    # exit()
     # NMF_analysis.nmf_motif_count_decomposition(combined_analysis_output_dir)
-    NMF_analysis.nmf_decomposition(combined_analysis_output_dir, adj_mat_dir)
-
-    exit()
+    # NMF_analysis.nmf_decomposition(combined_analysis_output_dir, adj_mat_dir)
     
 
     # # model_space_report_df = model_space_report_df.iloc[:2000]
     
-    # combine_model_distances_individually(finished_exp_final_population_dirs, combined_analysis_output_dir)
-    # combine_model_params(finished_exp_final_population_dirs, combined_analysis_output_dir)
-
     # model_space_report_df = write_combined_model_space_with_motif_counts(finished_exp_final_population_dirs, combined_analysis_output_dir, adj_mat_dir, window=0, normalise=False, plot=False)
+    # motif_counting.motif_heatmap(combined_analysis_output_dir)
+
     # # exit()
-    # nearest_neighbours.get_motif_neighbours(combined_analysis_output_dir)
+    system_summary.model_space_summary(combined_analysis_output_dir, adj_mat_dir)
+    exit()
+    nearest_neighbours.get_motif_neighbours(combined_analysis_output_dir, load_pickle=True, remove_zero_change=False)
+    exit()
     # distance_analysis.ratio_parameter_correlations(finished_exp_final_population_dirs, combined_analysis_output_dir, distance_columns=pop_distance_columns, figure_output_dir=combined_analysis_output_dir + "distance_param_correlations/")
 
     # exit()
     # distance_analysis.KS_test_distance_subset(finished_exp_final_population_dirs, combined_analysis_output_dir, inputs_dir, R_script='dens_plot_2D_dual_plot.R', distance_columns=pop_distance_columns, figure_output_dir=combined_analysis_output_dir + "dual_plots/")
+    # exit(0)
     # distance_analysis.plot_steady_state_ratio(combined_analysis_output_dir, distance_columns=pop_distance_columns, figure_output_dir=combined_analysis_output_dir + "distance_ternary/")
-    # exit()
+    # # exit()
 
     # distance_analysis.ratio_dimensionality_reduction(combined_analysis_output_dir, distance_columns=pop_distance_columns, figure_output_dir=combined_analysis_output_dir + "distance_ternary/")
     # exit()
@@ -1330,10 +1459,8 @@ def ABC_SMC_analysis():
     # plot_all_model_param_distributions(combined_analysis_output_dir, inputs_dir, combined_analysis_output_dir + "dist_plots/")
     # spock_vs_others(combined_analysis_output_dir, adj_mat_dir, combined_analysis_output_dir, drop_unnacepted=False, show_median=False)
     # plot_all_model_param_distributions(combined_analysis_output_dir, inputs_dir, combined_analysis_output_dir + "dist_plots/")
-    compare_top_models_by_parts(combined_analysis_output_dir, adj_mat_dir, combined_analysis_output_dir, drop_unnacepted=True, show_median=False, hide_x_ticks=True)
-
-    generate_marginal_probability_distribution(finished_exp_final_population_dirs, 
-        combined_analysis_output_dir, hide_x_ticks=True, show_median=False, show_BF=True, drop_eqless=0.0005)
+    # compare_top_models_by_parts(combined_analysis_output_dir, adj_mat_dir, combined_analysis_output_dir, drop_unnacepted=True, show_median=False, hide_x_ticks=True)
+    # exit()
 
     for idx, pop_dir in enumerate(final_pop_dirs):
         analysis_dir = pop_dir + "analysis/"
@@ -1352,8 +1479,9 @@ def ABC_SMC_analysis():
     # Use final population data for analysis
     # ammensal_vs_cooperative_systems(finished_exp_final_population_dirs, combined_analysis_output_dir, adj_mat_dir, hide_x_ticks=True, drop_unnacepted=True)
     write_experiment_summary("dk", n_repeats, finished_exp_final_population_dirs, inputs_dir, combined_analysis_output_dir)
-    compare_top_models_by_parts(combined_analysis_output_dir, adj_mat_dir, combined_analysis_output_dir, drop_unnacepted=True, show_median=False, hide_x_ticks=False)
-    split_by_num_parts(combined_analysis_output_dir, adj_mat_dir, combined_analysis_output_dir, drop_unnacepted=True)
+    
+    compare_top_models_by_parts(combined_analysis_output_dir, adj_mat_dir, combined_analysis_output_dir, drop_unnacepted=False, show_median=False, hide_x_ticks=False)
+    exit()
     write_model_order(finished_exp_final_population_dirs, combined_analysis_output_dir)
     subprocess.call(['Rscript', R_script, adj_mat_dir, combined_analysis_output_dir, combined_analysis_output_dir])
 

@@ -111,16 +111,18 @@ def plot_steady_state_ratio(output_dir, distance_columns, figure_output_dir):
 
     model_distances_path_template = output_dir +  "combined_model_distances/model_#IDX#_distances.csv"
     scatter_output_path_template = figure_output_dir + "distance_scatter_tern_#IDX#.pdf"
-    heatmap_output_path_template = figure_output_dir + "distance_heatmap_tern_#IDX#_with_bar.pdf"
+    heatmap_output_path_template = figure_output_dir + "distance_heatmap_tern_#IDX#.pdf"
 
+    print(model_distances_path_template)
     for model_idx in model_idxs:
         # if model_idx not in [4128, 226, 872, 2939, 1416]:
-        if model_idx not in [872]:
+        if model_idx not in [4128, 4125, 4119, 3938]:
             continue
 
         try:
             model_distances_path =  model_distances_path_template.replace("#IDX#", str(model_idx))
             model_dist_df = pd.read_csv(model_distances_path)
+        
         except FileNotFoundError:
             continue
         
@@ -162,8 +164,7 @@ def plot_steady_state_ratio(output_dir, distance_columns, figure_output_dir):
             # Set Axis labels and Title
             # t_ax.set_title("Model: " + str(model_idx), fontsize=fontsize)
 
-            t_ax.heatmapf(func.run_kde, scale=scale, boundary=True, style='hexagonal', colorbar=True, cmap='hot')
-            # t_ax.legend().remove()
+            t_ax.heatmapf(func.run_kde, scale=scale, boundary=True, style='hexagonal', colorbar=False, cmap='hot')
 
             figure_output_path = heatmap_output_path_template.replace("#IDX#", str(model_idx))
             figure.tight_layout()
@@ -331,7 +332,7 @@ def ratio_parameter_correlations(pop_dirs, output_dir, distance_columns, figure_
     model_params_path_template = output_dir +  "combined_model_params/model_#IDX#_population_all_params"
 
     for model_idx in model_idxs:
-        if model_idx not in [226, 872, 1294, 1416]:
+        if model_idx not in [4128, 4125, 4119, 3938]:
             continue
 
         model_distances_path =  model_distances_path_template.replace("#IDX#", str(model_idx))
@@ -430,7 +431,7 @@ def KS_test_distance_subset(pop_dirs, output_dir, inputs_dir, distance_columns, 
     figure_output_name_template = "cum_dist_KS_model_#IDX#.pdf"
 
     for model_idx in model_idxs:
-        if model_idx not in [872]:
+        if model_idx not in [4119]:
             continue
 
         output_name = figure_output_dir + "model_" + str(model_idx) + "_2D_dual.pdf"
@@ -491,7 +492,10 @@ def KS_test_distance_subset(pop_dirs, output_dir, inputs_dir, distance_columns, 
         if len(target_pop_balance) <= 5:
             continue
 
-        fig, axes = plt.subplots(ncols=3, nrows=int(np.ceil(len(clean_param_cols)/3)))#, sharey='row')
+
+        plot_param_cols = ["D", "kB_max_1", "kB_max_2", "kB_max_3"]
+
+        fig, axes = plt.subplots(ncols=2, nrows=int(np.ceil(len(plot_param_cols)/2)))#, sharey='row')
         axes = axes.reshape(-1)
 
         D_crit_vals = []
@@ -513,9 +517,16 @@ def KS_test_distance_subset(pop_dirs, output_dir, inputs_dir, distance_columns, 
         # Delete tmp csv
 
         max_param = ["NONE", 0]
-        for idx, param_name in enumerate(clean_param_cols):
+        for idx, param_name in enumerate(plot_param_cols):
             target_pop_param_vals = target_pop_balance[param_name].values
             all_pop_param_vals = anti_target_pop_balance[param_name].values
+
+            # log_scale = False
+
+            # if min(target_pop_param_vals) < 0:
+            #     log_scale = True
+            #     target_pop_param_vals = np.exp(target_pop_param_vals)
+            #     all_pop_param_vals = np.exp(all_pop_param_vals)
 
             D_crit = 1.36 * math.sqrt(1 / len(all_pop_param_vals) + 1 / len(target_pop_param_vals))
             D_crit_vals.append(D_crit)
@@ -532,13 +543,23 @@ def KS_test_distance_subset(pop_dirs, output_dir, inputs_dir, distance_columns, 
             if sp_ks[0] > D_crit:
                 print(param_name, sp_ks)
 
-            sns.distplot(target_pop_param_vals, norm_hist=True, kde=True, hist=False, ax=axes[idx], label='balanced_pop')
-            sns.distplot(all_pop_param_vals, norm_hist=True, kde=True, hist=False, ax=axes[idx], label='all_data')
+            colour_blue = '#00BFC4'
+            colour_pink = '#F8766D'
 
-            axes[idx].text(0.02, 0.98, param_name + " - " + str(np.format_float_positional(sp_ks[0], precision=3, fractional=False, trim='k')), fontsize=9, ha="left", va="top", transform=axes[idx].transAxes)
+            sns.distplot(target_pop_param_vals, norm_hist=True, kde=True, hist=False, ax=axes[idx], label='balanced_pop', color=colour_pink)
+            sns.distplot(all_pop_param_vals, norm_hist=True, kde=True, hist=False, ax=axes[idx], label='all_data', color=colour_blue)
+
+            # axes[idx].text(0.02, 0.98, param_name + " - " + str(np.format_float_positional(sp_ks[0], precision=3, fractional=False, trim='k')), fontsize=9, ha="left", va="top", transform=axes[idx].transAxes)
         
-            axes[idx].set(xticklabels=[])
-            axes[idx].set(xlabel='')
+            # axes[idx].set(xticklabels=[])
+
+            # if log_scale:
+            #     axes[idx].set_xscale('log')
+
+            if min(target_pop_param_vals) < 0:
+                axes[idx].set_ylim(0, 0.25)
+
+            # axes[idx].set(xlabel='')
             axes[idx].spines["right"].set_visible(False)
             axes[idx].spines["top"].set_visible(False)
             axes[idx].spines["left"].set_alpha(0.5)
@@ -549,12 +570,12 @@ def KS_test_distance_subset(pop_dirs, output_dir, inputs_dir, distance_columns, 
         if max_param[0] == "D":
             print("DILUTION IS MAX: ", model_idx)
 
-        handles, labels = axes[0].get_legend_handles_labels()
-        fig.legend(handles, labels, loc='lower center')
-        plt.subplots_adjust(top=0.99, right=0.99)
+        # handles, labels = axes[0].get_legend_handles_labels()
+        # fig.legend(handles, labels, loc='lower center')
+        plt.tight_layout()
+        plt.subplots_adjust(hspace = 0.35)
         plt.savefig(figure_output_dir + figure_output_name_template.replace('#IDX#', str(model_idx)))
         plt.close()
-        exit()
 
 
 

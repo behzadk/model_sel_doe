@@ -1,6 +1,8 @@
 from model_space import ModelSpace
 import algorithm_utils as alg_utils
-import population_modules
+
+# import population_modules
+import ode_sim as population_modules
 import numpy as np
 import os
 import csv
@@ -34,7 +36,7 @@ def blockPrinting(func):
 class ABC:
     def __init__(self, t_0, t_end, dt, exp_num,
                  model_list, population_size, n_sims_batch,
-                 fit_species, final_epsilon, distance_function_mode, n_distances, abs_tol, rel_tol, out_dir):
+                 fit_species, final_epsilon, initial_epsilon, distance_function_mode, n_distances, abs_tol, rel_tol, out_dir):
         self.t_0 = t_0
         self.t_end = t_end
         self.dt = dt
@@ -66,7 +68,8 @@ class ABC:
 
         self.final_epsilon = final_epsilon
 
-        self.current_epsilon = [1e250 for i in self.final_epsilon]
+        self.current_epsilon = initial_epsilon
+        print("Initial epsilon: ", self.current_epsilon)
 
         # Init model space
         self.model_space = ModelSpace(model_list)
@@ -503,6 +506,7 @@ class ABC:
             total_sims = 0
             self.batch_num = 0
 
+
             while self.population_accepted_count < self.population_size:
                 print("")
                 start_time = time.time()
@@ -588,7 +592,7 @@ class ABC:
                     batch_part_judgements = []
                     batch_distances = []
                     for p in particles:
-                        d1 = p.curr_params[0]
+                        d1 = np.random.uniform(0, 1)
 
                         batch_distances.append(d1)
                         if d1 < self.current_epsilon[0]:
@@ -600,7 +604,7 @@ class ABC:
 
                     print(np.shape(batch_distances))
                     batch_distances = np.reshape(batch_distances, 
-                        (self.n_sims_batch, len(self.fit_species), self.n_distances))
+                        (self.n_sims_batch, 1, 1))
 
                 if run_test == 2:
                     if self.population_number == 0:
@@ -653,6 +657,11 @@ class ABC:
                     batch_distances = np.reshape(batch_distances, 
                     (self.n_sims_batch, len(self.fit_species), self.n_distances))
 
+                if run_test == 3:
+                    for n in range(self.n_sims_batch):
+                        ode_sim.run_sim(self.t_0, self.t_end, self.dt, init_states[n], input_params[n])
+
+
 
                 self.population_accepted_particle_distances += [part_d for part_d, judgement in
                                                 zip(batch_distances, batch_part_judgements)
@@ -667,23 +676,16 @@ class ABC:
                 self.write_epsilon(folder_name, self.current_epsilon)
 
                 # Write data
-                # self.write_particle_params(sim_params_folder, self.batch_num, particle_models,
-                #                            input_params, init_states, batch_part_judgements, particle_weights)
-
-
-                # self.plot_all_particles(folder_name, 0, self.batch_num, init_states, model_refs)
 
                 if run_test == 0:
-
                     start_time_write_distance = time.time()
-                    self.write_particle_distances(folder_name, model_refs, self.batch_num, self.population_number,
-                              batch_part_judgements, batch_distances, only_accepted=True)
-                    print("here")
 
                     if self.final_epsilon == self.current_epsilon:
-                    	pass
-                        # self.plot_accepted_particles(folder_name, self.batch_num, self.batch_num, batch_part_judgements, init_states, model_refs)
+                        self.write_particle_distances(folder_name, model_refs, self.batch_num, self.population_number,
+                            batch_part_judgements, batch_distances, only_accepted=True)
+
                     end_time_write_distance = time.time()
+
                 print("Write distance time elapsed: ", end_time_write_distance - start_time_write_distance)
 
                 # print("Doing the rest")
@@ -691,15 +693,13 @@ class ABC:
                 self.population_accepted_count += sum(batch_part_judgements)
                 self.population_total_simulations += len(model_refs)
 
-                self.population_model_refs += model_refs
-                self.population_judgements += batch_part_judgements
+                self.model_space.update_population_sample_data_v2(model_refs, batch_part_judgements)
 
                 print("Population: ", self.population_number, "Accepted particles: ", self.population_accepted_count,
                       "Total simulations: ", self.population_total_simulations)
 
                 if not run_test:
                     del self.pop_obj
-
 
                 sys.stdout.flush()
                 self.batch_num += 1
@@ -709,11 +709,11 @@ class ABC:
 
 
             self.population_accepted_particles = self.population_accepted_particles[: self.population_size]
-            self.population_model_refs = self.population_model_refs[: self.population_size]
-            self.population_judgements = self.population_judgements[: self.population_size]
+            # self.population_model_refs = self.population_model_refs[: self.population_size]
+            # self.population_judgements = self.population_judgements[: self.population_size]
 
             self.model_space.accepted_particles = self.population_accepted_particles
-            self.model_space.update_population_sample_data(self.population_model_refs, self.population_judgements)
+            # self.model_space.update_population_sample_data(self.population_model_refs, self.population_judgements)
 
             if self.population_number == 0:
                 for p in self.model_space.accepted_particles:
@@ -724,10 +724,10 @@ class ABC:
 
             self.model_space.normalize_particle_weights()
             self.model_space.update_model_marginals()
-            
-            self.save_object_pickle(folder_name)
 
-            self.write_population_particle_params(sim_params_folder)
+            if self.final_epsilon == self.current_epsilon:
+                self.save_object_pickle(folder_name)
+                self.write_population_particle_params(sim_params_folder)
 
             self.model_space.prepare_next_population()
 

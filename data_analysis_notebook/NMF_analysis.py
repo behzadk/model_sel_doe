@@ -68,7 +68,14 @@ def write_H_to_csv(H, out_path, row_names, column_names, normalise=True, W_max_l
             writer.writerows("\n")
             writer.writerows("\n")
 
+def write_W_to_csv(W_array, model_idxs, out_path):
+    W_element_col_names = ['V_' + str(i) for i in range(np.shape(W_array)[1])]
 
+    df = pd.DataFrame(data=W_array, columns=W_element_col_names)
+
+    df['model_idx'] = model_idxs
+    
+    df.to_csv(out_path)
 
 def nmf_motif_count_decomposition(output_dir):
     model_space_report_df = pd.read_csv(output_dir + "combined_model_space_report_with_motifs.csv")
@@ -117,12 +124,8 @@ def nmf_motif_count_decomposition(output_dir):
         data_dict = {}
         data_dict['model_idx'] = model_space_report_df['model_idx']
         data_dict['model_marginal'] = model_space_report_df['model_marginal_mean'].values
-        data_dict['defensive_count'] = model_space_report_df['permissive_counts'].values
 
         df = pd.DataFrame(data_dict)
-
-        vmin, vmax = 0, 1
-        cmap = sns.dark_palette("palegreen", as_cmap=True)
 
         width_inches = 200 / 25.4
         height_inches = 150 / 25.4
@@ -170,27 +173,24 @@ def measure_sparseness(H_mat):
 
     # Count non zero elements
     num_elements = np.shape(H_mat)[1]
-    non_zero_elements = num_elements - np.count_nonzero(H_mat)
+    non_zero_elements = np.count_nonzero(H_mat)
 
     sparsity = non_zero_elements / num_elements
 
-    print(sparsity)
     return sparsity
 
 
 
-
-
-def optimize_NMF_rank_fuv(data, n_samples, plot_output_dir, train_size=0.5, k_min_max=[2, 15]):
+def optimize_NMF_rank_fuv(data, n_samples, plot_output_dir, train_size=0.8, k_min_max=[2, 30]):
     k_range = range(k_min_max[0], k_min_max[1])
     k_fuv_dict = {}
     k_fuv_dict['rep'] = []
     k_fuv_dict['k'] = []
     k_fuv_dict['fuv_vals'] = []
     k_fuv_dict['error_variance'] = []
-    k_fuv_dict['sparsity'] = []
-    k_fuv_dict['sparsity_var_ratio'] = []
-    k_fuv_dict['error_div_k'] = []
+    k_fuv_dict['non_zero_ratio'] = []
+    # k_fuv_dict['sparsity_var_ratio'] = []
+    k_fuv_dict['SS_err'] = []
 
     group_dict = {}
     group_dict['rep_err_var'] = []
@@ -219,13 +219,21 @@ def optimize_NMF_rank_fuv(data, n_samples, plot_output_dir, train_size=0.5, k_mi
             # X_train = np.random.normal(0.0, scale=10, size=np.shape(X_train))
             X_train = abs(X_train)
 
-            model = NMF(n_components=k, init='nndsvda', verbose=0, max_iter=1000, tol=4e-18).fit(X_train)
+            # Apply speckled mask
+            mask = np.random.choice([0, 1], size=X_train.shape, p=[0.2, 0.8]).astype(np.bool)
+            # mask = np.random.randint(0,2,size=X_train.shape, weights=[0.2, 0.8]).astype(np.bool)
+            # print(mask)
+            r = np.zeros(X_train.shape)
+            
+            X_train[mask] = r[mask]
 
-            W_train = model.transform(X_train)
+            model = NMF(n_components=k, init='nndsvda', verbose=0, max_iter=100, tol=4e-18, l1_ratio=1).fit(X_train)
 
             # Transform test set and reconstruct
             W_test = model.transform(X_test)
             reconstruct_X_test = model.inverse_transform(W_test).reshape(1, -1)
+
+            # reconstruct_X_test = np.round(reconstruct_X_test, decimals=0)
 
             # Flatten elements
             X_test_flat = np.copy(X_test).reshape(1, -1)
@@ -235,7 +243,7 @@ def optimize_NMF_rank_fuv(data, n_samples, plot_output_dir, train_size=0.5, k_mi
             SS_tot = np.sum((X_test_flat - X_test_mean)**2)
             fuv = SS_err / SS_tot
 
-            error_variance = SS_err / (np.shape(X_test_flat)[1] - 1)
+            error_variance = np.mean(SS_err)
 
             sparsity = measure_sparseness(model.components_)
 
@@ -243,9 +251,9 @@ def optimize_NMF_rank_fuv(data, n_samples, plot_output_dir, train_size=0.5, k_mi
             k_fuv_dict['k'].append(k)
             k_fuv_dict['fuv_vals'].append(fuv)
             k_fuv_dict['error_variance'].append(error_variance)
-            k_fuv_dict['error_div_k'].append(k / SS_err)
-            k_fuv_dict['sparsity'].append(sparsity)
-            k_fuv_dict['sparsity_var_ratio'].append( error_variance / sparsity)
+            k_fuv_dict['SS_err'].append(SS_err)
+            k_fuv_dict['non_zero_ratio'].append(sparsity)
+            # k_fuv_dict['sparsity_var_ratio'].append( error_variance / sparsity)
 
             # group_dict['X_test_flat'].extend(X_test_flat)
             # group_dict['reconstruct_X_test'].extend(reconstruct_X_test)
@@ -272,9 +280,9 @@ def optimize_NMF_rank_fuv(data, n_samples, plot_output_dir, train_size=0.5, k_mi
     width_inches = 200 / 25.4
     height_inches = 150 / 25.4
     fig, ax = plt.subplots(figsize=(width_inches, height_inches))
-    sns.lineplot(x='k', y='fuv_vals', data=df)
+    sns.lineplot(x='k', y='SS_err', data=df)
     # sns.lineplot(x='k', y='error_variance', data=df)
-    plt.savefig(plot_output_dir + 'NMF_optim_fuv.pdf', dpi=500, bbox_inches='tight')
+    plt.savefig(plot_output_dir + 'NMF_optim_SS_err.pdf', dpi=500, bbox_inches='tight')
     plt.close()
 
     fig, ax = plt.subplots(figsize=(width_inches, height_inches))
@@ -284,37 +292,11 @@ def optimize_NMF_rank_fuv(data, n_samples, plot_output_dir, train_size=0.5, k_mi
     plt.close()
 
     fig, ax = plt.subplots(figsize=(width_inches, height_inches))
-    sns.lineplot(x='k', y='error_div_k', data=df)
+    sns.lineplot(x='k', y='non_zero_ratio', data=df)
     # sns.lineplot(x='k', y='error_variance', data=df)
     plt.savefig(plot_output_dir + 'NMF_sparsity.pdf', dpi=500, bbox_inches='tight')
     plt.close()
 
-
-    # Min max normalisation
-    min_error_var = np.min(k_fuv_dict['error_variance'])
-    max_error_var = np.max(k_fuv_dict['error_variance'])
-    k_fuv_dict['error_variance'] = list([ (x - min_error_var) / (max_error_var - min_error_var) for x in k_fuv_dict['error_variance']])
-
-    print(k_fuv_dict['error_variance'])
-
-
-    min_sparsity = np.min(k_fuv_dict['sparsity'])
-    max_sparsity = np.max(k_fuv_dict['sparsity'])
-
-    k_fuv_dict['sparsity'] = list([ (x - min_sparsity) / (max_sparsity - min_sparsity) for x in k_fuv_dict['sparsity']])
-    k_fuv_dict['sparsity_var_ratio'] = []
-    
-    for idx, _ in enumerate(k_fuv_dict['error_variance']):
-        error_variance = k_fuv_dict['error_variance'][idx]
-        sparsity = k_fuv_dict['sparsity'][idx]
-
-        k_fuv_dict['sparsity_var_ratio'].append( sparsity/ error_variance)
-
-    fig, ax = plt.subplots(figsize=(width_inches, height_inches))
-    sns.lineplot(x='k', y='sparsity_var_ratio', data=df)
-    # sns.lineplot(x='k', y='error_variance', data=df)
-    plt.savefig(plot_output_dir + 'NMF_sparsity_var_ratio.pdf', dpi=500, bbox_inches='tight')
-    plt.close()
 
 
     # fig, ax = plt.subplots(figsize=(width_inches, height_inches))
@@ -323,8 +305,6 @@ def optimize_NMF_rank_fuv(data, n_samples, plot_output_dir, train_size=0.5, k_mi
     # # sns.lineplot(x='k', y='error_variance', data=df)
     # plt.savefig(plot_output_dir + 'NMF_optim_err_var.pdf', dpi=500, bbox_inches='tight')
     # plt.close()
-
-
 
 
 def nmf_decomposition(output_dir, adj_mat_dir):
@@ -355,14 +335,14 @@ def nmf_decomposition(output_dir, adj_mat_dir):
         adj_mat = adj_mat.reshape(1, -1)
         all_adj_mats[i] = adj_mat
 
-    for i in range(4, 17):
+    for i in range(2, 30):
         # i += 1
         n_features = all_adj_mats[0].shape[1]
         print(n_features)
         n_samples = len(model_idxs)
         model_adj_mats = np.array(all_adj_mats).reshape(n_samples, -1)
 
-        optimize_NMF_rank_fuv(model_adj_mats, n_samples, figure_output_dir)
+        # optimize_NMF_rank_fuv(model_adj_mats, n_samples, figure_output_dir)
 
         model = NMF(n_components=i, init='random', random_state=2, verbose=0, max_iter=100000, tol=4e-18)
 
@@ -372,12 +352,13 @@ def nmf_decomposition(output_dir, adj_mat_dir):
         for idx in range(i):
             W_col_max = np.max(W[:, idx])
             W[:, idx] = W[:, idx] / W_col_max
+        
+        W_csv_path = figure_output_dir +  "W_" + str(i) + ".csv"
+        write_W_to_csv(W, model_idxs, W_csv_path)
 
         H = model.components_
-        H = H.reshape(i, 7, 9)
-
-        print(np.shape(H[0]))
-        exit()
+        H = H.reshape(i, 9, 11)
+        # H = H.reshape(i, 7, 9)
 
         H_csv_path = figure_output_dir +  "H_" + str(i) + ".csv"
         write_H_to_csv(H, H_csv_path, row_names, column_names, normalise=True)
@@ -385,7 +366,6 @@ def nmf_decomposition(output_dir, adj_mat_dir):
         data_dict = {}
         data_dict['model_idx'] = model_space_report_df['model_idx']
         data_dict['model_marginal'] = model_space_report_df['model_marginal_mean'].values
-        data_dict['defensive_count'] = model_space_report_df['permissive_counts'].values
         df = pd.DataFrame(data_dict)
 
         vmin, vmax = 0, 1
