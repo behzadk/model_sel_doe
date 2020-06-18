@@ -211,7 +211,12 @@ def get_flat_adjacency_matricies_df(model_indexes, adj_matrix_path_template):
     for m_idx in model_indexes:
         adj_mat_path = adj_matrix_path_template.replace("#REF#", str(m_idx))
         adj_mat_df = pd.read_csv(adj_mat_path, index_col=0)
+
+        print(adj_mat_df)
         adj_mat_df = convert_QS_column(adj_mat_df)
+        print(adj_mat_df)
+        print(np.shape(adj_mat_df))
+        exit()
         flat_adj_mats.append(abs(adj_mat_df.values).flatten())
     
     interaction_indexes = ["a_" + str(i) for i in range(np.shape(flat_adj_mats)[1])]
@@ -230,6 +235,10 @@ def get_flat_adjacency_matricies_df(model_indexes, adj_matrix_path_template):
     for col in adj_mat_df.columns:
         if np.max(adj_mat_df[col]) == np.min(adj_mat_df[col]):
             adj_mat_df = adj_mat_df.loc[:, adj_mat_df.columns != col]
+
+
+    print(np.shape(adj_mat_df))
+    exit()
 
     return adj_mat_df
 
@@ -978,8 +987,8 @@ def main():
     combined_analysis_output_dir = "/Volumes/Samsung_T5/BK_manu_data_backup/output/two_species_5_SMC_0b/experiment_analysis/"
     NMF_dir = combined_analysis_output_dir + "nmf_analysis/"
 
-    adj_mat_dir = "/Users/behzakarkaria/Documents/UCL/barnes_lab/PhD_project/research_code/model_sel_doe/input_files/input_files_three_species_7/adj_matricies/"
-    combined_analysis_output_dir = "/Volumes/Samsung_T5/BK_manu_data_backup/output/three_species_7_SMC_5/experiment_analysis/"
+    # adj_mat_dir = "/Users/behzakarkaria/Documents/UCL/barnes_lab/PhD_project/research_code/model_sel_doe/input_files/input_files_three_species_7/adj_matricies/"
+    # combined_analysis_output_dir = "/Volumes/Samsung_T5/BK_manu_data_backup/output/three_species_7_SMC_5/experiment_analysis/"
     # make_hierarchical_cluster_with_NMF_weights(combined_analysis_output_dir, NMF_dir, drop_eqless=-1)
 
     for levels in [5]:

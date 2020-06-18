@@ -23,6 +23,6 @@ input_files_one_species_0/
 kissfft/
 input_files/
 drop_box_results/
-./input_files_old/
-./input_files_old/*
-./input_files_old/*/*
+input_files_old/
+input_files_old/*
+input_files_old/*/*

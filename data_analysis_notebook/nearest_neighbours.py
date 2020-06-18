@@ -203,7 +203,7 @@ def get_motif_neighbours(output_dir, load_pickle=False, remove_zero_change=False
 
     # analysis_df.plot("name", "mean", kind="barh", color=diverging_colours, ax=ax, title='', width=1)
     
-    if 0:
+    if 1:
         sns.stripplot(x="all_data_points", y="name", data=all_data_df, ax=ax, size=5,
             orient="h", palette=custom_pal, zorder=10)
         sns.boxplot(x="all_data_points", y="name", data=all_data_df, ax=ax, orient="h", palette=diverging_colours,
@@ -233,9 +233,9 @@ def get_motif_neighbours(output_dir, load_pickle=False, remove_zero_change=False
         fig.tight_layout()
         plt.savefig(output_path, dpi=500, bbox_inches='tight')
 
-        output_path = output_dir + "motif_comparison_violin.pdf"
+        output_path = output_dir + "motif_comparison_box.pdf"
 
-    if 0:
+    if 1:
         fig, ax = plt.subplots(figsize=(8.5, 5.11))
 
         # sns.stripplot(x="all_data_points", y="name", data=all_data_df, ax=ax, size=4,
