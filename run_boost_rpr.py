@@ -3,7 +3,6 @@ from model_space import Model
 import xml.etree.ElementTree as ET
 import csv
 import os
-import population_modules
 from model_space import ModelSpace
 import algorithm_utils as alg_utils
 import numpy as np
@@ -33,12 +32,12 @@ from shutil import copy
 # Set time points
 parser = argparse.ArgumentParser()
 parser.add_argument('--config', type=str)
-parser.add_argument('--exp_suffix', type=int)
+parser.add_argument('--suffix', type=int)
 
 args = parser.parse_args()
 
 config_yaml_path = args.config
-exp_num = args.exp_suffix
+exp_num = args.suffix
 
 with open(config_yaml_path, 'r') as yaml_file:
     experiment_config = yaml.load(yaml_file, Loader=yaml.FullLoader)
@@ -139,8 +138,9 @@ def ABCSMC():
         init_species = import_input_file(input_init_species)
 
         model_new = Model(i, init_params, init_species)
-
         model_list.append(model_new)
+
+
 
         
     # Run ABC_rejection algorithm
@@ -157,6 +157,43 @@ def ABCSMC():
 
     alg_utils.make_tarfile(exp_output_folder[0:-1] + "_pop_" + str(ABC_algs.population_number) + ".tar.gz", exp_output_folder)
 
+def ABCSMC():
+    experiment_folder = experiment_name + '_' + str(exp_num)
+    exp_output_folder = output_folder + experiment_folder + '/'
+
+    latest_pickle_path = alg_utils.find_latest_population_pickle(exp_output_folder)
+    ABC_algs = None
+    
+    try:
+        os.mkdir(exp_output_folder)
+
+    except FileExistsError:
+        pass
+
+    # Load models from input files
+    model_list = []
+    for i in range(int((len(os.listdir(input_folder)) / 2))):
+        input_params = input_folder + "params_" + str(i) + ".csv"
+        input_init_species = input_folder + "species_" + str(i) + ".csv"
+        init_params = import_input_file(input_params)
+        init_species = import_input_file(input_init_species)
+
+        model_new = Model(i, init_params, init_species)
+        model_list.append(model_new)
+
+    # Run ABC_rejection algorithm
+    ABC_algs = algorithms.ABC(t_0, t_end, dt, exp_num=exp_num, model_list=model_list, population_size=population_size, n_sims_batch=n_sims_batch,
+        fit_species=fit_species, final_epsilon=final_epsilon, distance_function_mode=distance_function_mode, 
+        n_distances=len(final_epsilon), abs_tol=abs_tol, rel_tol=rel_tol, out_dir=exp_output_folder)
+
+    if run_rejection == "Y":
+        ABC_algs.current_epsilon = final_epsilon
+
+    ABC_algs.run_chaos_model_selection_ABC_SMC(alpha=alpha)
+
+    copy(config_yaml_path, exp_output_folder)
+
+    alg_utils.make_tarfile(exp_output_folder[0:-1] + "_pop_" + str(ABC_algs.population_number) + ".tar.gz", exp_output_folder)
 
 
 if __name__ == "__main__":

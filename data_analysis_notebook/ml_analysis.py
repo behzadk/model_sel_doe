@@ -16,7 +16,7 @@ from scipy import spatial
 import scipy
 from matplotlib.backends.backend_pdf import PdfPages
 from sklearn.cluster import KMeans
-from sklearn.cluster import OPTICS
+# from sklearn.cluster import OPTICS
 from sklearn.cluster import SpectralClustering
 
 from scipy.cluster.hierarchy import dendrogram, linkage

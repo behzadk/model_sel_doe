@@ -99,6 +99,10 @@ def get_motif_neighbours(output_dir):
    'defensive_counts', 'logistic_counts', 'opportunistic_counts',
    'exponential_counts']
 
+
+    motif_columns = ['SL1', 'SL2', 'SL3', 'SL4', 'OL1', 'OL2', 'OL3', 'OL4']
+
+
     feature_effects_dict = {}
 
     for feature_idx, feature_name in enumerate(motif_columns):
@@ -124,7 +128,7 @@ def get_motif_neighbours(output_dir):
             print("")
 
             feature_effects += [x - current_marginal for x in neighbours_df['norm_marginal_means'].values] 
-        exit()
+
         feature_effects_dict[motif_columns[feature_idx]] = feature_effects
 
     motif_stdev = []

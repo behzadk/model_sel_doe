@@ -12,6 +12,52 @@ def normalise_list(input_list):
     return output_list
 
 
+def motif_heatmap(output_dir):
+    figure_output_path = output_dir + 'motif_heatmap.pdf'
+
+    model_space_report_path = output_dir + "combined_model_space_report_with_motifs.csv"
+    model_space_report_df = pd.read_csv(model_space_report_path)
+
+    # Columns 
+    motif_columns = ['SL1', 'SL2', 'SL3', 'SL4', 
+    'OL1', 'OL2', 'OL3', 'OL4']
+
+    data = model_space_report_df[motif_columns].values
+    print(data)
+
+
+
+    width_inches = 175 / 25.4
+    height_inches = 150 / 25.4
+    # fig, ax = plt.subplots(figsize=(width_inches, height_inches))
+    fig, ax = plt.subplots()
+
+    # sns.scatterplot(x='X', y='Y', hue='model_marginal', cmap=cmap, data=data_dict, ax=ax, size=0.5)
+    # print(np.argmax(W[:, 0]))
+    sns.heatmap(data.T, ax=ax, cbar=False)
+    # sns.scatterplot(y='model_marginal', x=df.index, data=df, ax=ax2, s=1, alpha=0.5, color='white', orient='V')
+
+    ax.set_xlabel('')
+    # ax.set_xlabel('mean marginal probability change')
+    ax.set_xticklabels('')
+    ax.set_yticklabels('')
+
+    # ax.set_yticklabels([])
+    ax.set_ylabel('')
+    ax.margins(x=0)
+    ax.margins(y=0)
+    # ax.set_aspect("equal")
+
+    ax.legend().remove()
+
+    fig.tight_layout()
+
+    plt.savefig(figure_output_path, dpi=500, bbox_inches='tight')
+
+    # plt.show()
+    plt.close()
+
+
 
 #### Self limiting ####
 def count_direct_self_limiting(model_space_report_df, adj_mat_dir, window, normalise=False):
@@ -130,10 +176,10 @@ def count_dependent(model_space_report_df, adj_mat_dir, window, normalise=False)
     if normalise:
         dependent_counts = normalise_list(dependent_counts)
 
-    model_space_report_df['dependent_counts'] = dependent_counts
+    model_space_report_df['SL2'] = dependent_counts
 
     if window > 0:
-        model_space_report_df['dependent_rolling'] = model_space_report_df['dependent_counts'].rolling(window=window).mean()
+        model_space_report_df['dependent_rolling'] = model_space_report_df['SL2'].rolling(window=window).mean()
 
     # sns.scatterplot(x=model_space_report_df.index, y='predator_prey_counts', data=model_space_report_df)
     # plt.show()
@@ -204,10 +250,10 @@ def count_hedonistic(model_space_report_df, adj_mat_dir, window, normalise=False
         hedonistic_counts = normalise_list(hedonistic_counts)
 
     print("finished making list")
-    model_space_report_df['hedonistic_counts'] = hedonistic_counts
+    model_space_report_df['SL4'] = hedonistic_counts
 
     if window > 0:
-        model_space_report_df['hedonistic_rolling'] = model_space_report_df['hedonistic_counts'].rolling(window=window).mean()
+        model_space_report_df['hedonistic_rolling'] = model_space_report_df['SL4'].rolling(window=window).mean()
 
     # sns.lineplot(x=model_space_report_df.index, y='hedonistic_rolling', data=model_space_report_df)
     # # sns.tsplot(data=model_space_report_df.hedonistic_count, estimator=rolling_mean)
@@ -276,10 +322,10 @@ def count_permissive(model_space_report_df, adj_mat_dir, window, normalise=False
     if normalise:
         permissive_counts = normalise_list(permissive_counts)
 
-    model_space_report_df['permissive_counts'] = permissive_counts
+    model_space_report_df['SL1'] = permissive_counts
 
     if window > 0:
-        model_space_report_df['permissive_rolling'] = model_space_report_df['permissive_counts'].rolling(window=window).mean()
+        model_space_report_df['permissive_rolling'] = model_space_report_df['SL1'].rolling(window=window).mean()
 
     return model_space_report_df
 
@@ -338,10 +384,10 @@ def count_submissive(model_space_report_df, adj_mat_dir, window, normalise=False
     if normalise:
         submissive_counts = normalise_list(submissive_counts)
 
-    model_space_report_df['submissive_counts'] = submissive_counts
+    model_space_report_df['SL3'] = submissive_counts
 
     if window > 0:
-        model_space_report_df['dependent_rolling'] = model_space_report_df['dependent_counts'].rolling(window=window).mean()
+        model_space_report_df['dependent_rolling'] = model_space_report_df['SL3'].rolling(window=window).mean()
 
     # sns.scatterplot(x=model_space_report_df.index, y='predator_prey_counts', data=model_space_report_df)
     # plt.show()
@@ -473,10 +519,10 @@ def count_defensive(model_space_report_df, adj_mat_dir, window, normalise=False)
 
 
     print("finished making list")
-    model_space_report_df['defensive_counts'] = defensive_counts
+    model_space_report_df['OL1'] = defensive_counts
 
     if window > 0:
-        model_space_report_df['defensive_rolling'] = model_space_report_df['defensive_counts'].rolling(window=window).mean()
+        model_space_report_df['defensive_rolling'] = model_space_report_df['OL1'].rolling(window=window).mean()
 
     return model_space_report_df
 
@@ -542,15 +588,14 @@ def count_exponential(model_space_report_df, adj_mat_dir, window, normalise=Fals
     
 
     print("finished making list")
-    model_space_report_df['exponential_counts'] = exponential_counts
 
     if normalise:
         exponential_counts = normalise_list(exponential_counts)
 
-    model_space_report_df['exponential_counts'] = exponential_counts
+    model_space_report_df['OL4'] = exponential_counts
 
     if window > 0:
-        model_space_report_df['exponential_rolling'] = model_space_report_df['exponential_counts'].rolling(window=window).mean()
+        model_space_report_df['exponential_rolling'] = model_space_report_df['OL4'].rolling(window=window).mean()
 
     return model_space_report_df
 
@@ -619,10 +664,10 @@ def count_logistic(model_space_report_df, adj_mat_dir, window, normalise=False):
 
 
     print("finished making list")
-    model_space_report_df['logistic_counts'] = logistic_counts
+    model_space_report_df['OL2'] = logistic_counts
 
     if window > 0:
-        model_space_report_df['logistic_rolling'] = model_space_report_df['logistic_counts'].rolling(window=window).mean()
+        model_space_report_df['logistic_rolling'] = model_space_report_df['OL2'].rolling(window=window).mean()
 
     return model_space_report_df
 
@@ -682,10 +727,10 @@ def count_opportunistic(model_space_report_df, adj_mat_dir, window, normalise=Fa
 
 
     print("finished making list")
-    model_space_report_df['opportunistic_counts'] = achillies_count
+    model_space_report_df['OL3'] = achillies_count
 
     if window > 0:
-        model_space_report_df['opportunistic_rolling'] = model_space_report_df['opportunistic_counts'].rolling(window=window).mean()
+        model_space_report_df['opportunistic_rolling'] = model_space_report_df['OL3'].rolling(window=window).mean()
 
     return model_space_report_df
 

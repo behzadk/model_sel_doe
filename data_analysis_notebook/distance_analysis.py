@@ -113,6 +113,7 @@ def plot_steady_state_ratio(output_dir, distance_columns, figure_output_dir):
     scatter_output_path_template = figure_output_dir + "distance_scatter_tern_#IDX#.pdf"
     heatmap_output_path_template = figure_output_dir + "distance_heatmap_tern_#IDX#_with_bar.pdf"
 
+    print(model_distances_path_template)
     for model_idx in model_idxs:
         # if model_idx not in [4128, 226, 872, 2939, 1416]:
         if model_idx not in [872]:
@@ -121,6 +122,7 @@ def plot_steady_state_ratio(output_dir, distance_columns, figure_output_dir):
         try:
             model_distances_path =  model_distances_path_template.replace("#IDX#", str(model_idx))
             model_dist_df = pd.read_csv(model_distances_path)
+        
         except FileNotFoundError:
             continue
         

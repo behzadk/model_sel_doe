@@ -259,6 +259,44 @@ def find_latest_population_pickle(exp_folder):
 
     return None
 
+def combine_model_refs_and_counts(master_alg, sub_alg):
+    master_unique_models = master_alg.model_space._model_list
+    master_unique_model_idxs = [m._model_ref for m in master_unique_models]
+
+    sub_unique_models = sub_alg.model_space._model_list
+    sub_unique_model_idxs = [m._model_ref for m in sub_unique_models]
+
+    sampled_count = {}
+    accepted_count = {}
+    for master_m_idx in master_unique_model_idxs:
+        sub_m_idx = sub_unique_model_idxs.index(master_m_idx)
+        sub_m = sub_unique_models[sub_m_idx]
+
+        master_m = [m for m in master_unique_models if m._model_ref == master_m_idx][0]
+        # master_unique_models[master_m_idx]
+        master_m.population_sample_count[-1] += sub_m.population_sample_count[-1]
+        master_m.population_accepted_count[-1] += sub_m.population_accepted_count[-1]
+
+def make_long_format_model_space_report(pickle_path_list, output_dir):
+    # df = pd.DataFrame(columns=['model_idx', 'accepted_count', 'simulated_count', 'model_marginal', 'exp_idx'])
+    
+    exp_df_list = []
+    for idx, p_path in enumerate(pickle_path_list):
+        p_dir = "/".join(p_path.split('/')[:-1]) + "/"
+        try:
+            p_model_space_report = pd.read_csv(p_dir + "model_space_report.csv", index_col=None)
+        except:
+            continue
+        p_model_space_report = p_model_space_report.loc[:, ~p_model_space_report.columns.str.contains('^Unnamed')]
+        p_model_space_report['exp_idx'] = idx
+        exp_df_list.append(p_model_space_report)
+
+
+    long_df = pd.concat(exp_df_list, ignore_index=True)
+    print(long_df)
+
+    file_path = output_dir + "model_space_report_long.csv"
+    long_df.to_csv(file_path)
 
 def combine_population_pickles():
     data_dir = '/media/behzad/DATA/experiments_data/BK_manu_data/three_species_stable_SMC_2/'
@@ -278,6 +316,11 @@ def combine_population_pickles():
     data_dir = '/media/behzad/DATA/experiments_data/BK_manu_data/two_species_3_rej_0/'
     data_dir = '/media/behzad/DATA/experiments_data/BK_manu_data/three_species_6_stable_SMC_7/'
     data_dir = '/media/behzad/DATA/experiments_data/BK_manu_data/three_species_6_stable_SMC_8/'
+    data_dir = '/Volumes/Samsung_T5/BK_manu_data_backup/raw_output/three_species_7_SMC_5/'
+    # data_dir = '/Volumes/Samsung_T5/BK_manu_data_backup/raw_output/two_species_5_SMC_0b/'
+    data_dir = '/Volumes/Samsung_T5/BK_manu_data_backup/raw_output/three_species_7_SMC_model_4119_1/'
+
+    data_dir = '/home/behzad/Documents/chaos_data/chaos_three_0/'
 
     # data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_manu_surv_SMC_1/'
     # data_dir = '/media/behzad/DATA/experiments_data/spock_manu_data/spock_limited_stable_SMC/'
@@ -298,8 +341,10 @@ def combine_population_pickles():
         if pickle_path:
             pickle_path_list.append(pickle_path)
 
-    pickle_path_list = pickle_path_list[:24]
-    split_pickle_paths = np.array_split(pickle_path_list, 3)
+    # pickle_path_list = pickle_path_list[:96]
+    # make_long_format_model_space_report(pickle_path_list, data_dir)
+
+    split_pickle_paths = np.array_split(pickle_path_list, 1)
 
     print(len(pickle_path_list))
     print(np.shape(split_pickle_paths))
@@ -334,12 +379,15 @@ def combine_population_pickles():
             
             idx = 0
             for p_path in (pickle_path_list):
-                print(idx)
                 try:
                     with open(p_path, 'rb') as p_handle:
+
                         p_dir = "/".join(p_path.split('/')[:-1]) + "/"
                         p = pickle.load(p_handle)
                         total_acc += (len(p.population_accepted_particles))
+
+
+                        print(p_path)
 
                         # p.model_space.accepted_particles = p.population_accepted_particles
                         # p.model_space.update_population_sample_data(p.population_model_refs, p.population_judgements)
@@ -352,14 +400,16 @@ def combine_population_pickles():
                         #     p.model_space.compute_particle_weights()
 
                         # p.model_space.normalize_particle_weights()
+
                         master_alg.population_judgements += p.population_judgements
                         master_alg.population_model_refs += p.population_model_refs
                         master_alg.population_accepted_particles += p.population_accepted_particles
                         master_alg.population_accepted_count += p.population_accepted_count
                         master_alg.population_total_simulations += p.population_total_simulations
 
+                        combine_model_refs_and_counts(master_alg, p)
                         combine_outputs.combine_model_sim_params(chunk_out_dir, p_dir, chunk_out_dir)
-                        # combine_outputs.combine_distances_individually(p_dir, chunk_out_dir)
+                        combine_outputs.combine_distances_individually(p_dir, chunk_out_dir)
 
                 except EOFError:
                     print("loading error")
@@ -371,7 +421,6 @@ def combine_population_pickles():
 
             # Get all model references
             model_refs_list = master_alg.model_space._model_refs_list
-            print("Re assigning particle model objects")
             
             for particle in master_alg.population_accepted_particles:
                 part_model_ref = particle.curr_model._model_ref
@@ -386,7 +435,7 @@ def combine_population_pickles():
                 
 
             print("Updating model sample data")
-            master_alg.model_space.update_population_sample_data(master_alg.population_model_refs, master_alg.population_judgements)
+            # master_alg.model_space.update_population_sample_data(master_alg.population_model_refs, master_alg.population_judgements)
 
             # if master_alg.population_number == 0:
             #     for p in master_alg.model_space.accepted_particles:
@@ -432,6 +481,9 @@ def combine_population_pickles():
             master_alg.population_judgements = []
             master_alg.population_accepted_particles = []
             master_alg.save_object_pickle(chunk_out_dir + "master_pickle_pop_1_chunk_" + str(chunk_idx) + "_")
+
+
+
 
 if __name__ == "__main__":
     combine_population_pickles()

@@ -228,8 +228,8 @@ class Model:
         self._current_sample_probability = 1
 
         # Model data. Number of times this model was sampled in each population and number of times it was accepted
-        self.population_sample_count = []
-        self.population_accepted_count = []
+        self.population_sample_count = [0]
+        self.population_accepted_count = [0]
 
         self.param_kernels = []
         self.init_state_kernels = []
@@ -438,7 +438,7 @@ class ModelSpace:
     def count_dead_models(self):
         count = 0
         for m in self._model_list:
-            if m.population_accepted_count[-1] == 0:
+            if m.population_accepted_count[-2] == 0:
                 count += 1
 
         self.dead_models_count = count
@@ -470,6 +470,17 @@ class ModelSpace:
                 continue
 
 
+    def update_mid_population_sample_data(self, simulated_particle_refs, judgement_array, 
+        sampled_count_dict, accepted_count_dict):
+
+        for idx, particle_ref in enumerate(simulated_particle_refs):
+            sampled_count_dict[particle_ref] = sampled_count_dict[particle_ref] + 1
+
+            if judgement_array[idx]:
+                accepted_count_dict[particle_ref] = accepted_count_dict[particle_ref] + 1
+
+        return sampled_count_dict, accepted_count_dict
+
 
     ##
     # Appends a new entry for the counts of times sampled and times accepted in a population
@@ -495,6 +506,28 @@ class ModelSpace:
         for m in unique_models:
             m.population_sample_count.append(sampled_count[m._model_ref])
             m.population_accepted_count.append(accepted_count[m._model_ref])
+
+    def update_population_sample_data_v2(self, simulated_particle_refs, judgement_array):
+        unique_models = self._model_list
+
+        sampled_count = {}
+        accepted_count = {}
+        for m in unique_models:
+            sampled_count[m._model_ref] = 0
+            accepted_count[m._model_ref] = 0
+
+
+        for idx, particle_ref in enumerate(simulated_particle_refs):
+            sampled_count[particle_ref] = sampled_count[particle_ref] + 1
+
+            if judgement_array[idx]:
+                accepted_count[particle_ref] = accepted_count[particle_ref] + 1
+
+
+        for m in unique_models:
+            m.population_sample_count[-1] += sampled_count[m._model_ref]
+            m.population_accepted_count[-1] += accepted_count[m._model_ref]
+
 
     # ##
     # # Appends a new entry for the counts of times sampled and times accepted in a population
@@ -786,8 +819,9 @@ class ModelSpace:
                                     m.prev_margin])
 
             else:
-                models_data.append([m.get_model_ref(), m.population_accepted_count[-1], m.population_sample_count[-1],
+                models_data.append([m.get_model_ref(), m.population_accepted_count[-2], m.population_sample_count[-2],
                                     m.prev_margin])
+
 
         new_df = pd.DataFrame(data=models_data, columns=column_names)
         new_df.to_csv(file_path)
@@ -807,6 +841,8 @@ class ModelSpace:
 
         for model in self._model_list:
             model.prev_margin = model.curr_margin
+            model.population_sample_count.append(0)
+            model.population_accepted_count.append(0)
 
 
         self.prev_accepted_particles = self.accepted_particles[:]

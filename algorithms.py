@@ -1,5 +1,6 @@
 from model_space import ModelSpace
 import algorithm_utils as alg_utils
+
 import population_modules
 import numpy as np
 import os
@@ -14,6 +15,7 @@ import copy
 import pickle
 import math
 import time
+import seaborn as sns
 
 target_data = np.random.geometric(0.5, 100)
 target_data_s1 = np.sum(target_data)
@@ -110,6 +112,7 @@ class ABC:
                 plot_species = self.fit_species
                 error_msg = self.pop_obj.get_particle_integration_error(sim_idx)
 
+
                 plotting.plot_simulation(pdf, sim_idx, model_ref, state_list, time_points, plot_species, error_msg)
 
         # pdf.close()
@@ -117,9 +120,6 @@ class ABC:
     def plot_all_particles(self, out_dir, pop_num, batch_num, init_states, model_refs):
         out_path = out_dir + "/simulation_plots/Population_" + str(pop_num) + "_batch_" + str(
             batch_num) + "all_plots.pdf"
-
-        # Make new pdf
-        pdf = PdfPages(out_path)
 
         negative_count = 0
         # Iterate all particles in batch
@@ -148,6 +148,85 @@ class ABC:
 
         print("negative count: ", negative_count)
         pdf.close()
+
+
+    def plot_separation(self, model_refs, states, theta_states, params, pop_num, batch_num):
+        out_path = self.out_dir + "Population_" + str(self.population_number) + "/simulation_plots/Population_" + str(pop_num) + "_batch_" + str(batch_num) + "separation.pdf"
+        pdf = PdfPages(out_path)
+
+        if len(model_refs) < self.n_sims_batch:
+            adjusted_sims_batch = len(model_refs)
+
+        else:
+            adjusted_sims_batch = self.n_sims_batch
+
+
+        # Simulate to attractor
+        pop_obj = population_modules.Population(adjusted_sims_batch, self.t_0, self.t_end,
+                                                     self.dt, states, params, model_refs,
+                                                     self.fit_species, self.abs_tol, self.rel_tol)
+
+        # Simulate to attractor
+        theta_pop_obj = population_modules.Population(adjusted_sims_batch, self.t_0, self.t_end,
+                                                     self.dt, theta_states, params, model_refs,
+                                                     self.fit_species, self.abs_tol, self.rel_tol)
+
+        pop_obj.generate_particles()
+        theta_pop_obj.generate_particles()
+
+        pop_obj.simulate_particles()
+        theta_pop_obj.simulate_particles()
+
+
+        with PdfPages(out_path) as pdf:
+            for sim_idx in range(len(model_refs)):
+                state_list = pop_obj.get_particle_state_list(sim_idx)
+                theta_state_list = theta_pop_obj.get_particle_state_list(sim_idx)
+
+                n_species = len(states[sim_idx])
+
+                time_points = pop_obj.get_timepoints_list()
+
+                try:
+                    state_list = np.reshape(state_list, (len(time_points), n_species))
+
+                except(ValueError):
+                    # print(len(state_list)/len(init_states[sim_idx]))
+                    idxs = range(int(len(state_list) / n_species))
+                    state_list = np.reshape(state_list, (len(idxs), n_species))
+                    time_points = time_points[:len(idxs)]
+
+
+                try:
+                    theta_state_list = np.reshape(theta_state_list, (len(time_points), n_species))
+
+                except(ValueError):
+                    # print(len(state_list)/len(init_states[sim_idx]))
+                    idxs = range(int(len(theta_state_list) / n_species))
+                    theta_state_list = np.reshape(theta_state_list, (len(idxs), n_species))
+                    time_points = time_points[:len(idxs)]
+
+
+
+                model_ref = model_refs[sim_idx]
+                plot_species = self.fit_species
+
+                print(np.shape(time_points))
+                time_points = time_points[10000:]
+                state_list = state_list[10000:]
+                theta_state_list = theta_state_list[10000:]
+
+                if len(state_list) < 1 or len(theta_state_list) < 1:
+                    return 0
+
+                elif len(state_list) != len(theta_state_list):
+                    return 0
+
+                else:
+                    plotting.plot_separation(pdf, sim_idx, model_ref, state_list, theta_state_list, time_points)
+
+
+
 
     def write_all_particle_state_lists(self, out_dir, pop_num, batch_num, init_states, model_refs):
         for sim_idx, m_ref in enumerate(model_refs):
@@ -200,7 +279,6 @@ class ABC:
 
                 error_msg = self.pop_obj.get_particle_integration_error(idx)
                 row_vals = [idx, batch_num, population_num, self.exp_num, m_ref, judgement_array[idx], error_msg]
-
 
                 for n_idx, n in enumerate(self.fit_species):
                     for d in distances[idx][n_idx]:
@@ -460,16 +538,13 @@ class ABC:
                 row_vals = [sim_idx, batch_num, m_ref, time_to_stab]
                 wr.writerow(row_vals)
 
-    
 
     def run_model_selection_ABC_SMC(self, alpha=0.5, run_test=0):
-        
         # abs_tol = 1e-20
         # rel_tol = 1e-12
 
         # abs_tol = 1e-15
         # rel_tol = 1e-5
-
         while not self.finished:
             folder_name = self.out_dir + "Population_" + str(self.population_number) + "/"
 
@@ -502,6 +577,7 @@ class ABC:
             # Reset for new population
             total_sims = 0
             self.batch_num = 0
+
 
             while self.population_accepted_count < self.population_size:
                 print("")
@@ -538,6 +614,8 @@ class ABC:
                 particle_models = [p.curr_model for p in particles]
 
                 alg_utils.rescale_parameters(input_params, init_states, particle_models)
+
+
 
 
                 if run_test==0:
@@ -588,7 +666,7 @@ class ABC:
                     batch_part_judgements = []
                     batch_distances = []
                     for p in particles:
-                        d1 = p.curr_params[0]
+                        d1 = np.random.uniform(0, 1)
 
                         batch_distances.append(d1)
                         if d1 < self.current_epsilon[0]:
@@ -600,7 +678,7 @@ class ABC:
 
                     print(np.shape(batch_distances))
                     batch_distances = np.reshape(batch_distances, 
-                        (self.n_sims_batch, len(self.fit_species), self.n_distances))
+                        (self.n_sims_batch, 1, 1))
 
                 if run_test == 2:
                     if self.population_number == 0:
@@ -653,6 +731,11 @@ class ABC:
                     batch_distances = np.reshape(batch_distances, 
                     (self.n_sims_batch, len(self.fit_species), self.n_distances))
 
+                if run_test == 3:
+                    for n in range(self.n_sims_batch):
+                        ode_sim.run_sim(self.t_0, self.t_end, self.dt, init_states[n], input_params[n])
+
+
 
                 self.population_accepted_particle_distances += [part_d for part_d, judgement in
                                                 zip(batch_distances, batch_part_judgements)
@@ -674,16 +757,17 @@ class ABC:
                 # self.plot_all_particles(folder_name, 0, self.batch_num, init_states, model_refs)
 
                 if run_test == 0:
-
                     start_time_write_distance = time.time()
-                    self.write_particle_distances(folder_name, model_refs, self.batch_num, self.population_number,
-                              batch_part_judgements, batch_distances, only_accepted=True)
-                    print("here")
 
                     if self.final_epsilon == self.current_epsilon:
-                    	pass
+                        pass
                         # self.plot_accepted_particles(folder_name, self.batch_num, self.batch_num, batch_part_judgements, init_states, model_refs)
+                        self.write_particle_distances(folder_name, model_refs, self.batch_num, self.population_number, 
+                            batch_part_judgements, batch_distances, only_accepted=True)
+
+
                     end_time_write_distance = time.time()
+
                 print("Write distance time elapsed: ", end_time_write_distance - start_time_write_distance)
 
                 # print("Doing the rest")
@@ -691,15 +775,16 @@ class ABC:
                 self.population_accepted_count += sum(batch_part_judgements)
                 self.population_total_simulations += len(model_refs)
 
-                self.population_model_refs += model_refs
-                self.population_judgements += batch_part_judgements
+                # self.population_model_refs += model_refs
+                # self.population_judgements += batch_part_judgements
+
+                self.model_space.update_population_sample_data_v2(model_refs, batch_part_judgements)
 
                 print("Population: ", self.population_number, "Accepted particles: ", self.population_accepted_count,
                       "Total simulations: ", self.population_total_simulations)
 
                 if not run_test:
                     del self.pop_obj
-
 
                 sys.stdout.flush()
                 self.batch_num += 1
@@ -709,11 +794,11 @@ class ABC:
 
 
             self.population_accepted_particles = self.population_accepted_particles[: self.population_size]
-            self.population_model_refs = self.population_model_refs[: self.population_size]
-            self.population_judgements = self.population_judgements[: self.population_size]
+            # self.population_model_refs = self.population_model_refs[: self.population_size]
+            # self.population_judgements = self.population_judgements[: self.population_size]
 
             self.model_space.accepted_particles = self.population_accepted_particles
-            self.model_space.update_population_sample_data(self.population_model_refs, self.population_judgements)
+            # self.model_space.update_population_sample_data(self.population_model_refs, self.population_judgements)
 
             if self.population_number == 0:
                 for p in self.model_space.accepted_particles:
@@ -724,7 +809,280 @@ class ABC:
 
             self.model_space.normalize_particle_weights()
             self.model_space.update_model_marginals()
-            
+
+            self.save_object_pickle(folder_name)
+
+            self.write_population_particle_params(sim_params_folder)
+
+            self.model_space.prepare_next_population()
+
+            print("generating model kernels")
+            self.model_space.generate_model_kernels(self.population_accepted_particles, self.population_number)
+            print("generating aux info")
+
+            self.model_space.generate_kernel_aux_info()
+            self.model_space.count_dead_models()
+
+            print("generating model space report")
+            print(folder_name)
+
+            self.model_space.model_space_report(folder_name, self.batch_num, use_sum=False)
+
+            if self.current_epsilon != self.final_epsilon: 
+                self.current_epsilon = alg_utils.update_epsilon(self.current_epsilon, self.final_epsilon,
+                                                           self.population_accepted_particle_distances, alpha)
+
+                print("Current epsilon: ", self.current_epsilon)
+                print("Starting new population... ")
+                print("")
+
+                self.population_number += 1
+                self.population_accepted_count = 0
+                self.population_total_simulations = 0
+                self.population_accepted_particle_distances = []
+                self.population_model_refs = []
+                self.population_judgements = []
+                self.population_accepted_particles = []
+
+    def calculate_separtion_coeffs(self, model_refs, input_params, init_states):
+        init_theta_states = [copy.deepcopy(state) for state in init_states]
+
+        # Peturb by init species theta_0
+        theta_0 = 10**-7
+        for theta_state in init_theta_states:
+            perturb_idx = np.random.choice(self.fit_species)
+            theta_state[perturb_idx] += theta_0
+
+        separation_coefficients = [theta_0 for c in range(len(model_refs))]
+
+        curr_states = [copy.deepcopy(state) for state in init_states]
+        curr_theta_states = [copy.deepcopy(state) for state in init_theta_states]
+        
+
+        n_skip = 100
+
+        # Simulate step
+        for x in range(self.sep_length):
+            if len(curr_states) < self.n_sims_batch:
+                adjusted_sims_batch = len(curr_states)
+
+            else:
+                adjusted_sims_batch = n_sims_batch
+
+            pop_obj = population_modules.Population(adjusted_sims_batch, self.t_0, self.dt*2,
+                                                         self.dt, curr_states, input_params, model_refs,
+                                                         self.fit_species, self.abs_tol, self.rel_tol)
+
+            pop_obj_theta = population_modules.Population(adjusted_sims_batch, self.t_0, self.dt*2,
+                                                         self.dt, curr_theta_states, input_params, model_refs,
+                                                         self.fit_species, self.abs_tol, self.rel_tol)
+            pop_obj.generate_particles()
+            pop_obj_theta.generate_particles()
+
+            pop_obj.simulate_particles()
+            pop_obj_theta.simulate_particles()
+
+            # Get step separations
+            for sim_idx in range(len(model_refs)):
+                final_vals = pop_obj.get_particle_final_species_values(sim_idx)
+                final_vals_theta = pop_obj_theta.get_particle_final_species_values(sim_idx)
+
+                # Calculate separation
+                theta_1 = 0
+                for y_a, y_b in zip(final_vals, final_vals_theta):
+                    theta_1 += (y_a - y_b)**2 
+
+                theta_1 = theta_1**0.5
+                theta_1 = theta_1/self.dt
+
+                # Set next step init states
+                species_idx = 0
+                for y_a, y_b in zip(final_vals, final_vals_theta):
+                    # Set state for next sim
+                    curr_states[sim_idx][species_idx] = y_a
+
+                    # Adjusted state of y_theta for next sim
+                    curr_theta_states[sim_idx][species_idx] = y_a + (theta_0 / theta_1) * (y_b - y_a)
+
+                    species_idx += 1
+
+                if x > n_skip:
+                    # Add separation coeff to total
+                    separation_coefficients[sim_idx] += np.log2(abs(theta_1/theta_0))
+
+        # Make into mean
+        separation_coefficients = [sep / (self.sep_length - n_skip) for sep in separation_coefficients]
+
+        return separation_coefficients, init_theta_states
+
+
+    def run_chaos_model_selection_ABC_SMC(self, alpha=0.5, run_test=0):
+        # abs_tol = 1e-20
+        # rel_tol = 1e-12
+        # abs_tol = 1e-15
+        # rel_tol = 1e-5
+
+        while not self.finished:
+            folder_name = self.out_dir + "Population_" + str(self.population_number) + "/"
+
+            try:
+                os.mkdir(folder_name)
+            except FileExistsError:
+                pass
+
+            sim_params_folder = folder_name + 'model_sim_params/'
+            try:
+                os.mkdir(sim_params_folder)
+            except FileExistsError:
+                pass
+
+            try:
+                os.mkdir(folder_name + 'simulation_plots')
+            except FileExistsError:
+                pass
+
+            try:
+                os.mkdir(folder_name + 'simulation_states')
+
+            except FileExistsError:
+                pass
+
+            if self.current_epsilon == self.final_epsilon:
+                print("Running final epsilon")
+                self.finished = True
+
+            # Reset for new population
+            total_sims = 0
+            self.batch_num = 0
+
+            while self.population_accepted_count < self.population_size:
+                # Sample particles
+                start_time = time.time()
+                start_time_sampling = time.time()
+                particles = self.model_space.sample_particles_from_prior(self.n_sims_batch)
+                init_weights = 1/len(particles)
+                for sim_idx, p in enumerate(particles):
+                    p.curr_weight = init_weights
+                    p.prev_weight = init_weights
+                    p.batch_idx = self.batch_num
+                    p.sim_idx = sim_idx
+                end_time_sampling = time.time()
+                # print("Particle sampling time elapsed: ", end_time_sampling - start_time_sampling)
+
+                init_states = [copy.deepcopy(p.curr_init_state) for p in particles]
+                input_params = [copy.deepcopy(p.curr_params) for p in particles]
+                model_refs = [copy.deepcopy(p.curr_model._model_ref) for p in particles]
+                particle_weights = [p.prev_weight for p in particles]
+                particle_models = [p.curr_model for p in particles]
+                alg_utils.rescale_parameters(input_params, init_states, particle_models)
+
+                # Simulate to attractor
+                self.pop_obj = population_modules.Population(self.n_sims_batch, self.t_0, self.t_end,
+                                                             self.dt, init_states, input_params, model_refs,
+                                                             self.fit_species, self.abs_tol, self.rel_tol)
+                self.pop_obj.generate_particles()
+                start_time_sim = time.time()
+                self.pop_obj.simulate_particles()
+                end_time_sim = time.time()
+        
+                # 3. Calculate survival distances for initial trajectories
+                self.pop_obj.calculate_particle_distances(2)
+                self.pop_obj.accumulate_distances()
+                batch_distances = self.pop_obj.get_flattened_distances_list()
+                batch_distances = np.reshape(batch_distances,
+                                             (self.n_sims_batch, len(self.fit_species), self.n_distances))
+
+                # 4. Keep competitive exclusion simulations
+                batch_part_judgements = alg_utils.check_distances_generic(batch_distances,
+                                                                             epsilon_array=self.final_epsilon)
+                comp_exl_particles = [p for p, judgement in zip(particles, batch_part_judgements) if judgement]
+
+                if len(comp_exl_particles) < 1:
+                    continue
+
+                else:
+                    self.population_total_simulations += len(model_refs)
+
+                self.sep_length = 1000
+
+                # Extract state and params of surviving simulations
+                comp_exl_init_state = []
+                comp_exl_init_params = []
+                comp_exl_model_refs = []
+                for sim_idx in range(len(model_refs)):
+                    if batch_part_judgements[sim_idx]:
+                        final_vals = self.pop_obj.get_particle_final_species_values(sim_idx)
+                        comp_exl_init_state.append(final_vals)
+                        comp_exl_init_params.append(input_params[sim_idx])
+                        comp_exl_model_refs.append(model_refs[sim_idx])
+
+                separation_coefficients, init_theta_states = self.calculate_separtion_coeffs(comp_exl_model_refs, comp_exl_init_params, comp_exl_init_state)
+                self.plot_separation(comp_exl_model_refs, comp_exl_init_state, init_theta_states, comp_exl_init_params, self.population_number, self.batch_num)
+
+                sepp_coeff_distances = []
+                comp_exl_count = 0
+                for p, judgement in zip(particles, batch_part_judgements):
+                    if judgement:
+                        sepp_coeff_distances.append([[separation_coefficients[comp_exl_count]]] * len(self.fit_species))
+                        comp_exl_count += 1
+
+                    else:
+                        sepp_coeff_distances.append([[np.nan]] * len(self.fit_species))
+
+                self.population_accepted_particle_distances += [part_d for part_d, judgement in
+                                                zip(sepp_coeff_distances, batch_part_judgements)
+                                                if judgement]
+
+                accepted_particles = [p for p, judgement in zip(particles, batch_part_judgements) if judgement]
+
+                self.population_accepted_particles = self.population_accepted_particles + accepted_particles
+
+                # print("Writing data")
+                self.write_epsilon(folder_name, self.current_epsilon)
+
+                start_time_write_distance = time.time()
+
+                if self.final_epsilon == self.current_epsilon:
+                    self.plot_accepted_particles(folder_name, self.batch_num, self.batch_num, batch_part_judgements, init_states, model_refs)
+                    self.write_particle_distances(folder_name, model_refs, self.batch_num, self.population_number, 
+                        batch_part_judgements, sepp_coeff_distances, only_accepted=True)
+
+                end_time_write_distance = time.time()
+
+                print("Write distance time elapsed: ", end_time_write_distance - start_time_write_distance)
+
+                self.population_accepted_count += sum(batch_part_judgements)
+                self.population_total_simulations += len(model_refs)
+
+                self.model_space.update_population_sample_data_v2(model_refs, batch_part_judgements)
+
+                print("Population: ", self.population_number, "Accepted particles: ", self.population_accepted_count,
+                      "Total simulations: ", self.population_total_simulations)
+
+                if not run_test:
+                    del self.pop_obj
+
+                sys.stdout.flush()
+                self.batch_num += 1
+                end_time = time.time()
+
+                print("batch time elapsed: ", end_time - start_time)
+
+
+            self.population_accepted_particles = self.population_accepted_particles[: self.population_size]
+
+            self.model_space.accepted_particles = self.population_accepted_particles
+
+            if self.population_number == 0:
+                for p in self.model_space.accepted_particles:
+                    p.curr_weight = 1
+
+            else:
+                self.model_space.compute_particle_weights()
+
+            self.model_space.normalize_particle_weights()
+            self.model_space.update_model_marginals()
+
             self.save_object_pickle(folder_name)
 
             self.write_population_particle_params(sim_params_folder)
