@@ -62,7 +62,7 @@ struct simulation_observer
         // if(x(0) < 1e-100) {
         //     species_decayed = true;
         // }
-        
+
         // //Test
         // if(x(1) < 1e-100) {
         //     species_decayed = true;
@@ -192,7 +192,7 @@ boost::python::list Particle::py_model_func(boost::python::list input_y)
 //     for (int i=0; i < n_species; i++) {
 //         y(i) = state_vec.back()[i];
 //     }
-    
+
 //     // Init matrix n_species x n_species
 //     ublas_mat_t J (n_species, n_species);
 
@@ -205,7 +205,7 @@ boost::python::list Particle::py_model_func(boost::python::list input_y)
 //     // Fill jacobian matrix
 //     m.run_jac(y, J, t, dfdt, part_params, model_ref);
 
-//     // Init array 
+//     // Init array
 //     double data[n_species][n_species];
 
 //     // Unpack ublas jac into standard array
@@ -224,7 +224,7 @@ boost::python::list Particle::py_model_func(boost::python::list input_y)
 //     // gsl_matrix_view mat_view = gsl_matrix_view_array (data, n_species, n_species);
 //     gsl_matrix *gsl_J = gsl_matrix_alloc(n_species, n_species);
 //     gsl_vector_complex *eval = gsl_vector_complex_alloc (n_species);
-    
+
 //     gsl_eigen_nonsymm_workspace * w = gsl_eigen_nonsymm_alloc(n_species);
 //     gsl_eigen_nonsymm_params(0, 0, w);
 //     for(int i = 0; i < n_species; i++) {
