@@ -34,7 +34,14 @@ private:
     PyThreadState * m_thread_state;
 };
 
-
+/*! \brief Records states when called and stops simulations early if necessary.
+*   
+*   The observer is called by boost at the end of each step. We have hard coded minimum species
+*   values that will stop the simulation early. These are for the fitted species only. Errors are also thrown
+*   if any species (not just fitted species) becomes negative.
+*
+*   Minimum species values should be made adjustable and provided as a parameter in future.
+*/
 struct simulation_observer
 {
     std::vector< state_type >& m_states;
@@ -91,7 +98,15 @@ struct simulation_observer
     }
 };
 
-
+/*! \brief Particle to be simulated.
+*   
+*   Particles contain all the necessary information to simulate a model  
+* 
+*   \param init_state   initial state of the simulation
+*   \param params       vector containing parameters for the particular model
+*   \param model_obj    The model to be simulated
+*   \param model_idx    The model index
+*/
 Particle::Particle(ublas_vec_t init_state, std::vector<double> params, Models model_obj, int model_idx)
 {
 	Models m = model_obj;
@@ -101,9 +116,14 @@ Particle::Particle(ublas_vec_t init_state, std::vector<double> params, Models mo
 }
 
 
-/*
-* Overloaded functions to either run jacobian or model, depending upon the inputs.
-* 
+/*!
+*   \brief Run the particle's model 
+*   Overloaded function run particle model.
+*   
+*   \param y initial species state
+*   \param dxdt time step size
+*   \param t initial time
+*
 */
 void Particle::operator() (const ublas_vec_t & y , ublas_vec_t &dxdt , double t ) // run_model_func
 {
@@ -111,30 +131,39 @@ void Particle::operator() (const ublas_vec_t & y , ublas_vec_t &dxdt , double t 
     m.run_model_ublas(y, dxdt, t, part_params, model_ref);
 }
 
+/*! \brief Run the particle's Jacobian.
+*   Overloaded function run particle model.
+*   
+*   \param x species state
+*   \param J Matrix for jacobian storage vector
+*   \param t time (not used)
+*   \param dfdt Explicit time derivative vector
+*
+*/
 void Particle::operator() (const ublas_vec_t & x , ublas_mat_t &J , const double & t , ublas_vec_t &dfdt ) // run_jac
 {
     m.run_jac(x, J, t, dfdt, part_params, model_ref);
 }
 
-/*
-* Simulates particle for a given vector of time points. Currently uses default error tolerances and initial step of 
-* 1e-6
+/*! \brief Simulates particle for a given vector of time points.
+*
+*   Simulates particle for a given vector of time points using supplied absolute and relative tolerances (abs_tol and rel_tol).
+*   the fit_species vector is used for early stopping when one or more species decays. Max step check is currently hard coded.
+*   
+*   \param time_points  Vector of time points at which the state will be recorded
+*   \param abs_tol      Absolute tolerance to use in the error stepper
+*   \param rel_tol      Relative tolerance to use in the error stepper
+*   \param fit_species  Species being fitted, importantly observed for early stopping criteria
 */
 void Particle::simulate_particle_rosenbrock(std::vector<double> time_points, double abs_tol, double rel_tol, std::vector<int> fit_species)
 {
     auto rosen_stepper = rosenbrock4_controller< rosenbrock4< double > >( abs_tol , rel_tol);
 
-    // auto rosen_stepper = make_controlled< rosenbrock4< double > >( 1.0e-6 , 1.0e-6 );
-    // PROBLEM: Solver is getting stuck trying to find smaller and smaller dt. Eventually reaching
-    // 0 (maybe) and no longer calling observer at all. 
-    // SOLUTION: Write custom stepper that checks dt and throws exception if dt reaches a very small number!
-    // https://stackoverflow.com/questions/14465725/limit-number-of-steps-in-boostodeint-integration?noredirect=1&lq=1
-
     max_step_checker mx_step = max_step_checker(1e5);
 
     double dt = time_points[1] - time_points[0];
 
-    // // Check if step size is negative
+    // Check if step size is negative
     if ( ( time_points[1] - time_points[0] ) < 0 ) {
         dt = dt * -1;
     }
@@ -144,9 +173,13 @@ void Particle::simulate_particle_rosenbrock(std::vector<double> time_points, dou
         state_init , time_points.begin(), time_points.end() , dt, simulation_observer(state_vec, rosen_stepper, fit_species), mx_step);
 }
 
-/*
-* Exposes the model function to python. Takes an input of species values as a list and returns the dydt values as
-* a python list
+/*! \brief Python compatible model function
+*
+*   Exposes the model function to python. Takes an input of species values as a list and returns the dydt values as
+*   a python list.
+*   
+*   \param input_y python list containing initial species values
+*   \return output python list containing all state values
 */
 boost::python::list Particle::py_model_func(boost::python::list input_y)
 {
@@ -179,85 +212,9 @@ boost::python::list Particle::py_model_func(boost::python::list input_y)
 }
 
 
-// /*
-// *   Not working
-// *
-// *
-// */
-// boost::python::list Particle::get_eigenvalues()
-// {
-//     int n_species = state_init.size();
-//     std::cout << "n_species: " << n_species << std::endl;
-//     ublas_vec_t y(n_species);
-//     for (int i=0; i < n_species; i++) {
-//         y(i) = state_vec.back()[i];
-//     }
-
-//     // Init matrix n_species x n_species
-//     ublas_mat_t J (n_species, n_species);
-
-//     // Not sure why this is necessary
-//     ublas_vec_t dfdt(n_species);
-
-//     // Dummy values
-//     const double t = 0;
-
-//     // Fill jacobian matrix
-//     m.run_jac(y, J, t, dfdt, part_params, model_ref);
-
-//     // Init array
-//     double data[n_species][n_species];
-
-//     // Unpack ublas jac into standard array
-//     for (int i = 0; i < n_species; i++) {
-//         for (int j = 0; j < n_species; j++) {
-//             double val = J(i, j);
-//             // int pos = (i * n_species) + j;
-//             data[i][j] = val;
-//         }
-//     }
-
-//     boost::python::list output;
-
-//     // Find eigenvalues and eigenvectors. Copy of example for non-symmmetric complex problem
-//     // https://www.gnu.org/software/gsl/doc/html/eigen.html#examples
-//     // gsl_matrix_view mat_view = gsl_matrix_view_array (data, n_species, n_species);
-//     gsl_matrix *gsl_J = gsl_matrix_alloc(n_species, n_species);
-//     gsl_vector_complex *eval = gsl_vector_complex_alloc (n_species);
-
-//     gsl_eigen_nonsymm_workspace * w = gsl_eigen_nonsymm_alloc(n_species);
-//     gsl_eigen_nonsymm_params(0, 0, w);
-//     for(int i = 0; i < n_species; i++) {
-//         for(int j = 0; j < n_species; j++) {
-//             gsl_matrix_set(gsl_J, i, j, data[i][j]);
-//         }
-//     }
-
-//     gsl_eigen_nonsymm(gsl_J, eval, w); /*diagonalize E which is M at t fixed*/
-
-//     boost::python::list eigen_values;
-
-//     for (int i = 0; i < n_species; i++)
-//     {
-//         boost::python::list eig;
-
-//         gsl_complex eval_i = gsl_vector_complex_get(eval, i);
-
-//         double real_val = GSL_REAL(eval_i);
-//         double img_val = GSL_IMAG(eval_i);
-
-//         eig.append(real_val);
-//         eig.append(img_val);
-
-//         eigen_values.append(eig);
-//     }
-
-//     output.append(eigen_values);
-//     // output.append(eig_real_product);
-
-//     return output;
-// }
-
+/*! \brief Gets Jacobian trace using the initial species values.
+*   \return trace value being the sum of the diagonal of the Jacobian
+*/
 double Particle::get_trace()
 {
     int n_species = state_init.size();
@@ -287,7 +244,12 @@ double Particle::get_trace()
     return trace;
 }
 
-
+/*! \brief Python compatible get Jacobian
+*   Computes Jacobian from a list of input species, returning a python list containing the Jacobian
+*
+*   \param input_y A python list of species values used to compute the Jacobian
+*   \return Particle Jacobian as python list
+*/
 boost::python::list Particle::get_jacobian(boost::python::list input_y)
 {
     int n_species = state_init.size();
@@ -319,11 +281,12 @@ boost::python::list Particle::get_jacobian(boost::python::list input_y)
     }
 
     return py_J;
-
 }
 
-/*
-* Returns the jacobian using the end state
+/*! \brief Python compatible get Jacobian from end state
+*   Computes Jacobian from a the end state of a simulation, returning a python list containing the Jacobian.
+*
+*   \return Particle end state Jacobian as python list
 */
 boost::python::list Particle::get_end_state_jacobian()
 {
@@ -333,7 +296,6 @@ boost::python::list Particle::get_end_state_jacobian()
     for (int i=0; i < n_species; i++) {
         y(i) = state_vec.back()[i];
     }
-    
 
     // Init matrix n_species x n_species
     ublas_mat_t J (n_species, n_species);
@@ -347,7 +309,6 @@ boost::python::list Particle::get_end_state_jacobian()
     // Fill jacobian matrix
     m.run_jac(y, J, t, dfdt, part_params, model_ref);
 
-
     // Unpack ublas jac into python list
     boost::python::list py_J;
     for (int i = 0; i < n_species; i++) {
@@ -360,11 +321,9 @@ boost::python::list Particle::get_end_state_jacobian()
     return py_J;
 }
 
-/*
-* Returns the jacobian using the initial state
-*
-*
-*
+/*! \brief Python compatible get Jacobian from initial state
+* Computes Jacobian using the initial state of the simulation, returning it as a python list
+* \return Particle Jacobian as python list
 */
 boost::python::list Particle::get_init_state_jacobian()
 {
@@ -374,7 +333,6 @@ boost::python::list Particle::get_init_state_jacobian()
     for (int i=0; i < n_species; i++) {
         y(i) = state_init[i];
     }
-    
 
     // Init matrix n_species x n_species
     ublas_mat_t J (n_species, n_species);
@@ -388,7 +346,6 @@ boost::python::list Particle::get_init_state_jacobian()
     // Fill jacobian matrix
     m.run_jac(y, J, t, dfdt, part_params, model_ref);
 
-
     // Unpack ublas jac into python list
     boost::python::list py_J;
     for (int i = 0; i < n_species; i++) {
@@ -397,92 +354,50 @@ boost::python::list Particle::get_init_state_jacobian()
             py_J.append(val);
         }
     }
-
     return py_J;
 }
 
-
-
-/*
- * Iterates the state vector, returning a flattened boost::python::list of the results.
- * requires reshaping  (timepoints, species)
- * 
- */
+/*! \brief Gets particle simulation states as a Python list 
+* Iterates the state vector, returning a flattened boost::python::list of the results.
+* The returned python list reshaping, (n_timepoints, n_species).
+* \return sol flat python list of states for a simulated particle
+*/
 boost::python::list Particle::get_state_pylist() {
-    boost::python::list temp_reslist;
+    boost::python::list sol;
     {
         ScopedGILRelease noGil = ScopedGILRelease();
         for (auto sim_iter = state_vec.begin(); sim_iter != state_vec.end(); ++sim_iter) {
             auto sim_vec = *sim_iter;
            for(int i=0; i < sim_vec.size(); i++) {
                 double val = sim_vec[i];
-                temp_reslist.append(val);
+                sol.append(val);
            }
         }
 
     }
-    return temp_reslist;
+    return sol;
 }
 
+/*! \brief Gets vector of states from particle simulation. 
+* Returns vector containing the state list of a simulated particle
+* \return std::vector<state_type>&state_vec
+*/
 std::vector<state_type>& Particle::get_state_vec() {
     return state_vec;
 }
 
+/*! \brief Set particle distances
+* Sets the particle simulation distances
+* \param sim_dist a vector containing simulation distances
+*/
 void Particle::set_distance_vector(std::vector<std::vector<double>> sim_dist) {
     this->sim_distances = sim_dist;
 }
 
-
-
-/*
-Code from here http://programmingexamples.net/wiki/CPP/Boost/Math/uBLAS/determinant
+/*! \brief Get particle final species values
+* Gets the end state of the simulation, returning a python list of species values
+* \return end_state python list of species values for the end of the simulation
 */
-int Particle::determinant_sign(const boost::numeric::ublas::permutation_matrix<std::size_t>& pm)
-{
-    int pm_sign=1;
-    std::size_t size = pm.size();
-    for (std::size_t i = 0; i < size; ++i)
-        if (i != pm(i))
-            pm_sign *= -1.0; // swap_rows would swap a pair of rows here, so we change sign
-    return pm_sign;
-}
-
-// double Particle::get_determinant() {
-//     int n_species = state_init.size();
-    
-//     ublas_vec_t y(n_species);
-//     for (int i=0; i < n_species; i++) {
-//         y(i) = state_vec.back()[i];
-//         std::cout << (y(i)) << std::endl;
-//     }
-    
-//     // Init matrix n_species x n_species
-//     ublas_mat_t J (n_species, n_species);
-
-//     // Not sure why this is necessary
-//     ublas_vec_t dfdt(n_species);
-
-//     // Dummy values
-//     const double t = 0;
-
-//     // Fill jacobian matrix
-//     m.run_jac(y, J, t, dfdt, part_params, model_ref);
-
-//     boost::numeric::ublas::permutation_matrix<std::size_t> pm(J.size1());
-//     long double det = 1.0;
-//     if( boost::numeric::ublas::lu_factorize(J, pm) ) {
-//         det = 0.0;
-//     } else {
-//         for(int i = 0; i < J.size1(); i++){
-//             det *= J(i,i); // multiply by elements on diagonal
-//         }
-
-//         det = det * determinant_sign( pm );
-//     }
-
-//     return det;
-// }
-
 boost::python::list Particle::get_final_species_values()
 {
     int n_species = state_init.size();
@@ -497,35 +412,12 @@ boost::python::list Particle::get_final_species_values()
     return end_state;
 }
 
-
-// void Particle::laplace_expansion()
-// {
-//     int n_species = state_init.size();
-    
-//     ublas_vec_t y(n_species);
-//     for (int i=0; i < n_species; i++) {
-//         y(i) = state_vec.back()[i];
-//     }
-    
-//     // Init matrix n_species x n_species
-//     ublas_mat_t J (n_species, n_species);
-
-//     // Not sure why this is necessary
-//     ublas_vec_t dfdt(n_species);
-
-//     // Dummy values
-//     const double t = 0;
-
-//     // Fill jacobian matrix
-//     m.run_jac(y, J, t, dfdt, part_params, model_ref);
-
-
-//     int i, j;
-
-//     long double sol = 0;
-//     // Iterate columns
-// }
-
+/*! \brief Get sum of simulation standard deviations
+* Gets the sum of standard deviations for all species in a particle from a given timepoint to
+* the end of the simulation.
+* \param from_time_point an integer index of where to start calculating the standard deviations from.
+* \return end_state python list of species values for the end of the simulation
+*/
 double Particle::get_sum_stdev(int from_time_point)
 {
     DistanceFunctions dist = DistanceFunctions();
@@ -534,21 +426,15 @@ double Particle::get_sum_stdev(int from_time_point)
     return dist.get_sum_stdev(state_vec, n_species, from_time_point);
 }
 
-// long double Particle::get_sum_grad()
-// {
-//     DistanceFunctions dist = DistanceFunctions();
-
-//     int n_species = state_init.size();
-//     return dist.get_sum_grad(state_vec, n_species);
-
-// }
-
+/*! \brief Get final timepoint gradients
+* Gets the gradients of all species at the final timepoint.
+* \return dist.get_all_species_grads(state_vec, n_species) python list containing the gradients of all species at the
+* final timepoint
+*/
 boost::python::list Particle::get_all_grads()
 {
-
     DistanceFunctions dist = DistanceFunctions();
     int n_species = state_init.size();
 
     return dist.get_all_species_grads(state_vec, n_species);
-
 }

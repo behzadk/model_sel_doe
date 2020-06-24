@@ -26,3 +26,5 @@ drop_box_results/
 input_files_old/
 input_files_old/*
 input_files_old/*/*
+latex/
+html/

@@ -58,22 +58,17 @@ void DistanceFunctions::fft_freq(double * results, int n, float step_size) {
 }
 
 /*! \brief Returns the period frequency of a signal
- *         
- *
- *  
- *	
+ *  \param signal vector of the signal to be anaylsed
+ *	\param dt float of the time step used in the simulation
  */
 double DistanceFunctions::get_period_frequency(std::vector<double>& signal, const float dt)
 {
 	int n_samples = signal.size();
 
-
-
   	kiss_fft_scalar signal_scalar[n_samples];
 	for (int i = 0; i < n_samples; i++) {
 		signal_scalar[i] = signal[i];
 	}
-
 
   	kiss_fft_cpx out[(n_samples /2) + 1];
     double period;
@@ -87,10 +82,9 @@ double DistanceFunctions::get_period_frequency(std::vector<double>& signal, cons
 	    kiss_fftr(cfg, signal_scalar, out);
 	    free(cfg);
 
-
 	    double max_real_part = pow((out[1].r + out[1].i), 2);
-
 	   	int max_arg = 1;
+
 	    for (x = 2; x < (n_samples/2 ) + 1; x++)
 	    {
 	    	double mag  = pow((out[x].r + out[x].i), 2);
@@ -106,7 +100,6 @@ double DistanceFunctions::get_period_frequency(std::vector<double>& signal, cons
 	    }
 
 	    double freq_bins[n_samples];
-
 	    fft_freq(freq_bins, n_samples, dt);
 
 	   	double max_freq = 2 * freq_bins[max_arg];
@@ -117,69 +110,11 @@ double DistanceFunctions::get_period_frequency(std::vector<double>& signal, cons
     return period;
 }
 
-void DistanceFunctions::test_fft(float f, int amp, int t_end, float step_size) {
-	std::cout << "starting fft... " << std::endl;
-	// Make sine wave
-
-	std::vector<double> time_vec = arange(0, t_end, step_size);
-	int n_samples = time_vec.size();
-
-  	kiss_fft_scalar sin_wav[n_samples];
-  	kiss_fft_cpx out[(n_samples /2) + 1];
-
-
-	for (int i = 0; i < time_vec.size(); i++) {
-        double y = amp * cos(M_PI * f * time_vec[i]);
-		sin_wav[i] = y;
-	}
-
-  	kiss_fftr_cfg cfg;
-  	if ((cfg = kiss_fftr_alloc(n_samples, 0/*is_inverse_fft*/, NULL, NULL)) != NULL)
-  	{
-	    size_t x;
-
-	    kiss_fftr(cfg, sin_wav, out);
-	    free(cfg);
-
-	    double max_real_part = pow((out[1].r + out[1].i), 2); 
-	   	int max_arg = 1;
-	    for (x = 2; x < (n_samples/2 ) + 1; x++)
-	    {
-
-	    	double mag  = pow((out[x].r + out[x].i), 2);
-	    	if (mag > max_real_part) {
-	    		if ( std::isinf(mag)) {
-	    			continue;
-	    		}
-	    		else {
-		    		max_real_part = mag;
-    			   	max_arg = x;
-		    	}
-
-	    	}
-	    }
-
-	    double freq_bins[n_samples];
-	    fft_freq(freq_bins, n_samples, step_size);
-	    std::cout << n_samples << std::endl;
-	    std::cout << "" << std::endl;
-
-	    std::cout << "max real parts = "<< max_real_part << std::endl;
-	    std::cout << "max arg = " << max_arg << std::endl;
-
-	   	double max_freq = 2 * freq_bins[max_arg];
-	   	double period = 1/max_freq;
-   	    std::cout << "fre_bin  = "<<  freq_bins[max_arg] << std::endl;
-   	    std::cout << "freq  = "<<  max_freq << std::endl;
-   	    std::cout << "period  = "<<  period << std::endl;
-
-	    std::cout << "" << std::endl;
-
-	}
-
-}
-
-
+/*! Gets the signal of a single species from a simulation.
+ *  \param state_vec vector containing simulation states.
+ *	\param species_idx index of species to extract.
+ *  \return species_val_vec vector of simulation signal for a single species.
+ */
 std::vector<double> DistanceFunctions::extract_species_to_fit(std::vector<state_type>& state_vec, int species_idx, int from_time_index=0)
 {
 	std::vector<double> species_val_vec;
@@ -192,7 +127,10 @@ std::vector<double> DistanceFunctions::extract_species_to_fit(std::vector<state_
     return species_val_vec;
 }
 
-
+/*! Generates a derivative of a signal vector.
+ *  \param signal vector states for a single species
+ *  \return signal_gradient vector containing gradients at each time point
+ */
 std::vector<double> DistanceFunctions::get_signal_gradient(std::vector<double>& signal)
 {
 	std::vector<double> signal_gradient;
@@ -205,7 +143,10 @@ std::vector<double> DistanceFunctions::get_signal_gradient(std::vector<double>& 
 	return signal_gradient;
 
 }
-
+/*! Gets the gradient at the final timepoint of a species simulation.
+ *  \param species_vals vector containing the states of a single species
+ *  \return grad the gradient at the final time point
+ */
 long double DistanceFunctions::calculate_final_gradient(std::vector<double>& species_vals)
 {
 	double i = species_vals.end()[-2];
@@ -216,15 +157,17 @@ long double DistanceFunctions::calculate_final_gradient(std::vector<double>& spe
 }
 
 
-/*! \brief appends indexes of signal for each peak and trough, for a given signal gradient.
- *         
- *
+/*!
+ *	\brief Appends the indexes of each peak and trough to the supplied vectors
  *  Iterates through the signal gradient identifying changes between positive and negative
- *	gradients. Differences in sign of the two current and previous gradient indicate a 
+ *	gradients. Differences in sign of the two current and previous gradient indicate a
  *	peak or a trough.
  *
- *	Appends the indexes of each peak and trough to the supplied vectors
- */	
+ *  \param signal_gradient vector containing the gradients of a simulation
+ *  \param peak_idx vector in which the identified peak indexes are stored
+ *  \param trough_idx vector in which the identified trough indexes are stored
+ *
+ */
 void DistanceFunctions::find_signal_peaks_and_troughs(std::vector<double>& signal_gradient, std::vector<int>& peak_idx, std::vector<int>& trough_idx)
 {
 	double current_gradient;
@@ -249,11 +192,15 @@ void DistanceFunctions::find_signal_peaks_and_troughs(std::vector<double>& signa
 	}
 }
 
-/*! \brief Returns a vector of amplitudes, calculated from a given signal and indexes for the peaks and troughs.
- *        
- *	Calculates standard deviation of a signal. Be careful of sizes of numbers, might hit upper limits
- *	for some systems, possibly I should scale down the signal first?
- */	
+/*! \brief Calculates amplitudes from signal and precalculated peaks and trough indexes.
+ *
+ *  Iterates through the precomputed peak and trough indexes, calculating the amplitudes between them
+ *  \param signal vector containing the states of a simulated species
+ *  \param peak_idx vector containing indexes of peaks
+ *  \param trough_idx vector containing indexes of troughs
+ *
+ *  \return amplitudes vector of amplitudes in a signal.
+ */
 std::vector<double> DistanceFunctions::get_amplitudes(std::vector<double>& signal, std::vector<int>& peak_idx, std::vector<int>& trough_idx) 
 {
 	int num_peaks = peak_idx.size();
@@ -277,8 +224,9 @@ std::vector<double> DistanceFunctions::get_amplitudes(std::vector<double>& signa
 
 /*! \brief Calculates standard deviation of a signal.
  *        
- *	Calculates standard deviation of a signal. Be careful of sizes of numbers, might hit upper limits
- *	for some systems, possibly I should scale down the signal first?
+ *	Calculates standard deviation of a signal.
+ *  \param signal vector containing signal for which std is calculated
+ *  \return stdev the standard deviation
  */	
 double DistanceFunctions::standard_deviation(std::vector<double>& signal) {
 	double mean;
@@ -293,29 +241,27 @@ double DistanceFunctions::standard_deviation(std::vector<double>& signal) {
 
 	double sq_sum = 0.0;
 
-	// auto sq_diff_mean = [&](double time_point, double mean){return pow(time_point - mean, 2); };
 	//sum square
 	for (int i = 0; i < signal.size(); i++) {
 		double val = std::pow( (signal[i] - mean) , 2);
 		sq_sum += val;
 	}
 
-	// for (auto it = signal.begin(); it != signal.end(); it++) {
-	// 	sq_sum += sq_diff_mean(*it, mean);
-	// }
-
-	// auto sq_sum = [&](std::vector<double>& sig, double& mean) {return  std::accumulate(sig.begin(), sig.end(), 
-	// 	mean, sq_diff_mean); };
-
 	if (sq_sum == 0){
 		return 0;
 	}
 	double stdev = sqrt( sq_sum / (signal.size()) );
 
-
 	return stdev;
 }
 
+/*! \brief Returns bool indicating of the simulation contains negative species.
+ *  Iterates through all indexes of a vector, with each index containing n-datapoints (one for each species).
+ *  Gets the minimum value at each timepoint, returning True if the minimum value is less than 0.
+ *
+ *	\param state_vec vector containing the states of all species for each timepoint.
+ *  \return bool True if the simulation contains negative species.
+ */
 bool DistanceFunctions::has_negative_species(std::vector<state_type>& state_vec) {
 	for (auto tp_iter = state_vec.begin(); tp_iter != state_vec.end(); tp_iter++) {
 		std::vector<double> sim_vec = *tp_iter;
@@ -325,11 +271,16 @@ bool DistanceFunctions::has_negative_species(std::vector<state_type>& state_vec)
 			return true;
 		}
 	}
-
 	return false;
 }
 
-
+/*! \brief Calculates the sum of standard deviations for all species.
+ *  Iterates through the species to fit and caluclates the standard deviation for each. The sum of the
+ *  standard deviations are returned.
+ *	\param state_vec vector containing states of all species for each timepoint in a simulation
+ *  \param n_species integer indicating the number of species in the simulation.
+ *  \return sum_stdev The sum of standard deviations for species in the simulation.
+ */
 double DistanceFunctions::get_sum_stdev(std::vector<state_type>& state_vec, int n_species, int from_time_index) {
 	double sum_stdev = 0;
 
@@ -347,8 +298,6 @@ long double DistanceFunctions::get_sum_grad(std::vector<state_type>& state_vec, 
 	long double sum_grad = 0;
 	for (int i = 0; i < n_species; i++) {
 		std::vector<double> signal = extract_species_to_fit(state_vec, n_species, 0);
-
-		// std::vector<double> signal_gradient = get_signal_gradient(signal);
 
 		long double final_gradient = calculate_final_gradient(signal);
 		sum_grad = sum_grad + final_gradient;
@@ -369,15 +318,12 @@ boost::python::list DistanceFunctions::get_all_species_grads(std::vector<state_t
 		long double final_gradient = calculate_final_gradient(signal);
 		all_grads.append(final_gradient);
 	}
-
 	return all_grads;
-
 }
 
-/*! \brief Calculates distances for oscillatory objective. Returns vector of distances for each species
- *        
- *	Distances: Number of peaks, final peak amplitude and period frequency.
- *	
+/*! \brief Calculates distances for oscillatory objective.
+ *  WARNING: CONTAINS HARDCODED PARAMETERS
+ *
  */	
 std::vector<std::vector<double>> DistanceFunctions::osc_dist(std::vector<state_type>& state_vec, std::vector<int> species_to_fit, bool integration_failed, const float dt) {
 	std::vector<std::vector<double>> sim_distances;
@@ -394,7 +340,6 @@ std::vector<std::vector<double>> DistanceFunctions::osc_dist(std::vector<state_t
 		return sim_distances;
 	}
 
-	// int from_time_index = 900;
 	int from_time_index = 50;
 
 	int amplitude_threshold = 0;
@@ -435,7 +380,6 @@ std::vector<std::vector<double>> DistanceFunctions::osc_dist(std::vector<state_t
 		}
 
 		std::vector<double> signal_distances = {threshold_amplitudes_count, final_amplitude, signal_period_freq};
-
 		sim_distances.push_back(signal_distances);
 
 	}
@@ -444,11 +388,18 @@ std::vector<std::vector<double>> DistanceFunctions::osc_dist(std::vector<state_t
 }
 
 
-/*! \brief Calculates distances for stable objective. Returns vector of distances for each species
- *        
- *	Calculates standard deviation of a signal. Be careful of sizes of numbers, might hit upper limits
- *	for some systems, possibly I should scale down the signal first?
- */	
+/*! \brief Calculates distances for stable objective.
+ *  Iterates the species that should be fit, returning a vector with the final gradient, standard deviation and
+ *  final species value. Standard deviation is calculated from the final 10 percent of the simulation, this is currently
+ *  hard coded.
+ *
+ *  \param state_vec vector containing the states of a simulation for all speices
+ *  \param species_to_fit vector containing the indexes of species that should be fit.
+ *  \param integration_failed bool indicating if the integration failed
+ *  \param sim_distances vector in which the calculated distances should be stored
+
+ *  \return sim_distances vector containing the calculated distances.
+ */
 std::vector<std::vector<double>> DistanceFunctions::stable_dist(std::vector<state_type>& state_vec, std::vector<int> species_to_fit, bool integration_failed) {
 	std::vector<std::vector<double>> sim_distances;
 
@@ -463,7 +414,6 @@ std::vector<std::vector<double>> DistanceFunctions::stable_dist(std::vector<stat
 
 		return sim_distances;
 	}
-
 
 	auto sim_size = state_vec.size();
 	int from_time_index = floor(sim_size - (sim_size * 0.1));
@@ -491,9 +441,8 @@ std::vector<std::vector<double>> DistanceFunctions::stable_dist(std::vector<stat
 
 }
 
-
 /*! \brief Calculates distances for survival objective. Returns vector of distances for each species.
- *        
+ *  WARNING: CONTAINS HARDCODED PARAMETERS
  */	
 std::vector<std::vector<double>> DistanceFunctions::survival_dist(std::vector<state_type>& state_vec, std::vector<int> species_to_fit, bool integration_failed) {
 	std::vector<std::vector<double>> sim_distances;

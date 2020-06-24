@@ -19,9 +19,22 @@ using namespace std;
 using namespace boost::numeric::odeint;
 using namespace boost::python;
 
-/*
- * Population class is used to generate a population of particles
- * to be simulated. This class is used as an interface with python.
+/*! \brief Population class used to interface with Python algorithms.
+ *   
+ *  Used to generate a population of particles
+ *  to be simulated. This class is used as an interface with python, enabling
+ *  simulations and distance calculations to be conducted in parallel using OpenMP
+ *  
+ *  \param n_sims number of simulations to be conducted
+ *  \param t_0      initial time point
+ *  \param t_end    end time point
+ *  \param dt       time step
+ *  \param state_init_list initial states for each particle
+ *  \param params_list parameters for each particle
+ *  \param model_ref_list model references for each particle
+ *  \param py_fit_species species to be fit for each particle
+ *  \param abs_tol absolute tolerance for ODE error stepper
+ *  \param rel_tol relative tolerance for ODE error stepper
 */
 Population::Population(const int n_sims, const int t_0, 
     const int t_end, const float dt, boost::python::list state_init_list,
@@ -61,9 +74,10 @@ Population::Population(const int n_sims, const int t_0,
 }
 
 
-/*
- * Generates vector of particle objects with their parameters and reference
- * to the model which should be simulated.
+/*! \brief Generates particles from the data used to initialise the Population object.
+ *  Generates vector of particle objects with their parameters and reference
+ *  to the model which should be simulated.
+ *  \see Population
 */
 void Population::generate_particles()
 {
@@ -75,7 +89,7 @@ void Population::generate_particles()
     }
 }
 
-/*
+/*! \brief Simulate all particles
  * Performs simulation of all particles in the population
 */
 void Population::simulate_particles()
@@ -116,8 +130,11 @@ void Population::simulate_particles()
 }
 
 
-/*
- * Calculates the distances of all particles in the population.
+/*! \brief Calculates the distances of all particles in the population
+ *  The distance function used using an integer argument.
+ *  0 - stable steady state, 1- oscillatory, 2 - survival.
+ *  
+ *  \param distance_function_mode determines which distance functions to use
 */
 void Population::calculate_particle_distances(int distance_function_mode)
 {
@@ -146,8 +163,8 @@ void Population::calculate_particle_distances(int distance_function_mode)
 }
 
 
-/*
- * Extracts the distances from all particles into a member vector.
+/*! \brief Extracts the distances from all particles into a member vector.
+ * 
  */
 void Population::accumulate_distances()
 {
@@ -157,8 +174,10 @@ void Population::accumulate_distances()
 }
 
 
-/*
- * Flattens all the particle distances into a list for output to python.
+/* \brief Gets python compatible list of particle distances.
+ *  Flattens all the particle distances into a list for output to python.
+ *  The list needs to be reshaped once in python.
+ *   \return py_list_distances python list of distances for all particles.
  */
 boost::python::list Population::get_flattened_distances_list() 
 {
@@ -180,9 +199,10 @@ boost::python::list Population::get_flattened_distances_list()
 }
 
 
-/*
- * Unpacks the nested list of parameters to C++ compatible vector of vectors.
- * Input vector contains a vector of parameters for each simulation.
+/*! \brief Unpacks python list of parameters into C++ nested vector.
+ *  Input vector contains a vector of parameters for each simulation.
+ *  \param nested_parameters python list of parameters for each particle
+ *  \return all_params a vector containing all params for use in C++ functions.
  */
 std::vector< std::vector<double> > Population::unpack_parameters(boost::python::list nested_parameters) 
 {
@@ -199,9 +219,10 @@ std::vector< std::vector<double> > Population::unpack_parameters(boost::python::
 }
 
 
-/*
+/*! \brief Unpacks python list of parameters into ublas vector
  * Unpacks the nested pylist of parameters to vector of ublas vectors
- * 
+ * \param nested_parameters python list of initial states for each particle
+ * \return all_params a ublas vector containing all simulation parameters
  */
 std::vector< ublas_vec_t > Population::unpack_parameters_to_ublas(boost::python::list nested_parameters)
 {
@@ -221,9 +242,10 @@ std::vector< ublas_vec_t > Population::unpack_parameters_to_ublas(boost::python:
 }
 
 
-/*
- * Unpacks the list of model references. Each element refers to the index of the model that
- * this particle should simulate.
+/*! \brief Unpacks python list of model references into a C++ vector.
+ *  Each element refers to the index of the model that this particle should simulate.
+ *  \param model_ref_list is a python list of model references
+ *  \return model_ref_vec is a C++ vector containing model references
  */
 std::vector<int> Population::unpack_model_references(boost::python::list model_ref_list) 
 {
@@ -237,8 +259,7 @@ std::vector<int> Population::unpack_model_references(boost::python::list model_r
 }
 
 
-/*
- * Returns the state vector of a specified particle, in the form of a python list.
+/*! \brief Gets python compatible state list for a specific particle.
  * List needs to be reshaped (#timepoints, #species)
  */
 boost::python::list Population::get_particle_state_list(int particle_ref) 
@@ -246,6 +267,11 @@ boost::python::list Population::get_particle_state_list(int particle_ref)
 	return(_particle_vector[particle_ref].get_state_pylist());
 }
 
+/*! \brief Gets python compatible list of time points.
+ *  these are the time points used for simulations.
+ *
+ *  \return tp_list is a list of time points
+ */
 boost::python::list Population::get_timepoints_list() {
 	boost::python::list tp_list;
 	for (int i=0; i < _time_array.size(); ++i){
@@ -255,11 +281,10 @@ boost::python::list Population::get_timepoints_list() {
 	return tp_list;
 }
 
-// boost::python::list Population::get_particle_eigenvalues(int particle_ref)
-// {
-//     return(_particle_vector[particle_ref].get_eigenvalues_eigen());
-// }
-
+/*! \brief Gets trace of Jacobian for a particle
+ *  \param particle_ref is the index of the particle for which to get the trace
+ *  \return trace
+ */
 double Population::get_particle_trace(int particle_ref)
 {
     return(_particle_vector[particle_ref].get_trace());
@@ -285,16 +310,6 @@ boost::python::list Population::get_particle_final_species_values(int particle_r
 {
     return(_particle_vector[particle_ref].get_final_species_values());
 }
-
-// double Population::get_particle_det(int particle_ref)
-// {
-//     return(_particle_vector[particle_ref].get_determinant());
-// }
-
-// void Population::get_particle_laplace_expansion(int particle_ref)
-// {
-//     return(_particle_vector[particle_ref].laplace_expansion());
-// }
 
 
 bool Population::check_integration_failure(int particle_ref) 
@@ -335,10 +350,6 @@ double Population::get_particle_sum_stdev(int particle_ref, int from_time_point)
     return _particle_vector[particle_ref].get_sum_stdev(from_time_point);
 }
 
-// long double Population::get_particle_sum_grad(int particle_ref)
-// {
-//     return _particle_vector[particle_ref].get_sum_grad();
-// }
 
 boost::python::list Population::get_particle_grads(int particle_ref)
 {
@@ -370,17 +381,13 @@ BOOST_PYTHON_MODULE(population_modules)
         .def("check_integration_failure", &Population::check_integration_failure)
         .def("get_particle_integration_error", &Population::get_particle_integration_error)
         .def("get_all_particle_integration_errors", &Population::get_all_particle_integration_errors)
-        // .def("get_particle_eigenvalues", &Population::get_particle_eigenvalues)
         .def("get_particle_trace", &Population::get_particle_trace)
         .def("get_particle_init_state_jacobian", &Population::get_particle_init_state_jacobian)
         .def("get_particle_end_state_jacobian", &Population::get_particle_end_state_jacobian)
-        // .def("get_particle_det", &Population::get_particle_det)
-        // .def("get_particle_laplace_expansion", &Population::get_particle_laplace_expansion)
         .def("py_model_func", &Population::py_model_func)
         .def("get_particle_final_species_values", &Population::get_particle_final_species_values)
         .def("get_particle_jacobian", &Population::get_particle_jacobian)
         .def("get_particle_sum_stdev", &Population::get_particle_sum_stdev)
-        // .def("get_particle_sum_grad", &Population::get_particle_sum_grad)
         .def("get_particle_grads", &Population::get_particle_grads)
         ;
 }
