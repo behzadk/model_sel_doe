@@ -7,7 +7,11 @@ import time
 
 log_decimals = 4
 
+
+## Particle class.
 class Particle:
+    ## Constructor
+    # @param model a Model object that the particle belongs to
     def __init__(self, model):
         self.curr_model = model
         self.prev_model = None
@@ -20,12 +24,20 @@ class Particle:
         self.curr_params = []
         self.curr_init_state = []
 
+    ## Samples a set of parameters from the current model of the particle.
+    # Sampled parameters are assigned to the current parameters of the particle
     def sample_params_from_prior(self):
         self.curr_params = self.curr_model.sample_particle()
 
+    ## Samples a set of initial species values from the current model of the particle.
+    # Sampled parameters are assigned to the current initial state of the particle
     def sample_init_state_from_prior(self):
         self.curr_init_state = self.curr_model.sample_init_state()
 
+    ## Perturbs particle parameters and initial state values.
+    # Uses component-wise normal perturbation of parameters and initial species values. In the event a perturbed
+    # parameter is outside the prior distribution range, it will be resampled.
+    # @return new_particle a new particle assigned the newly generated parameters.
     def perturb_particle(self):
         new_params = []
         new_init_state = []
@@ -207,10 +219,13 @@ class Particle:
 
 
 class Model:
-    ##
-    # Each model object possesses all the information needed to simulate the model.
-    # Priors should be loaded from input files
-    # model ref refers to the index of the model in the cpp module.
+    ## Model object constructor.
+    # Each model object possesses all the information to sample a particle. It carreis information on
+    # it's sampling properties throughout the algorithm.
+    # Importantly, model ref refers to the index of the model in the cpp module.
+    # @param model_ref referes to the index of the model in the model.cpp file.
+    # @param params_prior prior parameter distribution ranges.
+    # @param init_species_prior parameter distribution ranges for initial species values.
     ##
     def __init__(self, model_ref, params_prior, init_species_prior):
         self._model_ref = model_ref
@@ -268,15 +283,15 @@ class Model:
             else:
                 self._init_species_prior[species_id].append('uniform')
 
-
+    ## Generates parameter perturbation kernels.
+    #
+    # @param params parameters used for simulations
+    # @param init_states initial species used for simulations
+    # @param weights weights of the sampled particles
+    ##
     def generate_kernels(self, params, init_states, weights):
         params = np.array(params)
         init_states = np.array(init_states)
-        # params = np.array([np.array(p)for p in params])
-        # init_states = np.array([np.array(s)for s in init_states])
-
-        # params = np.array(params, dtype=object)
-        # init_states = np.array(init_states, dtype=object)
 
         self.param_kernels = []
         self.param_kern_aux = []
@@ -366,35 +381,26 @@ class Model:
                     self.init_state_kernels.append(s2w * 2)
 
 
-    ##
-    # Samples simulation parameters.
-    # If KDE has been generated, parameters are sampled from KDE
-    # Else, parameters are sampled from the prior
+    ## Samples particle parameters belonging to this model.
+    # parameters are always sampled uniformally from the prior
+    # @param sim_params list of parameter values sampled uniformally from the prior
     ##
     def sample_particle(self):
         sim_params = []
 
         for idx, id in enumerate(sorted(self._params_prior, key=str.lower)):
+            lwr_bound = self._params_prior[id][0]
+            upr_bound = self._params_prior[id][1]
+            param_val = np.random.uniform(lwr_bound, upr_bound)
 
-            # Check if parameter has a kde
-            if self._param_has_kde[idx]:
-                new_params = self._param_kdes[idx].resample(1)
-
-                # Prevent sampling of negative parameter values
-                while new_params < 0:
-                    new_params = self._param_kdes[idx].resample(1)
-
-                sim_params.append(new_params[0][0])
-
-            else:  # Sample from uniform prior
-                lwr_bound = self._params_prior[id][0]
-                upr_bound = self._params_prior[id][1]
-                param_val = np.random.uniform(lwr_bound, upr_bound)
-
-                sim_params.append(param_val)
+            sim_params.append(param_val)
 
         return sim_params
 
+    ## Samples particle initial species state belonging to this model.
+    # initial species are always sampled uniformally from the prior
+    # @param init_species list of initial species values sampled uniformally from the prior
+    ##
     def sample_init_state(self):
         init_species = []
 
@@ -417,17 +423,20 @@ class Model:
 
         return init_species
 
+    ## Gets model ref.
+    #
+    ##
     def get_model_ref(self):
         return self._model_ref
 
 
-##
-# Model space is initialised with a list of Model objects.
-#
-# This class controls sampling of models, and generation of a population of particles to be simulated.
+## Controls sampling of models, and generation of a population of particles to be simulated.
 # Used to apply operations to all models within a model space, and reports on all models in the model space.
 ##
 class ModelSpace:
+    ## Constructor
+    # @param model_list list of model objects that initialise the model space.
+    ##
     def __init__(self, model_list):
         self._model_list = model_list
         self._model_refs_list = [m.get_model_ref() for m in self._model_list]  # Extract model reference from each model
@@ -435,6 +444,9 @@ class ModelSpace:
         self.dead_models_count = 0
         self.model_kernel = 0.7
 
+    ## Sets the count of dead models in the model space
+    #  Dead models are those which had no accepted particles in the previous population
+    ##
     def count_dead_models(self):
         count = 0
         for m in self._model_list:
@@ -443,8 +455,10 @@ class ModelSpace:
 
         self.dead_models_count = count
 
-
-
+    ## Generates parameter perturbation kernels for each model
+    #  @param accepted_particles list of accepted particles
+    #  @param pop_num population number
+    ##
     def generate_model_kernels(self, accepted_particles, pop_num):
         unique_models = self._model_list
 
@@ -470,43 +484,10 @@ class ModelSpace:
                 continue
 
 
-    def update_mid_population_sample_data(self, simulated_particle_refs, judgement_array, 
-        sampled_count_dict, accepted_count_dict):
-
-        for idx, particle_ref in enumerate(simulated_particle_refs):
-            sampled_count_dict[particle_ref] = sampled_count_dict[particle_ref] + 1
-
-            if judgement_array[idx]:
-                accepted_count_dict[particle_ref] = accepted_count_dict[particle_ref] + 1
-
-        return sampled_count_dict, accepted_count_dict
-
-
+    ## Updates the sample and acceptance counts for each model in the model space.
+    # @param simulated_particle_refs references to models simulated by each particle.
+    # @param judgement_array list of judgements referring to whether a particle was accepted or rejected.
     ##
-    # Appends a new entry for the counts of times sampled and times accepted in a population
-    # Each time this is called
-    ##
-    def update_population_sample_data(self, simulated_particle_refs, judgement_array):
-        unique_models = self._model_list
-
-        sampled_count = {}
-        accepted_count = {}
-        for m in unique_models:
-            sampled_count[m._model_ref] = 0
-            accepted_count[m._model_ref] = 0
-
-
-        for idx, particle_ref in enumerate(simulated_particle_refs):
-            sampled_count[particle_ref] = sampled_count[particle_ref] + 1
-
-            if judgement_array[idx]:
-                accepted_count[particle_ref] = accepted_count[particle_ref] + 1
-
-
-        for m in unique_models:
-            m.population_sample_count.append(sampled_count[m._model_ref])
-            m.population_accepted_count.append(accepted_count[m._model_ref])
-
     def update_population_sample_data_v2(self, simulated_particle_refs, judgement_array):
         unique_models = self._model_list
 
@@ -516,51 +497,20 @@ class ModelSpace:
             sampled_count[m._model_ref] = 0
             accepted_count[m._model_ref] = 0
 
-
         for idx, particle_ref in enumerate(simulated_particle_refs):
             sampled_count[particle_ref] = sampled_count[particle_ref] + 1
 
             if judgement_array[idx]:
                 accepted_count[particle_ref] = accepted_count[particle_ref] + 1
 
-
         for m in unique_models:
             m.population_sample_count[-1] += sampled_count[m._model_ref]
             m.population_accepted_count[-1] += accepted_count[m._model_ref]
 
-
-    # ##
-    # # Appends a new entry for the counts of times sampled and times accepted in a population
-    # # Each time this is called
-    # ##
-    # def update_population_sample_data(self, simulated_particle_refs, judgement_array):
-    #     unique_models = self._model_list
-
-    #     for m in unique_models:
-    #         sampled_count = 0
-    #         accepted_count = 0
-
-    #         for idx, particle_ref in enumerate(simulated_particle_refs):
-
-    #             if particle_ref == m._model_ref:
-    #                 sampled_count += 1
-
-    #                 if judgement_array[idx]:
-    #                     accepted_count += 1
-
-    #         m.population_sample_count.append(sampled_count)
-    #         m.population_accepted_count.append(accepted_count)
-
-    def update_model_weights_naive(self, sigma=0.5):
-
-        unique_models = self._model_list
-
-        for this_model in self._model_list:
-            n_sims = this_model.population_sample_count[-1]
-            n_accepted = this_model.population_accepted_count[-1]
-            self._current_sample_probability = n_accepted / n_sims
-
-
+    ## Samples n particles from model space and their parameters
+    # @param n_sims number of particles to sample from prior distributions.
+    # @return particles list of sampled particles
+    ##
     def sample_particles_from_prior(self, n_sims):
         model_probabilities = [m._current_sample_probability for m in
                                self._model_list]  # Extract model sample probabilities
@@ -581,23 +531,18 @@ class ModelSpace:
 
         return particles
 
-    ##
-    #   Samples particles from previous population based on model marginals, followed by 
-    #   particle perturbation
+    ## Samples n particles previous population with perturbation
+    # Previous population contains accepted particles, these are sampled based on the model marginal
+    # probabilities and then perturbed.
+    # @param n_sims number of particles to sample from previous population.
+    # @return particles list of sampled particles
     ##
     def sample_particles_from_previous_population(self, n_sims):
-
-
         # Sample model based on marginals
         model_marginals = [m.prev_margin for m in self._model_list]
 
-
         sampled_models = np.random.choice(self._model_list, n_sims, p=model_marginals)
-        prev_models = sampled_models[:]
-
-
         all_alive_models = [m for m in self._model_list if m.prev_margin > 0]
-
 
         # Perturb models
         if self.dead_models_count > len(self._model_list) - 1:
@@ -609,7 +554,6 @@ class ModelSpace:
                     perturbed_model = np.random.choice(all_alive_models)
 
                     sampled_models[i] = perturbed_model
-
 
         # Generate dictionary with key to each model ref
         models_dict = {}
@@ -644,6 +588,9 @@ class ModelSpace:
 
         return perturbed_particles
 
+    ## Computes and assigns weights from the model space accepted particles
+    #
+    ##
     def compute_particle_weights(self):
         for particle in self.accepted_particles:
 
@@ -709,59 +656,39 @@ class ModelSpace:
 
             particle.curr_weight = this_model.prev_margin * numerator / (s_1 * s_2)
 
-            # print(this_model.prev_margin)
-            # print(numerator)
-            # print(s_1)
-            # print(s_2)
-            # if this_model._model_ref == 3:
-            #     print(count)
-            #     print(this_model.param_kernels)
-            #     print("model_ref: ", particle.curr_model._model_ref)
-            #     print("particle.curr_weight: ", particle.curr_weight)
-            #     print("prev margin: ", particle.curr_model.prev_margin)
-            #     print("prior prob", particle_prior_prob)
-            #     print("numer", numerator)
-            #     print("ratio", numerator/sum_pdfs)
-
-            #     exit()
-
-
+    ## Updates model marginals based on model space accepted particles
+    #
+    ##
     def update_model_marginals(self):
         new_model_weights = {}
         for m in self._model_list:
             new_model_weights[m._model_ref] = 0
 
-
         for particle in self.accepted_particles:
             new_model_weights[particle.curr_model._model_ref] = new_model_weights[particle.curr_model._model_ref] + particle.curr_weight
-
 
         for m in self._model_list:
             m.curr_margin = new_model_weights[m._model_ref]
 
-
+    ## Normaises particle weights of model space accepted particles
+    #
+    ##
     def normalize_particle_weights(self):
         sum_weights = sum([p.curr_weight for p in self.accepted_particles])
         for p in self.accepted_particles:
             p.curr_weight = p.curr_weight / sum_weights
 
+    ##         Returns the probability of model number m0 being perturbed into model number m (assuming neither is dead).
+    # This assumes a uniform model perturbation kernel: with probability modelK the model is not perturbed; with
+    # probability (1-modelK) it is replaced by a model randomly chosen from the non-dead models (including the current
+    # model).
+    # @param new_model index of next model
+    # @param old_model index of previous model
+    # @param model_k model (non)-perturbation probability
+    # @param num_models total number of models
+    # @param dead_models number of models which are 'dead'
+    ##
     def get_model_kernel_pdf(self, new_model, old_model, model_k, num_models, dead_models):
-        """
-        Returns the probability of model number m0 being perturbed into model number m (assuming neither is dead).
-
-        This assumes a uniform model perturbation kernel: with probability modelK the model is not perturbed; with
-        probability (1-modelK) it is replaced by a model randomly chosen from the non-dead models (including the current
-        model).
-
-        Parameters
-        ----------
-        new_model : index of next model
-        old_model : index of previous model
-        model_k : model (non)-perturbation probability
-        num_models : total number of models
-        dead_models : number of models which are 'dead'
-        """
-
         num_dead_models = self.dead_models_count
 
         if num_dead_models == num_models - 1:
@@ -772,7 +699,9 @@ class ModelSpace:
             else:
                 return (1 - model_k) / (num_models - num_dead_models)
 
-
+    ## Generates auxillaiary info needed for parameter perturbation kernels
+    #
+    ##
     def generate_kernel_aux_info(self):
         for particle in self.prev_accepted_particles:
             param_aux_info = []
@@ -808,8 +737,11 @@ class ModelSpace:
             particle.param_aux_info = param_aux_info
             particle.init_state_aux_info = init_state_aux_info
 
-
-    def model_space_report(self, output_dir, batch_num, use_sum=False):
+    ## Generates model spaces report csv
+    # @param output_dir output directory
+    # @param use_sum if true will generate cumulative counts of accepted and sampled
+    ##
+    def model_space_report(self, output_dir, use_sum=False):
         file_path = output_dir + 'model_space_report.csv'
         column_names = ['model_idx', 'accepted_count', 'simulated_count', 'model_marginal']
         models_data = []
@@ -822,10 +754,13 @@ class ModelSpace:
                 models_data.append([m.get_model_ref(), m.population_accepted_count[-2], m.population_sample_count[-2],
                                     m.prev_margin])
 
-
         new_df = pd.DataFrame(data=models_data, columns=column_names)
         new_df.to_csv(file_path)
 
+    ## Perfoms routines ready for the next population
+    # Moves the current particle weights, parameteres, initial states and model to previous.
+    # resets population sampled and accepted counts, and copys accepted particles to previously accepted particles.
+    ##
     def prepare_next_population(self):
         for particle in self.accepted_particles:
             particle.prev_weight = particle.curr_weight
@@ -838,12 +773,10 @@ class ModelSpace:
             particle.curr_init_state = None
             particle.curr_model = None
 
-
         for model in self._model_list:
             model.prev_margin = model.curr_margin
             model.population_sample_count.append(0)
             model.population_accepted_count.append(0)
-
 
         self.prev_accepted_particles = self.accepted_particles[:]
         self.accepted_particles = []

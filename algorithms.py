@@ -21,19 +21,30 @@ target_data = np.random.geometric(0.5, 100)
 target_data_s1 = np.sum(target_data)
 target_data_t1 = np.sum(np.log([float(np.math.factorial(x)) for x in target_data]))
 
-def blockPrinting(func):
-    def func_wrapper(*args, **kwargs):
-        # block all printing to the console
-        sys.stdout = open(os.devnull, 'w')
-        # call the method in question
-        func(*args, **kwargs)
-        # enable all printing to the console
-        sys.stdout = sys.__stdout__
 
-    return func_wrapper
-
-
+## Routines to run optimisation/model selection algorithms.
+# All routines are initialised with the same information, these are accessed by member functions tp
+# run different algorithms.
 class ABC:
+    ## Constructor
+    # Arguements for ABC object initialisation containing all information needed to perform ABC rejection or ABC SMC
+    # algorithms. The input model list should be a list of Model objects.
+    #
+    # @param t_0 initial time point
+    # @param t_end final time point
+    # @param dt time step size
+    # @param exp_num experiment number used as suffix for recording data
+    # @param model_list list of Model objects in the model space
+    # @param population_size Number of particles that must be accepted in a population
+    # @param n_sims_batch Number of simulations to conduct in batch
+    # @param fit_species List of species indexes that will be fitted.
+    # @param initial_epsilon Final distance thresholds
+    # @param initial_epsilon Initial distance thresholds
+    # @param distance_function_mode Defines which distance objective to run
+    # @param n_distances Number of distances per fit species
+    # @param abs_tol Absolute tolerance of error stepper
+    # @param rel_tol Relative tolerance of error stepper
+    # @param out_dir Output directory
     def __init__(self, t_0, t_end, dt, exp_num,
                  model_list, population_size, n_sims_batch,
                  fit_species, final_epsilon, initial_epsilon, distance_function_mode, n_distances, abs_tol, rel_tol, out_dir):
@@ -78,11 +89,24 @@ class ABC:
         self.population_number = 0
         self.finished = False
 
+    ## Saves ABC object as pickle.
+    # named checkpoint.pickle
+    # @param output_dir Output directory
     def save_object_pickle(self, output_dir):
         pickle_name = output_dir + "checkpoint.pickle"
         with open(pickle_name , 'wb') as handle:
             pickle.dump(self, handle, protocol=-1)
 
+    ## Plots accepted particles.
+    # For a given batch of simulated particles, the distance judgements are iterated. If a particle has been accepted
+    # it will be plotted.
+    #
+    # @param out_dir Output directory
+    # @param pop_num population number used to generate plot name
+    # @param batch_num batch number used to generate plot name
+    # @param part_judgements list of bools dictating whether a particle was accepted or rejected
+    # @param init_states list of initial states for each particle
+    # @param model_refs list containing the model refs for each particle.
     def plot_accepted_particles(self, out_dir, pop_num, batch_num, part_judgements, init_states, model_refs):
         out_path = out_dir + "Population_" + str(pop_num) + "_batch_" + str(batch_num) + "_accepted_plots.pdf"
 
@@ -117,6 +141,13 @@ class ABC:
 
         # pdf.close()
 
+    ## Plots all particles.
+    # For a given batch of simulated particles, all particles are plotted
+    # @param out_dir Output directory
+    # @param pop_num population number used to generate plot name
+    # @param batch_num batch number used to generate plot name
+    # @param init_states list of initial states for each particle
+    # @param model_refs list containing the model refs for each particle.
     def plot_all_particles(self, out_dir, pop_num, batch_num, init_states, model_refs):
         out_path = out_dir + "/simulation_plots/Population_" + str(pop_num) + "_batch_" + str(
             batch_num) + "all_plots.pdf"
@@ -152,6 +183,13 @@ class ABC:
         print("negative count: ", negative_count)
         pdf.close()
 
+    ## Writes particle state list to csv.
+    # For a given batch of simulated particles, the complete states of all simulations are written to a .csv file
+    # @param out_dir Output directory
+    # @param pop_num population number used to generate file name
+    # @param batch_num batch number used to generate file name
+    # @param init_states list of initial states for each particle
+    # @param model_refs list containing the model refs for each particle.
     def write_all_particle_state_lists(self, out_dir, pop_num, batch_num, init_states, model_refs):
         for sim_idx, m_ref in enumerate(model_refs):
             out_path = out_dir + "/simulation_states/Population_" + str(pop_num) + "_batch_" + \
@@ -164,6 +202,13 @@ class ABC:
             state_list = np.reshape(state_list, (tp, len(init_states[sim_idx])))
             np.savetxt(out_path, state_list, delimiter=',')
 
+    ## Writes accepted particle distances to csv.
+    # For a given batch of simulated particles, the distances are written to .csv. One .csv contains all accepted
+    # particle distances for a population.
+    # @param out_dir Output directory
+    # @param model_refs list containing the model refs for each particle.
+    # @param part_judgements list of bools dictating whether a particle was accepted or rejected
+    # @param distances list of distances for each particle and each species being fit.
     def write_accepted_particle_distances(self, out_dir, model_refs, part_judgments, distances):
         out_path = out_dir + "distances.csv"
         with open(out_path, 'a') as out_csv:
@@ -177,7 +222,16 @@ class ABC:
 
                     wr.writerow(record_vals)
 
-    def write_particle_distances(self, out_dir, model_refs, batch_num, population_num, judgement_array, distances, only_accepted=False):
+    ## Writes all particle distances to csv.
+    # For a given batch of simulated particles, the distances are written to .csv. One .csv contains all accepted
+    # particle distances for a population.
+    # @param out_dir Output directory
+    # @param model_refs list containing the model refs for each particle.
+    # @param batch_num batch number used to generate file name
+    # @param pop_num population number used to generate file name
+    # @param part_judgements list of bools dictating whether a particle was accepted or rejected
+    # @param distances list of distances for each particle and each species being fit.
+    def write_particle_distances(self, out_dir, model_refs, batch_num, pop_num, part_judgments, distances, only_accepted=False):
         out_path = out_dir + "distances.csv"
 
         # If file doesn't exist, write header
@@ -198,11 +252,11 @@ class ABC:
             wr = csv.writer(out_csv, quoting=csv.QUOTE_NONNUMERIC)
 
             for idx, m_ref in enumerate(model_refs):
-                if only_accepted and judgement_array[idx] == False:
+                if only_accepted and part_judgments[idx] == False:
                     continue
 
                 error_msg = self.pop_obj.get_particle_integration_error(idx)
-                row_vals = [idx, batch_num, population_num, self.exp_num, m_ref, judgement_array[idx], error_msg]
+                row_vals = [idx, batch_num, pop_num, self.exp_num, m_ref, part_judgments[idx], error_msg]
 
 
                 for n_idx, n in enumerate(self.fit_species):
@@ -211,6 +265,14 @@ class ABC:
 
                 wr.writerow(row_vals)
 
+    ## Writes parameters and initial species for a given list of particles.
+    # @param out_dir Output directory
+    # @param batch_num batch number used to generate file name
+    # @param simulated_particles list of simulated particle objects
+    # @param input_params list of input parameters for each particle
+    # @param input_init_species list of initial species values for each particle
+    # @param judgement_array list of bools dictating whether a particle was accepted or rejected
+    # @param particle_weights list of particle weights.
     def write_particle_params(self, out_dir, batch_num, simulated_particles,
                               input_params, input_init_species, judgement_array, particle_weights):
         for m in self.model_space._model_list:
@@ -331,6 +393,9 @@ class ABC:
 
                 wr.writerow(row_vals)
 
+    ## Writes the population distance thresholds.
+    # @param out_dir Output directory
+    # @param epsilon current distance thresholds
     def write_epsilon(self, out_dir, epsilon):
         out_path = out_dir + "epsilon.txt"
 
@@ -341,83 +406,6 @@ class ABC:
                 wr = csv.writer(out_csv)
                 wr.writerow(col_header)
                 wr.writerow(epsilon)
-
-    def write_eigenvalues(self, out_dir, model_refs, batch_num, simulated_particles,
-                          end_state=False, init_state=False, do_fsolve=False):
-
-        if end_state == True:
-            out_path = out_dir + "eigenvalues_end_state.csv"
-
-        elif init_state == True:
-            out_path = out_dir + "eigenvalues_init_state.csv"
-
-        elif do_fsolve == True:
-            out_path = out_dir + "eigenvalues_do_fsolve_state.csv"
-
-        else:
-            print("State to use for jacobian not specified, exiting...")
-            exit()
-
-        # If file doesn't exist, write header
-        if not os.path.isfile(out_path):
-            col_header = ['sim_idx', 'batch_num', 'model_ref', 'integ_error', 'fsolve_error']
-            for i in range(10):
-                str_eig_real = 'eig_#I#_real'.replace('#I#', str(i))
-                str_eig_imag = 'eig_#I#_imag'.replace('#I#', str(i))
-                col_header = col_header + [str_eig_real] + [str_eig_imag]
-
-            with open(out_path, 'a') as out_csv:
-                wr = csv.writer(out_csv)
-                wr.writerow(col_header)
-
-        with open(out_path, 'a') as out_csv:
-            wr = csv.writer(out_csv)
-
-            for sim_idx, m_ref in enumerate(model_refs):
-                fsolve_error = 0
-
-                n_species = len(simulated_particles[sim_idx]._init_species_prior)
-
-                jac = []
-                if end_state == True:
-                    jac = self.pop_obj.get_particle_end_state_jacobian(sim_idx)
-
-                elif init_state == True:
-                    jac = self.pop_obj.get_particle_init_state_jacobian(sim_idx)
-
-                elif do_fsolve == True:
-                    final_state = self.pop_obj.get_particle_final_species_values(sim_idx)
-                    res = fsolve(alg_utils.fsolve_conversion, final_state, fprime=alg_utils.fsolve_jac_conversion,
-                                 args=(self.pop_obj, sim_idx, n_species), full_output=True)
-                    steady_state = res[0]
-
-                    ier = res[2]
-                    fsolve_error = ier
-
-                    steady_state = steady_state.tolist()
-
-                    jac = self.pop_obj.get_particle_jacobian(steady_state, sim_idx)
-
-                jac = np.reshape(jac, (n_species, n_species))
-
-                try:
-                    eigenvalues = np.linalg.eigvals(jac)
-
-                except(np.linalg.LinAlgError) as e:
-                    eigenvalues = [np.nan for i in range(n_species)]
-
-                eigenvalues = [[i.real, i.imag] for i in eigenvalues]
-
-                real_parts = [i[0] for i in eigenvalues]
-                imag_parts = [i[1] for i in eigenvalues]
-
-                integ_error = self.pop_obj.get_particle_integration_error(sim_idx)
-                row_vals = [sim_idx, batch_num, m_ref, integ_error, fsolve_error]
-
-                for idx_e, i in enumerate(eigenvalues):
-                    row_vals = row_vals + [real_parts[idx_e]] + [imag_parts[idx_e]]
-
-                wr.writerow(row_vals)
 
     def write_time_to_stability(self, out_dir, model_refs, batch_num, simulated_particles):
 
@@ -464,7 +452,9 @@ class ABC:
                 wr.writerow(row_vals)
 
     
-
+    ## Run ABC SMC algorithm.
+    # @param alpha Lowest proportion from which to generate next distance thresholds
+    # @param run_test N/A -- Remove tests
     def run_model_selection_ABC_SMC(self, alpha=0.5, run_test=0):
         
         # abs_tol = 1e-20
@@ -741,7 +731,7 @@ class ABC:
             print("generating model space report")
             print(folder_name)
 
-            self.model_space.model_space_report(folder_name, self.batch_num, use_sum=False)
+            self.model_space.model_space_report(folder_name, use_sum=False)
 
             if self.current_epsilon != self.final_epsilon: 
                 self.current_epsilon = alg_utils.update_epsilon(self.current_epsilon, self.final_epsilon,
